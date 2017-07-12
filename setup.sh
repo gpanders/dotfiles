@@ -22,7 +22,7 @@ fi
 
 if hash git 2>/dev/null; then
     if [ ! -d "${ZDOTDIR:-$HOME}/.zprezto" ]; then
-        git clone --recursive https://github.com/gpanders/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+        git clone --quiet --recursive https://github.com/gpanders/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
     else
        echo ".zprezto dir already exists, not cloning git repo"
     fi
