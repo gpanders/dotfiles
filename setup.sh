@@ -2,20 +2,22 @@
 
 shopt -s extglob
 
-echo "Copying vim config to $HOME/.vim..."
-cp -v -r $(pwd)/vim $HOME/.vim
+mkdir -p $HOME/.vim
+cp -vuR $(pwd)/vim/* $HOME/.vim
+cp -vu $(pwd)/vimrc $HOME/.vimrc
+curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-echo "Copying .vimrc to $HOME/.vimrc..."
-cp -v $(pwd)/vimrc $HOME/.vimrc
-
-echo "Copying tmux.conf to $HOME/.tmux.conf..."
-cp -v $(pwd)/tmux.conf $HOME/.tmux.conf
+cp -vu $(pwd)/tmux.conf $HOME/.tmux.conf
 
 if hash nvim 2>/dev/null; then
-    echo "Found neovim installation, adding neovim specific configs..."
-    mkdir -v -p $HOME/.config
-    cp -v -r $(pwd)/nvim $HOME/.config/nvim
-    ln -v -s $HOME/.vimrc $HOME/.config/nvim/init.vim
+    echo "Found neovim installation, adding neovim specific configs"
+    mkdir -p $HOME/.config
+    cp -vuR $(pwd)/nvim/* $HOME/.config/nvim
+    ln -vs $HOME/.vimrc $HOME/.config/nvim/init.vim
+    mkdir -p $HOME/.local/share/nvim/site/autoload
+    cp $HOME/.vim/autoload/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim
+    ln -vs $HOME/.vim/plugin $HOME/.local/share/nvim/site/plugin
 else
     echo "Neovim not found, skipping neovim configs"
 fi
@@ -28,7 +30,7 @@ if hash git 2>/dev/null; then
     fi
     echo "Symlinking prezto runcoms..."
     for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/!(README.md); do
-        ln -v -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile##*/}"
+        ln -vs "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile##*/}"
     done
     if hash zsh 2>/dev/null; then
         sudo chsh -s $(which zsh) ${SUDO_USER:-$USER}
