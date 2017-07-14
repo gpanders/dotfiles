@@ -41,5 +41,17 @@ else
     echo "Git not found; not cloning prezto"
 fi
 
+install_solarized_dircolors = 0
+read -p "Install solarized dircolors? [y/N]" ans
+case "$ans" in
+    [Yy]|[Yy][Ee][Ss] ) install_solarized_dircolors = 1 ;;
+    * ) break ;;
+esac
+
+if [ install_solarized_dircolors -eq 1 ]; then
+    git clone --quiet https://github.com/seebi/dircolors-solarized.git
+    cp -uv dircolors-solarized/dircolors.256dark $HOME/.dir_colors
+fi
+
 echo " "
 echo "Setup complete. You can now delete this directory"
