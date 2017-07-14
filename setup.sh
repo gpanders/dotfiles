@@ -56,8 +56,8 @@ case "$ans" in
 esac
 
 if [ $install_solarized_dircolors -eq 1 ]; then
-    git clone --quiet https://github.com/seebi/dircolors-solarized.git
-    cp -uv dircolors-solarized/dircolors.ansi-dark $HOME/.dir_colors
+    curl -fLo $HOME/.dir_colors \
+        https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark
 fi
 
 echo " "
