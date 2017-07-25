@@ -14,3 +14,5 @@ nmap <silent> <leader>0 :b10<CR>
 nmap <silent> <leader>bun :BUN<CR>
 nmap <silent> <leader>bd :BD<CR>
 nmap <silent> <leader>bw :BW<CR>
+
+map <C-c> :BD<CR>

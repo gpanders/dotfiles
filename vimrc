@@ -2,18 +2,19 @@
 " Specify a directory for plugins
 call plug#begin(has('nvim') ? '~/.config/nvim/plugins' : '~/.vim/bundle')
 
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'altercation/vim-colors-solarized'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-capslock'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 Plug 'vim-utils/vim-husk'
 Plug 'itchyny/lightline.vim'
 Plug 'mgee/lightline-bufferline'
 Plug 'qpkorr/vim-bufkill'
+Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
 
 " nvim specific plugins
 if has('nvim')
@@ -69,6 +70,9 @@ inoremap {<CR> {<CR>}<Esc>ko
 
 " Show column at 80 characters
 set colorcolumn=80
+
+" Set update time
+set updatetime=250
 
 " Relative numbering
 function! NumberToggle()

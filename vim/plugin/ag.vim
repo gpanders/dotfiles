@@ -13,8 +13,8 @@ endif
 
 " bind K to grep word under cursor 
 " see https://robots.thoughtbot.com/faster-grepping-in-vim
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <silent> K :Ag! \b<C-R><C-W>\b<CR>
 
 " bind \ (backward slash) to grep shortcut
 "command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-nnoremap \ :Ag<space>
+nnoremap \ :Ag!<space>
