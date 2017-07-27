@@ -57,7 +57,7 @@ esac
 
 if [ $install_solarized_dircolors -eq 1 ]; then
     curl -fLo $HOME/.dir_colors \
-        https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark
+        https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-universal
 fi
 
 echo " "
