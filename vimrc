@@ -2,15 +2,16 @@
 " Specify a directory for plugins
 call plug#begin(has('nvim') ? '~/.config/nvim/plugins' : '~/.vim/bundle')
 
-Plug 'artur-shaik/vim-javacomplete2'
-Plug 'altercation/vim-colors-solarized'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-capslock'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
+Plug 'altercation/vim-colors-solarized'
+Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-utils/vim-husk'
 Plug 'itchyny/lightline.vim'
-Plug 'mgee/lightline-bufferline'
+Plug 'taohex/lightline-buffer'
 Plug 'qpkorr/vim-bufkill'
 Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -23,6 +24,10 @@ if has('nvim')
     Plug 'zchee/deoplete-clang'
     Plug 'arakashic/chromatica.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'neomake/neomake'
+else
+    Plug 'tpope/vim-sensible'
+    Plug 'octol/vim-cpp-enhanced-highlight'
+    Plug 'Shougo/neocomplete.vim'
 endif
 
 " Initialize plugin system
@@ -39,8 +44,8 @@ if has('nvim')
     runtime! config/**/*.vim
 endif
 
-" Set solarized color scheme
-set background=dark
+" Set color scheme
+set t_Co=256
 colorscheme solarized
 
 " Hide buffers instead of closing them
@@ -101,10 +106,22 @@ map <C-h> <C-w>h
 map <C-l> <C-w>l
 
 " Simplify resizing splits
-nnoremap <M-j> <C-w>-
-nnoremap <M-k> <C-w>+
-nnoremap <M-h> <C-w><
-nnoremap <M-l> <C-w>>
+if has('nvim')
+  nnoremap <A-j> <C-w>-
+  nnoremap <A-k> <C-w>+
+  nnoremap <A-h> <C-w><
+  nnoremap <A-l> <C-w>>
+else
+  nnoremap j <C-w>-
+  nnoremap k <C-w>+
+  nnoremap h <C-w><
+  nnoremap l <C-w>>
+endif
+
+" Show substitutions in split window
+if has('nvim')
+  set inccommand=split
+endif
 
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file
