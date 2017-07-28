@@ -49,11 +49,10 @@ else
 fi
 
 install_solarized_dircolors=0
-read -p "Install solarized dircolors? [y/N] " ans
-case "$ans" in
-    [Yy]|[Yy][Ee][Ss] ) install_solarized_dircolors=1 ;;
-    * ) break ;;
-esac
+read -r -p "Install solarized dircolors? [y/N] " ans
+if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+    install_solarized_dircolors=1
+fi
 
 if [ $install_solarized_dircolors -eq 1 ]; then
     curl -fLo $HOME/.dir_colors \
