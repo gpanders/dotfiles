@@ -21,12 +21,12 @@ Plug 'junegunn/fzf.vim'
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'Shougo/neco-syntax'
-    Plug 'zchee/deoplete-clang'
-    Plug 'arakashic/chromatica.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
+    Plug 'arakashic/chromatica.nvim', { 'do': ':UpdateRemotePlugins', 'for': ['c', 'cpp'] }
     Plug 'neomake/neomake'
 else
     Plug 'tpope/vim-sensible'
-    Plug 'octol/vim-cpp-enhanced-highlight'
+    Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
     Plug 'Shougo/neocomplete.vim'
 endif
 
@@ -39,13 +39,13 @@ call plug#end()
 " config files can also use the <leader> value
 let mapleader = ','
 
-" 
+" Source nvim configs 
 if has('nvim')
     runtime! config/**/*.vim
 endif
 
 " Set color scheme
-set t_Co=256
+set background=light
 colorscheme solarized
 
 " Hide buffers instead of closing them
