@@ -7,6 +7,12 @@ let g:deoplete#sources#clang#clang_header = '/usr/local/include/clang'
 let g:deoplete#auto_complete_delay = 0
 autocmd InsertLeave,CompleteDone * silent! pclose!
 
+" clang_complete config
+let g:clang_complete_auto = 0
+let g:clang_auto_select = 0
+let g:clang_omnicppcomplete_compliance = 0
+let g:clang_make_default_keymappings = 0
+
 inoremap <silent><expr> <TAB>
             \ pumvisible() ? "\<C-n>" : 
             \ <SID>check_back_space() ? "\<TAB>" :

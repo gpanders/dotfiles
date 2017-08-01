@@ -7,7 +7,6 @@ Plug 'tpope/vim-capslock'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'altercation/vim-colors-solarized'
-Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-utils/vim-husk'
 Plug 'itchyny/lightline.vim'
@@ -17,16 +16,18 @@ Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
-" nvim specific plugins
+" Language specific plugins
+Plug 'Rip-Rip/clang_complete', { 'for': ['c', 'cpp'] }
+Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
+Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
+
 if has('nvim')
+    " Neovim specific plugins
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'Shougo/neco-syntax'
-    Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
-    Plug 'arakashic/chromatica.nvim', { 'do': ':UpdateRemotePlugins', 'for': ['c', 'cpp'] }
     Plug 'neomake/neomake'
 else
+    " Vim specific plugins
     Plug 'tpope/vim-sensible'
-    Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
     Plug 'Shougo/neocomplete.vim'
 endif
 
