@@ -17,18 +17,19 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
 " Language specific plugins
-Plug 'Rip-Rip/clang_complete', { 'for': ['c', 'cpp'] }
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 
 if has('nvim')
     " Neovim specific plugins
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
     Plug 'neomake/neomake'
 else
     " Vim specific plugins
     Plug 'tpope/vim-sensible'
     Plug 'Shougo/neocomplete.vim'
+    Plug 'Rip-Rip/clang_complete', { 'for': ['c', 'cpp'] }
 endif
 
 " Initialize plugin system
