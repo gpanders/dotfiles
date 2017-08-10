@@ -9,12 +9,15 @@ Plug 'tpope/vim-commentary'
 Plug 'altercation/vim-colors-solarized'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-utils/vim-husk'
-Plug 'itchyny/lightline.vim'
-Plug 'taohex/lightline-buffer'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'qpkorr/vim-bufkill'
 Plug 'easymotion/vim-easymotion'
+Plug 'itchyny/lightline.vim'
+Plug 'taohex/lightline-buffer'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
+Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 
 " Language specific plugins
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
