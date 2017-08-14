@@ -114,10 +114,10 @@ map <C-l> <C-w>l
 
 " Simplify resizing splits
 if has('nvim')
-  nnoremap <A-j> <C-w>-
-  nnoremap <A-k> <C-w>+
-  nnoremap <A-h> <C-w><
-  nnoremap <A-l> <C-w>>
+  nnoremap <M-j> <C-w>-
+  nnoremap <M-k> <C-w>+
+  nnoremap <M-h> <C-w><
+  nnoremap <M-l> <C-w>>
 else
   nnoremap j <C-w>-
   nnoremap k <C-w>+
