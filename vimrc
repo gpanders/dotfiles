@@ -15,6 +15,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'qpkorr/vim-bufkill'
 Plug 'easymotion/vim-easymotion'
+Plug 'kshenoy/vim-signature'
 Plug 'itchyny/lightline.vim'
 Plug 'taohex/lightline-buffer'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
