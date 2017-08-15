@@ -107,23 +107,17 @@ nnoremap k gk
 " Clear search buffer by pressing <leader><space>
 nmap <silent> <leader><space> :nohlsearch<CR>
 
-" Navigate between windows easier
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-h> <C-w>h
-map <C-l> <C-w>l
-
 " Simplify resizing splits
 if has('nvim')
-  nnoremap <M-j> <C-w>-
-  nnoremap <M-k> <C-w>+
-  nnoremap <M-h> <C-w><
-  nnoremap <M-l> <C-w>>
+  nnoremap <silent> <M-j> :resize +1<CR>
+  nnoremap <silent> <M-k> :resize -1<CR>
+  nnoremap <silent> <M-h> :vertical resize -1<CR>
+  nnoremap <silent> <M-l> :vertical resize +1<CR>
 else
-  nnoremap j <C-w>-
-  nnoremap k <C-w>+
-  nnoremap h <C-w><
-  nnoremap l <C-w>>
+  nnoremap <silent> ^[j :resize +1<CR>
+  nnoremap <silent> ^[k :resize -1<CR>
+  nnoremap <silent> ^[h :vertical resize -1<CR>
+  nnoremap <silent> ^[l :vertical resize +1<CR>
 endif
 
 " Show substitutions in split window
@@ -136,5 +130,9 @@ endif
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
+
+" Enable per-project configuration
+set exrc
+set secure
 
 " vim: foldmethod=marker
