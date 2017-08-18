@@ -2,27 +2,33 @@
 
 shopt -s extglob
 
+curr_dir=$(pwd)
+
 mkdir -p $HOME/.vim
-cp -vR $(pwd)/vim/* $HOME/.vim/
+cp -vR $curr_dir/vim/* $HOME/.vim/
+for pfile in $HOME/.vim/plugin/*.vim; do
+    ln -f $pfile $curr_dir/vim/plugin/${pfile##*/}
+done
 
 if [ -f $HOME/.vimrc ]; then
     mv $HOME/.vimrc $HOME/.vimrc.bak
 fi
-cp -v $(pwd)/vimrc $HOME/.vimrc
+mv -v $curr_dir/vimrc $HOME/.vimrc
+ln $HOME/.vimrc $curr_dir/vimrc
 
 if [ -f $HOME/.tmux.conf ]; then
     mv $HOME/.tmux.conf $HOME/.tmux.conf.bak
 fi
-cp -v $(pwd)/tmux.conf $HOME/.tmux.conf
+mv -v $curr_dir/tmux.conf $HOME/.tmux.conf
+ln $HOME/.tmux.conf $curr_dir/tmux.conf
 
 curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-
 if hash nvim 2>/dev/null; then
     echo "Found neovim installation, adding neovim specific configs"
     mkdir -p $HOME/.config/nvim
-    cp -vR $(pwd)/nvim/* $HOME/.config/nvim/
+    cp -vR $curr_dir/nvim/* $HOME/.config/nvim/
     if [ ! -s $HOME/.config/nvim/init.vim ]; then
         ln -vs $HOME/.vimrc $HOME/.config/nvim/init.vim
     fi
