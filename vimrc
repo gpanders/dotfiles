@@ -23,19 +23,27 @@ Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 
 " Language specific plugins
+" C++
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
+
+" Java
 Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
+
+" Python
+Plug 'davidhalter/jedi', { 'for': 'python' }
 
 if has('nvim')
     " Neovim specific plugins
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
+    Plug 'zchee/deoplete-jedi', { 'for': 'python' }
     Plug 'neomake/neomake'
 else
     " Vim specific plugins
     Plug 'tpope/vim-sensible'
     Plug 'Shougo/neocomplete.vim'
     Plug 'Rip-Rip/clang_complete', { 'for': ['c', 'cpp'] }
+    Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 endif
 
 " Initialize plugin system
