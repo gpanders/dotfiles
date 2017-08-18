@@ -2,6 +2,7 @@ let g:fzf_tags_command = 'ctags -R'
 
 map <silent> <C-P> :Files<CR>
 map <silent> <C-T> :Tags<CR>
+map <silent> <C-Y> :Buffers<CR>
 
 " Augmenting Ag command using fzf#vim#with_preview function
 "   * fzf#vim#with_preview([[options], preview window, [toggle keys...]])
@@ -30,4 +31,3 @@ command! -bang -nargs=* Tags
 
 nnoremap \ :Ag!<space>
 nnoremap K :Ag! <C-R><C-W><CR>
-nnoremap <silent> <M-d> :Tags <C-R><C-W><CR>
