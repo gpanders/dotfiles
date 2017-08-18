@@ -15,7 +15,9 @@ nmap <silent> <leader>bun :BUN<CR>
 nmap <silent> <leader>bd :BD<CR>
 nmap <silent> <leader>bw :BW<CR>
 
-map <C-W> :BD<CR>
+map <C-W> :bd<CR>
 
 map <silent> <M-[> :bprev<CR>
 map <silent> <M-]> :bnext<CR>
+imap <silent> <M-[> <Esc>:bprev<CR>
+imap <silent> <M-]> <Esc>:bnext<CR>
