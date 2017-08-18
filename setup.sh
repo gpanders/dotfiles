@@ -29,9 +29,7 @@ if hash nvim 2>/dev/null; then
     echo "Found neovim installation, adding neovim specific configs"
     mkdir -p $HOME/.config/nvim
     cp -vR $curr_dir/nvim/* $HOME/.config/nvim/
-    if [ ! -s $HOME/.config/nvim/init.vim ]; then
-        ln -vs $HOME/.vimrc $HOME/.config/nvim/init.vim
-    fi
+    ln -vfs $HOME/.vimrc $HOME/.config/nvim/init.vim
 
     mkdir -p $HOME/.local/share/nvim/site/autoload
     cp -n $HOME/.vim/autoload/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim
