@@ -46,14 +46,15 @@ if hash git 2>/dev/null; then
     else
        echo ".zprezto dir already exists, not cloning git repo"
     fi
-    echo "Symlinking prezto runcoms..."
     for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/!(README.md); do
         if [ ! -s "${ZDOTDIR:-$HOME}/.${rcfile##*/}" ]; then
             ln -vs "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile##*/}"
         fi
     done
     if hash zsh 2>/dev/null; then
-        sudo chsh -s $(which zsh) ${SUDO_USER:-$USER}
+        if ! [[ "$SHELL" =~ "zsh" ]]; then
+            sudo chsh -s $(which zsh) ${SUDO_USER:-$USER}
+        fi
     else
         echo "zsh not found, not updating default shell"
     fi
