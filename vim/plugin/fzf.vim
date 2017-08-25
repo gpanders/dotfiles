@@ -31,3 +31,10 @@ command! -bang -nargs=* Tags
 
 nnoremap \ :Ag!<space>
 nnoremap K :Ag! <C-R><C-W><CR>
+
+function! s:fzf_statusline()
+    set laststatus=0
+    autocmd BufWinLeave <buffer> set laststatus=2
+endfunction
+
+autocmd! User FzfStatusLine call <SID>fzf_statusline()
