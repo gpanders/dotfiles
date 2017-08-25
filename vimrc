@@ -140,8 +140,12 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
 
+" File-type specific configuration
+" C / C++
+autocmd FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s
+
 " Enable per-project configuration
 set exrc
 set secure
 
-" vim: foldmethod=marker
+" vim: fm=marker
