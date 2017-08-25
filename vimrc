@@ -25,6 +25,7 @@ Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 " Language specific plugins
 " C++
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
+Plug 'Shougo/neoinclude.vim', { 'for': ['c', 'cpp'] }
 
 " Java
 Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
