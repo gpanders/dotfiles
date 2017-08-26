@@ -18,5 +18,10 @@ inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
 "" Sources
 
 "" clang
-let g:deoplete#sources#clang#libclang_path = '/usr/local/lib/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/usr/local/include/clang'
+if has("mac")
+    let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
+    let g:deoplete#sources#clang#clang_header = '/usr/local/opt/llvm/include/clang'
+else
+    let g:deoplete#sources#clang#libclang_path = '/usr/local/lib/libclang.so'
+    let g:deoplete#sources#clang#clang_header = '/usr/local/include/clang'
+endif
