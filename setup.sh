@@ -67,6 +67,23 @@ else
     echo "Git not found; not cloning prezto"
 fi
 
+if [ ! -d "$HOME/.pyenv" ]; then
+    install_pyenv=0
+    read -r -p "Install pyenv? [y/N] " ans
+    if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+        install_pyenv=1
+    fi
+
+    if [ $install_pyenv -eq 1 ]; then
+        if [[ "$OSTYPE" == darwin* ]]; then
+            brew install pyenv pyenv-virtualenv
+        elif [[ "$OSTYPE" == linux-gnu ]]; then
+            git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
+            git clone https://github.com/pyenv/pyenv-virtualenv.git $HOME/.pyenv/plugins/pyenv-virtualenv
+        fi
+    fi
+fi
+
 install_solarized_dircolors=0
 read -r -p "Install solarized dircolors? [y/N] " ans
 if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
@@ -79,4 +96,4 @@ if [ $install_solarized_dircolors -eq 1 ]; then
 fi
 
 echo " "
-echo "Setup complete. You can now delete this directory"
+echo "Setup complete."
