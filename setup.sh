@@ -47,6 +47,7 @@ fi
 if hash git 2>/dev/null; then
     if [ ! -d "${ZDOTDIR:-$HOME}/.zprezto" ]; then
         git clone --quiet --recursive https://github.com/gpanders/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+        cd "${ZDOTDIR:-$HOME}"/.zprezto && git submodule update --init --recursive && cd -
     else
        echo ".zprezto dir already exists, not cloning git repo"
     fi
