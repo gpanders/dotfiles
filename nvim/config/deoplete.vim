@@ -14,6 +14,9 @@ inoremap <silent><expr> <TAB>
             \ <SID>check_back_space() ? "\<TAB>" :
             \ deoplete#mappings#manual_complete() 
 
+inoremap <silent><expr> <S-TAB>
+            \ pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
 inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
 
