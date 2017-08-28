@@ -7,20 +7,20 @@ Plug 'tpope/vim-capslock'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 Plug 'dhruvasagar/vim-prosession'
 Plug 'altercation/vim-colors-solarized'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-utils/vim-husk'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'qpkorr/vim-bufkill'
 Plug 'easymotion/vim-easymotion'
 Plug 'kshenoy/vim-signature'
 Plug 'itchyny/lightline.vim'
 Plug 'taohex/lightline-buffer'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
-Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+Plug 'Shougo/neco-syntax'
 
 " Language specific plugins
 " C++
@@ -32,6 +32,9 @@ Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 
 " Python
 Plug 'davidhalter/jedi', { 'for': 'python' }
+
+" Vimscript
+Plug 'Shougo/neco-vim', { 'for': 'vim' }
 
 if has('nvim')
     " Neovim specific plugins
@@ -144,8 +147,9 @@ endif
 " C / C++
 autocmd FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s
 
+" CMake
+autocmd FileType cmake setlocal cms=#%s
+
 " Enable per-project configuration
 set exrc
 set secure
-
-" vim: fm=marker
