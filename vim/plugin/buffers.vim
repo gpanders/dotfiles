@@ -10,14 +10,7 @@ nmap <silent> <leader>8 :b8<CR>
 nmap <silent> <leader>9 :b9<CR>
 nmap <silent> <leader>0 :b10<CR>
 
-" The all-caps versions of these commands come from the vim-bufkill plugin
-nmap <silent> <leader>bun :BUN<CR>
-nmap <silent> <leader>bd :BD<CR>
-nmap <silent> <leader>bw :BW<CR>
-
 map <C-W> :bd<CR>
 
 map <silent> <M-[> :bprev<CR>
 map <silent> <M-]> :bnext<CR>
-imap <silent> <M-[> <Esc>:bprev<CR>
-imap <silent> <M-]> <Esc>:bnext<CR>
