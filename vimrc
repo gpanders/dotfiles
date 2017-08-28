@@ -75,8 +75,9 @@ set hidden
 nmap <silent> <leader>w :w<CR>
 
 " Some good default options
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 set number
 set ignorecase          " Make searching case insensitive
@@ -149,6 +150,9 @@ autocmd FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s
 
 " CMake
 autocmd FileType cmake setlocal cms=#%s
+
+" Python
+autocmd FileType python setlocal sw=4 ts=4 sts=4
 
 " Enable per-project configuration
 set exrc
