@@ -10,7 +10,7 @@ nmap <silent> <leader>8 :b8<CR>
 nmap <silent> <leader>9 :b9<CR>
 nmap <silent> <leader>0 :b10<CR>
 
-map <C-W> :bd<CR>
+map <C-W>c :bd<CR>
 
 map <silent> <M-[> :bprev<CR>
 map <silent> <M-]> :bnext<CR>
