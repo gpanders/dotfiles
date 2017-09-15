@@ -38,6 +38,9 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'itchyny/lightline.vim'
 Plug 'taohex/lightline-buffer'
 
+" Fix vim fold updating for better performance
+Plug 'Konfekt/FastFold'
+
 " Maintain ideal buffer size for active buffer
 Plug 'roman/golden-ratio'
 
