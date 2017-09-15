@@ -1,1 +1,3 @@
-let g:neocomplete#enable_at_startup = 1
+if has_key(plugs, 'neocomplete')
+  let g:neocomplete#enable_at_startup = 1
+endif
