@@ -190,10 +190,10 @@ nnoremap g; g;zz
 aug cursorline
   let blacklist = ['tex']
   au!
-  au BufEnter * if index(blacklist, &ft) < 0 | set cursorline
-  au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline
-  au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline
-  au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline
+  au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
+  au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
+  au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
+  au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
 aug END
 
 " Clear search buffer by pressing <leader><space>
