@@ -147,6 +147,9 @@ set noswapfile
 " Make default fold marker have a space
 set foldmarker=\ {{{,\ }}}
 
+" Show completion menu even when only one match
+set completeopt=menuone,preview
+
 " Delete forward in insert mode
 inoremap <C-L> <Del>
 
