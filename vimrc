@@ -176,12 +176,6 @@ nnoremap <leader>r :call NumberToggle()<CR>
 nnoremap j gj
 nnoremap k gk
 
-" Use sane regexes
-nnoremap / /\v
-vnoremap / /\v
-nnoremap ? ?\v
-vnoremap ? ?\v
-
 " Keep search matches in the middle of the window
 nnoremap * *zzzv
 nnoremap # #zzzv
