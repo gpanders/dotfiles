@@ -1,7 +1,7 @@
-if has_key(plugs, 'deoplete.nvim')
+if exists('plugs') && has_key(plugs, 'deoplete.nvim')
   " Enable deoplete
   let g:deoplete#enable_at_startup = 1
-  let g:deoplete#auto_complete_delay = 0
+  let g:deoplete#auto_complete_delay = 20
 
   autocmd InsertLeave,CompleteDone * silent! pclose!
 

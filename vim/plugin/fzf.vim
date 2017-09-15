@@ -1,4 +1,4 @@
-if has_key(plugs, 'fzf.vim')
+if exists('plugs') && has_key(plugs, 'fzf.vim')
   let g:fzf_tags_command = 'ctags -R'
 
   map <silent> <C-P> :Files<CR>
