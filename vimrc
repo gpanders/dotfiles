@@ -144,6 +144,9 @@ set noswapfile
 " Make default fold marker have a space
 set foldmarker=\ {{{,\ }}}
 
+" Delete forward in insert mode
+inoremap <C-L> <Del>
+
 " Search for visual selection with g/
 vnoremap g/ y/\V<C-R>"<CR>
 
