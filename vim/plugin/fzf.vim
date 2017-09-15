@@ -15,27 +15,23 @@ map <silent> <C-B> :Buffers<CR>
 "   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
 "   :Ag! - Start fzf in fullscreen and display the preview window above
 command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>,
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
+      \ call fzf#vim#ag(<q-args>,
+      \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+      \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \                 <bang>0)
 
-"command! -bang -nargs=* Tags
-"  \ call fzf#vim#tags(<q-args>,
-"  \                   <bang>0 ? fzf#vim#with_preview('up:60%')
-"  \                           : fzf#vim#with_preview('right:50%:hidden', '?'),
-"  \                   <bang>0)
 command! -bang -nargs=* Tags
-  \ call fzf#vim#tags(<q-args>, {
-  \   'options': '-1'
-  \ })
+      \ call fzf#vim#tags(<q-args>,
+      \                   <bang>0 ? fzf#vim#with_preview('up:60%')
+      \                           : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \                   <bang>0)
 
-nnoremap \ :Ag!<space>
-nnoremap K :Ag! <C-R><C-W><CR>
+nnoremap \\ :Ag<space>
+nnoremap K :Ag <C-R><C-W><CR>
 
 function! s:fzf_statusline()
-    set laststatus=0
-    autocmd BufWinLeave <buffer> set laststatus=2
+  set laststatus=0
+  autocmd BufWinLeave <buffer> set laststatus=2
 endfunction
 
 autocmd! User FzfStatusLine call <SID>fzf_statusline()
