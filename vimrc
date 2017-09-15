@@ -70,17 +70,17 @@ Plug 'Shougo/neco-vim', { 'for': 'vim' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 
 if has('nvim')
-    " Neovim specific plugins
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'tweekmonster/deoplete-clang2', { 'for': ['c', 'cpp'] }
-    Plug 'zchee/deoplete-jedi', { 'for': 'python' }
-    Plug 'neomake/neomake'
+  " Neovim specific plugins
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'tweekmonster/deoplete-clang2', { 'for': ['c', 'cpp'] }
+  Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+  Plug 'neomake/neomake'
 else
-    " Vim specific plugins
-    Plug 'tpope/vim-sensible'
-    Plug 'Shougo/neocomplete.vim'
-    Plug 'Rip-Rip/clang_complete', { 'for': ['c', 'cpp'] }
-    Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+  " Vim specific plugins
+  Plug 'tpope/vim-sensible'
+  Plug 'Shougo/neocomplete.vim'
+  Plug 'Rip-Rip/clang_complete', { 'for': ['c', 'cpp'] }
+  Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 endif
 
 " Initialize plugin system
@@ -191,12 +191,13 @@ nnoremap g; g;zz
 
 " Highlight the current line in the current window but disable in Insert mode
 aug cursorline
-    au!
-    au BufEnter * set cursorline
-    au BufLeave * set nocursorline
-    au InsertEnter * set nocursorline
-    au InsertLeave * set cursorline
-aug end
+  let blacklist = ['tex']
+  au!
+  au BufEnter * if index(blacklist, &ft) < 0 | set cursorline
+  au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline
+  au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline
+  au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline
+aug END
 
 " Clear search buffer by pressing <leader><space>
 nmap <silent> <leader><space> :nohlsearch<CR>
@@ -224,19 +225,20 @@ endif
 
 " File-type specific configuration
 " C / C++
-autocmd FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s
+au FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s
 
 " CMake
-autocmd FileType cmake setlocal cms=#%s
+au FileType cmake setlocal cms=#%s
 
 " Python
-autocmd FileType python setlocal sw=4 ts=4 sts=4
+au FileType python setlocal sw=4 ts=4 sts=4
 
 " LaTeX
-autocmd FileType tex setlocal fdm=marker
+au FileType tex setlocal nocursorline norelativenumber
+au FileType tex :NoMatchParen
 
 " Vim
-autocmd FileType vim setlocal fdm=marker
+au FileType vim setlocal fdm=marker
 
 " Enable per-project configuration
 set exrc
