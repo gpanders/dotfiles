@@ -5,6 +5,10 @@ if has('mac')
   let g:vimtex_view_method = 'skim'
 endif
 
+let g:vimtex_fold_enabled = 1
+
+set fillchars=vert:\|,fold:\\
+
 let g:vimtex_labels_refresh_always = 0
 let g:vimtex_toc_refresh_always = 0
 
