@@ -1,4 +1,4 @@
-if has_key(plugs, 'lightline.vim')
+if exists('plugs') && has_key(plugs, 'lightline.vim')
   let g:lightline = {}
   let g:lightline.colorscheme = 'solarized'
   let g:lightline.active = {}

@@ -1,4 +1,4 @@
-if has_key(plugs, 'neomake')
+if exists('plugs') && has_key(plugs, 'neomake')
   if has('mac')
     let g:neomake_c_clangtidy_maker = neomake#makers#ft#c#clangtidy()
     let g:neomake_c_clangtidy_maker.exe = '/usr/local/opt/llvm/bin/clang-tidy'

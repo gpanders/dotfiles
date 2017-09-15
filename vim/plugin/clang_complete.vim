@@ -1,4 +1,4 @@
-if has_key(plugs, 'clang_complete')
+if exists('plugs') && has_key(plugs, 'clang_complete')
   " clang_complete config
   let g:clang_complete_auto = 0
   let g:clang_auto_select = 0

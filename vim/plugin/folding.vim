@@ -2,5 +2,4 @@
 nmap <space> za
 
 " Code folding options
-" set foldmethod=syntax
 set nofoldenable

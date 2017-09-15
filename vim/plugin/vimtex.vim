@@ -1,4 +1,4 @@
-if has_key(plugs, 'vimtex')
+if exists('plugs') && has_key(plugs, 'vimtex')
   let g:vimtex_compiler_progname = 'nvr'
   let g:vimtex_matchparen_enabled = 0
 
