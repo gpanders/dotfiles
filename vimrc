@@ -31,12 +31,9 @@ Plug 'easymotion/vim-easymotion'
 " Show marks in gutter
 Plug 'kshenoy/vim-signature'
 
-" Automatically update tags file
-Plug 'ludovicchabant/vim-gutentags'
-
 " Lightline (more lightweight version of vim-airline)
 Plug 'itchyny/lightline.vim'
-Plug 'taohex/lightline-buffer'
+Plug 'taohexxx/lightline-buffer'
 
 " Fix vim fold updating for better performance
 Plug 'Konfekt/FastFold'
@@ -48,9 +45,8 @@ Plug 'roman/golden-ratio'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
-" Snippets
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+" Asynchronous maker/linter
+Plug 'neomake/neomake'
 
 " Language specific plugins
 " C++
@@ -66,38 +62,20 @@ Plug 'davidhalter/jedi', { 'for': 'python' }
 " Vimscript
 Plug 'Shougo/neco-vim', { 'for': 'vim' }
 
-" LaTeX
-Plug 'lervag/vimtex', { 'for': 'tex' }
-
 if has('nvim')
   " Neovim specific plugins
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'tweekmonster/deoplete-clang2', { 'for': ['c', 'cpp'] }
+  Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
   Plug 'zchee/deoplete-jedi', { 'for': 'python' }
-  Plug 'neomake/neomake'
 else
   " Vim specific plugins
   Plug 'tpope/vim-sensible'
-  Plug 'Shougo/neocomplete.vim'
-  Plug 'Rip-Rip/clang_complete', { 'for': ['c', 'cpp'] }
-  Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+  Plug 'justmao945/vim-clang', { 'for': ['c', 'cpp'] }
 endif
 
 " Initialize plugin system
 call plug#end()
 " }}}
-
-if has('nvim')
-  " Neovim specific configuration
-
-  " Source nvim configs
-  runtime! config/**/*.vim
-
-  " Open search results in split window
-  set inccommand=split
-else
-  " Vim specific configuration
-endif
 
 " Set the leader key
 let mapleader = ','
@@ -105,6 +83,7 @@ let maplocalleader = '\'
 
 " Set color scheme
 set background=light
+let g:solarized_termtrans=1
 colorscheme solarized
 
 " Save by pressing <leader>w
@@ -133,7 +112,7 @@ set colorcolumn=80      " Show column at 80 characters
 " }}}
 
 " Don't press Shift to enter command mode
-map ; :
+" map ; :
 
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
@@ -197,20 +176,13 @@ aug cursorline
 aug END
 
 " Clear search buffer by pressing <leader><space>
-nmap <silent> <leader><space> :nohlsearch<CR>
+nmap <silent> <C-N> :nohlsearch<CR>
 
 " Simplify resizing splits
-if has('nvim')
-  nnoremap <silent> <M-j> :resize +1<CR>
-  nnoremap <silent> <M-k> :resize -1<CR>
-  nnoremap <silent> <M-h> :vertical resize -1<CR>
-  nnoremap <silent> <M-l> :vertical resize +1<CR>
-else
-  nnoremap <silent> ^[j :resize +1<CR>
-  nnoremap <silent> ^[k :resize -1<CR>
-  nnoremap <silent> ^[h :vertical resize -1<CR>
-  nnoremap <silent> ^[l :vertical resize +1<CR>
-endif
+nnoremap <silent> ^[j :resize +1<CR>
+nnoremap <silent> ^[k :resize -1<CR>
+nnoremap <silent> ^[h :vertical resize -1<CR>
+nnoremap <silent> ^[l :vertical resize +1<CR>
 
 
 " Uncomment the following to have Vim jump to the last position when
