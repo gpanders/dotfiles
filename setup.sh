@@ -75,6 +75,11 @@ if hash zsh 2>/dev/null; then
   fi
 fi
 
+read -r -p "Use .bash_aliases file? [y/N] " ans
+if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+  cp $curr_dir/bash_aliases $HOME/.bash_aliases
+fi
+
 if [ ! -d "$HOME/.pyenv" ]; then
   install_pyenv=0
   read -r -p "Install pyenv? [y/N] " ans
