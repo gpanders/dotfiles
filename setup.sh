@@ -33,7 +33,7 @@ if hash nvim 2>/dev/null; then
     ln -f $pfile $curr_dir/nvim/config/${pfile##*/}
   done
 
-  ln -vfs $HOME/.vimrc $HOME/.config/nvim/init.vim
+  # ln -vfs $HOME/.vimrc $HOME/.config/nvim/init.vim
 
   mkdir -p $HOME/.local/share/nvim/site/autoload
   cp -n $HOME/.vim/autoload/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim
@@ -92,10 +92,26 @@ if [ ! -d "$HOME/.pyenv" ]; then
   fi
 fi
 
+read -r -p "Install custom fzf config? [y/N] " ans
+if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+  cp $curr_dir/fzf.bash $HOME/.fzf.bash
+fi
+
 read -r -p "Install solarized dircolors? [y/N] " ans
 if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
   curl -fsLo $HOME/.dir_colors \
     https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-universal
+fi
+
+if hash xmodmap 2>/dev/null; then
+  read -r -p "Use .xmodmap file to set Caps Lock to Control? [y/N] " ans
+  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+    if [ -f "$HOME/.xmodmap" ]; then
+      cat $curr_dir/xmodmap >> $HOME/.xmodmap
+    else
+      cp $curr_dir/xmodmap $HOME/.xmodmap
+    fi
+  fi
 fi
 
 echo " "

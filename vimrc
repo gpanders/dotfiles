@@ -1,6 +1,6 @@
 " Plugins {{{
 " Specify a directory for plugins
-call plug#begin(has('nvim') ? '~/.config/nvim/plugins' : '~/.vim/bundle')
+call plug#begin('~/.vim/plug')
 
 Plug 'tpope/vim-unimpaired'     " A bunch of useful keybindings
 Plug 'tpope/vim-capslock'       " Software caps lock
@@ -113,6 +113,9 @@ set colorcolumn=80      " Show column at 80 characters
 
 " Don't press Shift to enter command mode
 " map ; :
+
+" jj in Insert mode escapes to Normal mode
+imap jj <Esc>
 
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
