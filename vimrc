@@ -14,7 +14,8 @@ Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
 
 " Solarized color scheme
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
 
 " Show git status icons in gutter
 Plug 'airblade/vim-gitgutter'
@@ -33,7 +34,8 @@ Plug 'kshenoy/vim-signature'
 
 " Lightline (more lightweight version of vim-airline)
 Plug 'itchyny/lightline.vim'
-Plug 'taohexxx/lightline-buffer'
+" Plug 'taohexxx/lightline-buffer'
+Plug 'mgee/lightline-bufferline'
 
 " Fix vim fold updating for better performance
 Plug 'Konfekt/FastFold'
@@ -48,7 +50,7 @@ Plug 'junegunn/fzf.vim'
 " Asynchronous maker/linter
 Plug 'neomake/neomake'
 
-" Language specific plugins
+" Language specific plugins {{{
 " C++
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 Plug 'Shougo/neoinclude.vim', { 'for': ['c', 'cpp'] }
@@ -61,6 +63,7 @@ Plug 'davidhalter/jedi', { 'for': 'python' }
 
 " Vimscript
 Plug 'Shougo/neco-vim', { 'for': 'vim' }
+" }}}
 
 if has('nvim')
   " Neovim specific plugins
@@ -75,6 +78,9 @@ endif
 
 " Initialize plugin system
 call plug#end()
+
+" Source plugin configuration files
+runtime! config/*.vim
 " }}}
 
 " Set the leader key
@@ -82,9 +88,12 @@ let mapleader = ','
 let maplocalleader = '\'
 
 " Set color scheme
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set termguicolors
 set background=light
-let g:solarized_termtrans=1
-colorscheme solarized
+" let g:solarized_termtrans=1
+colorscheme solarized8
 
 " Save by pressing <leader>w
 nmap <silent> <leader>w :w<CR>
@@ -141,7 +150,35 @@ vnoremap g/ y/\V<C-R>"<CR>
 " Use :tjump by default
 nnoremap <C-]> g<C-]>
 
-" Relative numbering
+" Use \\ in Normal mode to use grepprg
+nnoremap \\ :grep <space>
+
+" Use ag as grepprg if available
+if executable('ag')
+    " Use ag over grep
+    set grepprg=ag\ --vimgrep
+    set grepformat=%f:%l:%c:%m
+endif
+
+" Buffer shortcuts {{{
+nmap <silent> <leader>1 :b1<CR>
+nmap <silent> <leader>2 :b2<CR>
+nmap <silent> <leader>3 :b3<CR>
+nmap <silent> <leader>4 :b4<CR>
+nmap <silent> <leader>5 :b5<CR>
+nmap <silent> <leader>6 :b6<CR>
+nmap <silent> <leader>7 :b7<CR>
+nmap <silent> <leader>8 :b8<CR>
+nmap <silent> <leader>9 :b9<CR>
+nmap <silent> <leader>0 :b10<CR>
+
+map <C-W>c :bd<CR>
+
+map <silent> <M-[> :bprev<CR>
+map <silent> <M-]> :bnext<CR>
+" }}}
+
+" Relative numbering {{{
 function! NumberToggle()
   if (&relativenumber == 1)
     set nornu
@@ -150,43 +187,48 @@ function! NumberToggle()
     set rnu
   endif
 endfunc
+" }}}
 
 " Toggle between normal and relative numbering
 nnoremap <leader>r :call NumberToggle()<CR>
 
-" Navigate through wrapped lines individually
-nnoremap j gj
-nnoremap k gk
+" Navigate through wrapped lines individually {{{
+nnoremap <silent> j gj
+nnoremap <silent> k gk
+" }}}
 
-" Keep search matches in the middle of the window
+" Keep search matches in the middle of the window {{{
 nnoremap * *zzzv
 nnoremap # #zzzv
 nnoremap n nzzzv
 nnoremap N Nzzzv
+" }}}
 
-" Keep jumps in the middle of the window
+" Keep jumps in the middle of the window {{{
 nnoremap g, g,zz
 nnoremap g; g;zz
+" }}}
 
-" Highlight the current line in the current window but disable in Insert mode
-aug cursorline
-  let blacklist = ['tex']
-  au!
-  au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
-  au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
-  au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
-  au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
-aug END
+" Highlight the current line in the current window but disable in Insert mode {{{
+" aug cursorline
+"   let blacklist = ['tex']
+"   au!
+"   au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
+"   au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
+"   au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
+"   au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
+" aug END
+" }}}
 
-" Clear search buffer by pressing <leader><space>
+" Clear search buffer with <C-N>
 nmap <silent> <C-N> :nohlsearch<CR>
 
-" Simplify resizing splits
+" Simplify resizing splits {{{
 nnoremap <silent> ^[j :resize +1<CR>
 nnoremap <silent> ^[k :resize -1<CR>
 nnoremap <silent> ^[h :vertical resize -1<CR>
 nnoremap <silent> ^[l :vertical resize +1<CR>
-
+" }}}
 
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file
@@ -195,7 +237,7 @@ if has('autocmd')
         \ | exe "normal! g`\"" | endif
 endif
 
-" File-type specific configuration
+" File-type specific configuration {{{
 " C / C++
 au FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s
 
@@ -211,7 +253,10 @@ au FileType tex :NoMatchParen
 
 " Vim
 au FileType vim setlocal fdm=marker
+" }}}
 
-" Enable per-project configuration
+" Enable per-project configuration {{{
 set exrc
 set secure
+" }}}
+

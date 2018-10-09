@@ -6,8 +6,8 @@ curr_dir=$(pwd)
 
 mkdir -p $HOME/.vim
 cp -vR $curr_dir/vim/* $HOME/.vim/
-for pfile in $HOME/.vim/plugin/*.vim; do
-  ln -f $pfile $curr_dir/vim/plugin/${pfile##*/}
+for pfile in $HOME/.vim/config/*.vim; do
+  ln -f $pfile $curr_dir/vim/config/${pfile##*/}
 done
 
 if [ -f $HOME/.vimrc ]; then
@@ -25,6 +25,9 @@ ln $HOME/.tmux.conf $curr_dir/tmux.conf
 mkdir -p $HOME/.config/nvim
 cp $curr_dir/nvim/init.vim $HOME/.config/nvim/init.vim
 ln -f $HOME/.config/nvim/init.vim $curr_dir/nvim/init.vim
+
+# Upgrade vim-plug and install vim plugins
+vim -c PlugUpgrade -c PlugInstall -c q
 
 if hash zsh 2>/dev/null; then
   install_prezto=0
