@@ -22,25 +22,9 @@ fi
 mv -v $curr_dir/tmux.conf $HOME/.tmux.conf
 ln $HOME/.tmux.conf $curr_dir/tmux.conf
 
-curl -fsLo $HOME/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-if hash nvim 2>/dev/null; then
-  echo "Found neovim installation, adding neovim specific configs"
-  mkdir -p $HOME/.config/nvim
-  cp -vR $curr_dir/nvim/* $HOME/.config/nvim/
-  for pfile in $HOME/.config/nvim/config/*.vim; do
-    ln -f $pfile $curr_dir/nvim/config/${pfile##*/}
-  done
-
-  # ln -vfs $HOME/.vimrc $HOME/.config/nvim/init.vim
-
-  mkdir -p $HOME/.local/share/nvim/site/autoload
-  cp -n $HOME/.vim/autoload/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim
-  if [ ! -s $HOME/.local/share/nvim/site/plugin ]; then
-    ln -vs $HOME/.vim/plugin $HOME/.local/share/nvim/site/plugin
-  fi
-fi
+mkdir -p $HOME/.config/nvim
+cp $curr_dir/nvim/init.vim $HOME/.config/nvim/init.vim
+ln -f $HOME/.config/nvim/init.vim $curr_dir/nvim/init.vim
 
 if hash zsh 2>/dev/null; then
   install_prezto=0
