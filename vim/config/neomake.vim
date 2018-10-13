@@ -1,6 +1,6 @@
 if exists('plugs') && has_key(plugs, 'neomake')
   function! s:is_battery()
-    return readfile('/sys/class/power_supply/ac/online') == ['0']
+    return exists('/sys/class/power_supply/ac/online') && readfile('/sys/class/power_supply/ac/online') == ['0']
   endfunction
 
   if s:is_battery()
