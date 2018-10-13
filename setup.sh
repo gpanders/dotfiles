@@ -4,34 +4,39 @@ shopt -s extglob
 
 curr_dir=$(pwd)
 
-if [ -d $HOME/.vim ]; then
+if [ -s $HOME/.vim ]; then
   mv $HOME/.vim $HOME/.vim.bak
 fi
 ln -s $curr_dir/vim $HOME/.vim
 
-if [ -d $HOME/.tmux ]; then
+if [ -s $HOME/.tmux ]; then
   mv $HOME/.tmux $HOME/.tmux.bak
 fi
 ln -s $curr_dir/tmux $HOME/.tmux
 
-if [ -f $HOME/.vimrc ]; then
+if [ -s $HOME/.vimrc ]; then
   mv $HOME/.vimrc $HOME/.vimrc.bak
 fi
 ln -s $curr_dir/vimrc $HOME/.vimrc
 
-if [ -f $HOME/.tmux.conf ]; then
+if [ -s $HOME/.tmux.conf ]; then
   mv $HOME/.tmux.conf $HOME/.tmux.conf.bak
 fi
 ln -s $curr_dir/tmux.conf $HOME/.tmux.conf
 
 mkdir -p $HOME/.config/nvim
-if [ -f $HOME/.config/nvim/init.vim ]; then
+if [ -s $HOME/.config/nvim/init.vim ]; then
   mv $HOME/.config/nvim/init.vim $HOME/.config/nvim/init.vim.bak
 fi
 ln -s $curr_dir/nvim/init.vim $HOME/.config/nvim/init.vim
 
 # Upgrade vim-plug and install vim plugins
-vim -c PlugUpgrade -c PlugInstall -c q
+vim -c PlugUpgrade -c PlugInstall -c q -c q
+
+if hash tmux 2>/dev/null; then
+  # Install tmux plugins in a background session
+  tmux new-session -s install_plugins -d "tmux run-shell $HOME/.tmux/plugins/tpm/bindings/install_plugins"
+fi
 
 if hash zsh 2>/dev/null; then
   install_prezto=0
