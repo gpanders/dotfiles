@@ -78,9 +78,6 @@ endif
 
 " Initialize plugin system
 call plug#end()
-
-" Source plugin configuration files
-runtime! config/*.vim
 " }}}
 
 " Set the leader key
@@ -97,6 +94,9 @@ colorscheme solarized8
 
 " Save by pressing <leader>w
 nmap <silent> <leader>w :w<CR>
+
+" Sudo save
+cmap W w !sudo tee > /dev/null %
 
 " Some good default options {{{
 set tabstop=2
@@ -210,18 +210,18 @@ nnoremap g; g;zz
 " }}}
 
 " Highlight the current line in the current window but disable in Insert mode {{{
-" aug cursorline
-"   let blacklist = ['tex']
-"   au!
-"   au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
-"   au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
-"   au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
-"   au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
-" aug END
+aug cursorline
+  let blacklist = ['tex']
+  au!
+  au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
+  au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
+  au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
+  au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
+aug END
 " }}}
 
 " Clear search buffer with <C-N>
-nmap <silent> <C-N> :nohlsearch<CR>
+nnoremap <silent> <C-N> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
 " Simplify resizing splits {{{
 nnoremap <silent> ^[j :resize +1<CR>
@@ -260,3 +260,5 @@ set exrc
 set secure
 " }}}
 
+" Source plugin configuration files
+runtime! config/*.vim
