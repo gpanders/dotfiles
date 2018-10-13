@@ -4,27 +4,31 @@ shopt -s extglob
 
 curr_dir=$(pwd)
 
-mkdir -p $HOME/.vim
-cp -vR $curr_dir/vim/* $HOME/.vim/
-for pfile in $HOME/.vim/config/*.vim; do
-  ln -f $pfile $curr_dir/vim/config/${pfile##*/}
-done
+if [ -d $HOME/.vim ]; then
+  mv $HOME/.vim $HOME/.vim.bak
+fi
+ln -s $curr_dir/vim $HOME/.vim
+
+if [ -d $HOME/.tmux ]; then
+  mv $HOME/.tmux $HOME/.tmux.bak
+fi
+ln -s $curr_dir/tmux $HOME/.tmux
 
 if [ -f $HOME/.vimrc ]; then
   mv $HOME/.vimrc $HOME/.vimrc.bak
 fi
-mv -v $curr_dir/vimrc $HOME/.vimrc
-ln $HOME/.vimrc $curr_dir/vimrc
+ln -s $curr_dir/vimrc $HOME/.vimrc
 
 if [ -f $HOME/.tmux.conf ]; then
   mv $HOME/.tmux.conf $HOME/.tmux.conf.bak
 fi
-mv -v $curr_dir/tmux.conf $HOME/.tmux.conf
-ln $HOME/.tmux.conf $curr_dir/tmux.conf
+ln -s $curr_dir/tmux.conf $HOME/.tmux.conf
 
 mkdir -p $HOME/.config/nvim
-cp $curr_dir/nvim/init.vim $HOME/.config/nvim/init.vim
-ln -f $HOME/.config/nvim/init.vim $curr_dir/nvim/init.vim
+if [ -f $HOME/.config/nvim/init.vim ]; then
+  mv $HOME/.config/nvim/init.vim $HOME/.config/nvim/init.vim.bak
+fi
+ln -s $curr_dir/nvim/init.vim $HOME/.config/nvim/init.vim
 
 # Upgrade vim-plug and install vim plugins
 vim -c PlugUpgrade -c PlugInstall -c q
