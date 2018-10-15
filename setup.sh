@@ -31,7 +31,10 @@ fi
 ln -s $curr_dir/nvim/init.vim $HOME/.config/nvim/init.vim
 
 # Upgrade vim-plug and install vim plugins
-vim -c PlugUpgrade -c PlugInstall -c q -c q
+vim -u $curr_dir/vim/plugins.vim -c PlugUpgrade -c PlugInstall -c q -c q
+
+# Initialize git submodules
+git submodule update --init
 
 if hash tmux 2>/dev/null; then
   # Install tmux plugins in a background session
