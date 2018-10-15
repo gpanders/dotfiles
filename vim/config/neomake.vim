@@ -1,13 +1,7 @@
 if exists('plugs') && has_key(plugs, 'neomake')
-  function! s:is_battery()
-    return exists('/sys/class/power_supply/ac/online') && readfile('/sys/class/power_supply/ac/online') == ['0']
-  endfunction
 
-  if s:is_battery()
-    call neomake#configure#automake('w')
-  else
-    call neomake#configure#automake('nw', 1000)
-  endif
+  " Call neomake when writing a buffer
+  call neomake#configure#automake('w')
 
 
   if has('mac')
