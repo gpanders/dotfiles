@@ -74,7 +74,7 @@ nnoremap - ,
 nnoremap <C-]> g<C-]>
 
 " Use \\ in Normal mode to use grepprg
-nnoremap \\ :grep<space>
+nnoremap \\ :grep!<space>
 
 " Buffer shortcuts {{{
 nnoremap <silent> <leader>1 :b1<CR>
@@ -89,7 +89,7 @@ nnoremap <silent> <leader>9 :b9<CR>
 nnoremap <silent> <leader>0 :b10<CR>
 
 " List buffers and put :b on the command line
-noremap <leader>b :ls<CR>:b
+noremap <leader>ls :ls<CR>:b
 
 noremap <C-W>c :bd<CR>
 
@@ -97,26 +97,28 @@ noremap <silent> <M-[> :bprev<CR>
 noremap <silent> <M-]> :bnext<CR>
 " }}}
 
-" List keywords matching the word under the cursor
-noremap <leader>i :ilist <C-R><C-W><CR>:ij  <C-R><C-W><S-Left><Left>
+" Augment [I and ]I to place an :ij prompt below results for easy jumping
+noremap [I [I:ij  <C-R><C-W><S-Left><Left>
+noremap ]I ]I:ij  <C-R><C-W><S-Left><Left>
 
-" List macros matching the word under the cursor
-noremap <leader>d :dlist <C-R><C-W><CR>:dj  <C-R><C-W><S-Left><Left>
+" Augment [D and ]D to place an :dj prompt below results for easy jumping
+noremap [D [D:dj  <C-R><C-W><S-Left><Left>
+noremap ]D ]D:dj  <C-R><C-W><S-Left><Left>
 
 " Open jumplist
-noremap <leader>j :set nomore<CR>:jumps<CR>:se more\|norm! <C-O><S-Left>
+map <leader>ju :jumps<CR>
 
-" Open quickfix list
-noremap <leader>c :clist<CR>:cc<space>
+" Open quickfix list and place :cc on the prompt
+noremap <leader>cl :clist<CR>:cc<space>
 
-" Open location list
-noremap <leader>l :llist<CR>:ll<space>
+" Open location list and place :ll on the prompt
+noremap <leader>ll :llist<CR>:ll<space>
 
 " Open undo list
-noremap <leader>u :undol<CR>:u<space>
+map <leader>u :undol<CR>
 
 " Show marks
-noremap <leader>m :marks<CR>:norm! `
+map <leader>m :marks<CR>
 
 " <leader>ev opens .vimrc in new window
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
@@ -148,10 +150,10 @@ nnoremap <space> za
 nnoremap <silent> <C-N> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
 " Simplify resizing splits
-nnoremap <silent> ^[j :resize +1<CR>
-nnoremap <silent> ^[k :resize -1<CR>
-nnoremap <silent> ^[h :vertical resize -1<CR>
-nnoremap <silent> ^[l :vertical resize +1<CR>
+" nnoremap <silent> ^[j :resize +1<CR>
+" nnoremap <silent> ^[k :resize -1<CR>
+" nnoremap <silent> ^[h :vertical resize -1<CR>
+" nnoremap <silent> ^[l :vertical resize +1<CR>
 " }}}
 
 " Search for visual selection with g/
@@ -228,8 +230,7 @@ function! <sid>CCR()
         " like :marks but prompts for a mark to jump to
         return "\<CR>:norm! `"
     elseif cmdline =~# '\v^\s*undol%[ist]'
-        " like :undolist b100  1689  100  1689    0     0   3371      0 --:--:-- --:--:-- --:--:--  3371
-ut prompts for a change to undo
+        " like :undolist but prompts for a change to undo
         return "\<CR>:u "
     else
         return "\<c-]>\<CR>"
