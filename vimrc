@@ -74,7 +74,9 @@ nnoremap - ,
 nnoremap <C-]> g<C-]>
 
 " Use \\ in Normal mode to use grepprg
-nnoremap \\ :grep!<space>
+" Define a custom command to wrap :grep with :silent, :cwindow, and :redraw
+command! -nargs=+ -complete=file -bar -bang Grep silent! grep<bang> <args>|cwindow|redraw!
+nnoremap \\ :Grep!<space>
 
 " Buffer shortcuts {{{
 nnoremap <silent> <leader>1 :b1<CR>
