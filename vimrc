@@ -88,11 +88,35 @@ nnoremap <silent> <leader>8 :b8<CR>
 nnoremap <silent> <leader>9 :b9<CR>
 nnoremap <silent> <leader>0 :b10<CR>
 
+" List buffers and put :b on the command line
+noremap <leader>b :ls<CR>:b
+
 noremap <C-W>c :bd<CR>
 
 noremap <silent> <M-[> :bprev<CR>
 noremap <silent> <M-]> :bnext<CR>
 " }}}
+
+" List keywords matching the word under the cursor
+noremap <leader>i :ilist <C-R><C-W><CR>:ij  <C-R><C-W><S-Left><Left>
+
+" List macros matching the word under the cursor
+noremap <leader>d :dlist <C-R><C-W><CR>:dj  <C-R><C-W><S-Left><Left>
+
+" Open jumplist
+noremap <leader>j :set nomore<CR>:jumps<CR>:se more\|norm! <C-O><S-Left>
+
+" Open quickfix list
+noremap <leader>c :clist<CR>:cc<space>
+
+" Open location list
+noremap <leader>l :llist<CR>:ll<space>
+
+" Open undo list
+noremap <leader>u :undol<CR>:u<space>
+
+" Show marks
+noremap <leader>m :marks<CR>:norm! `
 
 " <leader>ev opens .vimrc in new window
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
@@ -168,6 +192,51 @@ if has('autocmd')
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
         \ | exe "normal! g`\"" | endif
 endif
+
+" Pushing built-in commands beyond their limits {{{
+" https://gist.github.com/Konfekt/d8ce5626a48f4e56ecab31a89449f1f0
+function! <sid>CCR()
+    if getcmdtype() isnot# ':'
+      return "\<CR>"
+    endif
+    let cmdline = getcmdline()
+    if cmdline =~# '\v^\s*(ls|files|buffers)!?\s*(\s[+\-=auhx%#]+)?$'
+        " like :ls but prompts for a buffer command
+        return "\<CR>:b"
+    elseif cmdline =~# '\v/(#|nu%[mber])$'
+        " like :g//# but prompts for a command
+        return "\<CR>:"
+    elseif cmdline =~# '\v^\s*(dli%[st]|il%[ist])!?\s+\S'
+        " like :dlist or :ilist but prompts for a count for :djump or :ijump
+        return "\<CR>:" . cmdline[0] . "j  " . split(cmdline, " ")[1] . "\<S-Left>\<Left>"
+    elseif cmdline =~# '\v^\s*(cli|lli)%[st]!?\s*(\s\d+(,\s*\d+)?)?$'
+        " like :clist or :llist but prompts for an error/location number
+        return "\<CR>:sil " . repeat(cmdline[0], 2) . "\<Space>"
+    elseif cmdline =~# '\v^\s*ol%[dfiles]\s*$'
+        " like :oldfiles but prompts for an old file to edit
+        set nomore
+        return "\<CR>:sil se more|e #<"
+    elseif cmdline =~# '^\s*changes\s*$'
+        " like :changes but prompts for a change to jump to
+        set nomore
+        return "\<CR>:sil se more|norm! g;\<S-Left>"
+    elseif cmdline =~# '\v^\s*ju%[mps]'
+        " like :jumps but prompts for a position to jump to
+        set nomore
+        return "\<CR>:sil se more|norm! \<C-o>\<S-Left>"
+    elseif cmdline =~ '\v^\s*marks\s*(\s\w+)?$'
+        " like :marks but prompts for a mark to jump to
+        return "\<CR>:norm! `"
+    elseif cmdline =~# '\v^\s*undol%[ist]'
+        " like :undolist b100  1689  100  1689    0     0   3371      0 --:--:-- --:--:-- --:--:--  3371
+ut prompts for a change to undo
+        return "\<CR>:u "
+    else
+        return "\<c-]>\<CR>"
+    endif
+endfunction
+cnoremap <expr> <CR> <sid>CCR()
+" }}}
 
 " File-type specific configuration {{{
 " C / C++
