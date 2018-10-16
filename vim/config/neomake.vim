@@ -1,7 +1,7 @@
 if exists('plugs') && has_key(plugs, 'neomake')
 
   " Call neomake when writing a buffer
-  call neomake#configure#automake('w')
+  call neomake#configure#automake('rw')
 
 
   if has('mac')
@@ -16,10 +16,10 @@ if exists('plugs') && has_key(plugs, 'neomake')
 
   " Disable clang as a maker because you cannot specify a compilation database,
   " so it always complains about things it shouldn't
-  let g:neomake_cpp_enabled_makers = neomake#makers#ft#cpp#EnabledMakers()
-  let idx = index(g:neomake_cpp_enabled_makers, 'clang')
-  if idx >= 0
-    call remove(g:neomake_cpp_enabled_makers, idx)
-  endif
+  " let g:neomake_cpp_enabled_makers = neomake#makers#ft#cpp#EnabledMakers()
+  " let idx = index(g:neomake_cpp_enabled_makers, 'clang')
+  " if idx >= 0
+  "   call remove(g:neomake_cpp_enabled_makers, idx)
+  " endif
 
 endif

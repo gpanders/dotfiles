@@ -18,6 +18,9 @@ Plug 'dhruvasagar/vim-prosession'
 " Plug 'altercation/vim-colors-solarized'
 Plug 'lifepillar/vim-solarized8'
 
+" Use pairs of characters as a motion command
+Plug 'justinmk/vim-sneak'
+
 " Show git status icons in gutter
 Plug 'airblade/vim-gitgutter'
 
@@ -46,7 +49,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
 " Asynchronous maker/linter
-" Plug 'neomake/neomake'
+Plug 'neomake/neomake'
 
 " Language specific plugins {{{
 " C++
@@ -77,3 +80,4 @@ endif
 call plug#end()
 " }}}
 
+" vim: nofoldenable
