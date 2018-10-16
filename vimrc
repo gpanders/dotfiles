@@ -49,8 +49,8 @@ set foldmarker=\ {{{,\ }}} " Make default fold marker have a space
 
 " Insert mode mappings {{{
 
-" jj in Insert mode escapes to Normal mode
-inoremap jj <Esc>
+" jk in Insert mode escapes to Normal mode
+inoremap jk <Esc>
 
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
@@ -111,10 +111,10 @@ noremap ]D ]D:dj  <C-R><C-W><S-Left><Left>
 map <leader>ju :jumps<CR>
 
 " Open quickfix list and place :cc on the prompt
-noremap <leader>cl :clist<CR>:cc<space>
+noremap <leader>cl :clist<CR>:sil cc<space>
 
 " Open location list and place :ll on the prompt
-noremap <leader>ll :llist<CR>:ll<space>
+noremap <leader>ll :llist<CR>:sil ll<space>
 
 " Open undo list
 map <leader>u :undol<CR>
@@ -249,7 +249,7 @@ au FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s cin
 au FileType cmake setlocal cms=#%s
 
 " Python
-au FileType python setlocal sw=4 ts=4 sts=4
+au FileType python setlocal sw=4 ts=4 sts=4 kp=pydoc
 
 " LaTeX
 au FileType tex setlocal nocursorline norelativenumber
