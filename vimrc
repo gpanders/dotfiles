@@ -242,21 +242,24 @@ cnoremap <expr> <CR> <sid>CCR()
 " }}}
 
 " File-type specific configuration {{{
-" C / C++
-au FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s cin
+augroup vimrcft
+  autocmd!
+  " C / C++
+  au FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s cin
 
-" CMake
-au FileType cmake setlocal cms=#%s
+  " CMake
+  au FileType cmake setlocal cms=#%s
 
-" Python
-au FileType python setlocal sw=4 ts=4 sts=4 kp=pydoc
+  " Python
+  au FileType python setlocal sw=4 ts=4 sts=4 kp=pydoc
 
-" LaTeX
-au FileType tex setlocal nocursorline norelativenumber
-au FileType tex :NoMatchParen
+  " LaTeX
+  au FileType tex setlocal nocursorline norelativenumber
+  au FileType tex :NoMatchParen
 
-" Vim
-au FileType vim setlocal fdm=marker
+  " Vim
+  au FileType vim setlocal fdm=marker
+augroup END
 " }}}
 
 " Enable per-project configuration {{{
