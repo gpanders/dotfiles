@@ -47,6 +47,26 @@ set foldmarker=\ {{{,\ }}} " Make default fold marker have a space
 " Don't press Shift to enter command mode
 " map ; :
 
+" Set the statusline
+set laststatus=2
+set statusline=
+set statusline+=%1*\ %f\ %M%r\ 
+set statusline+=%2*\ %n\ 
+set statusline+=%4*%=
+set statusline+=\ %y\ 
+set statusline+=%2*\ %p%%\ 
+set statusline+=%1*\ %l:%c\ 
+
+" Set User1-9 highlight groups for statusline
+" These are used by adding %N* to the statusline, where {N} is 1-9
+if &background ==# 'light'
+  " Solarized definitions
+  hi User1 ctermfg=230 ctermbg=241 guifg=#fdf6e3 guibg=#657b83
+  hi User2 ctermfg=230 ctermbg=245 guifg=#fdf6e3 guibg=#93a1a1
+  hi User3 ctermfg=241 ctermbg=230 guifg=#657b83 guibg=#fdf6e3
+  hi User4 ctermfg=241 ctermbg=254 guifg=#657b83 guibg=#eee8d5
+endif
+
 " Insert mode mappings {{{
 
 " jk in Insert mode escapes to Normal mode

@@ -37,9 +37,9 @@ Plug 'vim-utils/vim-husk'
 " Plug 'kshenoy/vim-signature'
 
 " Lightline (more lightweight version of vim-airline)
-Plug 'itchyny/lightline.vim'
+" Plug 'itchyny/lightline.vim'
 " Plug 'taohexxx/lightline-buffer'
-Plug 'mgee/lightline-bufferline'
+" Plug 'mgee/lightline-bufferline'
 
 " Fix vim fold updating for better performance
 " Plug 'Konfekt/FastFold'
