@@ -6,6 +6,8 @@ if exists('plugs') && has_key(plugs, 'fzf.vim')
   " map <silent> <C-Y> :BTags<CR>
   " map <silent> <C-B> :Buffers<CR>
 
+  nnoremap \\ :Ag<space>
+
   function! s:fzf_statusline()
     set laststatus=0
     autocmd BufWinLeave <buffer> set laststatus=2
