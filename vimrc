@@ -15,7 +15,7 @@ colorscheme solarized8
 " }}}
 
 " Sudo save
-cnoremap w!! w !sudo tee > /dev/null %
+cnoreabbrev w!! w !sudo tee > /dev/null %
 
 " Settings {{{
 set tabstop=2              " Tab width
