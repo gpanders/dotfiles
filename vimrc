@@ -97,6 +97,9 @@ noremap <silent> <M-]> :bnext<CR>
 " <leader>ev opens .vimrc in new window
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 
+" <leader>sv sources .vimrc
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
 " Toggle between normal and relative numbering
 nnoremap <leader>r :call NumberToggle()<CR>
 
