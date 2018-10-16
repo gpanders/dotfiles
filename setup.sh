@@ -34,7 +34,7 @@ ln -s $curr_dir/nvim/init.vim $HOME/.config/nvim/init.vim
 vim -u $curr_dir/vim/plugins.vim -c PlugUpgrade -c PlugInstall -c q -c q
 
 # Initialize git submodules
-git submodule update --init
+git submodule update --init --remote
 
 if hash tmux 2>/dev/null; then
   # Install tmux plugins in a background session
