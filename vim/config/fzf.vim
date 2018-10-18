@@ -7,6 +7,7 @@ if exists('plugs') && has_key(plugs, 'fzf.vim')
   " map <silent> <C-B> :Buffers<CR>
 
   nnoremap \\ :Ag<space>
+  nnoremap <leader>b :Buffers<CR>
 
   function! s:fzf_statusline()
     set laststatus=0

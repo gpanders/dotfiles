@@ -52,7 +52,9 @@ set laststatus=2
 set statusline=
 set statusline+=%1*\ %f\ %M%r\ 
 set statusline+=%2*\ %n\ 
-set statusline+=%4*%=
+set statusline+=%4*
+set statusline+=\ %{CapsLockStatusline()}\ 
+set statusline+=%=
 set statusline+=\ %y\ 
 set statusline+=%2*\ %p%%\ 
 set statusline+=%1*\ %l:%c\ 
@@ -111,7 +113,7 @@ nnoremap <silent> <leader>9 :b9<CR>
 nnoremap <silent> <leader>0 :b10<CR>
 
 " List buffers and put :b on the command line
-noremap <leader>ls :ls<CR>:b
+noremap <leader>b :buffers<CR>:b
 
 noremap <C-W>c :bd<CR>
 
