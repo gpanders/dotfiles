@@ -9,7 +9,11 @@ let maplocalleader = '\'
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set termguicolors
-set background=light
+if $TERM_BG_COLOR == 'light'
+  set background=light
+else
+  set background=dark
+endif
 " let g:solarized_termtrans=1
 colorscheme solarized8
 " }}}
@@ -61,12 +65,17 @@ set statusline+=%1*\ %l:%c\
 
 " Set User1-9 highlight groups for statusline
 " These are used by adding %N* to the statusline, where {N} is 1-9
+" Solarized definitions
 if &background ==# 'light'
-  " Solarized definitions
   hi User1 ctermfg=230 ctermbg=241 guifg=#fdf6e3 guibg=#657b83
   hi User2 ctermfg=230 ctermbg=245 guifg=#fdf6e3 guibg=#93a1a1
   hi User3 ctermfg=241 ctermbg=230 guifg=#657b83 guibg=#fdf6e3
   hi User4 ctermfg=241 ctermbg=254 guifg=#657b83 guibg=#eee8d5
+else
+  hi User1 ctermfg=234 ctermbg=244 guifg=#002b36 guibg=#839496
+  hi User2 ctermfg=234 ctermbg=240 guifg=#002b36 guibg=#586e75
+  hi User3 ctermfg=244 ctermbg=234 guifg=#839496 guibg=#002b36
+  hi User4 ctermfg=244 ctermbg=235 guifg=#839496 guibg=#073642
 endif
 
 " Insert mode mappings {{{
