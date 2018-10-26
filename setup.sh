@@ -41,24 +41,12 @@ if hash tmux 2>/dev/null; then
   tmux new-session -s install_plugins -d "tmux run-shell $HOME/.tmux/plugins/tpm/bindings/install_plugins"
 fi
 
-# Set rc file based on current shell
-case "$SHELL" in
-  "zsh")
-    rcfile="$HOME/.zshrc"
-    ;;
-  "bash")
-    rcfile="$HOME/.bashrc"
-    ;;
-  *)
-    ;;
-esac
-
 # Configure git
-if ! git config --global --get user.name ; then
+if ! git config --global --get user.name 1>/dev/null ; then
   git config --global user.name "Greg Anders"
 fi
 
-if ! git config --global --get user.email ; then
+if ! git config --global --get user.email 1>/dev/null ; then
   read -r -p "Git email address: " git_email
   if [ ! -z $git_email ]; then
     git config --global user.email "$git_email"
@@ -109,7 +97,9 @@ if [ ! -d "$HOME/.pyenv" ]; then
   read -r -p "Install pyenv? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
     ln -s $curr_dir/pyenvrc $HOME/.pyenvrc
-    echo -e "#configure pyenv\n[ -f ~/.pyenvrc ] && source ~/.pyenvrc\n" >> $rcfile
+    if [ -f $HOME/.bashrc ]; then
+      echo -e "\n#configure pyenv\n[ -f ~/.pyenvrc ] && source ~/.pyenvrc\n" >> $HOME/.bashrc
+    fi
     if [[ "$OSTYPE" == darwin* ]]; then
       brew install pyenv pyenv-virtualenv
     elif [[ "$OSTYPE" == linux-gnu ]]; then
@@ -123,8 +113,9 @@ if [[ "$SHELL" =~ "bash" ]]; then
   read -r -p "Install custom fzf config? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
     ln -s $curr_dir/fzf.bash $HOME/.fzf.bash
-    echo -e "#setup fzf\n[ -f ~/.fzf.bash ] && source ~/.fzf.bash\n" >> $HOME/.bashrc
+    echo -e "\n#setup fzf\n[ -f ~/.fzf.bash ] && source ~/.fzf.bash\n" >> $HOME/.bashrc
   fi
+fi
 
 echo "Install solarized dircolors?"
 echo "    1) light"
