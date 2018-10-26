@@ -30,6 +30,18 @@ if [ -s $HOME/.config/nvim/init.vim ]; then
 fi
 ln -s $curr_dir/nvim/init.vim $HOME/.config/nvim/init.vim
 
+if [[ "$SHELL" =~ "bash" ]]; then
+  if [ -s $HOME/.fzf.bash ]; then
+    mv $HOME/.fzf.bash $HOME/.fzf.bash.bak
+  fi
+  ln -s $curr_dir/fzf.bash $HOME/.fzf.bash
+
+  if [ -s $HOME/.bashrc ]; then
+    mv $HOME/.bashrc $HOME/.bashrc.bak
+  fi
+  ln -s $curr_dir/bashrc $HOME/.bashrc
+fi
+
 # Upgrade vim-plug and install vim plugins
 vim -u $curr_dir/vim/plugins.vim -c PlugUpgrade -c PlugInstall -c q -c q
 
@@ -97,23 +109,12 @@ if [ ! -d "$HOME/.pyenv" ]; then
   read -r -p "Install pyenv? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
     ln -s $curr_dir/pyenvrc $HOME/.pyenvrc
-    if [ -f $HOME/.bashrc ]; then
-      echo -e "\n#configure pyenv\n[ -f ~/.pyenvrc ] && source ~/.pyenvrc\n" >> $HOME/.bashrc
-    fi
     if [[ "$OSTYPE" == darwin* ]]; then
       brew install pyenv pyenv-virtualenv
     elif [[ "$OSTYPE" == linux-gnu ]]; then
       git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
       git clone https://github.com/pyenv/pyenv-virtualenv.git $HOME/.pyenv/plugins/pyenv-virtualenv
     fi
-  fi
-fi
-
-if [[ "$SHELL" =~ "bash" ]]; then
-  read -r -p "Install custom fzf config? [y/N] " ans
-  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-    ln -s $curr_dir/fzf.bash $HOME/.fzf.bash
-    echo -e "\n#setup fzf\n[ -f ~/.fzf.bash ] && source ~/.fzf.bash\n" >> $HOME/.bashrc
   fi
 fi
 
@@ -143,6 +144,10 @@ if hash xmodmap 2>/dev/null; then
       cp $curr_dir/xmodmap $HOME/.xmodmap
     fi
   fi
+fi
+
+if [[ "$SHELL" =~ "bash" && -f $HOME/.bashrc ]]; then
+  source $HOME/.bashrc
 fi
 
 echo " "

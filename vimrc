@@ -6,16 +6,20 @@ let mapleader = ','
 let maplocalleader = '\'
 
 " Set color scheme {{{
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-set termguicolors
-if $TERM_BG_COLOR == 'light'
+if $TERMBG == 'light'
   set background=light
 else
   set background=dark
 endif
-" let g:solarized_termtrans=1
-colorscheme solarized8
+
+if has('termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+  colorscheme solarized8
+else
+  colorscheme solarized
+endif
 " }}}
 
 " Sudo save
