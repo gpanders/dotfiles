@@ -41,6 +41,7 @@ if hash tmux 2>/dev/null; then
   tmux new-session -s install_plugins -d "tmux run-shell $HOME/.tmux/plugins/tpm/bindings/install_plugins"
 fi
 
+# Set rc file based on current shell
 case "$SHELL" in
   "zsh")
     rcfile="$HOME/.zshrc"
@@ -51,6 +52,18 @@ case "$SHELL" in
   *)
     ;;
 esac
+
+# Configure git
+if ! git config --global --get user.name ; then
+  git config --global user.name "Greg Anders"
+fi
+
+if ! git config --global --get user.email ; then
+  read -r -p "Git email address: " git_email
+  if [ ! -z $git_email ]; then
+    git config --global user.email "$git_email"
+  fi
+fi
 
 if hash zsh 2>/dev/null; then
   install_prezto=0
