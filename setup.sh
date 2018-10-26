@@ -96,7 +96,7 @@ if [ ! -d "$HOME/.pyenv" ]; then
   read -r -p "Install pyenv? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
     ln -s $curr_dir/pyenvrc $HOME/.pyenvrc
-    echo "[ -f ~/.pyenvrc ] && source ~/.pyenvrc" >> $rcfile
+    echo -e "#configure pyenv\n[ -f ~/.pyenvrc ] && source ~/.pyenvrc\n" >> $rcfile
     if [[ "$OSTYPE" == darwin* ]]; then
       brew install pyenv pyenv-virtualenv
     elif [[ "$OSTYPE" == linux-gnu ]]; then
@@ -110,7 +110,7 @@ if [[ "$SHELL" =~ "bash" ]]; then
   read -r -p "Install custom fzf config? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
     ln -s $curr_dir/fzf.bash $HOME/.fzf.bash
-    echo "[ -f ~/.fzf.bash ] && source ~/.fzf.bash" >> $HOME/.bashrc
+    echo -e "#setup fzf\n[ -f ~/.fzf.bash ] && source ~/.fzf.bash\n" >> $HOME/.bashrc
   fi
 
 echo "Install solarized dircolors?"
