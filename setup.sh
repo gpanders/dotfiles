@@ -41,6 +41,17 @@ if hash tmux 2>/dev/null; then
   tmux new-session -s install_plugins -d "tmux run-shell $HOME/.tmux/plugins/tpm/bindings/install_plugins"
 fi
 
+case "$SHELL" in
+  "zsh")
+    rcfile="$HOME/.zshrc"
+    ;;
+  "bash")
+    rcfile="$HOME/.bashrc"
+    ;;
+  *)
+    ;;
+esac
+
 if hash zsh 2>/dev/null; then
   install_prezto=0
   read -r -p "Install prezto? [y/N] " ans
@@ -56,9 +67,9 @@ if hash zsh 2>/dev/null; then
       else
         echo ".zprezto dir already exists, not cloning git repo"
       fi
-      for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/!(README.md); do
-        if [ ! -s "${ZDOTDIR:-$HOME}/.${rcfile##*/}" ]; then
-            ln -vs "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile##*/}"
+      for zfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/!(README.md); do
+        if [ ! -s "${ZDOTDIR:-$HOME}/.${zfile##*/}" ]; then
+            ln -vs "$zfile" "${ZDOTDIR:-$HOME}/.${zfile##*/}"
         fi
       done
     else
@@ -74,19 +85,18 @@ if hash zsh 2>/dev/null; then
   fi
 fi
 
-read -r -p "Use .bash_aliases file? [y/N] " ans
-if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-  cp $curr_dir/bash_aliases $HOME/.bash_aliases
+if [[ "$SHELL" =~ "bash" ]]; then
+  read -r -p "Use .bash_aliases file? [y/N] " ans
+  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+    cp $curr_dir/bash_aliases $HOME/.bash_aliases
+  fi
 fi
 
 if [ ! -d "$HOME/.pyenv" ]; then
-  install_pyenv=0
   read -r -p "Install pyenv? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-    install_pyenv=1
-  fi
-
-  if [ $install_pyenv -eq 1 ]; then
+    ln -s $curr_dir/pyenvrc $HOME/.pyenvrc
+    echo "[ -f ~/.pyenvrc ] && source ~/.pyenvrc" >> $rcfile
     if [[ "$OSTYPE" == darwin* ]]; then
       brew install pyenv pyenv-virtualenv
     elif [[ "$OSTYPE" == linux-gnu ]]; then
@@ -96,15 +106,28 @@ if [ ! -d "$HOME/.pyenv" ]; then
   fi
 fi
 
-read -r -p "Install custom fzf config? [y/N] " ans
-if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-  cp $curr_dir/fzf.bash $HOME/.fzf.bash
-fi
+if [[ "$SHELL" =~ "bash" ]]; then
+  read -r -p "Install custom fzf config? [y/N] " ans
+  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+    ln -s $curr_dir/fzf.bash $HOME/.fzf.bash
+    echo "[ -f ~/.fzf.bash ] && source ~/.fzf.bash" >> $HOME/.bashrc
+  fi
 
-read -r -p "Install solarized dircolors? [y/N] " ans
-if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+echo "Install solarized dircolors?"
+echo "    1) light"
+echo "    2) dark"
+echo "    3) universal"
+read -r -p "Selection (default: none): " ans
+solarized_dircolors=
+case $ans in
+  1) solarized_dircolors="light" ;;
+  2) solarized_dircolors="dark" ;;
+  3) solarized_dircolors="universal" ;;
+esac
+if [ ! -z "$solarized_dircolors" ]; then
+  echo "Installing $solarized_dircolors dircolors to $HOME/.dir_colors"
   curl -fsLo $HOME/.dir_colors \
-    https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-universal
+    https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-$solarized_dircolors
 fi
 
 if hash xmodmap 2>/dev/null; then
