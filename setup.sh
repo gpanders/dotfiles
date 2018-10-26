@@ -146,9 +146,5 @@ if hash xmodmap 2>/dev/null; then
   fi
 fi
 
-if [[ "$SHELL" =~ "bash" && -f $HOME/.bashrc ]]; then
-  source $HOME/.bashrc
-fi
-
 echo " "
 echo "Setup complete."
