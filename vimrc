@@ -43,6 +43,7 @@ set matchpairs+=<:>        " Add angle brackets as match pairs
 set colorcolumn=80         " Show column at 80 characters
 set noswapfile             " Disable swap file
 set foldmarker=\ {{{,\ }}} " Make default fold marker have a space
+set modeline               " Enable vim modelines
 
 " Show completion menu even when only one match
 " set completeopt=menuone,preview
