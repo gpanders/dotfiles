@@ -59,25 +59,12 @@ Plug 'neomake/neomake'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 Plug 'Shougo/neoinclude.vim', { 'for': ['c', 'cpp'] }
 
-" Java
-Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
-
 " Python
 Plug 'davidhalter/jedi', { 'for': 'python' }
 
 " Vimscript
 Plug 'Shougo/neco-vim', { 'for': 'vim' }
 " }}}
-
-if has('nvim')
-  " Neovim specific plugins
-  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  " Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
-  " Plug 'zchee/deoplete-jedi', { 'for': 'python' }
-else
-  " Vim specific plugins
-  " Plug 'justmao945/vim-clang', { 'for': ['c', 'cpp'] }
-endif
 
 " Initialize plugin system
 call plug#end()
