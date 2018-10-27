@@ -215,24 +215,6 @@ function! NumberToggle()
 endfunc
 " }}}
 
-" Highlight the current line in the current window but disable in Insert mode {{{
-aug cursorline
-  let blacklist = ['tex']
-  au!
-  au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
-  au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
-  au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
-  au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
-aug END
-" }}}
-
-" Uncomment the following to have Vim jump to the last position when
-" reopening a file
-if has('autocmd')
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
-        \ | exe "normal! g`\"" | endif
-endif
-
 " Pushing built-in commands beyond their limits {{{
 " https://gist.github.com/Konfekt/d8ce5626a48f4e56ecab31a89449f1f0
 function! <sid>CCR()
@@ -277,9 +259,22 @@ endfunction
 cnoremap <expr> <CR> <sid>CCR()
 " }}}
 
-" File-type specific configuration {{{
-augroup vimrcft
+" Autocommands {{{
+augroup vimrc
   autocmd!
+  " Have Vim jump to the last position when reopening a file
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
+        \ | exe "normal! g`\"" | endif
+
+  " Highlight the current line in the current window but disable in Insert mode {{{
+  let blacklist = ['tex']
+  au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
+  au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
+  au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
+  au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
+  " }}}
+
+  " File-type specific configuration {{{
   " C / C++
   au FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s cin
 
@@ -295,6 +290,11 @@ augroup vimrcft
 
   " Vim
   au FileType vim setlocal fdm=marker
+
+  " crontab
+  au FileType crontab setlocal nobackup nowritebackup
+  " }}}
+
 augroup END
 " }}}
 
