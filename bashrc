@@ -89,7 +89,7 @@ fi
 
 # Set environment variables
 export TERMBG="light"
-export EDITOR="nvim"
+export EDITOR="vim"
 export PAGER="less"
 
 export LESS="-g -M -R -W -X -z-4"

@@ -16,10 +16,10 @@ if has('termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
-  colorscheme solarized8
 else
-  colorscheme solarized
+  let g:solarized_use16 = 1
 endif
+colorscheme solarized8
 " }}}
 
 " Sudo save
@@ -56,6 +56,7 @@ set modeline               " Enable vim modelines
 " Don't press Shift to enter command mode
 " map ; :
 
+" Statusline {{{
 " Set the statusline
 set laststatus=2
 set statusline=
@@ -72,16 +73,17 @@ set statusline+=%1*\ %l:%c\
 " These are used by adding %N* to the statusline, where {N} is 1-9
 " Solarized definitions
 if &background ==# 'light'
-  hi User1 ctermfg=230 ctermbg=241 guifg=#fdf6e3 guibg=#657b83
-  hi User2 ctermfg=230 ctermbg=245 guifg=#fdf6e3 guibg=#93a1a1
-  hi User3 ctermfg=241 ctermbg=230 guifg=#657b83 guibg=#fdf6e3
-  hi User4 ctermfg=241 ctermbg=254 guifg=#657b83 guibg=#eee8d5
+  hi User1 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
+  hi User2 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
+  hi User3 ctermfg=11 ctermbg=15 guifg=#657b83 guibg=#fdf6e3
+  hi User4 ctermfg=11 ctermbg=7 guifg=#657b83 guibg=#eee8d5
 else
-  hi User1 ctermfg=234 ctermbg=244 guifg=#002b36 guibg=#839496
-  hi User2 ctermfg=234 ctermbg=240 guifg=#002b36 guibg=#586e75
-  hi User3 ctermfg=244 ctermbg=234 guifg=#839496 guibg=#002b36
-  hi User4 ctermfg=244 ctermbg=235 guifg=#839496 guibg=#073642
+  hi User1 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
+  hi User2 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
+  hi User3 ctermfg=12 ctermbg=8 guifg=#839496 guibg=#002b36
+  hi User4 ctermfg=12 ctermbg=0 guifg=#839496 guibg=#073642
 endif
+" }}}
 
 " Insert mode mappings {{{
 
