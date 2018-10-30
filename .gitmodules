@@ -2,3 +2,7 @@
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
 	branch = master
+[submodule "zprezto"]
+	path = zprezto
+	url = https://github.com/gpanders/prezto.git
+	branch = master
