@@ -56,6 +56,16 @@ if [[ "$SHELL" =~ "bash" ]]; then
   ln -sv $curr_dir/bashrc $HOME/.bashrc
 fi
 
+# Use .Xmodmap to set Caps Lock to Control
+if hash xmodmap 2>/dev/null; then
+  if [ -h "$HOME/.Xmodmap" ]; then
+    rm $HOME/.Xmodmap
+  elif [ -f "$HOME/.Xmodmap" ]; then
+    mv $HOME/.Xmodmap $HOME/.Xmodmap.bak
+  fi
+  ln -s $curr_dir/Xmodmap $HOME/.Xmodmap
+fi
+
 # Upgrade vim-plug and install vim plugins
 if [ ! -d $curr_dir/vim/plug ]; then
   vim -u $curr_dir/vim/plugins.vim -c PlugUpgrade -c PlugInstall -c qall!
@@ -79,42 +89,52 @@ if ! git config --global --get user.email 1>/dev/null ; then
   fi
 fi
 
-if hash zsh 2>/dev/null; then
-  read -r -p "Install prezto? [y/N] " ans
+# Pull suckless terminal and apply patches
+git submodule update --init st
+ln -sf $curr_dir/config.h $curr_dir/st/config.h
+if ! hash st 2>/dev/null; then
+  read -r -p "Install st? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-    if [ -h $HOME/.zprezto ]; then
-      rm $HOME/.zprezto
-    elif [ -d $HOME/.zprezto ]; then
-      mv $HOME/.zprezto $HOME/.zprezto.bak
-    fi
+    (cd st && curl -s https://st.suckless.org/patches/solarized/st-no_bold_colors-20170623-b331da5.diff | git apply && sudo make clean install)
+  fi
+fi
 
-    git submodule update --init --recursive zprezto
-    ln -s $curr_dir/zprezto $HOME/.zprezto
-
-    for zfile in $curr_dir/zprezto/runcoms/!(README.md|zshenv); do
-      if [ -h "$HOME/.${zfile##*/}" ]; then
-        rm "$HOME/.${zfile##*/}"
-      elif [ -f "$HOME/.${zfile##*/}" ]; then
-        mv "$HOME/.${zfile##*/}" "$HOME/.${zfile##*/}.bak"
-      fi
-      ln -vs "$zfile" "$HOME/.${zfile##*/}"
-    done
-
-    # Use an untracked copy of zshenv to store sensitive node-specific config
-    if [ -h $HOME/.zshenv ]; then
-      rm $HOME/.zshenv
-    elif [ -f $HOME/.zshenv ]; then
-      mv $HOME/.zshenv $HOME/.zshenv.bak
-    fi
-    cp $curr_dir/zprezto/runcoms/zshenv $HOME/.zshenv
-
-    # Install 3rd party (contrib) modules
-    mkdir -p $curr_dir/zprezto/contrib
-    if [ ! -d $curr_dir/zprezto/contrib/fzf ]; then
-      git clone --quiet --recursive https://github.com/gpanders/fzf-prezto.git $curr_dir/zprezto/contrib/fzf
-    fi
+read -r -p "Install prezto? [y/N] " ans
+if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+  if [ -h $HOME/.zprezto ]; then
+    rm $HOME/.zprezto
+  elif [ -d $HOME/.zprezto ]; then
+    mv $HOME/.zprezto $HOME/.zprezto.bak
   fi
 
+  git submodule update --init --recursive zprezto
+  ln -s $curr_dir/zprezto $HOME/.zprezto
+
+  for zfile in $curr_dir/zprezto/runcoms/!(README.md|zshenv); do
+    if [ -h "$HOME/.${zfile##*/}" ]; then
+      rm "$HOME/.${zfile##*/}"
+    elif [ -f "$HOME/.${zfile##*/}" ]; then
+      mv "$HOME/.${zfile##*/}" "$HOME/.${zfile##*/}.bak"
+    fi
+    ln -vs "$zfile" "$HOME/.${zfile##*/}"
+  done
+
+  # Use an untracked copy of zshenv to store sensitive node-specific config
+  if [ -h $HOME/.zshenv ]; then
+    rm $HOME/.zshenv
+  elif [ -f $HOME/.zshenv ]; then
+    mv $HOME/.zshenv $HOME/.zshenv.bak
+  fi
+  cp $curr_dir/zprezto/runcoms/zshenv $HOME/.zshenv
+
+  # Install 3rd party (contrib) modules
+  mkdir -p $curr_dir/zprezto/contrib
+  if [ ! -d $curr_dir/zprezto/contrib/fzf ]; then
+    git clone --quiet --recursive https://github.com/gpanders/fzf-prezto.git $curr_dir/zprezto/contrib/fzf
+  fi
+fi
+
+if hash zsh 2>/dev/null; then
   read -r -p "Change default shell to zsh? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
     if ! [[ "$SHELL" =~ "zsh" ]]; then
@@ -143,6 +163,17 @@ if [ ! -d "$HOME/.pyenv" ]; then
   fi
 fi
 
+# Setup conky and i3
+mkdir -p $HOME/.config/i3
+if [ -h $HOME/.conkyrc ]; then
+  rm $HOME/.conkyrc
+elif [ -f $HOME/.conkyrc ]; then
+  mv $HOME/.conkyrc $HOME/.conkyrc.bak
+fi
+ln -s $curr_dir/conkyrc $HOME/.conkyrc
+ln -sf $curr_dir/i3/config $HOME/.config/i3/config
+ln -sf $curr_dir/i3/conky-i3bar $HOME/.config/i3/conky-i3bar
+
 echo "Install solarized dircolors?"
 echo "    1) light"
 echo "    2) dark"
@@ -158,17 +189,6 @@ if [ ! -z "$solarized_dircolors" ]; then
   echo "Installing $solarized_dircolors dircolors to $HOME/.dir_colors"
   curl -fsLo $HOME/.dir_colors \
     https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-$solarized_dircolors
-fi
-
-if hash xmodmap 2>/dev/null; then
-  read -r -p "Use .xmodmap file to set Caps Lock to Control? [y/N] " ans
-  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-    if [ -f "$HOME/.xmodmap" ]; then
-      cat $curr_dir/xmodmap >> $HOME/.xmodmap
-    else
-      cp $curr_dir/xmodmap $HOME/.xmodmap
-    fi
-  fi
 fi
 
 echo " "
