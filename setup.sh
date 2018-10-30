@@ -82,16 +82,36 @@ fi
 if hash zsh 2>/dev/null; then
   read -r -p "Install prezto? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-    if [ ! -s $HOME/.zprezto ]; then
-      git submodule update --init --recursive zprezto
-      ln -s $curr_dir/zprezto $HOME/.zprezto 
-      for zfile in $curr_dir/zprezto/runcoms/!(README.md); do
-        if [ ! -s "$HOME/.${zfile##*/}" ]; then
-            ln -vs "$zfile" "$HOME/.${zfile##*/}"
-        fi
-      done
-    else
-      echo ".zprezto dir already exists"
+    if [ -h $HOME/.zprezto ]; then
+      rm $HOME/.zprezto
+    elif [ -d $HOME/.zprezto ]; then
+      mv $HOME/.zprezto $HOME/.zprezto.bak
+    fi
+
+    git submodule update --init --recursive zprezto
+    ln -s $curr_dir/zprezto $HOME/.zprezto
+
+    for zfile in $curr_dir/zprezto/runcoms/!(README.md|zshenv); do
+      if [ -h "$HOME/.${zfile##*/}" ]; then
+        rm "$HOME/.${zfile##*/}"
+      elif [ -f "$HOME/.${zfile##*/}" ]; then
+        mv "$HOME/.${zfile##*/}" "$HOME/.${zfile##*/}.bak"
+      fi
+      ln -vs "$zfile" "$HOME/.${zfile##*/}"
+    done
+
+    # Use an untracked copy of zshenv to store sensitive node-specific config
+    if [ -h $HOME/.zshenv ]; then
+      rm $HOME/.zshenv
+    elif [ -f $HOME/.zshenv ]; then
+      mv $HOME/.zshenv $HOME/.zshenv.bak
+    fi
+    cp $curr_dir/zprezto/runcoms/zshenv $HOME/.zshenv
+
+    # Install 3rd party (contrib) modules
+    mkdir -p $curr_dir/zprezto/contrib
+    if [ ! -d $curr_dir/zprezto/contrib/fzf ]; then
+      git clone --quiet --recursive https://github.com/gpanders/fzf-prezto.git $curr_dir/zprezto/contrib/fzf
     fi
   fi
 
