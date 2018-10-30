@@ -15,11 +15,7 @@ Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
 
 " Solarized color scheme
-if has('termguicolors')
-  Plug 'lifepillar/vim-solarized8'
-else
-  Plug 'altercation/vim-colors-solarized'
-endif
+Plug 'lifepillar/vim-solarized8'
 
 " Use pairs of characters as a motion command
 Plug 'justinmk/vim-sneak'
