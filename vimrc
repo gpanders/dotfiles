@@ -6,9 +6,10 @@ let mapleader = ','
 let maplocalleader = '\'
 
 " Set color scheme {{{
+" Set background if $TERMBG is set, otherwise let vim decide
 if $TERMBG == 'light'
   set background=light
-else
+elseif $TERMBG == 'dark'
   set background=dark
 endif
 
