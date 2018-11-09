@@ -106,9 +106,6 @@ inoremap <C-L> <Del>
 " Save by pressing <leader>w
 nnoremap <silent> <leader>w :w<CR>
 
-" Map - to default behavior of , (which is now the mapleader)
-nnoremap - ,
-
 " Use :tjump by default
 nnoremap <C-]> g<C-]>
 
@@ -188,7 +185,7 @@ nnoremap <space> za
 " nnoremap g; g;zz
 
 " Clear search buffer with <C-N>
-nnoremap <silent> <C-N> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
 " Simplify resizing splits
 " nnoremap <silent> ^[j :resize +1<CR>

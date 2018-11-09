@@ -9,6 +9,7 @@ Plug 'tpope/vim-fugitive'       " Useful git commands
 Plug 'tpope/vim-commentary'     " Keybindings for commenting
 Plug 'tpope/vim-surround'       " Manage parenthises and brackets
 Plug 'tpope/vim-repeat'         " Extend . to work with plugins
+Plug 'tpope/vim-vinegar'
 
 " Automatically save and manage sessions
 Plug 'tpope/vim-obsession'
