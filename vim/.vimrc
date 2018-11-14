@@ -293,6 +293,9 @@ augroup vimrc
 
   " crontab
   au FileType crontab setlocal nobackup nowritebackup
+
+  " help
+  au FileType help nnoremap q :q<CR>
   " }}}
 
 augroup END
