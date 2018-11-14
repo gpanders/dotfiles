@@ -23,14 +23,16 @@ if ! hash stow 2>/dev/null; then
 fi
 
 echo "Creating symlinks for vim"
-stow vim
+stow -t $HOME vim
+echo "Creating symlinks for emacs"
+stow -t $HOME emacs
 echo "Creating symlinks for bash"
-stow bash
+stow -t $HOME bash
 echo "Creating symlinks for tmux"
-stow tmux
+stow -t $HOME tmux
 
 if ! hash i3 2>/dev/null; then
-  read -r -p "Install i3? [y/N]" ans
+  read -r -p "Install i3? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
     install i3wm conky
   fi
@@ -38,10 +40,10 @@ fi
 
 if hash i3 2>/dev/null; then
   echo "Creating symlinks for i3"
-  stow i3
+  stow -t $HOME i3
 
   echo "Creating symlinks for conky"
-  stow conky
+  stow -t $HOME conky
 fi
 
 # Upgrade vim-plug and install vim plugins
@@ -66,16 +68,6 @@ if ! git config --global --get user.email 1>/dev/null ; then
   read -r -p "Git email address: " git_email
   if [ ! -z $git_email ]; then
     git config --global user.email "$git_email"
-  fi
-fi
-
-# Pull suckless terminal and apply patches
-git submodule update --init st
-ln -sf $curr_dir/config.h $curr_dir/st/config.h
-if ! hash st 2>/dev/null; then
-  read -r -p "Install st? [y/N] " ans
-  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-    (cd st && curl -s https://st.suckless.org/patches/solarized/st-no_bold_colors-20170623-b331da5.diff | git apply && sudo make clean install)
   fi
 fi
 
@@ -111,9 +103,10 @@ if [ ! -d $HOME/.zprezto ]; then
 fi
 
 if hash zsh 2>/dev/null; then
-  read -r -p "Change default shell to zsh? [y/N] " ans
-  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-    if ! [[ "$SHELL" =~ "zsh" ]]; then
+  user_shell=$(finger $USER | grep Shell | awk '{print $4}')
+  if [[ $user_shell != *"zsh"* ]]; then
+    read -r -p "Change default shell to zsh? [y/N] " ans
+    if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
       sudo chsh -s $(which zsh) ${SUDO_USER:-$USER}
     fi
   fi
@@ -122,7 +115,7 @@ fi
 if [ ! -d "$HOME/.pyenv" ]; then
   read -r -p "Install pyenv? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-    stow pyenv
+    stow -t $HOME pyenv
     if [[ "$OSTYPE" == darwin* ]]; then
       brew install pyenv pyenv-virtualenv
     elif [[ "$OSTYPE" == linux-gnu ]]; then
