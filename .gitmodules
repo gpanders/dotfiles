@@ -1,8 +1,4 @@
 [submodule "tmux/plugins/tpm"]
-	path = tmux/plugins/tpm
+	path = tmux/.tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
-	branch = master
-[submodule "st"]
-	path = st
-	url = git://git.suckless.org/st
 	branch = master

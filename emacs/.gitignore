@@ -1,0 +1,12 @@
+*~
+\#*
+.emacs.d/auto-save-list
+.emacs.d/elpa
+.emacs.d/elpa-*
+.emacs.d/smex-items
+.emacs.d/ido.last
+.emacs.d/projectile-bookmarks.eld
+.emacs.d/projectile.cache
+.emacs.d/recentf
+.emacs.d/server
+.emacs.d/network-security.data

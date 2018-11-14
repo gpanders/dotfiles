@@ -4,76 +4,56 @@ shopt -s extglob
 
 curr_dir=$(pwd)
 
-if [ -h $HOME/.vim ]; then
-  rm $HOME/.vim
-elif [ -d $HOME/.vim ]; then
-  mv $HOME/.vim $HOME/.vim.bak
-fi
-ln -sv $curr_dir/vim $HOME/.vim
-
-if [ -h $HOME/.tmux ]; then
-  rm $HOME/.tmux
-elif [ -d $HOME/.tmux ]; then
-  mv $HOME/.tmux $HOME/.tmux.bak
-fi
-ln -sv $curr_dir/tmux $HOME/.tmux
-
-if [ -h $HOME/.vimrc ]; then
-  rm $HOME/.vimrc
-elif [ -f $HOME/.vimrc ]; then
-  mv $HOME/.vimrc $HOME/.vimrc.bak
-fi
-ln -sv $curr_dir/vimrc $HOME/.vimrc
-
-if [ -h $HOME/.tmux.conf ]; then
-  rm $HOME/.tmux.conf
-elif [ -f $HOME/.tmux.conf ]; then
-  mv $HOME/.tmux.conf $HOME/.tmux.conf.bak
-fi
-ln -sv $curr_dir/tmux.conf $HOME/.tmux.conf
-
-mkdir -p $HOME/.config/nvim
-if [ -h $HOME/.config/nvim/init.vim ]; then
-  rm $HOME/.config/nvim/init.vim
-elif [ -f $HOME/.config/nvim/init.vim ]; then
-  mv $HOME/.config/nvim/init.vim $HOME/.config/nvim/init.vim.bak
-fi
-ln -sv $curr_dir/nvim/init.vim $HOME/.config/nvim/init.vim
-
-if [[ "$SHELL" =~ "bash" ]]; then
-  if [ -h $HOME/.fzf.bash ]; then
-    rm $HOME/.fzf.bash
-  elif [ -f $HOME/.fzf.bash ]; then
-    mv $HOME/.fzf.bash $HOME/.fzf.bash.bak
+function install() {
+  if [[ "$OSTYPE" == darwin* ]]; then
+    brew install "$@"
+  elif [[ "$OSTYPE" == linux-gnu ]]; then
+    if hash apt-get 2>/dev/null; then
+      sudo apt-get install -y "$@"
+    elif hash yum 2>/dev/null; then
+      sudo yum install "$@"
+    elif hash pacman 2>/dev/null; then
+      sudo pacman -S "$@"
+    fi
   fi
-  ln -sv $curr_dir/fzf.bash $HOME/.fzf.bash
+}
 
-  if [ -h $HOME/.bashrc ]; then
-    rm $HOME/.bashrc
-  elif [ -f $HOME/.bashrc ]; then
-    mv $HOME/.bashrc $HOME/.bashrc.bak
-  fi
-  ln -sv $curr_dir/bashrc $HOME/.bashrc
+if ! hash stow 2>/dev/null; then
+  install stow
 fi
 
-# Use .Xmodmap to set Caps Lock to Control
-if hash xmodmap 2>/dev/null; then
-  if [ -h "$HOME/.Xmodmap" ]; then
-    rm $HOME/.Xmodmap
-  elif [ -f "$HOME/.Xmodmap" ]; then
-    mv $HOME/.Xmodmap $HOME/.Xmodmap.bak
+echo "Creating symlinks for vim"
+stow vim
+echo "Creating symlinks for bash"
+stow bash
+echo "Creating symlinks for tmux"
+stow tmux
+
+if ! hash i3 2>/dev/null; then
+  read -r -p "Install i3? [y/N]" ans
+  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+    install i3wm conky
   fi
-  ln -s $curr_dir/Xmodmap $HOME/.Xmodmap
+fi
+
+if hash i3 2>/dev/null; then
+  echo "Creating symlinks for i3"
+  stow i3
+
+  echo "Creating symlinks for conky"
+  stow conky
 fi
 
 # Upgrade vim-plug and install vim plugins
-if [ ! -d $curr_dir/vim/plug ]; then
-  vim -u $curr_dir/vim/plugins.vim -c PlugUpgrade -c PlugInstall -c qall!
+if [ ! -d $HOME/.vim/plug ]; then
+  echo "Installing vim plugins..."
+  vim -u $HOME/.vim/plugins.vim -c PlugUpgrade -c PlugInstall -c qall! 2>&1 > /dev/null &
+  echo "Done."
 fi
 
 if hash tmux 2>/dev/null; then
   # Install tmux plugins in a background session
-  git submodule update --init --remote tmux/plugins/tpm
+  git submodule update --init --remote tmux/.tmux/plugins/tpm
   tmux new-session -s install_plugins -d "tmux run-shell $HOME/.tmux/plugins/tpm/bindings/install_plugins"
 fi
 
@@ -139,17 +119,10 @@ if hash zsh 2>/dev/null; then
   fi
 fi
 
-if [[ "$SHELL" =~ "bash" ]]; then
-  read -r -p "Use .bash_aliases file? [y/N] " ans
-  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-    cp $curr_dir/bash_aliases $HOME/.bash_aliases
-  fi
-fi
-
 if [ ! -d "$HOME/.pyenv" ]; then
   read -r -p "Install pyenv? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-    ln -s $curr_dir/pyenvrc $HOME/.pyenvrc
+    stow pyenv
     if [[ "$OSTYPE" == darwin* ]]; then
       brew install pyenv pyenv-virtualenv
     elif [[ "$OSTYPE" == linux-gnu ]]; then
@@ -158,17 +131,6 @@ if [ ! -d "$HOME/.pyenv" ]; then
     fi
   fi
 fi
-
-# Setup conky and i3
-mkdir -p $HOME/.config/i3
-if [ -h $HOME/.conkyrc ]; then
-  rm $HOME/.conkyrc
-elif [ -f $HOME/.conkyrc ]; then
-  mv $HOME/.conkyrc $HOME/.conkyrc.bak
-fi
-ln -s $curr_dir/conkyrc $HOME/.conkyrc
-ln -sf $curr_dir/i3/config $HOME/.config/i3/config
-ln -sf $curr_dir/i3/conky-i3bar $HOME/.config/i3/conky-i3bar
 
 echo "Install solarized dircolors?"
 echo "    1) light"
