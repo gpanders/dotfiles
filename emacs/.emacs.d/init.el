@@ -24,9 +24,6 @@
 (setq use-package-always-ensure t) ; Always download package if not already installed
 (use-package use-package-ensure-system-package)
 
-(setq url-proxy-services '(("http" . "wwwproxy.sandia.gov:80")
-                           ("https" . "wwwproxy.sandia.gov:80")))
-
 ;; Themes
 (use-package dracula-theme)
 (use-package leuven-theme)
