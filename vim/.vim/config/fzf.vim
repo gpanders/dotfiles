@@ -2,11 +2,8 @@ if exists('plugs') && has_key(plugs, 'fzf.vim')
   let g:fzf_tags_command = 'ctags -R'
 
   map <silent> <C-P> :Files<CR>
-  " map <silent> <C-E> :Tags<CR>
-  " map <silent> <C-Y> :BTags<CR>
-  " map <silent> <C-B> :Buffers<CR>
 
-  nnoremap \\ :Ag<space>
+  nnoremap <C-\>k :Ag<space>
   nnoremap <leader>b :Buffers<CR>
 
   function! s:fzf_statusline()
