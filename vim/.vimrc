@@ -66,6 +66,7 @@ set statusline+=%2*\ %n\
 set statusline+=%4*
 set statusline+=\ %{CapsLockStatusline()}\ 
 set statusline+=%=
+set statusline+=\ %{FugitiveHead()}\ 
 set statusline+=\ %y\ 
 set statusline+=%2*\ %p%%\ 
 set statusline+=%1*\ %l:%c\ 
