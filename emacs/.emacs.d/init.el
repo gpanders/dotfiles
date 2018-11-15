@@ -46,6 +46,9 @@
   :config
   (key-chord-mode 1))
 
+;; Better keybindings
+(use-package general)
+
 ;; Make sure Emacs PATH matches shell PATH
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns x))
@@ -59,9 +62,6 @@
   (evil-want-keybinding nil)
   :config
   ;; Install evil packages
-  (use-package evil-leader
-    :config
-    (global-evil-leader-mode))
   (use-package evil-commentary
     :delight
     :config
@@ -82,9 +82,8 @@
     :config
     (evil-unimpaired-mode))
   (use-package evil-config
-    :ensure f
-    :load-path "lisp"
-    :after evil-leader)
+    :ensure nil
+    :load-path "lisp")
   ;; Enable evil mode
   (evil-mode 1))
 
