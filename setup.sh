@@ -24,6 +24,8 @@ fi
 
 echo "Creating symlinks for vim"
 stow -t $HOME vim
+echo "Creating symlinks for neovim"
+stow -t $HOME neovim
 echo "Creating symlinks for emacs"
 stow -t $HOME emacs
 echo "Creating symlinks for bash"
