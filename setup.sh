@@ -55,7 +55,7 @@ fi
 
 if hash tmux 2>/dev/null; then
   # Install tmux plugins in a background session
-  git submodule update --init --remote tmux/.tmux/plugins/tpm
+  git submodule update --init
   tmux new-session -s install_plugins -d "tmux run-shell $HOME/.tmux/plugins/tpm/bindings/install_plugins"
 fi
 
