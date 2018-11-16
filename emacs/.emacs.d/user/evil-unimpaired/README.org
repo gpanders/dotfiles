@@ -1,0 +1,42 @@
+* evil-unimpaired
+
+This repository contains a port of Tim Pope's [[https://github.com/tpope/vim-unimpaired][unimpaired.vim]]. This
+code was lifed from Spacemacs and you can find the original source [[https://github.com/syl20bnr/spacemacs/blob/master/layers/%252Bspacemacs/spacemacs-evil/local/evil-unimpaired/evil-unimpaired.el][here]].
+
+This package contains useful "pairs" of functions that are opposites
+of each other (e.g. next/previous buffer, paste above/below,
+etc). They are bound to the default leaders keys of =[= and =]=.
+
+** Usage
+evil-unimpaired is a global minor mode that can be enabled by calling
+=(evil-unimpaired-mode)= and disabled with =(evil-unimpaired-mode -1)=
+
+** default pairs
+These pairs come included with evil-unimpaired
+
+| key | previous function                  | next function                      |
+|-----+------------------------------------+------------------------------------|
+| SPC | evil-unimpaired-insert-space-above | evil-unimpaired-insert-space-below |
+| b   | previous-buffer                    | next-buffer                        |
+| f   | evil-unimpaired-previous-file      | evil-unimpaired-next-file          |
+| t   | evil-unimpaired-previous-frame     | evil-unimpaired-next-frame         |
+| w   | previous-multiframe-window         | next-multiframe-window             |
+| p   | evil-unimpaired-paste-above        | evil-unimpaired-paste-below        |
+
+For example you would use =[ b= to get previous buffer and =] f= to get the next file
+** configuration
+
+*** changing the the leader keys
+the leader key can be set to any key or sequence of keys using =evil-unimpaired-leader-keys=
+#+BEGIN_SRC emacs-lisp
+  (setq evil-unimpaired-leader-keys '("gk" . "gj"))
+#+END_SRC
+
+*** adding or removing pairs
+pairs can be added or removed by editing
+=evil-unimpaired-default-pairs= before =evil-unimpaired-mode= is
+enabled. They can also be added using =evil-unimpaired-define-pair=.
+#+BEGIN_SRC emacs-lisp
+  (evil-unimpaired-define-pair "e" (move-text-up . move-text-down) '(normal visual))
+  (evil-unimpaired-define-pair "q" (flycheck-previous-error . flycheck-next-error))
+#+END_SRC
