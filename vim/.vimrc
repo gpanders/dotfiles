@@ -278,6 +278,9 @@ augroup vimrc
   au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
   " }}}
 
+  " Open the quickfix window after any grep search
+  au QuickFixCmdPost *grep* cwindow
+
   " File-type specific configuration {{{
   " C / C++
   au FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s cin
