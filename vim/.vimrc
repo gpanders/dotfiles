@@ -110,10 +110,10 @@ nnoremap <silent> <leader>w :w<CR>
 " Use :tjump by default
 nnoremap <C-]> g<C-]>
 
-" Use \\ in Normal mode to use grepprg
-" Define a custom command to wrap :grep with :silent, :cwindow, and :redraw
-command! -nargs=+ -complete=file -bar -bang Grep silent! grep<bang> <args>|cwindow|redraw!
-nnoremap \\ :Grep!<space>
+" Use <C-K> in Normal mode to use grepprg
+" Define a custom command to wrap :grep with :silent, :copen, and :redraw
+command! -nargs=+ -complete=file -bar -bang Grep silent! grep<bang> <args>|copen|redraw!
+nnoremap <C-K> :Grep!<space>
 
 " Buffer shortcuts {{{
 nnoremap <silent> <leader>1 :b1<CR>
@@ -201,10 +201,10 @@ vnoremap g/ y/\V<C-R>"<CR>
 " Use ripgrep or ag as grepprg if available
 if executable('rg')
   " Use rg over grep
-  set grepprg=rg\ --vimgrep
+  set grepprg=rg\ --vimgrep\ --hidden
 elseif executable('ag')
     " Use ag over grep
-    set grepprg=ag\ --vimgrep
+    set grepprg=ag\ --vimgrep\ --hidden
 endif
 set grepformat='%f:%l:%c:%m,%f:%l:%m'
 
@@ -279,7 +279,7 @@ augroup vimrc
   " }}}
 
   " Open the quickfix window after any grep search
-  au QuickFixCmdPost *grep* cwindow
+  au QuickFixCmdPost *grep* copen
 
   " File-type specific configuration {{{
   " C / C++
