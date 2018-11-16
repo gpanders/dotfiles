@@ -28,6 +28,7 @@
   "sv" 'load-user-init-file)
 
 (general-def 'normal
+  "C-p" 'projectile-find-file
   "-"   'dired-jump)
 
 (general-def '(normal visual)
