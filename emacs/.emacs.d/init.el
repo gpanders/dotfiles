@@ -67,7 +67,6 @@
     :config
     (evil-collection-init))
   (use-package evil-unimpaired
-    :disabled
     :load-path "user/evil-unimpaired"
     :config
     (evil-unimpaired-mode))
