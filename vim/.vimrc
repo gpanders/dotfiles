@@ -198,12 +198,15 @@ nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR
 " Search for visual selection with g/
 vnoremap g/ y/\V<C-R>"<CR>
 
-" Use ag as grepprg if available
-if executable('ag')
+" Use ripgrep or ag as grepprg if available
+if executable('rg')
+  " Use rg over grep
+  set grepprg=rg\ --vimgrep
+elseif executable('ag')
     " Use ag over grep
     set grepprg=ag\ --vimgrep
-    set grepformat='%f:%l:%c:%m,%f:%l:%m'
 endif
+set grepformat='%f:%l:%c:%m,%f:%l:%m'
 
 " Relative numbering {{{
 function! NumberToggle()
