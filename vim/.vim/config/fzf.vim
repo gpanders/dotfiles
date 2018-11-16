@@ -3,7 +3,11 @@ if exists('plugs') && has_key(plugs, 'fzf.vim')
 
   map <silent> <C-P> :Files<CR>
 
-  nnoremap <C-\>k :Ag<space>
+  if executable('rg')
+    nnoremap <C-\>k :Rg<space>
+  elseif executable('ag')
+    nnoremap <C-\>k :Ag<space>
+  end
   nnoremap <leader>b :Buffers<CR>
 
   function! s:fzf_statusline()
