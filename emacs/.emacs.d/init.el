@@ -46,13 +46,6 @@
   (load-theme 'solarized-dark t))
 
 ;; Install packages
-(use-package better-defaults ; Better defaults for Emacs
-  :config
-  ;; Disable some options
-  (ido-mode nil)
-  (setq visible-bell nil)
-  (setq ring-bell-function 'ignore))
-
 (use-package delight)  ; Use delight to manage minor mode displays
 (use-package key-chord ; Allow key-chords
   :config
