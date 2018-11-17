@@ -1,7 +1,16 @@
-(setq custom-file (make-temp-file "custom"))
+;; gpanders emacs init.el
+;; References:
+;;   [1] https://github.com/purcell/emacs.d
 
-; Increase garbage collection threshold
-(setq gc-cons-threshold 20000000)
+;; Adjust garbage collection thresholds (adapted from [1])
+(setq gc-cons-threshold (* 128 1024 1024))
+(add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold (* 20 1024 1024))))
+
+;; Add lisp directory to load path
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
+;; Put customization in separate file
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 (require 'package)
 
@@ -124,32 +133,25 @@
   (when (eq system-type 'darwin)
     (setq markdown-open-command "/usr/local/bin/macdown")))
 
-;; Disable startup screen
-(setq inhibit-startup-screen t)
-
 ;; Set frame size
-(if (display-graphic-p)
-    (progn
-      (setq initial-frame-alist
-            '((width . 160)
-              (height . 50)))
-      (setq default-frame-alist
-            '((width . 160)
-              (height . 50)))))
+;; (if (display-graphic-p)
+;;     (progn
+;;       (setq initial-frame-alist
+;;             '((width . 160)
+;;               (height . 50)))
+;;       (setq default-frame-alist
+;;             '((width . 160)
+;;               (height . 50)))))
 
-;; Set default font
-(set-face-attribute 'default nil
-                    :family "Fira Code"
-                    :height 120
-                    :weight 'normal
-                    :width 'normal)
+;; ;; Set default font
+;; (set-face-attribute 'default nil
+;;                     :family "Fira Code"
+;;                     :height 120
+;;                     :weight 'normal
+;;                     :width 'normal)
 
-;; Remove background from minibuffer prompt
-(set-face-background 'minibuffer-prompt nil)
-
-;; Enable line numbers globally but disable them in some modes
-(global-display-line-numbers-mode)
-(dolist (m '(term-mode-hook shell-mode-hook eshell-mode-hook Custom-mode-hook))
+;; Disable line numbers in certain modes
+(dolist (m '(term-mode-hook shell-mode-hook eshell-mode-hook Custom-mode-hook dired-mode-hook))
   (add-hook m (lambda () (display-line-numbers-mode -1))))
 
 ;; Shorten yes or no prompt
@@ -178,4 +180,11 @@
               #'handle-delete-frame-without-kill-emacs))
 
 ;; Start server if not already running
-(if (not (server-running-p)) (server-start))
+(add-hook 'after-init-hook
+          (lambda ()
+            (require 'server)
+            (unless (server-running-p)
+              (server-start))))
+
+(when (file-exists-p custom-file)
+  (load custom-file))
