@@ -10,3 +10,4 @@
 .emacs.d/recentf
 .emacs.d/server
 .emacs.d/network-security.data
+.emacs.d/eshell

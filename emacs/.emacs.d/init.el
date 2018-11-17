@@ -24,10 +24,17 @@
 (use-package use-package-ensure-system-package)
 
 ;; Themes
-(use-package dracula-theme)
-(use-package leuven-theme)
-(use-package solarized-theme)
-(load-theme 'dracula t)
+(use-package dracula-theme
+  :config
+  (load-theme 'dracula t))
+(use-package leuven-theme
+  :disabled
+  :config
+  (load-theme 'leuven t))
+(use-package solarized-theme
+  :disabled
+  :config
+  (load-theme 'solarized-dark t))
 
 ;; Install packages
 (use-package better-defaults ; Better defaults for Emacs
@@ -44,6 +51,8 @@
 (use-package general) ; Better keybindings
 (use-package exec-path-from-shell ; Make sure Emacs PATH matches shell PATH
   :if (memq window-system '(mac ns x))
+  :custom
+  (exec-path-from-shell-check-startup-files nil)
   :config
   (exec-path-from-shell-initialize))
 (use-package evil ; Evil mode!
@@ -70,8 +79,7 @@
     :load-path "user/evil-unimpaired"
     :config
     (evil-unimpaired-mode))
-  (use-package evil-config
-    :ensure nil
+  (use-package evil-config ; Custom configuration
     :load-path "lisp")
   ;; Enable evil mode
   (evil-mode 1))
@@ -116,6 +124,19 @@
   (when (eq system-type 'darwin)
     (setq markdown-open-command "/usr/local/bin/macdown")))
 
+;; Disable startup screen
+(setq inhibit-startup-screen t)
+
+;; Set frame size
+(if (display-graphic-p)
+    (progn
+      (setq initial-frame-alist
+            '((width . 160)
+              (height . 50)))
+      (setq default-frame-alist
+            '((width . 160)
+              (height . 50)))))
+
 ;; Set default font
 (set-face-attribute 'default nil
                     :family "Fira Code"
@@ -126,10 +147,13 @@
 ;; Remove background from minibuffer prompt
 (set-face-background 'minibuffer-prompt nil)
 
-;; Enable line numbers but disable them in some modes
+;; Enable line numbers globally but disable them in some modes
 (global-display-line-numbers-mode)
-(dolist (m '(term-mode-hook Custom-mode-hook))
-  (add-hook m (lambda () (display-line-numbers-mode -1))))
+(dolist (m '(term-mode-hook shell-mode-hook eshell-mode-hook Custom-mode-hook))
+  (display-line-numbers-mode -1))
+
+;; Shorten yes or no prompt
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Hide Emacs instead of killing it when last frame is closed
 (defun handle-delete-frame-without-kill-emacs (event)
