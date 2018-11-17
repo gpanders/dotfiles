@@ -53,14 +53,16 @@
 (use-package general) ; Better keybindings
 (use-package exec-path-from-shell ; Make sure Emacs PATH matches shell PATH
   :if (memq window-system '(mac ns x))
-  :custom
-  (exec-path-from-shell-check-startup-files nil)
   :config
+  (setq exec-path-from-shell-check-startup-files nil
+        exec-path-from-shell-arguments nil)
+  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_TYPE"))
+    (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 (use-package evil ; Evil mode!
-  :custom
-  (evil-want-C-u-scroll t)
-  (evil-want-keybinding nil)
+  :init
+  (setq evil-want-C-u-scroll t
+        evil-want-keybinding nil)
   :config
   ;; Install evil packages
   (use-package evil-commentary
@@ -71,9 +73,9 @@
     :config
     (global-evil-surround-mode 1))
   (use-package evil-magit
-    :custom
-    (evil-magit-state 'normal)
-    (evil-magit-use-y-for-yank nil))
+    :config
+    (setq evil-magit-state 'normal
+          evil-magit-use-y-for-yank nil))
   (use-package evil-collection
     :config
     (evil-collection-init))
@@ -81,9 +83,8 @@
     :load-path "user/evil-unimpaired"
     :config
     (evil-unimpaired-mode))
-  (use-package evil-config ; Custom configuration
-    :load-path "lisp")
   ;; Enable evil mode
+  (require 'evil-config)
   (evil-mode 1))
 (use-package magit)     ; Git front end
 (use-package projectile ; Project management
@@ -96,23 +97,24 @@
 (use-package ivy ; Fast narrowing framework
   :delight
   :bind ("C-s" . swiper)
-  :custom
-  (ivy-use-virtual-buffers t)
-  (ivy-display-style 'fancy)
-  (enable-recursive-minibuffers t)
   :config
-  (ivy-mode 1)
-  (setq projectile-completion-system 'ivy))
+  (setq ivy-use-virtual-buffers t
+        ivy-virtual-abbreviate 'fullpath
+        enable-recursive-minibuffers t
+        projectile-completion-system 'ivy
+        ivy-initial-inputs-alist '((Man-completion-table . "^")
+                                   (woman ."^")))
+  (ivy-mode 1))
 (use-package counsel ; Use ivy completion for many common functions in Emacs
   :delight
   :config
+  (setq counsel-mode-override-describe-bindings t)
   (counsel-mode 1))
 (use-package smart-mode-line
   :disabled
-  :custom
-  (sml/no-confirm-load-theme t)
-  (sml/theme 'light)
   :config
+  (setq sml/no-confirm-load-theme t
+        sml/theme 'respectful)
   (sml/setup))
 (use-package markdown-mode
   :ensure-system-package pandoc
