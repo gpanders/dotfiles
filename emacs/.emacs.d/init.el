@@ -150,7 +150,7 @@
 ;; Enable line numbers globally but disable them in some modes
 (global-display-line-numbers-mode)
 (dolist (m '(term-mode-hook shell-mode-hook eshell-mode-hook Custom-mode-hook))
-  (display-line-numbers-mode -1))
+  (add-hook m (lambda () (display-line-numbers-mode -1))))
 
 ;; Shorten yes or no prompt
 (defalias 'yes-or-no-p 'y-or-n-p)
