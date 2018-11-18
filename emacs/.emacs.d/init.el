@@ -63,21 +63,64 @@
   :config
   (load-theme 'solarized-dark t))
 
-;; Install packages
+(use-package general ; Better keybindings
+  :config
+  ;; User ibuffer instead of list-buffers
+  (general-def "C-x C-b" 'ibuffer))
 (use-package delight)  ; Use delight to manage minor mode displays
+(use-package magit)     ; Git front end
+(use-package flx)  ; Fuzzy matching
+(use-package smex) ; M-x enhancement for Emacs
 (use-package key-chord ; Allow key-chords
   :config
   (key-chord-mode 1))
-(use-package general) ; Better keybindings
 (use-package exec-path-from-shell ; Make sure Emacs PATH matches shell PATH
   :if (memq window-system '(mac ns x))
   :config
-  (setq exec-path-from-shell-check-startup-files nil
-        exec-path-from-shell-arguments nil)
+  (setq exec-path-from-shell-check-startup-files nil)
   (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_TYPE"))
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
-(use-package evil ; Evil mode!
+(use-package projectile ; Project management
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :config
+  (projectile-mode 1))
+(use-package ivy ; Fast narrowing framewor
+  :delight
+  :bind ("C-s" . swiper)
+  :config
+  (setq ivy-use-virtual-buffers t
+        ivy-virtual-abbreviate 'fullpath
+        enable-recursive-minibuffers t
+        projectile-completion-system 'ivy
+        ivy-initial-inputs-alist '((Man-completion-table . "^")
+                                   (woman ."^")))
+  (ivy-mode 1))
+(use-package counsel ; Use ivy completion for many common functions in Emacs
+  :delight
+  :config
+  (setq counsel-mode-override-describe-bindings t)
+  (counsel-mode 1))
+(use-package rtags)
+(use-package cmake-ide
+  :after rtags
+  :config
+  (cmake-ide-setup))
+(use-package markdown-mode
+  :ensure-system-package pandoc
+  :commands (markdown-mode gfm-mode)
+  :mode
+  ("README\\.md\\'" . gfm-mode)
+  ("\\.md\\'" . markdown-mode)
+  ("\\.markdown\\'" . markdown-mode)
+  :config
+  (setq markdown-command "pandoc")
+  (when (eq system-type 'darwin)
+    (setq markdown-open-command "/usr/local/bin/macdown")))
+;; Evil mode!
+(use-package evil
+  :after general
   :init
   (setq evil-want-C-u-scroll t
         evil-want-keybinding nil)
@@ -98,70 +141,50 @@
     :config
     (evil-collection-init))
   (use-package evil-unimpaired
-    :load-path "user/evil-unimpaired"
+    :load-path "site-lisp/evil-unimpaired"
     :config
     (evil-unimpaired-mode))
+
+  ;; Create leader map
+  (general-create-definer evil-leader-def
+    :prefix ",")
+  (evil-leader-def
+    :keymaps 'normal
+    "w" 'save-buffer
+    "b" 'counsel-ibuffer
+    "r" 'toggle-relative-line-numbers
+    "ev" 'find-user-init-file
+    "sv" 'load-user-init-file)
+
+  (general-def 'normal
+    "C-p" 'projectile-find-file
+    "C-k" 'counsel-rg
+    "-"   'dired-jump)
+
+  (general-def '(normal visual)
+    "C-y" 'yank
+    "C-e" 'end-of-line
+    "/"   'swiper)
+
+  (general-define-key
+   :keymaps 'evil-insert-state-map
+   (general-chord "jk") 'evil-normal-state)
+
   ;; Enable evil mode
-  (require 'evil-config)
   (evil-mode 1))
-(use-package magit)     ; Git front end
-(use-package projectile ; Project management
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :config
-  (projectile-mode 1))
-(use-package flx)  ; Fuzzy matching
-(use-package smex) ; M-x enhancement for Emacs
-(use-package ivy ; Fast narrowing framework
-  :delight
-  :bind ("C-s" . swiper)
-  :config
-  (setq ivy-use-virtual-buffers t
-        ivy-virtual-abbreviate 'fullpath
-        enable-recursive-minibuffers t
-        projectile-completion-system 'ivy
-        ivy-initial-inputs-alist '((Man-completion-table . "^")
-                                   (woman ."^")))
-  (ivy-mode 1))
-(use-package counsel ; Use ivy completion for many common functions in Emacs
-  :delight
-  :config
-  (setq counsel-mode-override-describe-bindings t)
-  (counsel-mode 1))
-(use-package smart-mode-line
-  :disabled
-  :config
-  (setq sml/no-confirm-load-theme t
-        sml/theme 'respectful)
-  (sml/setup))
-(use-package markdown-mode
-  :ensure-system-package pandoc
-  :commands (markdown-mode gfm-mode)
-  :mode
-  ("README\\.md\\'" . gfm-mode)
-  ("\\.md\\'" . markdown-mode)
-  ("\\.markdown\\'" . markdown-mode)
-  :config
-  (setq markdown-command "pandoc")
-  (when (eq system-type 'darwin)
-    (setq markdown-open-command "/usr/local/bin/macdown")))
 
-;; Set frame size
-;; (if (display-graphic-p)
-;;     (progn
-;;       (setq initial-frame-alist
-;;             '((width . 160)
-;;               (height . 50)))
-;;       (setq default-frame-alist
-;;             '((width . 160)
-;;               (height . 50)))))
+;; Add parts of each file's directory to the buffer name if not unique [2]
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
 
-;; ;; Set default font
-;; (set-face-attribute 'default nil
-;;                     :family "Fira Code"
-;;                     :height 120
-;;                     :weight 'normal
-;;                     :width 'normal)
+;; Open file in same place as we left it [2]
+(require 'saveplace)
+(setq-default save-place t)
+
+;; Write backup files to own directory [2]
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name
+                 (concat user-emacs-directory "backups")))))
 
 ;; Disable line numbers in certain modes
 (dolist (m '(term-mode-hook shell-mode-hook eshell-mode-hook Custom-mode-hook dired-mode-hook))
@@ -170,28 +193,27 @@
 ;; Shorten yes or no prompt
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; Hide Emacs instead of killing it when last frame is closed
-(defun handle-delete-frame-without-kill-emacs (event)
-  "Handle delete-frame events from the X server."
-  (interactive "e")
-  (let ((frame (posn-window (event-start event)))
-        (i 0)
-        (tail (frame-list)))
-    (while tail
-      (and (frame-visible-p (car tail))
-           (not (eq (car tail) frame))
-           (setq i (1+ i)))
-      (setq tail (cdr tail)))
-    (if (> i 0)
-        (delete-frame frame t)
-      ;; Not (save-buffers-kill-emacs) but instead:
-      (ns-do-hide-emacs))))
-
-(advice-add 'handle-delete-frame :override
-            #'handle-delete-frame-without-kill-emacs)
-
 ;; Mac specific options [1]
 (when (eq system-type 'darwin)
+  ;; Hide Emacs instead of killing it when last frame is closed
+  (defun handle-delete-frame-without-kill-emacs (event)
+    "Handle delete-frame events from the X server."
+    (interactive "e")
+    (let ((frame (posn-window (event-start event)))
+          (i 0)
+          (tail (frame-list)))
+      (while tail
+        (and (frame-visible-p (car tail))
+             (not (eq (car tail) frame))
+             (setq i (1+ i)))
+        (setq tail (cdr tail)))
+      (if (> i 0)
+          (delete-frame frame t)
+        ;; Not (save-buffers-kill-emacs) but instead:
+        (ns-do-hide-emacs))))
+
+  (advice-add 'handle-delete-frame :override
+              #'handle-delete-frame-without-kill-emacs)
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'none)
   (setq mouse-wheel-scroll-amount '(1
@@ -204,7 +226,7 @@
   (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
   (global-set-key (kbd "M-˙") 'ns-do-hide-others)
   (with-eval-after-load 'nxml-mode
-              (define-key nxml-mode-map (kbd "M-h") nil))
+    (define-key nxml-mode-map (kbd "M-h") nil))
   (global-set-key (kbd "M-ˍ") 'ns-do-hide-others))
 
 ;; Start server if not already running

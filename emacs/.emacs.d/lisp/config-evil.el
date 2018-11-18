@@ -1,4 +1,3 @@
-;; Evil mode configuration
 (defun find-user-init-file ()
   "Edit the `user-init-file', in another window."
   (interactive)
@@ -16,30 +15,59 @@
       (setq display-line-numbers t)
     (setq display-line-numbers 'relative)))
 
-;; Create leader map
-(general-create-definer evil-leader-def
-  :prefix ",")
-(evil-leader-def
-  :keymaps 'normal
-  "w" 'save-buffer
-  "b" 'ivy-switch-buffer
-  "r" 'toggle-relative-line-numbers
-  "ev" 'find-user-init-file
-  "sv" 'load-user-init-file)
+;; Evil mode!
+(use-package evil
+  :after general
+  :init
+  (setq evil-want-C-u-scroll t
+        evil-want-keybinding nil)
+  :config
+  ;; Install evil packages
+  (use-package evil-commentary
+    :delight
+    :config
+    (evil-commentary-mode))
+  (use-package evil-surround
+    :config
+    (global-evil-surround-mode 1))
+  (use-package evil-magit
+    :config
+    (setq evil-magit-state 'normal
+          evil-magit-use-y-for-yank nil))
+  (use-package evil-collection
+    :config
+    (evil-collection-init))
+  (use-package evil-unimpaired
+    :load-path "site-lisp/evil-unimpaired"
+    :config
+    (evil-unimpaired-mode))
 
-(general-def 'normal
-  "C-p" 'projectile-find-file
-  "-"   'dired-jump)
+  ;; Create leader map
+  (general-create-definer evil-leader-def
+    :prefix ",")
+  (evil-leader-def
+    :keymaps 'normal
+    "w" 'save-buffer
+    "b" 'counsel-ibuffer
+    "r" 'toggle-relative-line-numbers
+    "ev" 'find-user-init-file
+    "sv" 'load-user-init-file)
 
-(general-def '(normal visual)
-  "C-y" 'yank
-  "C-e" 'end-of-line
-  "/"   'swiper)
+  (general-def 'normal
+    "C-p" 'projectile-find-file
+    "C-k" 'counsel-rg
+    "-"   'dired-jump)
 
-;; (general-def 'insert evil-insert-state-map
-;;   (general-chord "jk") 'evil-normal-state)
-(general-define-key
- :keymaps 'evil-insert-state-map
- (general-chord "jk") 'evil-normal-state)
+  (general-def '(normal visual)
+    "C-y" 'yank
+    "C-e" 'end-of-line
+    "/"   'swiper)
+
+  (general-define-key
+   :keymaps 'evil-insert-state-map
+   (general-chord "jk") 'evil-normal-state)
+
+  ;; Enable evil mode
+  (evil-mode 1))
 
 (provide 'evil-config)
