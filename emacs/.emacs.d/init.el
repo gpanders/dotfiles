@@ -6,9 +6,6 @@
 (setq gc-cons-threshold (* 128 1024 1024))
 (add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold (* 20 1024 1024))))
 
-;; Add lisp directory to load path
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-
 ;; Put customization in separate file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
@@ -32,8 +29,29 @@
 (setq use-package-always-ensure t) ; Always download package if not already installed
 (use-package use-package-ensure-system-package)
 
+;; Add lisp directory to load path
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
+(defun find-user-init-file ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (find-file-other-window user-init-file))
+
+(defun load-user-init-file ()
+  "Load the `user-init-file'."
+  (interactive)
+  (load-file user-init-file))
+
+(defun toggle-relative-line-numbers ()
+  "Toggle relative line numbers."
+  (interactive)
+  (if (eq display-line-numbers 'relative)
+      (setq display-line-numbers t)
+    (setq display-line-numbers 'relative)))
+
 ;; Themes
 (use-package dracula-theme
+  ;; :disabled
   :config
   (load-theme 'dracula t))
 (use-package leuven-theme
