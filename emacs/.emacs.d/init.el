@@ -64,6 +64,9 @@
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 (use-package flx)  ; Fuzzy matching
+(use-package flycheck
+  :init
+  (global-flycheck-mode))
 (use-package general) ; Better keybindings
 (use-package ibuffer-vc)
 (use-package ivy ; Fast narrowing framework
@@ -99,7 +102,7 @@
     (setq markdown-open-command "/usr/local/bin/macdown")))
 (use-package projectile ; Project management
   :bind-keymap
-  ("C-c C-p" . projectile-command-map)
+  ("C-c p" . projectile-command-map)
   :config
   (setq projectile-mode-line-prefix " Proj")
   (projectile-mode 1))
