@@ -1,6 +1,6 @@
-;; gpanders emacs init.el
-;; References:
-;;   [1] https://github.com/purcell/emacs.d
+;;; init.el
+;;; References:
+;;;   [1] https://github.com/purcell/emacs.d
 
 ;; Adjust garbage collection thresholds (adapted from [1])
 (setq gc-cons-threshold (* 128 1024 1024))
@@ -68,7 +68,26 @@
   :init
   (global-flycheck-mode))
 (use-package general) ; Better keybindings
+(use-package git-gutter
+  :delight
+  :config
+  (global-git-gutter-mode t))
 (use-package ibuffer-vc)
+(use-package irony
+  :hook ((c-mode . irony-mode)
+         (c++-mode . irony-mode)
+         (irony-mode . irony-cdb-autosetup-compile-options))
+  :bind (:map irony-mode-map
+         ([remap completion-at-point] . counsel-irony)
+         ([remap complete-symbol] . counsel-irony))
+  :config
+  (use-package company-irony
+    :after company
+    :config
+    (add-to-list 'company-backends 'company-irony))
+  (use-package flycheck-irony
+    :after flychec
+    :hook (flycheck-mode . flycheck-irony-setup)))
 (use-package ivy ; Fast narrowing framework
   :delight
   :config
@@ -78,7 +97,11 @@
     :delight
     :config
     (setq counsel-mode-override-describe-bindings t)
-    (counsel-mode 1))
+    (counsel-mode 1)
+    (use-package counsel-projectile
+      :after projectile
+      :config
+      (counsel-projectile-mode)))
   (setq ivy-use-virtual-buffers t
         ivy-virtual-abbreviate 'fullpath
         enable-recursive-minibuffers t
@@ -175,3 +198,5 @@
 
 (when (file-exists-p custom-file)
   (load custom-file))
+
+;;; init.el ends here
