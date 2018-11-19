@@ -30,7 +30,7 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 ;; Themes
-(require 'config-theme)
+(require 'init-theme)
 
 (use-package anaconda-mode
   :ensure t
@@ -68,7 +68,7 @@
   (setq evil-want-C-u-scroll t
         evil-want-keybinding nil)
   :config
-  (require 'config-evil)
+  (require 'init-evil)
   (evil-mode 1))
 (use-package exec-path-from-shell ; Make sure Emacs PATH matches shell PATH
   :ensure t
