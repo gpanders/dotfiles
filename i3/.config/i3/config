@@ -175,5 +175,7 @@ bar {
 # use smart edge borders
 hide_edge_borders smart
 
-# hide title bars on terminal windows
-for_window [class="st"] border pixel 1
+# gaps
+for_window [class="^.*"] border pixel 0
+smart_borders on
+gaps inner 10
