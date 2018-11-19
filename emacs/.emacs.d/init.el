@@ -26,29 +26,43 @@
 (eval-when-compile
   (require 'use-package))
 
-(setq use-package-always-ensure t) ; Always download package if not already installed
-
 ;; Add lisp directory to load path
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 ;; Themes
 (require 'config-theme)
 
+(use-package anaconda-mode
+  :ensure t
+  :hook ((python-mode . anaconda-mode)
+         (python-mode . anaconda-eldoc-mode))
+  :config
+  (use-package company-anaconda
+    :ensure t
+    :after company
+    :config
+    (add-to-list 'company-backends '(company-anaconda :with company-capf))))
 (use-package better-defaults
+  :ensure t
   :config
   (ido-mode -1))
 (use-package company
+  :ensure t
   :config
   (global-company-mode))
 (use-package cmake-ide
+  :ensure t
   :after rtags
   :config
   (cmake-ide-setup))
-(use-package delight) ; Use delight to manage minor mode displays
+(use-package delight ; Use delight to manage minor mode displays
+  :ensure t)
 (use-package dimmer
+  :ensure t
   :config
   (dimmer-mode))
 (use-package evil ; Evil mode!
+  :ensure t
   :after general
   :init
   (setq evil-want-C-u-scroll t
@@ -57,23 +71,30 @@
   (require 'config-evil)
   (evil-mode 1))
 (use-package exec-path-from-shell ; Make sure Emacs PATH matches shell PATH
+  :ensure t
   :if (memq window-system '(mac ns x))
   :config
   (setq exec-path-from-shell-check-startup-files nil)
   (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_TYPE"))
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
-(use-package flx)  ; Fuzzy matching
+(use-package flx ; Fuzzy matching
+  :ensure t)
 (use-package flycheck
+  :ensure t
   :init
   (global-flycheck-mode))
-(use-package general) ; Better keybindings
+(use-package general ; Better keybindings
+  :ensure t)
 (use-package git-gutter
+  :ensure t
   :delight
   :config
   (global-git-gutter-mode t))
-(use-package ibuffer-vc)
+(use-package ibuffer-vc
+  :ensure t)
 (use-package irony
+  :ensure t
   :hook ((c-mode . irony-mode)
          (c++-mode . irony-mode)
          (irony-mode . irony-cdb-autosetup-compile-options))
@@ -82,23 +103,29 @@
          ([remap complete-symbol] . counsel-irony))
   :config
   (use-package company-irony
+    :ensure t
     :after company
     :config
     (add-to-list 'company-backends 'company-irony))
   (use-package flycheck-irony
+    :ensure t
     :after flychec
     :hook (flycheck-mode . flycheck-irony-setup)))
 (use-package ivy ; Fast narrowing framework
+  :ensure t
   :delight
   :config
   (use-package swiper
+    :ensure t
     :bind ("C-s" . swiper))
   (use-package counsel ; Use ivy completion for many common functions in Emacs
+    :ensure t
     :delight
     :config
     (setq counsel-mode-override-describe-bindings t)
     (counsel-mode 1)
     (use-package counsel-projectile
+      :ensure t
       :after projectile
       :config
       (counsel-projectile-mode)))
@@ -110,10 +137,13 @@
                                    (woman ."^")))
   (ivy-mode 1))
 (use-package key-chord ; Allow key-chords
+  :ensure t
   :config
   (key-chord-mode 1))
-(use-package magit)     ; Git front end
+(use-package magit ; Git front end
+  :ensure t)
 (use-package markdown-mode
+  :ensure t
   :commands (markdown-mode gfm-mode)
   :mode
   ("README\\.md\\'" . gfm-mode)
@@ -124,13 +154,30 @@
   (when (eq system-type 'darwin)
     (setq markdown-open-command "/usr/local/bin/macdown")))
 (use-package projectile ; Project management
+  :ensure t
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :config
   (setq projectile-mode-line-prefix " Proj")
   (projectile-mode 1))
-(use-package rtags)
-(use-package smex) ; M-x enhancement for Emacs
+(use-package pyenv-mode
+  :ensure t
+  :hook (python-mode . pyenv-mode)
+  :config
+  (use-package pyenv-mode-auto
+    :ensure t))
+(use-package python
+  :mode
+  ("\\.py\\'" . python-mode)
+  :interpreter ("python" . python-mode)
+  :init
+  (setq-default indent-tabs-mode nil)
+  :config
+  (setq python-indent-offset 4))
+(use-package rtags
+  :ensure t)
+(use-package smex ; M-x enhancement for Emacs
+  :ensure t)
 
 ;; Disable line numbers in certain modes
 (dolist (m '(term-mode-hook shell-mode-hook eshell-mode-hook Custom-mode-hook dired-mode-hook))

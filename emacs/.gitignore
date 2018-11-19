@@ -1,5 +1,6 @@
 *~
 \#*
+.emacs.d/anaconda-mode
 .emacs.d/auto-save-list
 .emacs.d/elpa
 .emacs.d/elpa-*

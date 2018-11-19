@@ -17,17 +17,21 @@
 
 ;; Install evil packages
 (use-package evil-commentary
+  :ensure t
   :delight
   :config
   (evil-commentary-mode))
 (use-package evil-surround
+  :ensure t
   :config
   (global-evil-surround-mode 1))
 (use-package evil-magit
+  :ensure t
   :config
   (setq evil-magit-state 'normal
         evil-magit-use-y-for-yank nil))
 (use-package evil-collection
+  :ensure t
   :config
   (evil-collection-init))
 (use-package evil-unimpaired
