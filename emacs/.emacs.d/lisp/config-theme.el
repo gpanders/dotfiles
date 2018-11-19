@@ -1,14 +1,17 @@
 ;; Themes
 (use-package dracula-theme
   ;; :disabled
+  :ensure t
   :config
   (load-theme 'dracula t))
 (use-package leuven-theme
   :disabled
+  :ensure t
   :config
   (load-theme 'leuven t))
 (use-package solarized-theme
   :disabled
+  :ensure t
   :config
   (defun light ()
     "Activate light color theme."
