@@ -23,4 +23,4 @@
     (load-theme 'solarized-dark t))
   (load-theme 'solarized-dark t))
 
-(provide 'config-theme)
+(provide 'init-theme)

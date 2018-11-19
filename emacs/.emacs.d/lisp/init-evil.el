@@ -63,4 +63,4 @@
  :keymaps 'evil-insert-state-map
  (general-chord "jk") 'evil-normal-state)
 
-(provide 'config-evil)
+(provide 'init-evil)
