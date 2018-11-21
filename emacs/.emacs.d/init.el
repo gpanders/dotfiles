@@ -26,6 +26,8 @@
 (eval-when-compile
   (require 'use-package))
 
+(setq use-package-always-ensure t)
+
 ;; Add lisp directory to load path
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
@@ -33,36 +35,36 @@
 (require 'init-theme)
 
 (use-package anaconda-mode
-  :ensure t
   :hook ((python-mode . anaconda-mode)
          (python-mode . anaconda-eldoc-mode))
   :config
   (use-package company-anaconda
-    :ensure t
     :after company
     :config
     (add-to-list 'company-backends '(company-anaconda :with company-capf))))
 (use-package better-defaults
-  :ensure t
   :config
   (ido-mode -1))
 (use-package company
-  :ensure t
   :config
   (global-company-mode))
 (use-package cmake-ide
-  :ensure t
+  :disabled
   :after rtags
   :config
   (cmake-ide-setup))
-(use-package delight ; Use delight to manage minor mode displays
-  :ensure t)
+(use-package cquery
+  :commands lsp-cquery-enable
+  :hook ((c-mode . lsp-cquery-enable)
+         (c++-mode . lsp-cquery-enable))
+  :config
+  (if (eq system-type 'darwin)
+      (setq cquery-exectuable "/usr/local/bin/cquery")))
+(use-package delight) ; Use delight to manage minor mode displays
 (use-package dimmer
-  :ensure t
   :config
   (dimmer-mode))
 (use-package evil ; Evil mode!
-  :ensure t
   :after general
   :init
   (setq evil-want-C-u-scroll t
@@ -71,30 +73,23 @@
   (require 'init-evil)
   (evil-mode 1))
 (use-package exec-path-from-shell ; Make sure Emacs PATH matches shell PATH
-  :ensure t
   :if (memq window-system '(mac ns x))
   :config
   (setq exec-path-from-shell-check-startup-files nil)
   (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_TYPE"))
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
-(use-package flx ; Fuzzy matching
-  :ensure t)
+(use-package flx) ; Fuzzy matching
 (use-package flycheck
-  :ensure t
   :init
   (global-flycheck-mode))
-(use-package general ; Better keybindings
-  :ensure t)
+(use-package general) ; Better keybindings
 (use-package git-gutter
-  :ensure t
   :delight
   :config
   (global-git-gutter-mode t))
-(use-package ibuffer-vc
-  :ensure t)
 (use-package irony
-  :ensure t
+  :disabled
   :hook ((c-mode . irony-mode)
          (c++-mode . irony-mode)
          (irony-mode . irony-cdb-autosetup-compile-options))
@@ -103,29 +98,23 @@
          ([remap complete-symbol] . counsel-irony))
   :config
   (use-package company-irony
-    :ensure t
     :after company
     :config
     (add-to-list 'company-backends 'company-irony))
   (use-package flycheck-irony
-    :ensure t
     :after flychec
     :hook (flycheck-mode . flycheck-irony-setup)))
 (use-package ivy ; Fast narrowing framework
-  :ensure t
   :delight
   :config
   (use-package swiper
-    :ensure t
     :bind ("C-s" . swiper))
   (use-package counsel ; Use ivy completion for many common functions in Emacs
-    :ensure t
     :delight
     :config
     (setq counsel-mode-override-describe-bindings t)
     (counsel-mode 1)
     (use-package counsel-projectile
-      :ensure t
       :after projectile
       :config
       (counsel-projectile-mode)))
@@ -135,15 +124,21 @@
         projectile-completion-system 'ivy
         ivy-initial-inputs-alist '((Man-completion-table . "^")
                                    (woman ."^")))
+  (use-package ivy-xref
+    :config
+    (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
   (ivy-mode 1))
 (use-package key-chord ; Allow key-chords
-  :ensure t
   :config
   (key-chord-mode 1))
-(use-package magit ; Git front end
-  :ensure t)
+(use-package lsp-mode
+  :config
+  (use-package company-lsp
+    :after company
+    :config
+    (add-to-list 'company-backends 'company-lsp)))
+(use-package magit) ; Git front end
 (use-package markdown-mode
-  :ensure t
   :commands (markdown-mode gfm-mode)
   :mode
   ("README\\.md\\'" . gfm-mode)
@@ -153,19 +148,18 @@
   (setq markdown-command "pandoc")
   (when (eq system-type 'darwin)
     (setq markdown-open-command "/usr/local/bin/macdown")))
+(use-package move-text)
 (use-package projectile ; Project management
-  :ensure t
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :config
   (setq projectile-mode-line-prefix " Proj")
+  (add-to-list 'projectile-globally-ignored-directories ".cquery_cached_index")
   (projectile-mode 1))
 (use-package pyenv-mode
-  :ensure t
   :hook (python-mode . pyenv-mode)
   :config
-  (use-package pyenv-mode-auto
-    :ensure t))
+  (use-package pyenv-mode-auto))
 (use-package python
   :mode
   ("\\.py\\'" . python-mode)
@@ -175,9 +169,23 @@
   :config
   (setq python-indent-offset 4))
 (use-package rtags
-  :ensure t)
-(use-package smex ; M-x enhancement for Emacs
-  :ensure t)
+  :disabled
+  :config
+  (use-package company-rtags
+    :config
+    (add-to-list 'company-backends 'company-rtags))
+  (use-package flycheck-rtags
+    :config
+    (defun flycheck-rtags-setup ()
+      (flycheck-select-checker 'rtags)
+      (setq-local flycheck-highlighting-mode nil)
+      (setq-local flycheck-check-syntax-automatically nil))
+    (add-hook 'c-mode-common-hook #'flycheck-rtags-setup))
+  (use-package ivy-rtags)
+  (setq rtags-autostart-diagnostics t)
+  (setq rtags-completion-enabled t)
+  (rtags-enable-standard-keybindings))
+(use-package smex) ; M-x enhancement for Emacs
 
 ;; Disable line numbers in certain modes
 (dolist (m '(term-mode-hook shell-mode-hook eshell-mode-hook Custom-mode-hook dired-mode-hook))
