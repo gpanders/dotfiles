@@ -58,8 +58,9 @@
   :hook ((c-mode . lsp-cquery-enable)
          (c++-mode . lsp-cquery-enable))
   :config
-  (if (eq system-type 'darwin)
-      (setq cquery-exectuable "/usr/local/bin/cquery")))
+  (setq cquery-exectuable (cond
+                           ((eq system-type 'darwin) "/usr/local/bin/cquery")
+                           ((eq system-type 'gnu/linux) "/usr/bin/cquery"))))
 (use-package delight) ; Use delight to manage minor mode displays
 (use-package dimmer
   :config
@@ -73,7 +74,7 @@
   (require 'init-evil)
   (evil-mode 1))
 (use-package exec-path-from-shell ; Make sure Emacs PATH matches shell PATH
-  :if (memq window-system '(mac ns x))
+  :if (memq system-type '(darwin gnu/linux))
   :config
   (setq exec-path-from-shell-check-startup-files nil)
   (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_TYPE"))
@@ -195,6 +196,10 @@
 (add-hook 'term-mode-hook
           (lambda ()
             (setq line-spacing 0)))
+
+;; Enable auto revert mode globally
+(global-auto-revert-mode)
+(delight 'auto-revert-mode)
 
 ;; Shorten yes or no prompt
 (defalias 'yes-or-no-p 'y-or-n-p)
