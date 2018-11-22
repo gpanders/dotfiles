@@ -40,27 +40,19 @@
   (evil-unimpaired-mode))
 
 ;; Create leader map
-(general-create-definer evil-leader-def
-  :prefix ",")
-(evil-leader-def
-  :keymaps 'normal
-  "w" 'save-buffer
-  "b" 'counsel-ibuffer
-  "r" 'toggle-relative-line-numbers
-  "ev" 'find-user-init-file
-  "sv" 'load-user-init-file)
-
-(general-def 'normal
-  "C-p" 'projectile-find-file
-  "C-k" 'counsel-rg
-  "-"   'dired-jump)
-
-(general-def '(normal visual)
-  "C-y" 'yank
-  "C-e" 'end-of-line)
-
-(general-define-key
- :keymaps 'evil-insert-state-map
- (general-chord "jk") 'evil-normal-state)
+(with-eval-after-load 'general
+  (progn
+    (general-create-definer evil-leader-def
+      :prefix ",")
+    (evil-leader-def
+      :keymaps 'normal
+      "w" 'save-buffer
+      "b" 'counsel-ibuffer
+      "r" 'toggle-relative-line-numbers
+      "ev" 'find-user-init-file
+      "sv" 'load-user-init-file)
+    (general-define-key
+     :keymaps 'evil-insert-state-map
+     (general-chord "jk") 'evil-normal-state)))
 
 (provide 'init-evil)
