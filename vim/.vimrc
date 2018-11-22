@@ -279,7 +279,7 @@ augroup vimrc
   " }}}
 
   " Open the quickfix window after any grep search
-  au QuickFixCmdPost *grep* copen
+  au QuickFixCmdPost *grep* cwindow
 
   " File-type specific configuration {{{
   " C / C++
