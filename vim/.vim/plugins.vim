@@ -9,7 +9,8 @@ Plug 'tpope/vim-fugitive'       " Useful git commands
 Plug 'tpope/vim-commentary'     " Keybindings for commenting
 Plug 'tpope/vim-surround'       " Manage parenthises and brackets
 Plug 'tpope/vim-repeat'         " Extend . to work with plugins
-Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-vinegar'        " Better netrw / file browser
+Plug 'tpope/vim-dispatch'       " Asynchronous task runner
 
 " Automatically save and manage sessions
 Plug 'tpope/vim-obsession'
@@ -17,6 +18,9 @@ Plug 'dhruvasagar/vim-prosession'
 
 " Solarized color scheme
 Plug 'lifepillar/vim-solarized8'
+
+" Improved grepping with support for ag and ripgrep
+Plug 'mileszs/ack.vim'
 
 " Use pairs of characters as a motion command
 Plug 'justinmk/vim-sneak'
@@ -50,6 +54,9 @@ Plug 'junegunn/fzf.vim'
 
 " Asynchronous maker/linter
 Plug 'neomake/neomake'
+
+" Vim language server client
+Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': { -> coc#util#install() }}
 
 " Language specific plugins {{{
 " C++
