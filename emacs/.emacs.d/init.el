@@ -35,6 +35,7 @@
 (require 'init-theme)
 
 (use-package anaconda-mode
+  :disabled
   :hook ((python-mode . anaconda-mode)
          (python-mode . anaconda-eldoc-mode))
   :config
@@ -45,26 +46,23 @@
 (use-package better-defaults
   :config
   (ido-mode -1))
+(use-package cc-mode
+  :bind (:map c-mode-base-map
+              ("C-c C-f" . clang-format-buffer)))
+(use-package clang-format
+  :commands clang-format-buffer clang-format-region clang-format)
 (use-package company
   :config
   (global-company-mode))
-(use-package cmake-ide
-  :disabled
-  :after rtags
-  :config
-  (cmake-ide-setup))
-(use-package cquery
-  :commands lsp-cquery-enable
-  :hook ((c-mode . lsp-cquery-enable)
-         (c++-mode . lsp-cquery-enable))
-  :config
-  (setq cquery-exectuable (cond
-                           ((eq system-type 'darwin) "/usr/local/bin/cquery")
-                           ((eq system-type 'gnu/linux) "/usr/bin/cquery"))))
 (use-package delight) ; Use delight to manage minor mode displays
 (use-package dimmer
   :config
   (dimmer-mode))
+(use-package elpy
+  :disabled
+  :config
+  (setq elpy-modules (delete 'elpy-module-flymake elpy-modules))
+  (elpy-enable))
 (use-package evil ; Evil mode!
   :after general
   :init
@@ -77,7 +75,7 @@
   :if (memq system-type '(darwin gnu/linux))
   :config
   (setq exec-path-from-shell-check-startup-files nil)
-  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_TYPE"))
+  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_TYPE" "PYTHONPATH"))
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 (use-package flx) ; Fuzzy matching
@@ -112,8 +110,16 @@
     :bind ("C-s" . swiper))
   (use-package counsel ; Use ivy completion for many common functions in Emacs
     :delight
+    :bind (("C-c r" . counsel-rg)
+           :map minibuffer-local-map
+           ("C-r" . counsel-minibuffer-add))
     :config
     (setq counsel-mode-override-describe-bindings t)
+    (if (executable-find "rg")
+        (setq counsel-rg-base-command
+              "rg -i -M 120 --no-heading --line-number --color never %s ."
+              counsel-grep-base-command
+              "rg -i -M 120 --no-heading --line-number --color never '%s' %s"))
     (counsel-mode 1)
     (use-package counsel-projectile
       :after projectile
@@ -137,7 +143,27 @@
   (use-package company-lsp
     :after company
     :config
-    (add-to-list 'company-backends 'company-lsp)))
+    (add-to-list 'company-backends 'company-lsp))
+  (use-package lsp-ui
+    :hook (lsp-mode . lsp-ui-mode)
+    :config
+    (setq lsp-ui-sideline-ignore-duplicate t
+          lsp-ui-doc-enable nil
+          lsp-ui-peek-enable nil
+          lsp-ui-sideline-enable nil
+          lsp-ui-imenu-enable nil
+          lsp-ui-flycheck-enable t))
+  (use-package lsp-python
+    :commands lsp-python-enable
+    :hook (python-mode . lsp-python-enable))
+  (use-package cquery
+    :commands lsp-cquery-enable
+    :hook ((c-mode . lsp-cquery-enable)
+           (c++-mode . lsp-cquery-enable))
+    :config
+    (setq cquery-exectuable (cond
+                             ((eq system-type 'darwin) "/usr/local/bin/cquery")
+                             ((eq system-type 'gnu/linux) "/usr/bin/cquery")))))
 (use-package magit) ; Git front end
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
@@ -168,7 +194,9 @@
   :init
   (setq-default indent-tabs-mode nil)
   :config
-  (setq python-indent-offset 4))
+  (setq python-indent-offset 4)
+  (subword-mode 1)
+  (eldoc-mode 1))
 (use-package rtags
   :disabled
   :config
@@ -200,6 +228,9 @@
 ;; Enable auto revert mode globally
 (global-auto-revert-mode)
 (delight 'auto-revert-mode)
+
+;; Highlight current line
+(global-hl-line-mode t)
 
 ;; Shorten yes or no prompt
 (defalias 'yes-or-no-p 'y-or-n-p)

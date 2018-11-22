@@ -13,7 +13,7 @@
  '(initial-frame-alist (quote ((width . 160) (height . 50))))
  '(package-selected-packages
    (quote
-    (company-anaconda pyenv-mode-auto flycheck ibuffer-projectile color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow cmake-ide use-package-ensure-system-package solarized-theme smex rtags projectile multi-term markdown-mode load-theme-buffer-local leuven-theme key-chord general flx f exec-path-from-shell evil-surround evil-magit evil-leader evil-commentary evil-collection dracula-theme delight counsel company color-theme-buffer-local better-defaults)))
+    (lsp-python counsel-projectile eglot elpy clang-format company-anaconda pyenv-mode-auto flycheck ibuffer-projectile color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow cmake-ide use-package-ensure-system-package solarized-theme smex rtags projectile multi-term markdown-mode load-theme-buffer-local leuven-theme key-chord general flx f exec-path-from-shell evil-surround evil-magit evil-leader evil-commentary evil-collection dracula-theme delight counsel company color-theme-buffer-local better-defaults)))
  '(ring-bell-function (quote ignore))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
