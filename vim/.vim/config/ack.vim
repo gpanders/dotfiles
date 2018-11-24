@@ -4,6 +4,6 @@ elseif executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-let g:ack_use_dispatch = 1
+let g:ack_use_dispatch = 0
 
-noremap <leader>a :Ack!<space>
+noremap <C-K> :Ack!<space>

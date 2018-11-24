@@ -175,24 +175,9 @@ nnoremap <silent> k gk
 " Use space bar to toggle folds
 nnoremap <space> za
 
-" Keep search matches in the middle of the window
-" nnoremap * *zzzv
-" nnoremap # #zzzv
-" nnoremap n nzzzv
-" nnoremap N Nzzzv
-
-" Keep jumps in the middle of the window
-" nnoremap g, g,zz
-" nnoremap g; g;zz
-
 " Clear search buffer with <C-N>
 nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
-" Simplify resizing splits
-" nnoremap <silent> ^[j :resize +1<CR>
-" nnoremap <silent> ^[k :resize -1<CR>
-" nnoremap <silent> ^[h :vertical resize -1<CR>
-" nnoremap <silent> ^[l :vertical resize +1<CR>
 " }}}
 
 " Visual mode mappings {{{
@@ -292,6 +277,7 @@ augroup vimrc
 
   " Python
   au FileType python setlocal sw=4 ts=4 sts=4 kp=pydoc
+  au FileType python noremap <silent> <buffer> gz :botright sp <Bar> term python<CR>
 
   " LaTeX
   au FileType tex setlocal nocursorline norelativenumber
@@ -302,6 +288,9 @@ augroup vimrc
 
   " crontab
   au FileType crontab setlocal nobackup nowritebackup
+
+  " term
+  au TermOpen * startinsert
 
   " Press q to close certain windows
   au FileType help,qf nnoremap <silent> <buffer> q :q<CR>
