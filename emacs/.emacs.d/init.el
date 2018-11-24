@@ -58,19 +58,15 @@
 (use-package dimmer
   :config
   (dimmer-mode))
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-init)
+  :config
+  (use-package all-the-icons))
 (use-package elpy
   :disabled
   :config
   (setq elpy-modules (delete 'elpy-module-flymake elpy-modules))
   (elpy-enable))
-(use-package evil ; Evil mode!
-  :after general
-  :init
-  (setq evil-want-C-u-scroll t
-        evil-want-keybinding nil)
-  :config
-  (require 'init-evil)
-  (evil-mode 1))
 (use-package exec-path-from-shell ; Make sure Emacs PATH matches shell PATH
   :if (memq system-type '(darwin gnu/linux))
   :config
@@ -82,7 +78,6 @@
 (use-package flycheck
   :init
   (global-flycheck-mode))
-(use-package general) ; Better keybindings
 (use-package git-gutter
   :delight
   :config
@@ -135,9 +130,6 @@
     :config
     (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
   (ivy-mode 1))
-(use-package key-chord ; Allow key-chords
-  :config
-  (key-chord-mode 1))
 (use-package lsp-mode
   :config
   (use-package company-lsp
@@ -148,10 +140,10 @@
     :hook (lsp-mode . lsp-ui-mode)
     :config
     (setq lsp-ui-sideline-ignore-duplicate t
-          lsp-ui-doc-enable nil
+          lsp-ui-doc-enable t
           lsp-ui-peek-enable nil
           lsp-ui-sideline-enable nil
-          lsp-ui-imenu-enable nil
+          lsp-ui-imenu-enable t
           lsp-ui-flycheck-enable t))
   (use-package lsp-python
     :commands lsp-python-enable
@@ -175,7 +167,6 @@
   (setq markdown-command "pandoc")
   (when (eq system-type 'darwin)
     (setq markdown-open-command "/usr/local/bin/macdown")))
-(use-package move-text)
 (use-package projectile ; Project management
   :bind-keymap
   ("C-c p" . projectile-command-map)
@@ -216,14 +207,15 @@
   (rtags-enable-standard-keybindings))
 (use-package smex) ; M-x enhancement for Emacs
 
+;; Enable evil mode and configurations
+(require 'init-evil)
+
 ;; Disable line numbers in certain modes
 (dolist (m '(term-mode-hook shell-mode-hook eshell-mode-hook Custom-mode-hook dired-mode-hook))
   (add-hook m (lambda () (display-line-numbers-mode -1))))
 
 ;; Set zero line spacing in term mode
-(add-hook 'term-mode-hook
-          (lambda ()
-            (setq line-spacing 0)))
+(add-hook 'term-mode-hook (lambda () (setq-local line-spacing 0)))
 
 ;; Enable auto revert mode globally
 (global-auto-revert-mode)
@@ -237,7 +229,6 @@
 
 ;; Mac specific options [1]
 (when (eq system-type 'darwin)
-  ;;
   (add-hook 'after-make-frame-functions
             (lambda (frame)
               (set-frame-parameter frame 'menu-bar-lines
