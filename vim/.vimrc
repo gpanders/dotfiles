@@ -195,8 +195,10 @@ nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR
 " nnoremap <silent> ^[l :vertical resize +1<CR>
 " }}}
 
-" Search for visual selection with g/
-vnoremap g/ y/\V<C-R>"<CR>
+" Visual mode mappings {{{
+vnoremap * y/\V<C-R>"<CR>
+vnoremap # y?\V<C-R>"<CR>
+" }}}
 
 " Use ripgrep or ag as grepprg if available
 if executable('rg')
