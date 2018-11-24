@@ -56,7 +56,11 @@ Plug 'junegunn/fzf.vim'
 Plug 'neomake/neomake'
 
 " Vim language server client
-Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': { -> coc#util#install() }}
+" Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': { -> coc#util#install() }}
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Language specific plugins {{{
 " C++
@@ -64,7 +68,7 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 Plug 'Shougo/neoinclude.vim', { 'for': ['c', 'cpp'] }
 
 " Python
-Plug 'davidhalter/jedi', { 'for': 'python' }
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 
 " Vimscript
 Plug 'Shougo/neco-vim', { 'for': 'vim' }
