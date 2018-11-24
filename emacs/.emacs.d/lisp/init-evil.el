@@ -96,6 +96,8 @@
       "sv" 'load-user-init-file)
     (global-evil-leader-mode 1))
 
+  (evil-global-set-key 'normal "-" 'dired-jump)
+
   (evil-mode 1))
 
 (provide 'init-evil)
