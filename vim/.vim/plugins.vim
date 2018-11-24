@@ -34,20 +34,6 @@ Plug 'vim-utils/vim-husk'
 " Use same bindings to navigate between vim splits and tmux panes
 " Plug 'christoomey/vim-tmux-navigator'
 
-" Easy motion
-" Plug 'easymotion/vim-easymotion'
-
-" Show marks in gutter
-" Plug 'kshenoy/vim-signature'
-
-" Lightline (more lightweight version of vim-airline)
-" Plug 'itchyny/lightline.vim'
-" Plug 'taohexxx/lightline-buffer'
-" Plug 'mgee/lightline-bufferline'
-
-" Fix vim fold updating for better performance
-" Plug 'Konfekt/FastFold'
-
 " FZF
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
