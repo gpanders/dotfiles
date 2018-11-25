@@ -52,18 +52,39 @@
 (use-package clang-format
   :commands clang-format-buffer clang-format-region clang-format)
 (use-package circe
+  :commands (circe circe-server-buffers)
+  :hook ((circe-channel-mode . turn-on-visual-line-mode)
+         (circe-channel-mode . enable-circe-color-nicks))
   :config
   (defun get-sasl-user ()
     (replace-regexp-in-string "\n$" "" (shell-command-to-string "lpass show --username Freenode")))
   (defun get-sasl-pass ()
     (replace-regexp-in-string "\n$" "" (shell-command-to-string "lpass show --password Freenode")))
-  (setq circe-network-options
+  (setq lui-flyspell-p t
+        lui-fill-type nil
+        circe-color-nicks-min-constrast-ratio 4.5
+        circe-color-nicks-everywhere t
+        circe-default-quit-message nil
+        circe-default-part-message nil
+        circe-use-cycle-completion t
+        circe-reduce-lurker-spam t
+        circe-format-say "{nick:+13s} | {body}"
+        circe-format-self-say circe-format-say
+        circe-network-options
         `(("Freenode"
            :tls t
            :nick "greande"
            :sasl-username ,(get-sasl-user)
            :sasl-password  (lambda (&rest _) (get-sasl-pass))
-           ))))
+           )))
+  (use-package circe-notifications
+    :commands enable-circe-notifications
+    :hook (circe-server-connected . enable-circe-notifications)
+    :config
+    (setq circe-notifications-emacs-focused nil
+          circe-notifications-alert-style
+          (cond ((eq system-type 'darwin) 'osx-notifier)
+                ((eq system-type 'gnu/linux) 'libnotify)))))
 (use-package company
   :config
   (global-company-mode))
