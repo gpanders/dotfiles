@@ -42,7 +42,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
 " Asynchronous maker/linter
-Plug 'neomake/neomake'
+" Plug 'neomake/neomake'
 
 " Vim language server client
 " Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': { -> coc#util#install() }}
