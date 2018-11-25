@@ -7,16 +7,20 @@ if executable('cquery')
       \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery/cache' },
       \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
       \ })
+
+   au FileType c,cpp noremap <buffer> gd :LspDefinition<CR>
+   au FileType c,cpp setlocal completeopt+=preview
 endif
 
 " pyls
 if executable('pyls')
-  au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
+  "" Disabled for now in favor of jedi-vim
+  " au User lsp_setup call lsp#register_server({
+  "       \ 'name': 'pyls',
+  "       \ 'cmd': {server_info->['pyls']},
+  "       \ 'whitelist': ['python'],
+  "       \ })
 
-  au FileType python nnoremap <buffer> gd :LspDefinition<CR>
-  au FileType python setlocal completeopt+=preview
+  " au FileType python nnoremap <buffer> gd :LspDefinition<CR>
+  " au FileType python setlocal completeopt+=preview
 endif
