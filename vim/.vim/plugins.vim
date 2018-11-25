@@ -31,6 +31,9 @@ Plug 'airblade/vim-gitgutter'
 " Use navigation keybindings in command mode
 Plug 'vim-utils/vim-husk'
 
+" A Vim plugin that manages your tag files
+Plug 'ludovicchabant/vim-gutentags'
+
 " Use same bindings to navigate between vim splits and tmux panes
 " Plug 'christoomey/vim-tmux-navigator'
 
