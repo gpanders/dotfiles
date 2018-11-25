@@ -26,10 +26,9 @@
   (load-theme 'solarized-dark t))
 (use-package doom-themes
   :config
-  ;; (load-theme 'doom-dracula t)
-  ;; (load-theme 'doom-vibrant t)
-  (load-theme 'doom-solarized-light t)
-  ;; (load-theme 'doom-one t)
+  ;; (load-theme 'doom-solarized-light t)
+  ;; (load-theme 'sanityinc-solarized-dark t)
+  (load-theme 'doom-one t)
   )
 
 (provide 'init-theme)
