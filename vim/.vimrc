@@ -59,17 +59,26 @@ set modeline               " Enable vim modelines
 
 " Statusline {{{
 " Set the statusline
+function! StatuslineGitBranch()
+  let branch = FugitiveHead()
+  if branch != ""
+    return " " . branch
+  else
+    return ""
+  endif
+endfunction
+
 set laststatus=2
 set statusline=
-set statusline+=%1*\ %f\ %M%r\ 
+set statusline+=%1*\ %<%f\ %h%m%r\ 
 set statusline+=%2*\ %n\ 
 set statusline+=%4*
 set statusline+=\ %{CapsLockStatusline()}\ 
 set statusline+=%=
-set statusline+=\ %{FugitiveHead()}\ 
+set statusline+=\ %{StatuslineGitBranch()}\ 
 set statusline+=\ %y\ 
-set statusline+=%2*\ %p%%\ 
-set statusline+=%1*\ %l:%c\ 
+set statusline+=%2*\ %P\ 
+set statusline+=%1*\ %l:%c%V\ 
 
 " Set User1-9 highlight groups for statusline
 " These are used by adding %N* to the statusline, where {N} is 1-9
