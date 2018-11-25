@@ -1,0 +1,2 @@
+" CMake
+setlocal cms=#%s
