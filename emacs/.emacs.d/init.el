@@ -51,6 +51,19 @@
               ("C-c C-f" . clang-format-buffer)))
 (use-package clang-format
   :commands clang-format-buffer clang-format-region clang-format)
+(use-package circe
+  :config
+  (defun get-sasl-user ()
+    (replace-regexp-in-string "\n$" "" (shell-command-to-string "lpass show --username Freenode")))
+  (defun get-sasl-pass ()
+    (replace-regexp-in-string "\n$" "" (shell-command-to-string "lpass show --password Freenode")))
+  (setq circe-network-options
+        `(("Freenode"
+           :tls t
+           :nick "greande"
+           :sasl-username ,(get-sasl-user)
+           :sasl-password  (lambda (&rest _) (get-sasl-pass))
+           ))))
 (use-package company
   :config
   (global-company-mode))
