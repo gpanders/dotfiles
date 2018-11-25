@@ -277,34 +277,12 @@ augroup vimrc
   " Open the quickfix window after any grep search
   au QuickFixCmdPost *grep* cwindow
 
-  " File-type specific configuration {{{
-  " C / C++
-  au FileType c,cpp setlocal sw=2 ts=2 sts=2 cms=//%s cin
-
-  " CMake
-  au FileType cmake setlocal cms=#%s
-
-  " Python
-  au FileType python setlocal sw=4 ts=4 sts=4 kp=pydoc
-  au FileType python noremap <silent> <buffer> gz :botright sp <Bar> term python<CR>
-
-  " LaTeX
-  au FileType tex setlocal nocursorline norelativenumber
-  au FileType tex :NoMatchParen
-
-  " Vim
-  au FileType vim setlocal fdm=marker
-
-  " crontab
-  au FileType crontab setlocal nobackup nowritebackup
-
   " term
   au TermOpen * startinsert
 
   " Press q to close certain windows
   au FileType help,qf nnoremap <silent> <buffer> q :q<CR>
   au FileType netrw nnoremap <silent> <buffer> qq :Rex<CR>
-  " }}}
 
 augroup END
 " }}}

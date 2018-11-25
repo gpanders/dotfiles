@@ -1,0 +1,2 @@
+" Vim
+setlocal fdm=marker
