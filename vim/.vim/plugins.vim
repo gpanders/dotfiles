@@ -19,6 +19,15 @@ Plug 'dhruvasagar/vim-prosession'
 " Solarized color scheme
 Plug 'lifepillar/vim-solarized8'
 
+" One Dark color scheme
+Plug 'joshdick/onedark.vim'
+
+" Retro groove color scheme for Vim
+Plug 'morhetz/gruvbox'
+
+" A solid language pack for Vim
+Plug 'sheerun/vim-polyglot'
+
 " Improved grepping with support for ag and ripgrep
 Plug 'mileszs/ack.vim'
 
@@ -53,7 +62,6 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Language specific plugins {{{
 " C++
-Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 Plug 'Shougo/neoinclude.vim', { 'for': ['c', 'cpp'] }
 
 " Python

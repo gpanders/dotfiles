@@ -50,12 +50,15 @@ set noswapfile             " Disable swap file
 set foldmarker=\ {{{,\ }}} " Make default fold marker have a space
 set modeline               " Enable vim modelines
 
-" Show completion menu even when only one match
-" set completeopt=menuone,preview
+set path=.,**              " Add all subdirectories to path
+set wildcharm=<C-Z>
+set wildignorecase
+set wildignore=*.swp,*.bak
+set wildignore+=*.pyc,*.class,*.sln,*.Master,*.csproj,*.csproj.user,*.cache,*.dll,*.pdb,*.min.*
+set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
+set wildignore+=tags
+set wildignore+=*.tar.*
 " }}}
-
-" Don't press Shift to enter command mode
-" map ; :
 
 " Statusline {{{
 " Set the statusline
@@ -69,42 +72,52 @@ function! StatuslineGitBranch()
 endfunction
 
 set laststatus=2
-set statusline=
-set statusline+=%1*\ %<%f\ %h%m%r\ 
-set statusline+=%2*\ %n\ 
-set statusline+=%4*
-set statusline+=\ %{CapsLockStatusline()}\ 
-set statusline+=%=
-set statusline+=\ %{StatuslineGitBranch()}\ 
-set statusline+=\ %y\ 
-set statusline+=%2*\ %P\ 
-set statusline+=%1*\ %l:%c%V\ 
+set statusline=                              " Reset the statusline
+set statusline+=%1*\ %<%f\ %h%m%r\           " Filename and help/modified/RO markers
+set statusline+=%2*\ %n\                     " Buffer number
+set statusline+=%3*                          " Reset color
+set statusline+=\ %{CapsLockStatusline()}\   " Show caps lock indicator
+set statusline+=%=                           " Break point for right justify
+set statusline+=\ %{StatuslineGitBranch()}\  " Git branch (with icon)
+set statusline+=\ %{&ft}\                    " Filetype
+set statusline+=%4*\ %P\                     " Percent through file
+set statusline+=%5*\ %(%l:%c%V%)\            " Line and column number
 
 " Set User1-9 highlight groups for statusline
 " These are used by adding %N* to the statusline, where {N} is 1-9
-" Solarized definitions
-if &background ==# 'light'
-  hi User1 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
-  hi User2 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
-  hi User3 ctermfg=11 ctermbg=15 guifg=#657b83 guibg=#fdf6e3
-  hi User4 ctermfg=11 ctermbg=7 guifg=#657b83 guibg=#eee8d5
-else
-  hi User1 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
-  hi User2 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
-  hi User3 ctermfg=12 ctermbg=8 guifg=#839496 guibg=#002b36
-  hi User4 ctermfg=12 ctermbg=0 guifg=#839496 guibg=#073642
+" The following uses the solarized color scheme
+if g:colors_name ==# 'solarized8'
+  if &background ==# 'light'
+    hi User1 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
+    hi User2 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
+    hi User3 ctermfg=11 ctermbg=7 guifg=#657b83 guibg=#eee8d5
+    hi User4 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
+    hi User5 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
+  else
+    hi User1 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
+    hi User2 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
+    hi User3 ctermfg=12 ctermbg=0 guifg=#839496 guibg=#073642
+    hi User4 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
+    hi User5 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
+  endif
+elseif g:colors_name ==# 'onedark'
+  hi User1 cterm=reverse gui=reverse
+  hi User2 ctermbg=237 guibg=#3e4452
+  hi User3 ctermfg=145 ctermbg=235 guifg=#abb2bf guibg=#282c34
+  hi User4 ctermbg=237 guibg=#3e4452
+  hi User5 cterm=reverse gui=reverse
 endif
 " }}}
 
 " Insert mode mappings {{{
 
 " jk in Insert mode escapes to Normal mode
-inoremap jk <Esc>
+inoremap jk <Esc>l
 
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
 
-" Use <C-W> in inset mode to make the word under the cursor all caps
+" Use <C-U> in insert mode to make the word under the cursor all caps
 inoremap <C-U> <Esc>gUiw`]a
 
 " Delete forward in insert mode
@@ -116,15 +129,18 @@ inoremap <C-L> <Del>
 " Save by pressing <leader>w
 nnoremap <silent> <leader>w :w<CR>
 
-" Use :tjump by default
-nnoremap <C-]> g<C-]>
+" Make :tjump easier
+nnoremap g] g<C-]>
+
+" Map Q to gq
+noremap Q gq
 
 " Use <C-K> in Normal mode to use grepprg
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
 command! -nargs=+ -complete=file -bar -bang Grep silent! grep<bang> <args>|copen|redraw!
 nnoremap <C-K> :Grep!<space>
 
-" Buffer shortcuts {{{
+" Buffer shortcuts
 nnoremap <silent> <leader>1 :b1<CR>
 nnoremap <silent> <leader>2 :b2<CR>
 nnoremap <silent> <leader>3 :b3<CR>
@@ -137,13 +153,8 @@ nnoremap <silent> <leader>9 :b9<CR>
 nnoremap <silent> <leader>0 :b10<CR>
 
 " List buffers and put :b on the command line
-noremap <leader>b :buffers<CR>:b
-
-noremap <C-W>c :bd<CR>
-
-noremap <silent> <M-[> :bprev<CR>
-noremap <silent> <M-]> :bnext<CR>
-" }}}
+noremap <leader>b :buffers<CR>:b <C-Z><S-Tab>
+noremap <leader>B :buffers<CR>:sb <C-Z><S-Tab>
 
 " Augment [I and ]I to place an :ij prompt below results for easy jumping
 noremap [I [I:ij  <C-R><C-W><S-Left><Left>
@@ -153,20 +164,19 @@ noremap ]I ]I:ij  <C-R><C-W><S-Left><Left>
 noremap [D [D:dj  <C-R><C-W><S-Left><Left>
 noremap ]D ]D:dj  <C-R><C-W><S-Left><Left>
 
-" Open jumplist
-map <leader>ju :jumps<CR>
-
 " Open quickfix list and place :cc on the prompt
 noremap <leader>cl :clist<CR>:sil cc<space>
 
 " Open location list and place :ll on the prompt
 noremap <leader>ll :llist<CR>:sil ll<space>
 
-" Open undo list
-map <leader>u :undol<CR>
+nnoremap <leader>f :find *
+nnoremap <leader>t :tabfind *
+nnoremap <leader>j :tjump /
+nnoremap <leader>p :ptjump /
 
-" Show marks
-map <leader>m :marks<CR>
+nnoremap <leader>F :find <C-R>=expand('%:h').'/*'<CR>
+nnoremap <leader>T :tabfind <C-R>=expand('%:h').'/*'<CR>
 
 " <leader>ev opens .vimrc in new window
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
@@ -274,8 +284,8 @@ augroup vimrc
   au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
   " }}}
 
-  " Open the quickfix window after any grep search
-  au QuickFixCmdPost *grep* cwindow
+  " Open the quickfix window after any quickfix command
+  au QuickFixCmdPost [^l]* cwindow
 
   " term
   au TermOpen * startinsert
