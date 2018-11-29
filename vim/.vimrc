@@ -288,7 +288,9 @@ augroup vimrc
   au QuickFixCmdPost [^l]* cwindow
 
   " term
-  au TermOpen * startinsert
+  if has('nvim')
+    au TermOpen * startinsert
+  endif
 
   " Press q to close certain windows
   au FileType help,qf nnoremap <silent> <buffer> q :q<CR>
