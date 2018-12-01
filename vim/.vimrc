@@ -295,7 +295,7 @@ augroup vimrc
   endif
 
   " Press q to close certain windows
-  au FileType help,qf nnoremap <silent> <buffer> q :q<CR>
+  au FileType qf nnoremap <silent> <buffer> q :q<CR>
   au FileType netrw nnoremap <silent> <buffer> qq :Rex<CR>
 
 augroup END
