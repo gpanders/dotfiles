@@ -96,11 +96,17 @@
   :hook (after-init . doom-modeline-init)
   :config
   (use-package all-the-icons))
-(use-package elpy
-  :disabled
+(use-package eglot
+  :hook ((python-mode . eglot-ensure)
+         (c-mode . eglot-ensure)
+         (cpp-mode . eglot-ensure))
   :config
-  (setq elpy-modules (delete 'elpy-module-flymake elpy-modules))
-  (elpy-enable))
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode) . (eglot-cquery "cquery"))))
+;; (use-package elpy
+;;   :disabled
+;;   :config
+;;   (setq elpy-modules (delete 'elpy-module-flymake elpy-modules))
+;;   (elpy-enable))
 (use-package exec-path-from-shell ; Make sure Emacs PATH matches shell PATH
   :if (memq system-type '(darwin gnu/linux))
   :config
@@ -165,7 +171,10 @@
     (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
   (ivy-mode 1))
 (use-package lsp-mode
+  :disabled
   :config
+  (use-package lsp-imenu
+    :hook (lsp-after-open . lsp-enable-imenu))
   (use-package company-lsp
     :after company
     :config
@@ -175,8 +184,8 @@
     :config
     (setq lsp-ui-sideline-ignore-duplicate t
           lsp-ui-doc-enable t
-          lsp-ui-peek-enable nil
-          lsp-ui-sideline-enable nil
+          lsp-ui-peek-enable t
+          lsp-ui-sideline-enable t
           lsp-ui-imenu-enable t
           lsp-ui-flycheck-enable t))
   (use-package lsp-python
