@@ -1,0 +1,17 @@
+source ~/.config/mutt/mailboxes
+
+set my_name = "Greg Anders"
+set realname = $my_name
+set editor = `echo \$EDITOR`
+set use_from = yes
+set envelope_from = yes
+set sendmail = msmtp
+
+set sidebar_visible = yes
+set edit_headers = yes
+
+folder-hook .          source ~/.config/mutt/config.default
+folder-hook "Personal" source ~/.config/mutt/config.personal
+
+# Use Personal mailbox as default
+source ~/.config/mutt/config.personal

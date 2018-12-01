@@ -1,0 +1,10 @@
+set from = greg@gpanders.com
+set folder = "~/.mail/Personal"
+set mbox_type = Maildir
+set spoolfile = +INBOX
+set postponed = +Drafts
+set record = +Sent
+set mbox = +Archive
+set sort = reverse-date
+
+# vim: ft=muttrc
