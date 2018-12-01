@@ -1,2 +1,2 @@
 " Vim
-setlocal fdm=marker
+setlocal foldmethod=marker

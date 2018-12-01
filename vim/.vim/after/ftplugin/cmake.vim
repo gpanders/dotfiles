@@ -1,2 +1,2 @@
 " CMake
-setlocal cms=#%s
+setlocal commentstring=#%s
