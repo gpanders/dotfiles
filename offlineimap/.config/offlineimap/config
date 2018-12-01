@@ -1,0 +1,34 @@
+# Sample minimal config file.  Copy this to ~/.offlineimaprc and edit to
+# get started fast.
+
+[general]
+ui = ttyui
+metadata = ~/.config/offlineimap
+pythonfile = ~/.config/offlineimap/helpers.py
+accounts = Personal
+
+[mbnames]
+enabled = yes
+filename = ~/.config/mutt/mailboxes
+header = "mailboxes "
+peritem = "+%(accountname)s/%(foldername)s"
+sep = " "
+footer = "\n"
+#incremental = no
+
+[Account Personal]
+localrepository = PersonalLocal
+remoterepository = PersonalRemote
+
+[Repository PersonalLocal]
+type = Maildir
+localfolders = ~/.mail/Personal
+
+[Repository PersonalRemote]
+type = IMAP
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+remotehost = mail.gandi.net
+remoteuser = greg@gpanders.com
+remotepasseval = get_pass("mail/greg@gpanders.com")
+nametrans = lambda f: "Sent" if f.startswith("Sent") else "Trash" if f.startswith("Trash") else f
+folderfilter = lambda f: f not in ["Junk", "Trash"]

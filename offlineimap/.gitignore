@@ -1,0 +1,5 @@
+*.pyc
+mbnames/
+config.default
+Account-*
+Repository-*
