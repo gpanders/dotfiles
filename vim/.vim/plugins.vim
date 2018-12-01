@@ -2,15 +2,19 @@
 " Specify a directory for plugins
 call plug#begin('~/.vim/plug')
 
-Plug 'tpope/vim-sensible'       " Sensible defaults (most already incorporated into neovim)
-Plug 'tpope/vim-unimpaired'     " A bunch of useful keybindings
-Plug 'tpope/vim-capslock'       " Software caps lock
-Plug 'tpope/vim-fugitive'       " Useful git commands
-Plug 'tpope/vim-commentary'     " Keybindings for commenting
-Plug 'tpope/vim-surround'       " Manage parenthises and brackets
-Plug 'tpope/vim-repeat'         " Extend . to work with plugins
-Plug 'tpope/vim-vinegar'        " Better netrw / file browser
-Plug 'tpope/vim-dispatch'       " Asynchronous task runner
+Plug 'tpope/vim-sensible'        " Sensible defaults
+Plug 'tpope/vim-unimpaired'      " A bunch of useful keybindings
+Plug 'tpope/vim-capslock'        " Software caps lock
+Plug 'tpope/vim-commentary'      " Keybindings for commenting
+Plug 'tpope/vim-surround'        " Manage parenthises and brackets
+Plug 'tpope/vim-repeat'          " Extend . to work with plugins
+Plug 'tpope/vim-vinegar'         " Better netrw / file browser
+Plug 'tpope/vim-dispatch'        " Asynchronous task runner
+Plug 'tpope/vim-fugitive'        " Vim git wrapper
+Plug 'tpope/vim-rhubarb'         " Github plugin for fugitive
+
+" Gitlab plugin for fugitive
+Plug 'shumphrey/fugitive-gitlab.vim'
 
 " Automatically save and manage sessions
 Plug 'tpope/vim-obsession'
@@ -49,9 +53,6 @@ Plug 'ludovicchabant/vim-gutentags'
 " FZF
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
-
-" Asynchronous maker/linter
-" Plug 'neomake/neomake'
 
 " Vim language server client
 " Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': { -> coc#util#install() }}
