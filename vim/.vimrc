@@ -19,8 +19,10 @@ if has('termguicolors')
   set termguicolors
 else
   let g:solarized_use16 = 1
+  let g:onedark_termcolors = 16
+
 endif
-colorscheme solarized8
+colorscheme onedark
 " }}}
 
 " Sudo save
