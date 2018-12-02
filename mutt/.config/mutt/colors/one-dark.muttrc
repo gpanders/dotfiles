@@ -1,0 +1,45 @@
+# general ------------ foreground ---- background -----------------------------
+color error		    brightred	default
+color indicator		black	    yellow
+color markers		  color210	default
+color message		  default		default
+color normal		  default		default
+color prompt		  default	  default
+color search		  black	  	yellow
+color status 		  yellow 	  default
+color tilde		    color231	default
+color tree		    green   	default
+
+# sidebar ------------ foreground ---- background -----------------------------
+color sidebar_highlight brightwhite default
+color sidebar_divider   black       black
+color sidebar_flagged   red         black
+color sidebar_new       brightwhite black
+
+# message index ------ foreground ---- background -----------------------------
+color index		brightblack default 	~D # deleted messages
+color index		magenta 	  default 	~F # flagged messages
+color index		brightwhite	default 	~N # new messages
+color index		white  	    default 	~Q # messages which have been replied to
+color index		yellow  	  default 	~T # tagged messages
+color index		white   	  default		~v # messages part of a collapsed thread
+
+# message headers ---- foreground ---- background -----------------------------
+color hdrdefault	blue            default
+color header		  brightwhite	    default		^Subject:.*
+
+# message body ------- foreground ---- background -----------------------------
+color attachment	yellow	        default
+color body		    blue      	    default		[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+               # email addresses
+color body		    green       	  default		(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+        # URLs
+color body		    brightwhite	    default		(^|[[:space:]])\\*[^[:space:]]+\\*([[:space:]]|$) # *bold* text
+color body		    brightwhite	    default		(^|[[:space:]])_[^[:space:]]+_([[:space:]]|$)     # _underlined_ text
+color body		    brightwhite	    default		(^|[[:space:]])/[^[:space:]]+/([[:space:]]|$)     # /italic/ text
+color quoted		  brightblack     default
+color quoted1		  brightblack	    default
+color quoted2		  brightblack		  default
+color quoted3		  brightblack	    default
+color quoted4		  brightblack	    default
+color signature		color212	      default
+
+# vim: ft=muttrc

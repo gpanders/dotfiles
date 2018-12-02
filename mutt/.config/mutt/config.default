@@ -1,6 +1,9 @@
 set folder = ~/.mail
-set mbox_type = Maildir
 unset from
+
+set text_flowed
+set sort = threads
+set sort_aux = reverse-last-date-received
 
 # Store message headers locally to speed things up.  If hcache is a folder,
 # Mutt will create sub cache folders for each account which may speeds things
@@ -11,5 +14,10 @@ set header_cache = ~/.cache/mutt/headers
 # Can be the same folder as header_cache.
 # This will cost important disk usage according to your e-mail amount.
 set message_cachedir = ~/.cache/mutt/messages
+
+set pager_index_lines = 10
+
+bind index,pager \Cu previous-page
+bind index,pager \Cd next-page
 
 # vim: ft=muttrc

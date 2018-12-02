@@ -1,3 +1,4 @@
+set folder = "~/.mail"
 source ~/.config/mutt/mailboxes
 
 set my_name = "Greg Anders"
@@ -6,9 +7,27 @@ set editor = `echo \$EDITOR`
 set use_from = yes
 set envelope_from = yes
 set sendmail = msmtp
-
-set sidebar_visible = yes
 set edit_headers = yes
+
+set alias_file = ~/.config/mutt/aliases
+set sort_alias = alias
+set reverse_alias = yes
+source $alias_file
+
+set nm_default_uri = "notmuch://$HOME/.mail"
+macro index \\ "<vfolder-from-query>"
+macro index,pager A "<modify-labels-then-hide>!archive -unread !inbox\n<sync-mailbox>" "Archive message"
+macro index,pager X "<change-vfolder>?" "Change to vfolder overview"
+# macro index,pager d "<modify-labels>+trash -archive -unread -inbox\n<delete-message>" "Delete message"
+bind index,pager + entire-thread
+bind index < vfolder-window-backward
+bind index > vfolder-window-forward
+
+source ~/.config/mutt/config.default
+source ~/.config/mutt/config.sidebar
+
+# Colorscheme
+source ~/.config/mutt/colors/one-dark.muttrc
 
 folder-hook .          source ~/.config/mutt/config.default
 folder-hook "Personal" source ~/.config/mutt/config.personal

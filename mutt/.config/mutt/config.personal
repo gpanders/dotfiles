@@ -1,10 +1,16 @@
 set from = greg@gpanders.com
-set folder = "~/.mail/Personal"
+set folder = +Personal
 set mbox_type = Maildir
 set spoolfile = +INBOX
 set postponed = +Drafts
 set record = +Sent
 set mbox = +Archive
-set sort = reverse-date
+
+set virtual_spoolfile = no
+
+virtual-mailboxes "Inbox" "notmuch://?query=tag:inbox and not tag:archive"
+virtual-mailboxes "Archive" "notmuch://?query=tag:archive"
+virtual-mailboxes "Sent" "notmuch://?query=tag:sent"
+virtual-mailboxes "Trash" "notmuch://?query=tag:trash"
 
 # vim: ft=muttrc
