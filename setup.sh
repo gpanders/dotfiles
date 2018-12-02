@@ -69,7 +69,7 @@ fi
 
 if hash neomutt 2>/dev/null; then
   if ! hash mutt 2>/dev/null; then
-    ln -s /usr/local/bin/mutt $(which neomutt)
+    ln -s $(which neomutt) /usr/local/bin/mutt
   else
     echo "Both mutt and neomutt installed!"
   fi
