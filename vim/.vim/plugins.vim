@@ -8,13 +8,16 @@ Plug 'tpope/vim-capslock'        " Software caps lock
 Plug 'tpope/vim-commentary'      " Keybindings for commenting
 Plug 'tpope/vim-surround'        " Manage parenthises and brackets
 Plug 'tpope/vim-repeat'          " Extend . to work with plugins
-Plug 'tpope/vim-vinegar'         " Better netrw / file browser
+" Plug 'tpope/vim-vinegar'         " Better netrw / file browser
 Plug 'tpope/vim-dispatch'        " Asynchronous task runner
 Plug 'tpope/vim-fugitive'        " Vim git wrapper
 Plug 'tpope/vim-rhubarb'         " Github plugin for fugitive
 
 " Gitlab plugin for fugitive
 Plug 'shumphrey/fugitive-gitlab.vim'
+
+" Directory viewer for vim
+Plug 'justinmk/vim-dirvish'
 
 " Automatically save and manage sessions
 Plug 'tpope/vim-obsession'
@@ -25,9 +28,6 @@ Plug 'lifepillar/vim-solarized8'
 
 " One Dark color scheme
 Plug 'joshdick/onedark.vim'
-
-" Retro groove color scheme for Vim
-Plug 'morhetz/gruvbox'
 
 " A solid language pack for Vim
 Plug 'sheerun/vim-polyglot'
