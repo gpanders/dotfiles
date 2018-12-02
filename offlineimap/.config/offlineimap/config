@@ -19,6 +19,7 @@ footer = "\n"
 [Account Personal]
 localrepository = PersonalLocal
 remoterepository = PersonalRemote
+postsynchook = ~/.config/offlineimap/notmuch.sh
 
 [Repository PersonalLocal]
 type = Maildir
