@@ -48,10 +48,39 @@ if hash i3 2>/dev/null; then
   stow -t $HOME conky
 fi
 
+if ! hash offlineimap 2>/dev/null; then
+  read -r -p "Install offlineimap? [y/N] " ans
+  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+    install offlineimap
+  fi
+fi
+
+if hash offlineimap 2>/dev/null; then
+  echo "Creating symlinks for offlineimap"
+  stow -t $HOME offlineimap
+fi
+
+if ! hash mutt 2>/dev/null && ! hash neomutt 2>/dev/null; then
+  read -r -p "Install mutt? [y/N] " ans
+  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+    install neomutt
+  fi
+fi
+
+if hash neomutt 2>/dev/null; then
+  if ! hash mutt 2>/dev/null; then
+    ln -s /usr/local/bin/mutt $(which neomutt)
+  else
+    echo "Both mutt and neomutt installed!"
+  fi
+  echo "Creating symlinks for mutt"
+  stow -t $HOME mutt
+fi
+
 # Upgrade vim-plug and install vim plugins
 if [ ! -d $HOME/.vim/plug ]; then
   echo "Installing vim plugins..."
-  vim -u $HOME/.vim/plugins.vim -c PlugUpgrade -c PlugInstall -c qall! 2>&1 > /dev/null &
+  vim -u $HOME/.vim/plugins.vim -c PlugUpgrade -c PlugInstall -c qall! 2>&1 >/dev/null &
   echo "Done."
 fi
 
@@ -67,10 +96,7 @@ if ! git config --global --get user.name 1>/dev/null ; then
 fi
 
 if ! git config --global --get user.email 1>/dev/null ; then
-  read -r -p "Git email address: " git_email
-  if [ ! -z $git_email ]; then
-    git config --global user.email "$git_email"
-  fi
+  git config --global user.email "greg@gpanders.com"
 fi
 
 if [ ! -d $HOME/.zprezto ]; then
@@ -97,7 +123,7 @@ if [ ! -d $HOME/.zprezto ]; then
     cp $HOME/.zprezto/runcoms/zshenv $HOME/.zshenv
 
     # Install 3rd party (contrib) modules
-    mkdir -p $HOME/.zprezto/contrib
+    git clone --quiet --recursive https://github.com/belak/prezto-contrib.git $HOME/.zprezto/contrib
     if [ ! -d $HOME/.zprezto/contrib/fzf ]; then
       git clone --quiet --recursive https://github.com/gpanders/fzf-prezto.git $HOME/.zprezto/contrib/fzf
     fi
@@ -105,7 +131,7 @@ if [ ! -d $HOME/.zprezto ]; then
 fi
 
 if hash zsh 2>/dev/null; then
-  user_shell=$(finger $USER | grep Shell | awk '{print $4}')
+  user_shell=$(finger $USER 2>/dev/null | grep Shell | awk '{print $4}')
   if [[ $user_shell != *"zsh"* ]]; then
     read -r -p "Change default shell to zsh? [y/N] " ans
     if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
