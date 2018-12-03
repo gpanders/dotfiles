@@ -13,14 +13,13 @@ if executable('cquery')
 endif
 
 " pyls
-if executable('pyls')
-  "" Disabled for now in favor of jedi-vim
-  " au User lsp_setup call lsp#register_server({
-  "       \ 'name': 'pyls',
-  "       \ 'cmd': {server_info->['pyls']},
-  "       \ 'whitelist': ['python'],
-  "       \ })
+" if executable('pyls')
+"   au User lsp_setup call lsp#register_server({
+"         \ 'name': 'pyls',
+"         \ 'cmd': {server_info->['pyls']},
+"         \ 'whitelist': ['python'],
+"         \ })
 
-  " au FileType python nnoremap <buffer> gd :LspDefinition<CR>
-  " au FileType python setlocal completeopt+=preview
-endif
+"   au FileType python nnoremap <buffer> gd :LspDefinition<CR>
+"   au FileType python setlocal completeopt+=preview
+" endif

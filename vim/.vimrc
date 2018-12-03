@@ -305,7 +305,3 @@ augroup END
 set exrc
 set secure
 " }}}
-
-" Source plugin configuration files
-" Do this last so that plugins can override default configuration
-runtime! config/*.vim
