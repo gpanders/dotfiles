@@ -61,6 +61,9 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
+" Asynchronous linting/fixing for Vim and Language Server Protocol integration
+Plug 'w0rp/ale'
+
 " Language specific plugins {{{
 " C++
 Plug 'Shougo/neoinclude.vim', { 'for': ['c', 'cpp'] }
