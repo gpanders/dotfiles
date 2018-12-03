@@ -5,7 +5,7 @@
 ui = ttyui
 metadata = ~/.config/offlineimap
 pythonfile = ~/.config/offlineimap/helpers.py
-accounts = Personal
+accounts = Personal, Gmail
 
 [mbnames]
 enabled = yes
@@ -19,7 +19,13 @@ footer = "\n"
 [Account Personal]
 localrepository = PersonalLocal
 remoterepository = PersonalRemote
-postsynchook = ~/.config/offlineimap/notmuch.sh
+postsynchook = ~/.config/offlineimap/notmuch.sh "Personal"
+
+[Account Gmail]
+localrepository = GmailLocal
+remoterepository = GmailRemote
+synclabels = yes
+postsynchook = ~/.config/offlineimap/notmuch.sh "Gmail"
 
 [Repository PersonalLocal]
 type = Maildir
@@ -27,9 +33,25 @@ localfolders = ~/.mail/Personal
 
 [Repository PersonalRemote]
 type = IMAP
-sslcacertfile = /usr/local/etc/openssl/cert.pem
+sslcacertfile = /etc/ssl/cert.pem
 remotehost = mail.gandi.net
 remoteuser = greg@gpanders.com
 remotepasseval = get_pass("mail/greg@gpanders.com")
 nametrans = lambda f: "Sent" if f.startswith("Sent") else "Trash" if f.startswith("Trash") else f
 folderfilter = lambda f: f not in ["Junk", "Trash"]
+
+[Repository GmailLocal]
+type = GmailMaildir
+localfolders = ~/.mail/Gmail
+nametrans = lambda f: '[Gmail]/' + f if f in ['Drafts', 'Starred', 'Important', 'Spam', 'Trash', 'All Mail', 'Sent Mail'] else f
+
+[Repository GmailRemote]
+type = Gmail
+remoteuser = greg.p.anders@gmail.com
+sslcacertfile = /etc/ssl/cert.pem
+auth_mechanisms = XOAUTH2
+oauth2_client_id_eval = get_secret("tokens/oauth/google/offlineimap", 1).split()[2]
+oauth2_client_secret_eval = get_pass("tokens/oauth/google/offlineimap")
+oauth2_request_url = https://accounts.google.com/o/oauth2/token
+oauth2_refresh_token_eval = get_secret("tokens/oauth/google/offlineimap", 2).split()[2]
+nametrans = lambda f: f.replace('[Gmail]/', '') if f.startswith('[Gmail]/') else f
