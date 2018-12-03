@@ -1,6 +1,10 @@
 set folder = "~/.mail"
 source ~/.config/mutt/mailboxes
 
+set mailcap_path = ~/.config/mutt/mailcap
+alternative_order text/plain text/enriched text/html
+auto_view text/html
+
 set my_name = "Greg Anders"
 set realname = $my_name
 set editor = `echo \$EDITOR`
@@ -18,7 +22,6 @@ set nm_default_uri = "notmuch://$HOME/.mail"
 macro index \\ "<vfolder-from-query>"
 macro index,pager A "<modify-labels-then-hide>!archive -unread !inbox\n<sync-mailbox>" "Archive message"
 macro index,pager X "<change-vfolder>?" "Change to vfolder overview"
-# macro index,pager d "<modify-labels>+trash -archive -unread -inbox\n<delete-message>" "Delete message"
 bind index,pager + entire-thread
 bind index < vfolder-window-backward
 bind index > vfolder-window-forward
