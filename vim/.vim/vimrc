@@ -1,10 +1,22 @@
 " Greg Anders (gpanders)'s vimrc <https://github.com/gpanders/dotfiles.git>
 
+if has('autocmd')
+  filetype plugin indent on
+endif
+if has('syntax') && !exists('g:syntax_on')
+  syntax enable
+endif
+
 " Set the leader key
 let mapleader = ','
 let maplocalleader = '\'
 
 " Set color scheme {{{
+
+" Allow color schemes to do bright colors without forcing bold
+if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
+  set t_Co=16
+endif
 
 " Set background if $TERMBG is set, otherwise let vim decide
 if $TERMBG == 'light'
@@ -35,23 +47,25 @@ endif
 cnoreabbrev w!! w !sudo tee > /dev/null %
 
 " Settings {{{
+set smarttab               " Use whatever is already being used in the file
 set tabstop=2              " Tab width
 set softtabstop=2          " Tab width
 set shiftwidth=2           " Tab width
 set autoindent             " Auto indent
 set expandtab              " Use spaces instead of tabs
-set incsearch              " Show search matches as they are typed
 set number                 " Show line numbers
 set hidden                 " Hide buffers instead of closing them
 set ignorecase             " Make searching case insensitive
 set smartcase              " ... unless the query has capital letters
 set gdefault               " Use 'g' flag by default with :s/foo/bar/.
 set magic                  " Use 'magic' patterns (extended regular expressions)
+set incsearch              " Show search matches as they are typed
 set hlsearch               " Highlight search results
 set splitbelow             " Open horizontal splits below current pane
 set splitright             " Open vertical splits to the right of current pane
 set nostartofline          " Don't move cursor to start of line when scrolling
 set scrolloff=2            " 2 lines above/below cursor when scrolling
+set sidescrolloff=5        " 5 lines to the right/left of cursor when scrolling
 set showmatch              " Show matching bracket in insert mode
 set matchtime=2            " Show matching bracket for 2 tenths of a second
 set matchpairs+=<:>        " Add angle brackets as match pairs
@@ -63,9 +77,48 @@ set virtualedit+=block     " Enable virtual editing in visual block mode
 set lazyredraw             " Don't redraw the screen during batch execution
 set linebreak              " Set lines at word boundaries
 set include=               " Let filetypes set this value themselves
+set nrformats-=octal       " Treat numbers with a leading zero as decimal, not octal
+set display+=lastline      " Show the last screen line
+set autoread               " Automatically external changes to the open file
 
-set path-=/usr/include     " Let filetypes set this value themselves
+if !has('nvim') && &ttimeoutlen == -1
+  set ttimeout
+  set ttimeoutlen=100
+endif
+
+" Allow backspacing over all whitespace
+set backspace=indent,eol,start
+
+" Specify whitespace chars
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+
+" Delete comment characters when joining commented lines
+set formatoptions+=j
+
+if has('path_extra')
+  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+" Increase Vim's command history
+set history=1000
+
+" Set max number of tab pages
+set tabpagemax=50
+
+" Keep and store UPPERCASE global variables
+if !empty(&viminfo)
+  set viminfo^=!
+endif
+
+" Don't save options in session files
+set sessionoptions-=options
+
+set path-=/usr/include     " Let C/C++ filetypes set this
 set path+=**               " Search current directory's whole tree
+
+set laststatus=2
+set ruler
+set wildmenu
 
 set wildcharm=<C-Z>
 set wildmode=longest,full
@@ -134,22 +187,31 @@ if has('persistent_undo')
   set undodir^=~/.vim/cache/undo//
 endif
 
+" Load matchit.vim
+runtime! macros/matchit.vim
+
 " Insert mode mappings {{{
 
 " jk in Insert mode escapes to Normal mode
 inoremap jk <Esc>l
 
+" Set a new 'undo point' before undoing entire line
+inoremap <C-U> <C-G>u<C-U>
+
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
 
-" Use <C-U> in insert mode to make the word under the cursor all caps
-inoremap <C-U> <Esc>gUiw`]a
+" Remap <C-H> to delete one shiftwidth of indent in the current line
+inoremap <C-H> <C-D>
 
-" Delete forward in insert mode
-inoremap <C-L> <Del>
+" Delete character under cursor
+inoremap <C-D> <Del>
+
+" Kill the rest of the line (similar to Emacs binding)
+inoremap <C-K> <C-G>u<C-O>D
 
 " Enable caps lock mode from vim-capslock
-inoremap <C-C> <Plug>(CapsLockToggle)
+" inoremap <C-C> <Plug>(CapsLockToggle)
 
 " }}}
 
@@ -322,10 +384,10 @@ augroup vimrc
 
   " Highlight the current line in the current window but disable in Insert mode {{{
   let blacklist = ['tex']
-  au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
-  au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
-  au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
-  au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
+  " au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
+  " au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
+  " au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
+  " au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
   " }}}
 
   " Open the quickfix window after any quickfix command
