@@ -1,3 +1,7 @@
+if &filetype !=# 'help'
+  finish
+endif
+
 noremap <silent> <buffer> <CR> g<C-]>
 
 " Make help in vim more like a pager

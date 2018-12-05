@@ -1,5 +1,5 @@
-" C++
-if &filetype !=# 'cpp'
+" C
+if &filetype !=# 'c'
   finish
 endif
 
