@@ -32,6 +32,10 @@ echo "Creating symlinks for bash"
 stow -t $HOME bash
 echo "Creating symlinks for tmux"
 stow -t $HOME tmux
+echo "Installing git template"
+stow -t $HOME git
+git config --global init.templatedir "$HOME/.config/git/template"
+git config --global alias.ctags "!.git/hooks/ctags"
 
 if ! hash i3 2>/dev/null; then
   read -r -p "Install i3? [y/N] " ans
