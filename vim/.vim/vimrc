@@ -1,11 +1,11 @@
-" Source plugins list
-source $HOME/.vim/plugins.vim
+" Greg Anders (gpanders)'s vimrc <https://github.com/gpanders/dotfiles.git>
 
 " Set the leader key
 let mapleader = ','
 let maplocalleader = '\'
 
 " Set color scheme {{{
+
 " Set background if $TERMBG is set, otherwise let vim decide
 if $TERMBG == 'light'
   set background=light
@@ -20,9 +20,15 @@ if has('termguicolors')
 else
   let g:solarized_use16 = 1
   let g:onedark_termcolors = 16
-
 endif
-colorscheme onedark
+
+silent! packadd! onedark
+silent! colorscheme onedark
+
+if !exists('g:colors_name')
+  set bg=dark
+endif
+
 " }}}
 
 " Sudo save
@@ -32,7 +38,9 @@ cnoreabbrev w!! w !sudo tee > /dev/null %
 set tabstop=2              " Tab width
 set softtabstop=2          " Tab width
 set shiftwidth=2           " Tab width
+set autoindent             " Auto indent
 set expandtab              " Use spaces instead of tabs
+set incsearch              " Show search matches as they are typed
 set number                 " Show line numbers
 set hidden                 " Hide buffers instead of closing them
 set ignorecase             " Make searching case insensitive
@@ -51,9 +59,16 @@ set colorcolumn=80         " Show column at 80 characters
 set noswapfile             " Disable swap file
 set foldmarker=\ {{{,\ }}} " Make default fold marker have a space
 set modeline               " Enable vim modelines
+set virtualedit+=block     " Enable virtual editing in visual block mode
+set lazyredraw             " Don't redraw the screen during batch execution
+set linebreak              " Set lines at word boundaries
+set include=               " Let filetypes set this value themselves
 
-set path=.,**              " Add all subdirectories to path
+set path-=/usr/include     " Let filetypes set this value themselves
+set path+=**               " Search current directory's whole tree
+
 set wildcharm=<C-Z>
+set wildmode=longest,full
 set wildignorecase
 set wildignore=*.swp,*.bak
 set wildignore+=*.pyc,*.class,*.sln,*.Master,*.csproj,*.csproj.user,*.cache,*.dll,*.pdb,*.min.*
@@ -88,28 +103,36 @@ set statusline+=%5*\ %(%l:%c%V%)\            " Line and column number
 " Set User1-9 highlight groups for statusline
 " These are used by adding %N* to the statusline, where {N} is 1-9
 " The following uses the solarized color scheme
-if g:colors_name ==# 'solarized8'
-  if &background ==# 'light'
-    hi User1 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
-    hi User2 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
-    hi User3 ctermfg=11 ctermbg=7 guifg=#657b83 guibg=#eee8d5
-    hi User4 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
-    hi User5 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
-  else
-    hi User1 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
-    hi User2 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
-    hi User3 ctermfg=12 ctermbg=0 guifg=#839496 guibg=#073642
-    hi User4 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
-    hi User5 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
+if exists('g:colors_name')
+  if g:colors_name ==# 'solarized8'
+    if &background ==# 'light'
+      hi User1 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
+      hi User2 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
+      hi User3 ctermfg=11 ctermbg=7 guifg=#657b83 guibg=#eee8d5
+      hi User4 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
+      hi User5 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
+    else
+      hi User1 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
+      hi User2 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
+      hi User3 ctermfg=12 ctermbg=0 guifg=#839496 guibg=#073642
+      hi User4 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
+      hi User5 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
+    endif
+  elseif g:colors_name ==# 'onedark'
+    hi User1 cterm=reverse gui=reverse
+    hi User2 ctermbg=237 guibg=#3e4452
+    hi User3 ctermfg=145 ctermbg=235 guifg=#abb2bf guibg=#282c34
+    hi User4 ctermbg=237 guibg=#3e4452
+    hi User5 cterm=reverse gui=reverse
   endif
-elseif g:colors_name ==# 'onedark'
-  hi User1 cterm=reverse gui=reverse
-  hi User2 ctermbg=237 guibg=#3e4452
-  hi User3 ctermfg=145 ctermbg=235 guifg=#abb2bf guibg=#282c34
-  hi User4 ctermbg=237 guibg=#3e4452
-  hi User5 cterm=reverse gui=reverse
 endif
 " }}}
+
+" Enable persistent undo
+if has('persistent_undo')
+  set undofile
+  set undodir^=~/.vim/cache/undo//
+endif
 
 " Insert mode mappings {{{
 
@@ -124,12 +147,20 @@ inoremap <C-U> <Esc>gUiw`]a
 
 " Delete forward in insert mode
 inoremap <C-L> <Del>
+
+" Enable caps lock mode from vim-capslock
+inoremap <C-C> <Plug>(CapsLockToggle)
+
 " }}}
 
 " Normal mode mappings {{{
 
 " Save by pressing <leader>w
 nnoremap <silent> <leader>w :w<CR>
+
+" Navigate through wrapped lines individually
+nnoremap <silent> j gj
+nnoremap <silent> k gk
 
 " Make :tjump easier
 nnoremap g] g<C-]>
@@ -139,7 +170,7 @@ noremap Q gq
 
 " Use <C-K> in Normal mode to use grepprg
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
-command! -nargs=+ -complete=file -bar -bang Grep silent! grep<bang> <args>|copen|redraw!
+command! -nargs=+ -complete=file -bar -bang Grep silent! botright grep<bang> <args>|copen|redraw!
 nnoremap <C-K> :Grep!<space>
 
 " Buffer shortcuts
@@ -155,16 +186,19 @@ nnoremap <silent> <leader>9 :b9<CR>
 nnoremap <silent> <leader>0 :b10<CR>
 
 " List buffers and put :b on the command line
-noremap <leader>b :buffers<CR>:b <C-Z><S-Tab>
-noremap <leader>B :buffers<CR>:sb <C-Z><S-Tab>
+noremap <leader>b :buffers<CR>:b<Space>
+noremap <leader>B :buffers<CR>:sb<Space>
 
 " Augment [I and ]I to place an :ij prompt below results for easy jumping
-noremap [I [I:ij  <C-R><C-W><S-Left><Left>
-noremap ]I ]I:ij  <C-R><C-W><S-Left><Left>
+noremap [I [I:ij<Space> <C-R><C-W><S-Left><Left>
+noremap ]I ]I:ij<Space> <C-R><C-W><S-Left><Left>
 
 " Augment [D and ]D to place an :dj prompt below results for easy jumping
-noremap [D [D:dj  <C-R><C-W><S-Left><Left>
-noremap ]D ]D:dj  <C-R><C-W><S-Left><Left>
+noremap [D [D:dj<Space> <C-R><C-W><S-Left><Left>
+noremap ]D ]D:dj<Space> <C-R><C-W><S-Left><Left>
+
+" Remap & to preserve substitution flags
+nnoremap <silent> & :&&<CR>
 
 " Open quickfix list and place :cc on the prompt
 noremap <leader>cl :clist<CR>:sil cc<space>
@@ -176,28 +210,47 @@ nnoremap <leader>f :find *
 nnoremap <leader>t :tabfind *
 nnoremap <leader>j :tjump /
 nnoremap <leader>p :ptjump /
+nnoremap <leader>k :marks<CR>:norm! `
 
 nnoremap <leader>F :find <C-R>=expand('%:h').'/*'<CR>
 nnoremap <leader>T :tabfind <C-R>=expand('%:h').'/*'<CR>
 
-" <leader>ev opens .vimrc in new window
-nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+" <Bslash>e opens .vimrc in new window
+nnoremap <Bslash>e :<C-U>vsplit $MYVIMRC<CR>
 
-" <leader>sv sources .vimrc
-nnoremap <leader>sv :source $MYVIMRC<CR>
+" <Bslash>s sources .vimrc
+nnoremap <Bslash>s :<C-U>source $MYVIMRC<CR>
 
-" Toggle between normal and relative numbering
-nnoremap <leader>r :call NumberToggle()<CR>
 
-" Navigate through wrapped lines individually
-nnoremap <silent> j gj
-nnoremap <silent> k gk
+" Space bar scrolls the screen
+nnoremap <Space> <PageDown>
+if &loadplugins
+  nmap <Space> <Plug>(ScrollNext)
+endif
 
-" Use space bar to toggle folds
-nnoremap <space> za
+" Clear search buffer with <C-L>
+nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR><C-L>
+vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
 
-" Clear search buffer with <C-N>
-nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+" \c changes directory to current buffer's directory
+nnoremap <silent> <Bslash>c :<C-U>cd %:h<CR>:echo 'Changed directory to ' . expand('%:p:h')<CR>
+
+" \l changes local buffer directory to current buffer's directory
+nnoremap <silent> <Bslash>l :<C-U>lcd %:h<CR>:echo 'Changed local directory to ' . expand('%:p:h')<CR>
+
+" \: execute line in command mode
+nnoremap <Bslash>: ^"zyg_:<C-R>z<CR>
+" \! execute line as shell command
+nnoremap <Bslash>! ^"zyg_:!<C-R>z<CR>
+
+" \y shows contents of registers
+nnoremap <Bslash>y :<C-U>registers<CR>
+
+" \q runs gq over the whole buffer
+nnoremap <Bslash>q m'1GgqG`'
+
+" \= runs = over the whole buffer
+nnoremap <Bslash>= m'1G=G`'
 
 " }}}
 
@@ -209,64 +262,53 @@ vnoremap # y?\V<C-R>"<CR>
 " Use ripgrep or ag as grepprg if available
 if executable('rg')
   " Use rg over grep
-  set grepprg=rg\ --vimgrep\ --hidden
+  set grepprg=rg\ --vimgrep\ -S\ --hidden
 elseif executable('ag')
-    " Use ag over grep
-    set grepprg=ag\ --vimgrep\ --hidden
+  " Use ag over grep
+  set grepprg=ag\ --vimgrep\ -S\ --hidden
 endif
-set grepformat='%f:%l:%c:%m,%f:%l:%m'
 
-" Relative numbering {{{
-function! NumberToggle()
-  if (&relativenumber == 1)
-    set nornu
-    set number
-  else
-    set rnu
-  endif
-endfunc
-" }}}
 
 " Pushing built-in commands beyond their limits {{{
 " https://gist.github.com/Konfekt/d8ce5626a48f4e56ecab31a89449f1f0
 function! <sid>CCR()
-    if getcmdtype() isnot# ':'
-      return "\<CR>"
-    endif
-    let cmdline = getcmdline()
-    if cmdline =~# '\v^\s*(ls|files|buffers)!?\s*(\s[+\-=auhx%#]+)?$'
-        " like :ls but prompts for a buffer command
-        return "\<CR>:b"
-    elseif cmdline =~# '\v/(#|nu%[mber])$'
-        " like :g//# but prompts for a command
-        return "\<CR>:"
-    elseif cmdline =~# '\v^\s*(dli%[st]|il%[ist])!?\s+\S'
-        " like :dlist or :ilist but prompts for a count for :djump or :ijump
-        return "\<CR>:" . cmdline[0] . "j  " . split(cmdline, " ")[1] . "\<S-Left>\<Left>"
-    elseif cmdline =~# '\v^\s*(cli|lli)%[st]!?\s*(\s\d+(,\s*\d+)?)?$'
-        " like :clist or :llist but prompts for an error/location number
-        return "\<CR>:sil " . repeat(cmdline[0], 2) . "\<Space>"
-    elseif cmdline =~# '\v^\s*ol%[dfiles]\s*$'
-        " like :oldfiles but prompts for an old file to edit
-        set nomore
-        return "\<CR>:sil se more|e #<"
-    elseif cmdline =~# '^\s*changes\s*$'
-        " like :changes but prompts for a change to jump to
-        set nomore
-        return "\<CR>:sil se more|norm! g;\<S-Left>"
-    elseif cmdline =~# '\v^\s*ju%[mps]'
-        " like :jumps but prompts for a position to jump to
-        set nomore
-        return "\<CR>:sil se more|norm! \<C-o>\<S-Left>"
-    elseif cmdline =~ '\v^\s*marks\s*(\s\w+)?$'
-        " like :marks but prompts for a mark to jump to
-        return "\<CR>:norm! `"
-    elseif cmdline =~# '\v^\s*undol%[ist]'
-        " like :undolist but prompts for a change to undo
-        return "\<CR>:u "
-    else
-        return "\<c-]>\<CR>"
-    endif
+  if getcmdtype() isnot# ':'
+    return "\<CR>"
+  endif
+  let cmdline = getcmdline()
+  if cmdline =~# '\v^\s*(ls|files|buffers)!?\s*(\s[+\-=auhx%#]+)?$'
+    " like :ls but prompts for a buffer command
+    return "\<CR>:b"
+  elseif cmdline =~# '\v/(#|nu%[mber])$'
+    " like :g//# but prompts for a command
+    return "\<CR>:"
+  elseif cmdline =~# '\v^\s*(dli%[st]|il%[ist])!?\s+\S'
+    " like :dlist or :ilist but prompts for a count for :djump or :ijump
+    return "\<CR>:" . cmdline[0] . "j  " . split(cmdline, " ")[1] . "\<S-Left>\<Left>"
+  elseif cmdline =~# '\v^\s*(cli|lli)%[st]!?\s*(\s\d+(,\s*\d+)?)?$'
+    " like :clist or :llist but prompts for an error/location number
+    return "\<CR>:sil " . repeat(cmdline[0], 2) . "\<Space>"
+  elseif cmdline =~# '\v^\s*ol%[dfiles]\s*$'
+    " like :oldfiles but prompts for an old file to edit
+    set nomore
+    return "\<CR>:sil se more|e #<"
+  elseif cmdline =~# '^\s*changes\s*$'
+    " like :changes but prompts for a change to jump to
+    set nomore
+    return "\<CR>:sil se more|norm! g;\<S-Left>"
+  elseif cmdline =~# '\v^\s*ju%[mps]'
+    " like :jumps but prompts for a position to jump to
+    set nomore
+    return "\<CR>:sil se more|norm! \<C-o>\<S-Left>"
+  elseif cmdline =~ '\v^\s*marks\s*(\s\w+)?$'
+    " like :marks but prompts for a mark to jump to
+    return "\<CR>:norm! `"
+  elseif cmdline =~# '\v^\s*undol%[ist]'
+    " like :undolist but prompts for a change to undo
+    return "\<CR>:u "
+  else
+    return "\<c-]>\<CR>"
+  endif
 endfunction
 cnoremap <expr> <CR> <sid>CCR()
 " }}}
@@ -293,10 +335,6 @@ augroup vimrc
   if has('nvim')
     au TermOpen * startinsert
   endif
-
-  " Press q to close certain windows
-  au FileType qf nnoremap <silent> <buffer> q :q<CR>
-  au FileType netrw nnoremap <silent> <buffer> qq :Rex<CR>
 
 augroup END
 " }}}

@@ -1,3 +1,5 @@
+.vim/.netrwhist
 .vim/plug
 .vim/session
-.vim/.netrwhist
+.vim/pack
+.vim/cache
