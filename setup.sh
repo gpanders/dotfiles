@@ -77,13 +77,6 @@ if hash neomutt 2>/dev/null; then
   stow -t $HOME mutt
 fi
 
-# Upgrade vim-plug and install vim plugins
-if [ ! -d $HOME/.vim/plug ]; then
-  echo "Installing vim plugins..."
-  vim -u $HOME/.vim/plugins.vim -c PlugUpgrade -c PlugInstall -c qall! 2>&1 >/dev/null &
-  echo "Done."
-fi
-
 if hash tmux 2>/dev/null; then
   # Install tmux plugins in a background session
   git submodule update --init
