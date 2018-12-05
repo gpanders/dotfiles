@@ -124,10 +124,8 @@ set wildcharm=<C-Z>
 set wildmode=longest,full
 set wildignorecase
 set wildignore=*.swp,*.bak
-set wildignore+=*.pyc,*.class,*.sln,*.Master,*.csproj,*.csproj.user,*.cache,*.dll,*.pdb,*.min.*
 set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
 set wildignore+=tags
-set wildignore+=*.tar.*
 " }}}
 
 " Statusline {{{
@@ -230,11 +228,6 @@ nnoremap g] g<C-]>
 " Map Q to gq
 noremap Q gq
 
-" Use <C-K> in Normal mode to use grepprg
-" Define a custom command to wrap :grep with :silent, :copen, and :redraw
-command! -nargs=+ -complete=file -bar -bang Grep silent! botright grep<bang> <args>|copen|redraw!
-nnoremap <C-K> :Grep!<space>
-
 " Buffer shortcuts
 nnoremap <silent> <leader>1 :b1<CR>
 nnoremap <silent> <leader>2 :b2<CR>
@@ -330,6 +323,10 @@ elseif executable('ag')
   set grepprg=ag\ --vimgrep\ -S\ --hidden
 endif
 
+" Use <C-K> in Normal mode to use grepprg
+" Define a custom command to wrap :grep with :silent, :copen, and :redraw
+command! -nargs=+ -complete=file -bar -bang Grep silent! botright grep<bang> <args>|copen|redraw!
+nnoremap <C-K> :Grep!<space>
 
 " Pushing built-in commands beyond their limits {{{
 " https://gist.github.com/Konfekt/d8ce5626a48f4e56ecab31a89449f1f0
