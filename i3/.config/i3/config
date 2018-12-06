@@ -147,10 +147,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -170,6 +170,16 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         status_command $HOME/.config/i3/conky-i3bar
+
+        colors {
+               background #282c34
+               statusline #aab2bf
+               separator #3e4452
+               focused_workspace #61afef #61afef #fefefe
+               active_workspace #aab2bf #aab2bf #282c34
+               inactive_workspace #3e4452 #3e4452 #aab2bf
+               urgent_workspace #e06c75 #e06c75 #fefefe
+        }
 }
 
 # use smart edge borders
@@ -179,3 +189,5 @@ hide_edge_borders smart
 for_window [class="^.*"] border pixel 0
 smart_borders on
 gaps inner 15
+
+# vim: sw=8
