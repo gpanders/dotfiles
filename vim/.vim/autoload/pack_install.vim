@@ -3,6 +3,7 @@
 
 function! pack_install#Install(opt, ...) abort
   let installed_packs = pack_install#FindPackages()
+  silent! clear
   for pkg in a:000
     try
       let [author, repo] = split(pkg, '/')
@@ -26,14 +27,12 @@ function! pack_install#Install(opt, ...) abort
     endif
 
     let dir = '~/.vim/pack/' . author . '/' . (a:opt ? 'opt' : 'start') . '/' . repo
-    silent! clear
-    silent execute '!git clone https://github.com/' . pkg . ' ' .dir
-    echom 'Installed package: ' . author . '/' . repo
-    redraw!
+    silent execute '!echo -n Installing package: ' . author . '/' . repo . '...'
+    silent execute '!git clone -q https://github.com/' . pkg . ' ' . dir
+    silent! execute 'helptags ' . dir . '/doc'
+    silent !echo ' Done.'
   endfor
-
-  " Generate help documentation
-  execute 'helptags ALL'
+  redraw!
 
   if a:0 > 1
     echom "Done!"
@@ -42,6 +41,7 @@ endfunction
 
 function! pack_install#Remove(...) abort
   let installed_packs = pack_install#FindPackages()
+  silent! clear
   for pkg in a:000
     let author = ''
     let tmp = split(pkg, "/")
@@ -66,22 +66,21 @@ function! pack_install#Remove(...) abort
       continue
     endif
 
-    silent! clear
     if isdirectory($HOME . '/.vim/pack/' . author . '/opt/' . repo)
       if confirm('Remove package ~/.vim/pack/' . author . '/opt/' . repo . '?', "&Yes\n&No", 2) == 1
-        silent execute '!rm -rf ' . $HOME . '/.vim/pack/' . author . '/opt/' . repo
-        echom 'Removed package: ' . author . '/' . repo
+        silent execute '!rm -rf ~/.vim/pack/' . author . '/opt/' . repo
+        silent execute '!echo Removed package: ' . author . '/' . repo
       endif
     elseif isdirectory($HOME . '/.vim/pack/' . author . '/start/' . repo)
       if confirm('Remove package ~/.vim/pack/' . author . '/start/' . repo . '?', "&Yes\n&No", 2) == 1
-        silent execute '!rm -rf ' . $HOME . '/.vim/pack/' . author . '/start/' . repo
-        echom 'Removed package: ' . author . '/' . repo
+        silent execute '!rm -rf ~/.vim/pack/' . author . '/start/' . repo
+        silent execute '!echo Removed package: ' . author . '/' . repo
       endif
     else
       echom 'Package not found: ' . author . '/' . repo
     endif
-    redraw!
   endfor
+  redraw!
 
   if a:0 > 1
     echom "Done!"
