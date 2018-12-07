@@ -1,6 +1,12 @@
 " Install and remove packages from vim's pack directory
 " Author: Greg Anders <greg@gpanders.com>
 
+if has('win64') || has('win32') || has('win16')
+  let g:pack_install#pack_dir = $HOME . '\vimfiles\pack\'
+else
+  let g:pack_install#pack_dir = $HOME . '/.vim/pack/'
+endif
+
 function! pack_install#Install(opt, ...) abort
   let installed_packs = pack_install#FindPackages()
   silent! clear
@@ -26,7 +32,7 @@ function! pack_install#Install(opt, ...) abort
       continue
     endif
 
-    let dir = '~/.vim/pack/' . author . '/' . (a:opt ? 'opt' : 'start') . '/' . repo
+    let dir = g:pack_install#pack_dir . author . '/' . (a:opt ? 'opt' : 'start') . '/' . repo
     silent execute '!echo -n Installing package: ' . author . '/' . repo . '...'
     silent execute '!git clone -q https://github.com/' . pkg . ' ' . dir
     silent! execute 'helptags ' . dir . '/doc'
@@ -66,14 +72,17 @@ function! pack_install#Remove(...) abort
       continue
     endif
 
-    if isdirectory($HOME . '/.vim/pack/' . author . '/opt/' . repo)
-      if confirm('Remove package ~/.vim/pack/' . author . '/opt/' . repo . '?', "&Yes\n&No", 2) == 1
-        silent execute '!rm -rf ~/.vim/pack/' . author . '/opt/' . repo
+    let root_dir = g:pack_install#pack_dir . author
+    let opt_dir = root_dir . '/opt/' . repo
+    let start_dir = root_dir . '/start/' . repo
+    if isdirectory(opt_dir)
+      if confirm('Remove package ' author . '/' . repo . '?', "&Yes\n&No", 2) == 1
+        silent execute '!rm -rf ' . opt_dir
         silent execute '!echo Removed package: ' . author . '/' . repo
       endif
-    elseif isdirectory($HOME . '/.vim/pack/' . author . '/start/' . repo)
-      if confirm('Remove package ~/.vim/pack/' . author . '/start/' . repo . '?', "&Yes\n&No", 2) == 1
-        silent execute '!rm -rf ~/.vim/pack/' . author . '/start/' . repo
+    elseif isdirectory(start_dir)
+      if confirm('Remove package ' . author . '/' . repo . '?', "&Yes\n&No", 2) == 1
+        silent execute '!rm -rf ' . start_dir
         silent execute '!echo Removed package: ' . author . '/' . repo
       endif
     else
@@ -91,7 +100,7 @@ function! pack_install#FindPackages() abort
   let start_packs = []
   let opt_packs = []
   let authors = []
-  let paths = globpath($HOME . '/.vim/pack', "*", 0, 1)
+  let paths = globpath(g:pack_install#pack_dir, "*", 0, 1)
   for path in paths
     let author = split(path, '/')[-1]
     for pkg in globpath(path, "start/*", 0, 1)
