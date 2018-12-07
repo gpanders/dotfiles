@@ -2,8 +2,10 @@
 
 if !has('packages')
   " Use vim-pathogen to emulate native packaging behavior
-  silent "!curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim"
-  execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
+  if empty(glob('~/.vim/autoload/pathogen.vim'))
+    silent "!curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim"
+  endif
+  silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
 endif
 
 if has('autocmd')
