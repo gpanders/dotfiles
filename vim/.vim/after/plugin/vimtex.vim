@@ -1,4 +1,4 @@
-if exists('plugs') && has_key(plugs, 'vimtex')
+if exists('g:loaded_vimtex')
   let g:vimtex_compiler_progname = 'nvr'
   let g:vimtex_matchparen_enabled = 0
 
@@ -18,4 +18,4 @@ if exists('plugs') && has_key(plugs, 'vimtex')
     autocmd BufWritePost *.tex call vimtex#labels#refresh()
     autocmd BufWritePost *.tex call vimtex#toc#refresh()
   augroup END
-endif
+end
