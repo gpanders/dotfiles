@@ -36,7 +36,7 @@ function! pack_install#Install(opt, ...) abort
 
     let dir = g:pack_install#pack_dir . author . (a:opt ? '/opt/' : '/start/') . repo
     silent execute '!echo -n Installing package: ' . author . '/' . repo . '...'
-    silent execute '!git clone -q https://github.com/' . pkg . ' ' . dir
+    silent execute '!git clone -q --recursive https://github.com/' . pkg . ' ' . dir
     silent! execute 'helptags ' . dir . '/doc'
     silent !echo ' Done.'
   endfor
