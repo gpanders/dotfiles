@@ -78,7 +78,7 @@ function! pack_install#Remove(...) abort
     let opt_dir = root_dir . '/opt/' . repo
     let start_dir = root_dir . '/start/' . repo
     if isdirectory(opt_dir)
-      if confirm('Remove package ' author . '/' . repo . '?', "&Yes\n&No", 2) == 1
+      if confirm('Remove package ' . author . '/' . repo . '?', "&Yes\n&No", 2) == 1
         silent execute '!rm -rf ' . opt_dir
         silent execute '!echo Removed package: ' . author . '/' . repo
       endif
