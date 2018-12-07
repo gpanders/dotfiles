@@ -1,7 +1,6 @@
 PackInstall 
       \ tpope/vim-unimpaired
       \ tpope/vim-fugitive
-      \ tpope/vim-capslock
       \ tpope/vim-surround
       \ tpope/vim-repeat
       \ tpope/vim-commentary

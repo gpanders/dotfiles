@@ -138,20 +138,21 @@ set wildignore+=tags
 " Statusline {{{
 " Set the statusline
 function! StatuslineGitBranch()
-  let branch = FugitiveHead()
-  if branch != ""
-    return " " . branch
-  else
-    return ""
+  if exists('*FugitiveHead')
+    let branch = FugitiveHead()
+    if branch != ""
+      return " " . branch
+    endif
   endif
+  return ""
 endfunction
 
 set laststatus=2
 set statusline=                              " Reset the statusline
-set statusline+=%1*\ %<%f\ %h%m%r\           " Filename and help/modified/RO markers
+set statusline+=%1*\ %<%f                    " Filename
+set statusline+=\ %h%m%r\                    " Help/modified/RO markers
 set statusline+=%2*\ %n\                     " Buffer number
 set statusline+=%3*                          " Reset color
-set statusline+=\ %{CapsLockStatusline()}\   " Show caps lock indicator
 set statusline+=%=                           " Break point for right justify
 set statusline+=\ %{StatuslineGitBranch()}\  " Git branch (with icon)
 set statusline+=\ %{&ft}\                    " Filetype
@@ -214,9 +215,6 @@ inoremap <C-D> <Del>
 
 " Kill the rest of the line (similar to Emacs binding)
 inoremap <C-K> <C-G>u<C-O>D
-
-" Enable caps lock mode from vim-capslock
-" inoremap <C-C> <Plug>(CapsLockToggle)
 
 " }}}
 
