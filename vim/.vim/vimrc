@@ -286,16 +286,13 @@ nnoremap <leader>es :sp <C-R>=expand('%:p:h') . '/' <CR>
 nnoremap <leader>ev :vsp <C-R>=expand('%:p:h') . '/' <CR>
 
 " <Bslash>E opens .vimrc in new window
-nnoremap <Bslash>E :<C-U>vsplit $MYVIMRC<CR>
+nnoremap <Bslash>E :<C-U>tabe $MYVIMRC<CR>
 
 " <Bslash>S sources .vimrc
 nnoremap <Bslash>S :<C-U>source $MYVIMRC<CR>
 
-" Space bar scrolls the screen
-nnoremap <Space> <PageDown>
-if &loadplugins
-  nmap <Space> <Plug>(ScrollNext)
-endif
+" Space toggles folds
+nnoremap <Space> za
 
 " Clear search buffer with <C-L>
 nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR><C-L>
@@ -395,10 +392,10 @@ augroup vimrc
 
   " Highlight the current line in the current window but disable in Insert mode {{{
   let blacklist = ['tex']
-  " au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
-  " au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
-  " au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
-  " au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
+  au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
+  au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
+  au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
+  au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
   " }}}
 
   " Open the quickfix window after any quickfix command
