@@ -90,10 +90,16 @@ set modeline               " Enable vim modelines
 set virtualedit+=block     " Enable virtual editing in visual block mode
 set lazyredraw             " Don't redraw the screen during batch execution
 set linebreak              " Set lines at word boundaries
+set breakindent            " Indent wrapped lines
 set include=               " Let filetypes set this value themselves
 set nrformats-=octal       " Treat numbers with a leading zero as decimal, not octal
 set display+=lastline      " Show the last screen line
 set autoread               " Automatically external changes to the open file
+set confirm                " Give a prompt instead of just rejecting
+
+" Add more completion options
+set completeopt+=longest   " Insert longest common substring
+set completeopt+=menuone   " Show the menu even when there's only one match
 
 if !has('nvim') && &ttimeoutlen == -1
   set ttimeout
@@ -194,11 +200,25 @@ if exists('g:colors_name')
 endif
 " }}}
 
+" Set a single backup directory
+set backup
+if has('win32') || has('win64')
+  set backupdir^=~/vimfiles/cache/backup
+else
+  set backupdir^=~/.vim/cache/backup
+endif
+
 " Enable persistent undo
 if has('persistent_undo')
   set undofile
-  set undodir^=~/.vim/cache/undo//
+  if has('win32') || has('win64')
+    set undodir^=~/vimfiles/cache/undo//
+  else
+    set undodir^=~/.vim/cache/undo//
+  endif
 endif
+
+
 
 " Load matchit.vim
 runtime! macros/matchit.vim
