@@ -81,6 +81,9 @@ if hash neomutt 2>/dev/null; then
   stow -t $HOME mutt
 fi
 
+# Create backup and undo directories for vim
+mkdir -p $HOME/.vim/cache/{backup,undo}
+
 if hash tmux 2>/dev/null; then
   # Install tmux plugins in a background session
   git submodule update --init
