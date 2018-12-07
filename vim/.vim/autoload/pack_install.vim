@@ -1,7 +1,5 @@
-if !has('packages')
-  " Requires vim's native package management feature
-  finish
-endif
+" Install and remove packages from vim's pack directory
+" Author: Greg Anders <greg@gpanders.com>
 
 function! pack_install#Install(opt, ...) abort
   let installed_packs = pack_install#FindPackages()
@@ -30,10 +28,12 @@ function! pack_install#Install(opt, ...) abort
     let dir = '~/.vim/pack/' . author . '/' . (a:opt ? 'opt' : 'start') . '/' . repo
     silent! clear
     silent execute '!git clone https://github.com/' . pkg . ' ' .dir
-    silent! execute 'helptags ' . dir . '/doc'
     echom 'Installed package: ' . author . '/' . repo
     redraw!
   endfor
+
+  " Generate help documentation
+  execute 'helptags ALL'
 
   if a:0 > 1
     echom "Done!"

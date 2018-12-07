@@ -1,4 +1,4 @@
-if exists('g:loaded_pack_install') || !has('packages')
+if exists('g:loaded_pack_install')
   finish
 endif
 let g:loaded_pack_install = 1
