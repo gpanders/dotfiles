@@ -10,11 +10,12 @@ PackInstall
       \ tpope/vim-obsession
       \ justinmk/vim-dirvish
       \ justinmk/vim-sneak
+      \ junegunn/fzf.vim
       \ junegunn/limelight.vim
       \ junegunn/goyo.vim
       \ airblade/vim-gitgutter
       \ ludovicchabant/vim-gutentags
+      \ mhinz/vim-startify
 
 PackInstallOpt 
       \ joshdick/onedark.vim
-      \ dhruvasagar/vim-prosession

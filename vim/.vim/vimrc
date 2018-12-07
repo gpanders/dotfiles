@@ -3,6 +3,7 @@
 if has('autocmd')
   filetype plugin indent on
 endif
+
 if has('syntax') && !exists('g:syntax_on')
   syntax enable
 endif
@@ -261,21 +262,30 @@ noremap <leader>cl :clist<CR>:sil cc<space>
 " Open location list and place :ll on the prompt
 noremap <leader>ll :llist<CR>:sil ll<space>
 
-nnoremap <leader>f :find *
-nnoremap <leader>t :tabfind *
-nnoremap <leader>j :tjump /
+" <leader>f prefixes find files in path
+nnoremap <leader>ff :find *
+nnoremap <leader>ft :tabfind *
+nnoremap <leader>fs :sfind *
+nnoremap <leader>fv :vfind *
+
+" Search for a tag by regex
+nnoremap <leader>t :tjump /
 nnoremap <leader>p :ptjump /
+
+" Show marks with <leader>k
 nnoremap <leader>k :marks<CR>:norm! `
 
-nnoremap <leader>F :find <C-R>=expand('%:h').'/*'<CR>
-nnoremap <leader>T :tabfind <C-R>=expand('%:h').'/*'<CR>
+" Find files in current buffer's directory
+nnoremap <leader>ef :e <C-R>=expand('%:p:h') . '/' <CR>
+nnoremap <leader>et :tabe <C-R>=expand('%:p:h') . '/' <CR>
+nnoremap <leader>es :sp <C-R>=expand('%:p:h') . '/' <CR>
+nnoremap <leader>ev :vsp <C-R>=expand('%:p:h') . '/' <CR>
 
-" <Bslash>e opens .vimrc in new window
-nnoremap <Bslash>e :<C-U>vsplit $MYVIMRC<CR>
+" <Bslash>E opens .vimrc in new window
+nnoremap <Bslash>E :<C-U>vsplit $MYVIMRC<CR>
 
-" <Bslash>s sources .vimrc
-nnoremap <Bslash>s :<C-U>source $MYVIMRC<CR>
-
+" <Bslash>S sources .vimrc
+nnoremap <Bslash>S :<C-U>source $MYVIMRC<CR>
 
 " Space bar scrolls the screen
 nnoremap <Space> <PageDown>
@@ -390,8 +400,8 @@ augroup vimrc
   " Open the quickfix window after any quickfix command
   au QuickFixCmdPost [^l]* cwindow
 
-  " term
-  if has('nvim')
+  " Start insert immediately when terminal opens
+  if exists('#TermOpen')
     au TermOpen * startinsert
   endif
 
