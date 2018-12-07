@@ -50,6 +50,13 @@ endif
 
 " }}}
 
+" GUI settings {{{
+if has('gui_running')
+  set guifont=Fira_Code:h10:cANSI:qDRAFT
+  set guioptions=teMg!
+endif
+" }}}
+
 " Sudo save
 cnoreabbrev w!! w !sudo tee > /dev/null %
 
