@@ -6,3 +6,6 @@ def get_secret(account, linum):
 
 def get_pass(account):
     return get_secret(account, 0)
+
+def get_gpg(fname):
+    return check_output("gpg -dq " + fname).splitlines()[0]
