@@ -3,7 +3,7 @@
 if !has('packages')
   " Use vim-pathogen to emulate native packaging behavior
   if empty(glob('~/.vim/autoload/pathogen.vim'))
-    silent "!curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim"
+    silent !curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
   endif
   silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
 endif
@@ -92,12 +92,14 @@ set modeline               " Enable vim modelines
 set virtualedit+=block     " Enable virtual editing in visual block mode
 set lazyredraw             " Don't redraw the screen during batch execution
 set linebreak              " Set lines at word boundaries
-set breakindent            " Indent wrapped lines
 set include=               " Let filetypes set this value themselves
 set nrformats-=octal       " Treat numbers with a leading zero as decimal, not octal
 set display+=lastline      " Show the last screen line
 set autoread               " Automatically external changes to the open file
 set confirm                " Give a prompt instead of just rejecting
+
+" Indent wrapped lines
+silent! set breakindent
 
 " Add more completion options
 set completeopt+=longest   " Insert longest common substring
