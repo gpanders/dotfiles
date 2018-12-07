@@ -1,5 +1,11 @@
 " Greg Anders (gpanders)'s vimrc <https://github.com/gpanders/dotfiles.git>
 
+if !has('packages')
+  " Use vim-pathogen to emulate native packaging behavior
+  silent "!curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim"
+  execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
+endif
+
 if has('autocmd')
   filetype plugin indent on
 endif
