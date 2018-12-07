@@ -15,6 +15,7 @@ PackInstall
       \ airblade/vim-gitgutter
       \ ludovicchabant/vim-gutentags
       \ mhinz/vim-startify
+      \ davidhalter/jedi-vim
 
 PackInstallOpt 
       \ joshdick/onedark.vim
