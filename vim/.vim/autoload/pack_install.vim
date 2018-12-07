@@ -3,8 +3,10 @@
 
 if has('win64') || has('win32') || has('win16')
   let g:pack_install#pack_dir = $HOME . '\vimfiles\pack\'
+  let s:sep = '\'
 else
   let g:pack_install#pack_dir = $HOME . '/.vim/pack/'
+  let s:sep = '/'
 endif
 
 function! pack_install#Install(opt, ...) abort
@@ -12,7 +14,7 @@ function! pack_install#Install(opt, ...) abort
   silent! clear
   for pkg in a:000
     try
-      let [author, repo] = split(pkg, '/')
+      let [author, repo] = split(pkg, s:sep)
     catch
       echom 'Invalid package name: ' . pkg
       continue
@@ -32,7 +34,7 @@ function! pack_install#Install(opt, ...) abort
       continue
     endif
 
-    let dir = g:pack_install#pack_dir . author . '/' . (a:opt ? 'opt' : 'start') . '/' . repo
+    let dir = g:pack_install#pack_dir . author . (a:opt ? '/opt/' : '/start/') . repo
     silent execute '!echo -n Installing package: ' . author . '/' . repo . '...'
     silent execute '!git clone -q https://github.com/' . pkg . ' ' . dir
     silent! execute 'helptags ' . dir . '/doc'
@@ -97,36 +99,24 @@ function! pack_install#Remove(...) abort
 endfunction
 
 function! pack_install#FindPackages() abort
-  let start_packs = []
-  let opt_packs = []
-  let authors = []
-  let paths = globpath(g:pack_install#pack_dir, "*", 0, 1)
-  for path in paths
-    let author = split(path, '/')[-1]
-    for pkg in globpath(path, "start/*", 0, 1)
-      let pkg_name = split(split(pkg, author)[-1], "/")[-1]
-      let start_packs += [{'author': author, 'name': pkg_name}]
-    endfor
-    for pkg in globpath(path, "opt/*", 0, 1)
-      let pkg_name = split(split(pkg, author)[-1], "/")[-1]
-      let opt_packs += [{'author': author, 'name': pkg_name}]
-    endfor
+  let packages = {'start': [], 'opt': []}
+  let all_packs = split(globpath(g:pack_install#pack_dir, '*/*/*', 0), '\n')
+  for path in all_packs
+    let [author, type, pkg_name] = split(path, s:sep)[-3:-1]
+    call add(packages[type], {'author': author, 'name': pkg_name})
   endfor
 
-  return {'start': start_packs, 'opt': opt_packs}
+  return packages
 endfunction
 
 function! pack_install#List() abort
   let packs = pack_install#FindPackages()
   echom 'Installed packages:'
-  echom 'start/'
-  for pkg in packs.start
-    echom '    ' . pkg.author . '/' . pkg.name
-  endfor
-  echom ''
-  echom 'opt/'
-  for pkg in packs.opt
-    echom '    ' . pkg.author . '/' . pkg.name
+  for type in ['start', 'opt']
+    echom type . '/'
+    for pkg in packs[type]
+      echom '    ' . pkg.author . '/' . pkg.name
+    endfor
   endfor
 endfunction
 
