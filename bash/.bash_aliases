@@ -1,5 +1,5 @@
-alias l="ls -lFh"
-alias ll="ls -AlFh"
+alias l="ls -lh"
+alias ll="ls -Alh"
 
 if hash nvim 2>/dev/null; then
   alias vi="nvim"
@@ -21,9 +21,17 @@ function mkdcd {
   mkdir -p "$1" && cd "$1"
 }
 
-for ((i=1; i <= 9; i++))
+function __cd {
+  builtin cd "$@"
+  if [ $? -eq 0 ]; then
+    pushd -n "$(pwd)" >/dev/null
+  fi
+}
+alias cd=__cd
+
+for i in $(seq 1 9)
 do
-  alias "$i"="cd +${i}"
+  alias "$i"="builtin cd ~$i"
 done
 
 alias tmux="tmux -2"
