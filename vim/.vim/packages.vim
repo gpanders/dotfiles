@@ -16,6 +16,7 @@ PackInstall
       \ ludovicchabant/vim-gutentags
       \ mhinz/vim-startify
       \ davidhalter/jedi-vim
+      \ romainl/vim-qf
 
 PackInstallOpt 
       \ joshdick/onedark.vim
