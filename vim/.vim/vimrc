@@ -278,7 +278,6 @@ nnoremap <silent> <leader>0 :b10<CR>
 
 " List buffers and put :b on the command line
 noremap <leader>b :buffers<CR>:b<Space>
-noremap <leader>B :buffers<CR>:sb<Space>
 
 " Augment [I and ]I to place an :ij prompt below results for easy jumping
 noremap [I [I:ij<Space> <C-R><C-W><S-Left><Left>
