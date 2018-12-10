@@ -14,7 +14,7 @@ function! pack_install#Install(opt, ...) abort
   silent! clear
   for pkg in a:000
     try
-      let [author, repo] = split(pkg, s:sep)
+      let [author, repo] = split(pkg, '/')
     catch
       echom 'Invalid package name: ' . pkg
       continue
