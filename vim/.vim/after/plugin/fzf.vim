@@ -2,8 +2,9 @@
 if isdirectory($HOME . '/.fzf')
   source ~/.fzf/plugin/fzf.vim
 
-  map <silent> <C-P> :Files<CR>
+  nnoremap <silent> <C-P> :Files<CR>
   nnoremap <silent> <leader>t :Tags<CR>
+  nnoremap <silent> <leader>B :Buffers<CR>
 
   autocmd! FileType fzf
   autocmd FileType fzf set laststatus=0 noshowmode noruler
