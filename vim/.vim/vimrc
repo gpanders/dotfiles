@@ -59,6 +59,11 @@ if has('gui_running')
 endif
 " }}}
 
+" Use UTF-8 if we can and env LANG didn't tell us not to
+if has('multi_byte') && !exists('$LANG') && &encoding ==# 'latin1'
+  set encoding=utf-8
+endif
+
 " Sudo save
 cnoreabbrev w!! w !sudo tee > /dev/null %
 
@@ -86,7 +91,6 @@ set showmatch              " Show matching bracket in insert mode
 set matchtime=2            " Show matching bracket for 2 tenths of a second
 set matchpairs+=<:>        " Add angle brackets as match pairs
 set colorcolumn=80         " Show column at 80 characters
-set noswapfile             " Disable swap file
 set foldmarker=\ {{{,\ }}} " Make default fold marker have a space
 set modeline               " Enable vim modelines
 set virtualedit+=block     " Enable virtual editing in visual block mode
@@ -207,22 +211,27 @@ endif
 " Set a single backup directory
 set backup
 if has('win32') || has('win64')
-  set backupdir^=~/vimfiles/cache/backup/
+  set backupdir^=~/vimfiles/cache/backup//
 else
-  set backupdir^=~/.vim/cache/backup/
+  set backupdir^=~/.vim/cache/backup//
 endif
 
 " Enable persistent undo
 if has('persistent_undo')
   set undofile
   if has('win32') || has('win64')
-    set undodir^=~/vimfiles/cache/undo/
+    set undodir^=~/vimfiles/cache/undo//
   else
-    set undodir^=~/.vim/cache/undo/
+    set undodir^=~/.vim/cache/undo//
   endif
 endif
 
-
+" Keep swap files in one place
+if has('win32') || has('win64')
+  set directory^=~/vimfiles/cache/swap//
+else
+  set directory^=~/.vim/cache/swap//
+endif
 
 " Load matchit.vim
 runtime! macros/matchit.vim
