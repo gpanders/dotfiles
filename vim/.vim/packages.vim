@@ -6,7 +6,6 @@ PackInstall
       \ tpope/vim-commentary
       \ tpope/vim-rhubarb
       \ tpope/vim-dispatch
-      \ tpope/vim-obsession
       \ justinmk/vim-dirvish
       \ justinmk/vim-sneak
       \ junegunn/fzf.vim
