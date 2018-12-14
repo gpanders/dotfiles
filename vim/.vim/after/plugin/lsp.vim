@@ -1,3 +1,7 @@
+if !exists('g:lsp_loaded')
+  finish
+endif
+
 " cquery
 if executable('cquery')
    au User lsp_setup call lsp#register_server({

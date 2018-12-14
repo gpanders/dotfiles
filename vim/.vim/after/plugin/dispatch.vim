@@ -1,3 +1,7 @@
+if !exists('g:loaded_dispatch')
+  finish
+endif
+
 " C/C++
 autocmd FileType c,cpp let b:dispatch = 'cppcheck %'
 
