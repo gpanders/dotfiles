@@ -1,11 +1,16 @@
 #!/usr/bin/zsh
 
-source /usr/share/zsh/share/antigen.zsh
+if [[ -f /usr/share/zsh/share/antigen.zsh ]]; then
+  source /usr/share/zsh/share/antigen.zsh
+elif [[ -f /usr/local/share/antigen/antigen.zsh ]]; then
+  source /usr/local/share/antigen/antigen.zsh
+else
+  echo "Antigen not found!"
+fi
 antigen init ~/.antigenrc
 
 # Enable completion
-autoload -Uz compinit
-compinit -d ${ZDOTDIR:-${HOME}}/.cache/zsh/compdump
+autoload -Uz compinit && compinit
 
 # zsh-autosuggest
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20

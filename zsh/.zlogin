@@ -9,7 +9,7 @@
   autoload -U zrecompile
 
   # zcompile the completion cache; siginificant speedup
-  zrecompile -pq ${ZDOTDIR:-${HOME}}/.cache/zsh/compdump
+  zrecompile -pq ${ZDOTDIR:-${HOME}}/.zcompdump
 
   # zcompile .zshrc
   zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshrc
