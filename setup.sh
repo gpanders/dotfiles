@@ -28,14 +28,20 @@ echo "Creating symlinks for neovim"
 stow -t $HOME neovim
 echo "Creating symlinks for emacs"
 stow -t $HOME emacs
-echo "Creating symlinks for bash"
-stow -t $HOME bash
 echo "Creating symlinks for tmux"
 stow -t $HOME tmux
 echo "Installing git template"
 stow -t $HOME git
 git config --global init.templatedir "$HOME/.config/git/template"
 git config --global alias.ctags "!.git/hooks/ctags"
+
+if [[ "$SHELL" =~ "bash" ]]; then
+  echo "Installing symlinks for bash"
+  stow -t $HOME bash
+elif [[ "$SHELL" =~ "zsh" ]]; then
+  echo "Installing symlinks for zsh"
+  stow -t $HOME zsh
+fi
 
 if ! hash i3 2>/dev/null; then
   read -r -p "Install i3? [y/N] " ans
@@ -99,38 +105,38 @@ if ! git config --global --get user.email 1>/dev/null ; then
   git config --global user.email "greg@gpanders.com"
 fi
 
-if [ ! -d $HOME/.zprezto ]; then
-  read -r -p "Install prezto? [y/N] " ans
-  if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+# if [ ! -d $HOME/.zprezto ]; then
+#   read -r -p "Install prezto? [y/N] " ans
+#   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
 
-    git clone --recursive https://github.com/gpanders/prezto.git $HOME/.zprezto
+#     git clone --recursive https://github.com/gpanders/prezto.git $HOME/.zprezto
 
-    for rcfile in $HOME/.zprezto/runcoms/!(README.md|zshenv); do
-      if [ -h "$HOME/.${rcfile##*/}" ]; then
-        rm "$HOME/.${rcfile##*/}"
-      elif [ -f "$HOME/.${rcfile##*/}" ]; then
-        mv "$HOME/.${rcfile##*/}" "$HOME/.${rcfile##*/}.bak"
-      fi
-      ln -vs "$rcfile" "$HOME/.${rcfile##*/}"
-    done
+#     for rcfile in $HOME/.zprezto/runcoms/!(README.md|zshenv); do
+#       if [ -h "$HOME/.${rcfile##*/}" ]; then
+#         rm "$HOME/.${rcfile##*/}"
+#       elif [ -f "$HOME/.${rcfile##*/}" ]; then
+#         mv "$HOME/.${rcfile##*/}" "$HOME/.${rcfile##*/}.bak"
+#       fi
+#       ln -vs "$rcfile" "$HOME/.${rcfile##*/}"
+#     done
 
-    # Use an untracked copy of zshenv to store sensitive node-specific config
-    if [ -h $HOME/.zshenv ]; then
-      rm $HOME/.zshenv
-    elif [ -f $HOME/.zshenv ]; then
-      mv $HOME/.zshenv $HOME/.zshenv.bak
-    fi
-    cp $HOME/.zprezto/runcoms/zshenv $HOME/.zshenv
+#     # Use an untracked copy of zshenv to store sensitive node-specific config
+#     if [ -h $HOME/.zshenv ]; then
+#       rm $HOME/.zshenv
+#     elif [ -f $HOME/.zshenv ]; then
+#       mv $HOME/.zshenv $HOME/.zshenv.bak
+#     fi
+#     cp $HOME/.zprezto/runcoms/zshenv $HOME/.zshenv
 
-    # Install 3rd party (contrib) modules
-    git clone --quiet --recursive https://github.com/belak/prezto-contrib.git $HOME/.zprezto/contrib
-    if [ ! -d $HOME/.zprezto/contrib/fzf ]; then
-      git clone --quiet --recursive https://github.com/gpanders/fzf-prezto.git $HOME/.zprezto/contrib/fzf
-    fi
-  fi
-fi
+#     # Install 3rd party (contrib) modules
+#     git clone --quiet --recursive https://github.com/belak/prezto-contrib.git $HOME/.zprezto/contrib
+#     if [ ! -d $HOME/.zprezto/contrib/fzf ]; then
+#       git clone --quiet --recursive https://github.com/gpanders/fzf-prezto.git $HOME/.zprezto/contrib/fzf
+#     fi
+#   fi
+# fi
 
-if hash zsh 2>/dev/null; then
+if hash zsh 2>/dev/null && hash finger 2>/dev/null; then
   user_shell=$(finger $USER 2>/dev/null | grep Shell | awk '{print $4}')
   if [[ $user_shell != *"zsh"* ]]; then
     read -r -p "Change default shell to zsh? [y/N] " ans
@@ -153,22 +159,22 @@ if [ ! -d "$HOME/.pyenv" ]; then
   fi
 fi
 
-echo "Install solarized dircolors?"
-echo "    1) light"
-echo "    2) dark"
-echo "    3) universal"
-read -r -p "Selection (default: none): " ans
-solarized_dircolors=
-case $ans in
-  1) solarized_dircolors="light" ;;
-  2) solarized_dircolors="dark" ;;
-  3) solarized_dircolors="universal" ;;
-esac
-if [ ! -z "$solarized_dircolors" ]; then
-  echo "Installing $solarized_dircolors dircolors to $HOME/.dir_colors"
-  curl -fsLo $HOME/.dir_colors \
-    https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-$solarized_dircolors
-fi
+# echo "Install solarized dircolors?"
+# echo "    1) light"
+# echo "    2) dark"
+# echo "    3) universal"
+# read -r -p "Selection (default: none): " ans
+# solarized_dircolors=
+# case $ans in
+#   1) solarized_dircolors="light" ;;
+#   2) solarized_dircolors="dark" ;;
+#   3) solarized_dircolors="universal" ;;
+# esac
+# if [ ! -z "$solarized_dircolors" ]; then
+#   echo "Installing $solarized_dircolors dircolors to $HOME/.dir_colors"
+#   curl -fsLo $HOME/.dir_colors \
+#     https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-$solarized_dircolors
+# fi
 
 echo " "
 echo "Setup complete."
