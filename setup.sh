@@ -106,15 +106,18 @@ if ! git config --global --get user.email 1>/dev/null ; then
 fi
 
 git config --global init.templatedir "$HOME/.config/git/template"
-git config --global alias.ctags "!.git/hooks/ctags"
-git config --global alias.st status
-git config --global alias.co checkout
-git config --global alias.cm commit
 git config --global alias.a add
+git config --global alias.b branch
+git config --global alias.cm commit
+git config --global alias.co checkout
+git config --global alias.ctags "!.git/hooks/ctags"
 git config --global alias.d diff
+git config --global alias.f fetch
 git config --global alias.l log
-git config --global alias.rs reset
-git config --global alias.br branch
+git config --global alias.m merge
+git config --global alias.p push
+git config --global alias.re reset
+git config --global alias.st status
 
 # if [ ! -d $HOME/.zprezto ]; then
 #   read -r -p "Install prezto? [y/N] " ans
