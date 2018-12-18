@@ -1,5 +1,3 @@
-#!/usr/bin/zsh
-
 alias chmod="chmod --preserve-root -v"
 alias chown="chown --preserve-root -v"
 
@@ -37,4 +35,4 @@ if [ ! -z $PAGER ]; then
   alias p="$PAGER"
 fi
 
-
+# vim:ft=zsh
