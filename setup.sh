@@ -33,13 +33,17 @@ stow -t $HOME tmux
 echo "Installing git template"
 stow -t $HOME git
 
-
 if [[ "$SHELL" =~ "bash" ]]; then
   echo "Installing symlinks for bash"
   stow -t $HOME bash
 elif [[ "$SHELL" =~ "zsh" ]]; then
   echo "Installing symlinks for zsh"
   stow -t $HOME zsh
+fi
+
+if [ -d $curr_dir/private ]; then
+  echo "Installing private symlinks"
+  stow -t $HOME private
 fi
 
 if [[ "$OSTYPE" == linux-gnu ]] && ! hash i3 2>/dev/null; then

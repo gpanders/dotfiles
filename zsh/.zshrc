@@ -1,5 +1,5 @@
 # Install zsh plugins with antibody
-if [[ ! -f "${ZDOTDIR:-${HOME}}/.zplugins" ]]; then
+if [[ ! -f "${ZDOTDIR:-$HOME}/.zplugins" ]]; then
   antibody bundle "
     zsh-users/zsh-syntax-highlighting
     zsh-users/zsh-completions
@@ -9,9 +9,9 @@ if [[ ! -f "${ZDOTDIR:-${HOME}}/.zplugins" ]]; then
     sorin-ionescu/prezto path:modules/gnu-utility
     mafredri/zsh-async
     sindresorhus/pure
-  " > ${ZDOTDIR:-${HOME}}/.zplugins
+  " > ${ZDOTDIR:-$HOME}/.zplugins
 fi
-source "${ZDOTDIR:-${HOME}}/.zplugins"
+source "${ZDOTDIR:-$HOME}/.zplugins"
 
 # Enable completion
 autoload -Uz compinit && compinit
@@ -21,7 +21,7 @@ ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
 # History settings
-HISTFILE="${ZDOTDIR:-${HOME}}/.zhistory"
+HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
 HISTSIZE=10000
 SAVEHIST=10000
 
@@ -104,6 +104,7 @@ if [[ -s "$HOME/.pyenv/bin/pyenv" ]]; then
 fi
 
 # Source aliases
-if [[ -f "${ZDOTDIR:-${HOME}}/.zaliases" ]]; then
-  source "${ZDOTDIR:-${HOME}}/.zaliases"
-fi
+[[ -f "${ZDOTDIR:-$HOME}/.zaliases" ]] && source "${ZDOTDIR:-$HOME}/.zaliases"
+
+# Source custom functions
+[[ -f "${ZDOTDIR:-$HOME}/.zfunctions" ]] && source "${ZDOTDIR:-$HOME}/.zfunctions"
