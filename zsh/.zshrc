@@ -1,18 +1,22 @@
-#!/usr/bin/zsh
-
-if [[ -f /usr/share/zsh/share/antigen.zsh ]]; then
-  source /usr/share/zsh/share/antigen.zsh
-elif [[ -f /usr/local/share/antigen/antigen.zsh ]]; then
-  source /usr/local/share/antigen/antigen.zsh
-else
-  echo "Antigen not found!"
+# Install zsh plugins with antibody
+if [[ ! -f "${ZDOTDIR:-${HOME}}/.zplugins" ]]; then
+  antibody bundle "
+    zsh-users/zsh-syntax-highlighting
+    zsh-users/zsh-completions
+    zsh-users/zsh-autosuggestions
+    zsh-users/zsh-history-substring-search
+    robbyrussell/oh-my-zsh path:plugins/fzf
+    sorin-ionescu/prezto path:modules/gnu-utility
+    mafredri/zsh-async
+    sindresorhus/pure
+  " > ${ZDOTDIR:-${HOME}}/.zplugins
 fi
-antigen init ~/.antigenrc
+source "${ZDOTDIR:-${HOME}}/.zplugins"
 
 # Enable completion
 autoload -Uz compinit && compinit
 
-# zsh-autosuggest
+# zsh-autosuggestions
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
@@ -103,4 +107,3 @@ fi
 if [[ -f "${ZDOTDIR:-${HOME}}/.zaliases" ]]; then
   source "${ZDOTDIR:-${HOME}}/.zaliases"
 fi
-
