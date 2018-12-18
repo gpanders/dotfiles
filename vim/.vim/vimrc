@@ -28,9 +28,9 @@ if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
 endif
 
 " Set background if $TERMBG is set, otherwise let vim decide
-if $TERMBG == 'light'
+if $TERMBG ==# 'light'
   set background=light
-elseif $TERMBG == 'dark'
+elseif $TERMBG ==# 'dark'
   set background=dark
 endif
 
@@ -49,6 +49,9 @@ silent! colorscheme onedark
 if !exists('g:colors_name')
   set bg=dark
 endif
+
+" Try to make comments italic
+highlight Comment gui=italic cterm=italic
 
 " }}}
 
@@ -213,18 +216,18 @@ endif
 " Set a single backup directory
 set backup
 if has('win32') || has('win64')
-  set backupdir^=~/vimfiles/cache/backup//
+  set backupdir^=~/vimfiles/cache/backup
 else
-  set backupdir^=~/.vim/cache/backup//
+  set backupdir^=~/.vim/cache/backup
 endif
 
 " Enable persistent undo
 if has('persistent_undo')
   set undofile
   if has('win32') || has('win64')
-    set undodir^=~/vimfiles/cache/undo//
+    set undodir^=~/vimfiles/cache/undo
   else
-    set undodir^=~/.vim/cache/undo//
+    set undodir^=~/.vim/cache/undo
   endif
 endif
 
@@ -271,6 +274,9 @@ nnoremap <silent> k gk
 
 " Make :tjump easier
 nnoremap g] g<C-]>
+
+" Open tag under cursor in preview window
+nnoremap g} <C-W>g}
 
 " Map Q to gq
 noremap Q gq
@@ -326,11 +332,11 @@ nnoremap <leader>et :tabe <C-R>=expand('%:p:h') . '/' <CR>
 nnoremap <leader>es :sp <C-R>=expand('%:p:h') . '/' <CR>
 nnoremap <leader>ev :vsp <C-R>=expand('%:p:h') . '/' <CR>
 
-" <Bslash>E opens .vimrc in new window
-nnoremap <Bslash>E :<C-U>tabe $MYVIMRC<CR>
+" <Bslash>e opens .vimrc in new window
+nnoremap <Bslash>e :<C-U>tabe $MYVIMRC<CR>
 
-" <Bslash>S sources .vimrc
-nnoremap <Bslash>S :<C-U>source $MYVIMRC<CR>
+" <Bslash>s sources .vimrc
+nnoremap <Bslash>s :<C-U>source $MYVIMRC<CR>
 
 " Space toggles folds
 nnoremap <Space> za
@@ -339,25 +345,17 @@ nnoremap <Space> za
 nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR><C-L>
 vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
 
-" \c changes directory to current buffer's directory
-nnoremap <silent> <Bslash>c :<C-U>cd %:h<CR>:echo 'Changed directory to ' . expand('%:p:h')<CR>
+" <leader>c changes directory to current buffer's directory
+nnoremap <silent> <leader>c :<C-U>cd %:h<CR>:echo 'Changed directory to ' . expand('%:p:h')<CR>
 
-" \l changes local buffer directory to current buffer's directory
-nnoremap <silent> <Bslash>l :<C-U>lcd %:h<CR>:echo 'Changed local directory to ' . expand('%:p:h')<CR>
+" <localleader>c changes local buffer directory to current buffer's directory
+nnoremap <silent> <localleader>c :<C-U>lcd %:h<CR>:echo 'Changed local directory to ' . expand('%:p:h')<CR>
 
-" \: execute line in command mode
-nnoremap <Bslash>: ^"zyg_:<C-R>z<CR>
-" \! execute line as shell command
-nnoremap <Bslash>! ^"zyg_:!<C-R>z<CR>
+" <leader>q runs gq over the whole buffer
+nnoremap <leader>q m'1GgqG`'
 
-" \y shows contents of registers
-nnoremap <Bslash>y :<C-U>registers<CR>
-
-" \q runs gq over the whole buffer
-nnoremap <Bslash>q m'1GgqG`'
-
-" \= runs = over the whole buffer
-nnoremap <Bslash>= m'1G=G`'
+" <leader>= runs = over the whole buffer
+nnoremap <leader>= m'1G=G`'
 
 " }}}
 
