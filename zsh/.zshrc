@@ -5,14 +5,14 @@ antigen init ~/.antigenrc
 
 # Enable completion
 autoload -Uz compinit
-compinit -d $HOME/.cache/zsh/compdump
+compinit -d ${ZDOTDIR:-${HOME}}/.cache/zsh/compdump
 
 # zsh-autosuggest
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
 # History settings
-HISTFILE="$HOME/.cache/zsh/history"
+HISTFILE="${ZDOTDIR:-${HOME}}/.zhistory"
 HISTSIZE=10000
 SAVEHIST=10000
 
@@ -67,7 +67,6 @@ setopt MULTIOS
 # Don't throw an error if there is no match
 unsetopt NOMATCH
 
-
 # Emacs/readline style keybindings
 bindkey -e
 
@@ -83,9 +82,20 @@ if (( $+commands[dircolors] )); then
 fi
 
 # Source fzf config
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
 
-if [ -f ~/.zaliases ]; then
-  source ~/.zaliases
+# Setup pyenv
+if [[ -s "$HOME/.pyenv/bin/pyenv" ]]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  path=("$PYENV_ROOT/bin" $path)
+
+  if (( $+commands[pyenv] )); then
+    eval "$(pyenv init - zsh)"
+  fi
+fi
+
+# Source aliases
+if [[ -f "${ZDOTDIR:-${HOME}}/.zaliases" ]]; then
+  source "${ZDOTDIR:-${HOME}}/.zaliases"
 fi
 

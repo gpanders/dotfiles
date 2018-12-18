@@ -1,5 +1,7 @@
 #!/usr/bin/zsh
 
+export ANTIGEN_COMPDUMP="${ZDOTDIR:-${HOME}}/.cache/zsh/compdump"
+
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
