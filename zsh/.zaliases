@@ -1,0 +1,34 @@
+#!/usr/bin/zsh
+
+alias chmod="chmod --preserve-root -v"
+alias chown="chown --preserve-root -v"
+
+alias grep="grep --color=auto"
+
+alias ls="ls --color=auto"
+alias l="ls -l"
+alias ll="ls -Al"
+
+alias d="dirs -v"
+for index ({1..9}) alias "$index"="cd +${index}"; unset index
+
+alias g="git"
+
+if (( $+commands[nvim] )); then
+  alias vi="nvim"
+  alias vim="nvim"
+fi
+
+if [ ! -z $EDITOR ]; then
+  alias e="$EDITOR"
+fi
+
+if [ ! -z $BROWSER ]; then
+  alias b="$BROWSER"
+fi
+
+if [ ! -z $PAGER ]; then
+  alias p="$PAGER"
+fi
+
+
