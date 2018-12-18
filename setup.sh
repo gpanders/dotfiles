@@ -42,7 +42,7 @@ elif [[ "$SHELL" =~ "zsh" ]]; then
   stow -t $HOME zsh
 fi
 
-if ! hash i3 2>/dev/null; then
+if [[ "$OSTYPE" == linux-gnu ]] && ! hash i3 2>/dev/null; then
   read -r -p "Install i3? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
     install i3wm conky
