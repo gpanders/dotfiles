@@ -1,3 +1,11 @@
+# Don't allow duplicates in path variables
+typeset -gU path fpath cdpath manpath
+
+path=(
+  /usr/local/bin
+  $path
+)
+
 # Set browser based on OS type
 if [[ "$OSTYPE" == darwin* ]]; then
   export BROWSER='open'
@@ -5,6 +13,7 @@ elif [[ "$OSTYPE" == linux-gnu ]]; then
   export BROWSER='xdg-open'
 fi
 
+# Editor and pager
 export EDITOR="vim"
 export VISUAL="view"
 export PAGER="less"
