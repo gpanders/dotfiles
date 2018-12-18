@@ -32,8 +32,7 @@ echo "Creating symlinks for tmux"
 stow -t $HOME tmux
 echo "Installing git template"
 stow -t $HOME git
-git config --global init.templatedir "$HOME/.config/git/template"
-git config --global alias.ctags "!.git/hooks/ctags"
+
 
 if [[ "$SHELL" =~ "bash" ]]; then
   echo "Installing symlinks for bash"
@@ -102,8 +101,20 @@ if ! git config --global --get user.name 1>/dev/null ; then
 fi
 
 if ! git config --global --get user.email 1>/dev/null ; then
-  git config --global user.email "greg@gpanders.com"
+  read -r -p "Git email address [greg@gpanders.com]: " ans
+  git config --global user.email "${ans:-greg@gpanders.com}"
 fi
+
+git config --global init.templatedir "$HOME/.config/git/template"
+git config --global alias.ctags "!.git/hooks/ctags"
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.cm commit
+git config --global alias.a add
+git config --global alias.d diff
+git config --global alias.l log
+git config --global alias.rs reset
+git config --global alias.br branch
 
 # if [ ! -d $HOME/.zprezto ]; then
 #   read -r -p "Install prezto? [y/N] " ans
