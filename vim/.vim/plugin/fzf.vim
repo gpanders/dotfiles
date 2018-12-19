@@ -1,2 +1,4 @@
-" Load the FZF plugin silently so there is no error if it doesn't exist
-silent! source ~/.fzf/plugin/fzf.vim
+" Homebrew does not add fzf plugin to vim runtimepath so source it manually
+if g:os ==# 'Darwin'
+  silent! source /usr/local/opt/fzf/plugin/fzf.vim
+endif

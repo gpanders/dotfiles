@@ -1,9 +1,19 @@
 " Greg Anders (gpanders)'s vimrc <https://github.com/gpanders/dotfiles.git>
 
+" Detect OS
+if !exists('g:os')
+  if has('win64') || has('win32') || has('win16')
+    let g:os = "Windows"
+  else
+    let g:os = substitute(system('uname'), '\n', '', '')
+  endif
+endif
+
 if !has('packages')
   " Use vim-pathogen to emulate native packaging behavior
-  if empty(glob('~/.vim/autoload/pathogen.vim'))
-    silent !curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+  let s:vimdir = g:os ==# 'Windows' ? ($HOME . '/vimfiles') : ($HOME . '/.vim')
+  if empty(glob(s:vimdir . '/autoload/pathogen.vim'))
+    silent execute '!curl -LSso ' . s:vimdir . '/autoload/pathogen.vim https://tpo.pe/pathogen.vim'
   endif
   silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
 endif
@@ -215,7 +225,7 @@ endif
 
 " Set a single backup directory
 set backup
-if has('win32') || has('win64')
+if g:os ==# 'Windows'
   set backupdir^=~/vimfiles/cache/backup
 else
   set backupdir^=~/.vim/cache/backup
@@ -224,7 +234,7 @@ endif
 " Enable persistent undo
 if has('persistent_undo')
   set undofile
-  if has('win32') || has('win64')
+  if g:os ==# 'Windows'
     set undodir^=~/vimfiles/cache/undo
   else
     set undodir^=~/.vim/cache/undo
@@ -232,7 +242,7 @@ if has('persistent_undo')
 endif
 
 " Keep swap files in one place
-if has('win32') || has('win64')
+if g:os ==# 'Windows'
   set directory^=~/vimfiles/cache/swap//
 else
   set directory^=~/.vim/cache/swap//
