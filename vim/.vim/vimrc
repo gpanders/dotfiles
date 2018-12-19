@@ -390,6 +390,12 @@ vnoremap * y/\V<C-R>"<CR>
 vnoremap # y?\V<C-R>"<CR>
 " }}}
 
+" Terminal mode mappings {{{
+if exists(':tmap')
+  tnoremap <Esc> <C-\><C-N>
+endif
+" }}}
+
 " Use ripgrep or ag as grepprg if available
 if executable('rg')
   " Use rg over grep
@@ -401,7 +407,7 @@ endif
 
 " Use <C-K> in Normal mode to use grepprg
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
-command! -nargs=+ -complete=file -bar -bang Grep silent! botright grep<bang> <args>|copen|redraw!
+command! -nargs=+ -complete=file -bar -bang Grep silent! botright grep<bang> <args>|cwindow|redraw!
 nnoremap <C-K> :Grep!<space>
 
 " Pushing built-in commands beyond their limits {{{
@@ -457,17 +463,16 @@ augroup vimrc
 
   " Highlight the current line in the current window but disable in Insert mode {{{
   let blacklist = ['tex']
-  au BufEnter * if index(blacklist, &ft) < 0 | set cursorline | endif
-  au BufLeave * if index(blacklist, &ft) < 0 | set nocursorline | endif
-  au InsertEnter * if index(blacklist, &ft) < 0 | set nocursorline | endif
-  au InsertLeave * if index(blacklist, &ft) < 0 | set cursorline | endif
+  au InsertEnter * if index(blacklist, &ft) < 0
+        \| let b:cul = &cursorline | setl nocursorline | endif
+  au InsertLeave * if index(blacklist, &ft) < 0 | let &cursorline = b:cul | endif
   " }}}
 
   " Open the quickfix window after any quickfix command
   au QuickFixCmdPost [^l]* cwindow
 
   " Start insert immediately when terminal opens
-  if exists('#TermOpen')
+  if exists('##TermOpen')
     au TermOpen * startinsert
   endif
 
