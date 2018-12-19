@@ -88,18 +88,28 @@ if (( $+commands[dircolors] )); then
   eval "$(dircolors --sh)"
 fi
 
-# Source fzf config
-[[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
-
 # Setup pyenv
 if [[ -s "$HOME/.pyenv/bin/pyenv" ]]; then
   export PYENV_ROOT="$HOME/.pyenv"
   path=("$PYENV_ROOT/bin" $path)
-
-  if (( $+commands[pyenv] )); then
-    eval "$(pyenv init - zsh)"
-  fi
 fi
+
+if (( $+commands[pyenv] )); then
+  if [[ -z "$PYENV_ROOT" ]]; then
+    export PYENV_ROOT=$(pyenv root)
+  fi
+
+  # Evaluate pyenv init asynchronously
+  pyenv_cb() {
+    eval "$3"
+  }
+  async_start_worker pyenv_worker -n
+  async_register_callback pyenv_worker pyenv_cb
+  async_job pyenv_worker pyenv init - zsh
+fi
+
+# Configure fzf
+[[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
 
 # Source aliases
 [[ -f "${ZDOTDIR:-$HOME}/.zaliases" ]] && source "${ZDOTDIR:-$HOME}/.zaliases"
