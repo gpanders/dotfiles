@@ -32,6 +32,8 @@ echo "Creating symlinks for tmux"
 stow -t $HOME tmux
 echo "Installing git template"
 stow -t $HOME git
+echo "Installing symlinks for xmodmap"
+stow -t $HOME X
 
 if [[ "$SHELL" =~ "bash" ]]; then
   echo "Installing symlinks for bash"
@@ -154,12 +156,19 @@ git config --global alias.st status
 #   fi
 # fi
 
-if hash zsh 2>/dev/null && hash finger 2>/dev/null; then
-  user_shell=$(finger $USER 2>/dev/null | grep Shell | awk '{print $4}')
-  if [[ $user_shell != *"zsh"* ]]; then
-    read -r -p "Change default shell to zsh? [y/N] " ans
-    if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-      sudo chsh -s $(which zsh) ${SUDO_USER:-$USER}
+if hash zsh 2>/dev/null; then
+  if ! hash antibody 2>/dev/null; then
+    echo "Downloading antibody. This may require your password."
+    curl -sL git.io/antibody | sh -s
+  fi
+
+  if hash finger 2>/dev/null; then
+    user_shell=$(finger $USER 2>/dev/null | grep Shell | awk '{print $4}')
+    if [[ $user_shell != *"zsh"* ]]; then
+      read -r -p "Change default shell to zsh? [y/N] " ans
+      if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+        sudo chsh -s $(which zsh) ${SUDO_USER:-$USER}
+      fi
     fi
   fi
 fi

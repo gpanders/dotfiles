@@ -1,5 +1,6 @@
 # Install zsh plugins with antibody
 if [[ ! -f "${ZDOTDIR:-$HOME}/.zplugins" ]]; then
+  echo "Installing zsh plugins. We only need to do this once."
   antibody bundle "
     zsh-users/zsh-syntax-highlighting
     zsh-users/zsh-completions
