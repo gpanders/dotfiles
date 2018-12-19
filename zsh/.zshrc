@@ -76,14 +76,11 @@ setopt MULTIOS
 # Don't throw an error if there is no match
 unsetopt NOMATCH
 
-# Emacs/readline style keybindings
-bindkey -e
-
-bindkey -M emacs '^P' history-substring-search-up
-bindkey -M emacs '^N' history-substring-search-down
+bindkey '^ ' autosuggest-accept
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
-bindkey '^ ' autosuggest-accept
 
 # Enable dircolors
 if (( $+commands[dircolors] )); then
