@@ -1,7 +1,7 @@
 " Install and remove packages from vim's pack directory
 " Author: Greg Anders <greg@gpanders.com>
 
-if has('win64') || has('win32') || has('win16')
+if g:os ==# 'Windows'
   let g:pack_install#pack_dir = $HOME . '\vimfiles\pack\'
   let s:sep = '\'
 else
