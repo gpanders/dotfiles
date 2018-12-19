@@ -81,7 +81,7 @@ highlight Comment gui=italic cterm=italic
 if has('gui_running')
   if g:os ==# 'Windows'
     set guifont=Fira_Mono:h10:cANSI:qDRAFT
-  else g:os ==# 'Darwin'
+  elseif g:os ==# 'Darwin'
     set guifont=FiraMono-Regular:h11
   endif
   set guioptions=teMg!
