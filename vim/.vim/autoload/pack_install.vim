@@ -16,7 +16,7 @@ function! pack_install#Install(opt, ...) abort
     try
       let [author, repo] = split(pkg, '/')
     catch
-      echom 'Invalid package name: ' . pkg
+      echo 'Invalid package name: ' . pkg
       continue
     endtry
 
@@ -30,20 +30,19 @@ function! pack_install#Install(opt, ...) abort
     endfor
 
     if installed
-      echom 'Package already installed: ' . author . '/' . repo
+      echo 'Package already installed: ' . author . '/' . repo
       continue
     endif
 
     let dir = g:pack_install#pack_dir . author . (a:opt ? '/opt/' : '/start/') . repo
-    silent execute '!echo -n Installing package: ' . author . '/' . repo . '...'
+    echo 'Installing package: ' . author . '/' . repo . '...'
     silent execute '!git clone -q --recursive https://github.com/' . pkg . ' ' . dir
     silent! execute 'helptags ' . dir . '/doc'
-    silent !echo ' Done.'
+    echo 'Done.'
   endfor
-  redraw!
 
   if a:0 > 1
-    echom "Done!"
+    echo "Done!"
   endif
 endfunction
 
@@ -63,14 +62,14 @@ function! pack_install#Remove(...) abort
         endif
       endfor
       if empty(author)
-        echom 'Package not found: ' . repo
+        echo 'Package not found: ' . repo
         continue
       endif
     elseif len(tmp) == 2
       let author = tmp[0]
       let repo = substitute(tmp[1], '\(^vim\-\|[-.]vim$\)', '', 'g')
     else
-      echom 'Invalid package name: ' . pkg
+      echo 'Invalid package name: ' . pkg
       continue
     endif
 
@@ -80,21 +79,20 @@ function! pack_install#Remove(...) abort
     if isdirectory(opt_dir)
       if confirm('Remove package ' . author . '/' . repo . '?', "&Yes\n&No", 2) == 1
         silent execute '!rm -rf ' . opt_dir
-        silent execute '!echo Removed package: ' . author . '/' . repo
+        echom 'Removed package: ' . author . '/' . repo
       endif
     elseif isdirectory(start_dir)
       if confirm('Remove package ' . author . '/' . repo . '?', "&Yes\n&No", 2) == 1
         silent execute '!rm -rf ' . start_dir
-        silent execute '!echo Removed package: ' . author . '/' . repo
+        echom 'Removed package: ' . author . '/' . repo
       endif
     else
-      echom 'Package not found: ' . author . '/' . repo
+      echo 'Package not found: ' . author . '/' . repo
     endif
   endfor
-  redraw!
 
   if a:0 > 1
-    echom "Done!"
+    echo 'Done!'
   endif
 endfunction
 
@@ -119,4 +117,3 @@ function! pack_install#List() abort
     endfor
   endfor
 endfunction
-
