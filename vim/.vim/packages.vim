@@ -20,3 +20,4 @@ PackInstall
 
 PackInstallOpt 
       \ joshdick/onedark.vim
+      \ lifepillar/vim-solarized8

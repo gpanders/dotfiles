@@ -1,6 +1,6 @@
 " Greg Anders (gpanders)'s vimrc <https://github.com/gpanders/dotfiles.git>
 
-" Detect OS
+" Detect OS {{{
 if !exists('g:os')
   if has('win64') || has('win32') || has('win16')
     let g:os = "Windows"
@@ -8,7 +8,9 @@ if !exists('g:os')
     let g:os = substitute(system('uname'), '\n', '', '')
   endif
 endif
+" }}}
 
+" Use vim-pathogen if native packages are not supported {{{
 if !has('packages')
   " Use vim-pathogen to emulate native packaging behavior
   let s:vimdir = g:os ==# 'Windows' ? ($HOME . '/vimfiles') : ($HOME . '/.vim')
@@ -17,6 +19,7 @@ if !has('packages')
   endif
   silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
 endif
+" }}}
 
 if has('autocmd')
   filetype plugin indent on
@@ -53,9 +56,18 @@ else
   let g:onedark_termcolors = 16
 endif
 
+" Solarized {{{
+" ---------
+" silent! packadd! solarized8
+" silent! colorscheme solarized8
+" }}}
+" One Dark {{{
+" --------
 silent! packadd! onedark
 silent! colorscheme onedark
+" }}}
 
+" If no other colorscheme, use vim default
 if !exists('g:colors_name')
   set bg=dark
 endif
@@ -67,7 +79,11 @@ highlight Comment gui=italic cterm=italic
 
 " GUI settings {{{
 if has('gui_running')
-  set guifont=Fira_Code:h10:cANSI:qDRAFT
+  if g:os ==# 'Windows'
+    set guifont=Fira_Mono:h10:cANSI:qDRAFT
+  else g:os ==# 'Darwin'
+    set guifont=FiraMono-Regular:h11
+  endif
   set guioptions=teMg!
   set lines=60
   set columns=180
