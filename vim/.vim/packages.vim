@@ -15,6 +15,7 @@ PackInstall
       \ airblade/vim-gitgutter
       \ ludovicchabant/vim-gutentags
       \ mhinz/vim-startify
+      \ jpalardy/vim-slime
       \ davidhalter/jedi-vim
       \ romainl/vim-qf
 
