@@ -1,3 +1,8 @@
+# Greg Anders (gpanders)'s ZSH configuration <https://github.com/gpanders/dotfiles.git>
+
+# Enable emacs/readline style keybindings
+bindkey -e
+
 # Install zsh plugins with antibody
 if [[ ! -f "${ZDOTDIR:-$HOME}/.zplugins" ]]; then
   echo "Installing zsh plugins. We only need to do this once."
