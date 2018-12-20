@@ -180,9 +180,10 @@ set ruler
 set wildmenu
 
 set wildcharm=<C-Z>
-set wildmode=longest,full
+set wildmode=longest:full,full
 set wildignorecase
 set wildignore=*.swp,*.bak
+set wildignore+=*.o
 set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
 set wildignore+=tags
 " }}}
