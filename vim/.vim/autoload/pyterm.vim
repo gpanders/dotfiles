@@ -1,7 +1,8 @@
 function pyterm#open(...)
-  let bufinfolist = getbufinfo('term://*python')
+  let buf = filter(range(1, bufnr('$')),
+        \ 'bufexists(v:val) && getbufvar(v:val, "pyterm", 0)')
   let height = winheight(0) / 3
-  if empty(bufinfolist)
+  if empty(buf)
     " No buffer yet, so start a new one
     if a:0
       let pyprog = a:1
@@ -15,15 +16,24 @@ function pyterm#open(...)
       let pyprog = 'python2'
     endif
 
-    execute 'botright ' . height . 'sp | term ' . pyprog
+    if has('nvim')
+      execute 'botright ' . height . 'sp | term ' . pyprog
+      autocmd BufEnter <buffer> startinsert
+    else
+      execute 'botright term ' . pyprog
+      execute 'resize ' . height
+      autocmd BufEnter <buffer> normal i
+    endif
+    setlocal nonumber nobuflisted
+    let b:pyterm = 1
   else
     " Buffer already exists
-    let bufinfo = bufinfolist[0]
+    let bufinfo = getbufinfo(buf[0])[0]
     if !bufinfo.hidden && !empty(bufinfo.windows)
       let winnum = win_id2win(bufinfo.windows[0])
-      execute winnum 'wincmd w | startinsert'
+      execute winnum 'wincmd w'
     else
-      execute 'botright sb ' . bufinfo.bufnr . ' | resize ' . height . ' | startinsert'
+      execute 'botright sb ' . bufinfo.bufnr . ' | resize ' . height
     endif
   endif
 endfunction

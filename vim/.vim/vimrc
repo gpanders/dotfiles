@@ -397,6 +397,8 @@ vnoremap # y?\V<C-R>"<CR>
 " Terminal mode mappings {{{
 if exists(':tmap')
   tnoremap <Esc> <C-\><C-N>
+  tnoremap <silent> <C-W> <C-\><C-N><C-W>
+  tnoremap <C-W><C-W> <C-W>
 endif
 " }}}
 
@@ -477,7 +479,13 @@ augroup vimrc
 
   " Start insert immediately when terminal opens
   if exists('##TermOpen')
-    au TermOpen * startinsert
+    au TermOpen * setlocal nonumber | startinsert
+  endif
+
+  if has('nvim')
+    au BufEnter term://* startinsert
+  else
+    " au BufEnter * if &buftype ==# 'terminal' | normal i | endif
   endif
 
 augroup END
