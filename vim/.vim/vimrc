@@ -58,12 +58,12 @@ endif
 
 " Solarized {{{
 " ---------
-" silent! packadd! solarized8
+" silent! packadd! vim-solarized8
 " silent! colorscheme solarized8
 " }}}
 " One Dark {{{
 " --------
-silent! packadd! onedark
+silent! packadd! onedark.vim
 silent! colorscheme onedark
 " }}}
 
