@@ -288,6 +288,9 @@ inoremap <C-D> <Del>
 " Kill the rest of the line (similar to Emacs binding)
 inoremap <C-K> <C-G>u<C-O>D
 
+" <C-G><C-K> to enter digraphs (originally <C-K>'s job)
+inoremap <C-G><C-K> <C-K>
+
 " }}}
 
 " Normal mode mappings {{{
