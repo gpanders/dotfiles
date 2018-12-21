@@ -3,6 +3,7 @@ function! s:PackInit()
 
   if exists('*minpac#init')
     call minpac#init()
+    call minpac#add('k-takata/minpac', {'type': 'opt'})
 
     call minpac#add('tpope/vim-unimpaired')
     call minpac#add('tpope/vim-fugitive')
@@ -21,9 +22,17 @@ function! s:PackInit()
     call minpac#add('ludovicchabant/vim-gutentags')
     call minpac#add('mhinz/vim-startify')
     call minpac#add('jpalardy/vim-slime')
-    call minpac#add('davidhalter/jedi-vim')
+    " call minpac#add('davidhalter/jedi-vim')
     call minpac#add('romainl/vim-qf')
 
+    " Neovim or Vim 8.1+ required
+    if has('nvim')
+      call minpac#add('neoclide/coc.nvim', {'do': 'call coc#util#install()'})
+    elseif v:version >= 801
+      call minpac#add('neoclide/coc.nvim', {'do': 'call coc#util#install() | silent! !yarn global add vim-node-rpc'})
+    endif
+
+    " Colorschemes
     call minpac#add('joshdick/onedark.vim', {'type': 'opt'})
     call minpac#add('lifepillar/vim-solarized8', {'type': 'opt'})
   endif
