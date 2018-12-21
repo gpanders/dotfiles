@@ -62,7 +62,7 @@ setopt NOTIFY
 setopt NO_BG_NICE
 
 # cd adds directories to dirstack
-setopt AUTO_PUSHD pushd_silent pushd_to_home
+setopt AUTO_PUSHD PUSHD_SILENT PUSHD_TO_HOME
 
 # Remove duplicate entries
 setopt PUSHD_IGNORE_DUPS
@@ -79,12 +79,16 @@ setopt EXTENDEDGLOB
 # Write to multiple descriptors.
 setopt MULTIOS
 
+# Disable flow control
+setopt NO_FLOW_CONTROL
+
 # Don't throw an error if there is no match
 unsetopt NOMATCH
 
 bindkey '^ ' autosuggest-accept
 bindkey '^P' history-substring-search-up
 bindkey '^N' history-substring-search-down
+bindkey '^Q' push-line-or-edit
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 
