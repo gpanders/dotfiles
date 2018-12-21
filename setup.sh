@@ -23,29 +23,29 @@ if ! hash stow 2>/dev/null; then
 fi
 
 echo "Creating symlinks for vim"
-stow -t $HOME vim
+stow -t "$HOME" vim
 echo "Creating symlinks for neovim"
-stow -t $HOME neovim
+stow -t "$HOME" neovim
 echo "Creating symlinks for emacs"
-stow -t $HOME emacs
+stow -t "$HOME" emacs
 echo "Creating symlinks for tmux"
-stow -t $HOME tmux
+stow -t "$HOME" tmux
 echo "Installing git template"
-stow -t $HOME git
+stow -t "$HOME" git
 echo "Installing symlinks for xmodmap"
-stow -t $HOME X
+stow -t "$HOME" X
 
 if [[ "$SHELL" =~ "bash" ]]; then
   echo "Installing symlinks for bash"
-  stow -t $HOME bash
+  stow -t "$HOME" bash
 elif [[ "$SHELL" =~ "zsh" ]]; then
   echo "Installing symlinks for zsh"
-  stow -t $HOME zsh
+  stow -t "$HOME" zsh
 fi
 
-if [ -d $curr_dir/private ]; then
+if [ -d "$curr_dir/private" ]; then
   echo "Installing private symlinks"
-  stow -t $HOME private
+  stow -t "$HOME" private
 fi
 
 if [[ "$OSTYPE" == linux-gnu ]] && ! hash i3 2>/dev/null; then
@@ -57,10 +57,10 @@ fi
 
 if hash i3 2>/dev/null; then
   echo "Creating symlinks for i3"
-  stow -t $HOME i3
+  stow -t "$HOME" i3
 
   echo "Creating symlinks for conky"
-  stow -t $HOME conky
+  stow -t "$HOME" conky
 fi
 
 if ! hash offlineimap 2>/dev/null; then
@@ -72,7 +72,7 @@ fi
 
 if hash offlineimap 2>/dev/null; then
   echo "Creating symlinks for offlineimap"
-  stow -t $HOME offlineimap
+  stow -t "$HOME" offlineimap
 fi
 
 if ! hash mutt 2>/dev/null && ! hash neomutt 2>/dev/null; then
@@ -84,16 +84,16 @@ fi
 
 if hash neomutt 2>/dev/null; then
   if ! hash mutt 2>/dev/null; then
-    ln -s $(which neomutt) /usr/local/bin/mutt
+    ln -s "$(command -v neomutt)" /usr/local/bin/mutt
   else
     echo "Both mutt and neomutt installed!"
   fi
   echo "Creating symlinks for mutt"
-  stow -t $HOME mutt
+  stow -t "$HOME" mutt
 fi
 
 # Create cache directories for vim
-mkdir -p $HOME/.vim/cache/{backup,undo,swap}
+mkdir -p "$HOME"/.vim/cache/{backup,undo,swap}
 
 if hash tmux 2>/dev/null; then
   # Install tmux plugins in a background session
@@ -125,13 +125,13 @@ git config --global alias.p push
 git config --global alias.re reset
 git config --global alias.st status
 
-# if [ ! -d $HOME/.zprezto ]; then
+# if [ ! -d "$HOME/.zprezto" ]; then
 #   read -r -p "Install prezto? [y/N] " ans
 #   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
 
-#     git clone --recursive https://github.com/gpanders/prezto.git $HOME/.zprezto
+#     git clone --recursive https://github.com/gpanders/prezto.git "$HOME/.zprezto"
 
-#     for rcfile in $HOME/.zprezto/runcoms/!(README.md|zshenv); do
+#     for rcfile in "$HOME"/.zprezto/runcoms/!(README.md|zshenv); do
 #       if [ -h "$HOME/.${rcfile##*/}" ]; then
 #         rm "$HOME/.${rcfile##*/}"
 #       elif [ -f "$HOME/.${rcfile##*/}" ]; then
@@ -163,11 +163,11 @@ if hash zsh 2>/dev/null; then
   fi
 
   if hash finger 2>/dev/null; then
-    user_shell=$(finger $USER 2>/dev/null | grep Shell | awk '{print $4}')
+    user_shell="$(finger $USER 2>/dev/null | grep Shell | awk '{print $4}')"
     if [[ $user_shell != *"zsh"* ]]; then
       read -r -p "Change default shell to zsh? [y/N] " ans
       if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-        sudo chsh -s $(which zsh) ${SUDO_USER:-$USER}
+        sudo chsh -s "$(command -v zsh)" "${SUDO_USER:-$USER}"
       fi
     fi
   fi
@@ -176,12 +176,12 @@ fi
 if [ ! -d "$HOME/.pyenv" ]; then
   read -r -p "Install pyenv? [y/N] " ans
   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-    stow -t $HOME pyenv
+    stow -t "$HOME" pyenv
     if [[ "$OSTYPE" == darwin* ]]; then
       brew install pyenv pyenv-virtualenv
     elif [[ "$OSTYPE" == linux-gnu ]]; then
-      git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
-      git clone https://github.com/pyenv/pyenv-virtualenv.git $HOME/.pyenv/plugins/pyenv-virtualenv
+      git clone https://github.com/pyenv/pyenv.git "$HOME/.pyenv"
+      git clone https://github.com/pyenv/pyenv-virtualenv.git "$HOME/.pyenv/plugins/pyenv-virtualenv"
     fi
   fi
 fi
