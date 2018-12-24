@@ -9,8 +9,8 @@ alias g="git"
 alias grep="grep --color=auto"
 
 alias ls="ls --color=auto"
-alias l="ls -l"
-alias ll="ls -Al"
+alias l="ls -lh"
+alias ll="ls -Alh"
 
 alias ipy="ipython"
 alias py="python"
