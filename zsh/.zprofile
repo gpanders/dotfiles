@@ -27,6 +27,20 @@ if [[ -z "$LANG" ]]; then
   export LANG='en_US.UTF-8'
 fi
 
+# Setup pyenv
+if [[ -s "$HOME/.pyenv/bin/pyenv" ]]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  path=("$PYENV_ROOT/bin" $path)
+fi
+
+if (( $+commands[pyenv] )); then
+  if [[ -z "$PYENV_ROOT" ]]; then
+    export PYENV_ROOT=$(pyenv root)
+  fi
+
+  eval "$(pyenv init - --no-rehash zsh)"
+fi
+
 #
 # Grep
 #
