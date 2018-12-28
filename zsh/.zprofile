@@ -41,6 +41,11 @@ if (( $+commands[pyenv] )); then
   eval "$(pyenv init - --no-rehash zsh)"
 fi
 
+# Setup rbenv
+if (( $+commands[rbenv] )); then
+  eval "$(rbenv init -)"
+fi
+
 #
 # Grep
 #
