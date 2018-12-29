@@ -1,18 +1,18 @@
 # general ------------ foreground ---- background -----------------------------
-color error		    brightred	default
-color indicator		black	    yellow
-color markers		  color210	default
-color message		  default		default
-color normal		  default		default
-color prompt		  default	  default
-color search		  black	  	yellow
-color status 		  yellow 	  default
-color tilde		    color231	default
-color tree		    green   	default
+color error		    brightred	  default
+color indicator		black	      yellow
+color markers		  color210	  default
+color message		  default		  default
+color normal		  default		  default
+color prompt		  default	    default
+color search		  black	  	  yellow
+color status 		  green   	    default
+color tilde		    color231	  default
+color tree		    green   	  default
 
 # sidebar ------------ foreground ---- background -----------------------------
 color sidebar_highlight brightwhite default
-color sidebar_divider   black       black
+color sidebar_divider   magenta     black
 color sidebar_flagged   red         black
 color sidebar_new       brightwhite black
 

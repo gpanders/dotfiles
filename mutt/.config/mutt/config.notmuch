@@ -1,0 +1,17 @@
+virtual-mailboxes "Inbox" "notmuch://?query=tag:inbox"
+virtual-mailboxes "Archive" "notmuch://?query=tag:archive"
+virtual-mailboxes "Sent" "notmuch://?query=tag:sent"
+virtual-mailboxes "Trash" "notmuch://?query=tag:trash"
+
+set virtual_spoolfile = yes
+
+macro index \\ "<vfolder-from-query>"
+macro index,pager A "<modify-labels>+archive -unread -inbox\n" "Archive message"
+macro index,pager X "<change-vfolder>?" "Change to vfolder overview"
+# macro index,pager d "<modify-labels>+trash -archive -unread -inbox\n<quasi-delete><sync-mailbox>" "Delete message"
+
+bind index,pager + entire-thread
+bind index < vfolder-window-backward
+bind index > vfolder-window-forward
+
+# vim: ft=muttrc
