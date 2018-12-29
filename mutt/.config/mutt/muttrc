@@ -19,8 +19,12 @@ set reverse_alias = yes
 source $alias_file
 
 set nm_default_uri = "notmuch://$HOME/.mail"
+set nm_record = yes
+set nm_record_tags = "-inbox,-unread,+archive,+sent"
+set nm_unread_tag = "unread"
+
 macro index \\ "<vfolder-from-query>"
-macro index,pager A "<modify-labels-then-hide>!archive -unread !inbox\n<sync-mailbox>" "Archive message"
+# macro index,pager A "<save-message>=Archive\n<sync-mailbox>" "Archive message"
 macro index,pager X "<change-vfolder>?" "Change to vfolder overview"
 bind index,pager + entire-thread
 bind index < vfolder-window-backward
