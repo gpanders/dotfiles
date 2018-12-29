@@ -21,23 +21,41 @@
 (require 'init-evil)
 
 (use-package company
-  :ensure t)
+  :ensure t
+  :delight)
 (use-package cquery
   :ensure t
   :config
   (setq cquery-executable (cond
                            ((eq system-type 'darwin) "/usr/local/bin/cquery")
                            ((eq system-type 'gnu/linux) "/usr/bin/cquery"))))
+(use-package delight
+  :ensure t)
 (use-package exec-path-from-shell
   :ensure t
   :if (memq window-system '(mac ns x))
   :config
   (exec-path-from-shell-initialize))
-(use-package flx-ido
+(use-package flx
+  :ensure t)
+(use-package ivy
   :ensure t
+  :delight
+  :bind ("C-c C-r" . ivy-resume)
   :config
-  (setq ido-use-faces nil)
-  (flx-ido-mode 1))
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq enable-recursive-minibuffers t)
+  (use-package counsel
+    :ensure t
+    :delight
+    :bind ("C-s" . swiper)
+    :config
+    (global-set-key (kbd "C-c k") (cond ((executable-find "rg") 'counsel-rg)
+					((executable-find "ag") 'counsel-ag)
+					((exectuable-find "grep") 'counsel-grep)))
+    (counsel-mode t))
+  (ivy-mode t))
 (use-package lsp-mode
   :ensure t
   :commands lsp
@@ -50,19 +68,22 @@
     :ensure t
     :commands company-lsp))
 (use-package magit
-  :ensure t)
+  :ensure t
+  :config
+  (setq magit-completing-read-function 'ivy-completing-read))
 (use-package projectile
   :ensure t
   :bind-keymap ("C-c p" . projectile-command-map)
   :config
   (setq projectile-project-search-path '("~/Development" "~/Projects"))
+  (setq projectile-completion-system 'ivy)
   (projectile-mode 1))
 (use-package recentf
   :ensure nil
   :config
   ;; get rid of `find-file-read-only' and replace it with something
   ;; more useful
-  (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+  (global-set-key (kbd "C-x C-r") 'counsel-recentf)
 
   ;; enable recent files mode
   (recentf-mode t)
@@ -71,17 +92,11 @@
   (defun ido-recentf-open ()
     "Use `ido-completing-read' to \\[find-file] a recent file"
     (interactive)
-    (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+    (if (find-file (ivy-completing-read "Find recent file: " recentf-list))
 	(message "Opening file...")
       (message "Aborting"))))
 (use-package smex
-  :ensure t
-  :bind ("M-x" . smex))
-
-;; Enable ido mode
-(ido-mode 1)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
+  :ensure t)
 
 ;; Show matching parens
 (show-paren-mode t)
