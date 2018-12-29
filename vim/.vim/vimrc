@@ -402,6 +402,8 @@ if exists(':tmap')
 endif
 " }}}
 
+" Grep {{{
+
 " Use ripgrep or ag as grepprg if available
 if executable('rg')
   " Use rg over grep
@@ -415,6 +417,7 @@ endif
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
 command! -nargs=+ -complete=file -bar -bang Grep silent! botright grep<bang> <args>|cwindow|redraw!
 nnoremap <C-K> :Grep!<space>
+" }}}
 
 " Pushing built-in commands beyond their limits {{{
 " https://gist.github.com/Konfekt/d8ce5626a48f4e56ecab31a89449f1f0

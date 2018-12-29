@@ -22,6 +22,7 @@ function! s:PackInit()
     call minpac#add('ludovicchabant/vim-gutentags')
     call minpac#add('mhinz/vim-startify')
     call minpac#add('jpalardy/vim-slime')
+    call minpac#add('vimwiki/vimwiki')
     " call minpac#add('davidhalter/jedi-vim')
     call minpac#add('romainl/vim-qf')
 
