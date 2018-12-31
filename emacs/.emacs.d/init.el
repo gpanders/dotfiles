@@ -19,6 +19,7 @@
 (require 'init-os)
 (require 'init-ui)
 (require 'init-evil)
+(require 'init-org)
 
 (use-package company
   :ensure t
@@ -41,16 +42,15 @@
 (use-package ivy
   :ensure t
   :delight
-  :bind ("C-c C-r" . ivy-resume)
   :config
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
   (setq enable-recursive-minibuffers t)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
   (use-package counsel
-    :ensure t
     :delight
-    :bind ("C-s" . swiper)
     :config
+    (global-set-key "\C-s" 'swiper)
     (global-set-key (kbd "C-c k") (cond ((executable-find "rg") 'counsel-rg)
 					((executable-find "ag") 'counsel-ag)
 					((exectuable-find "grep") 'counsel-grep)))
@@ -59,14 +59,25 @@
 (use-package lsp-mode
   :ensure t
   :commands lsp
-  :hook (prog-mode . lsp)
+  :hook ((c-mode . lsp)
+	 (c++-mode . lsp)
+	 (python-mode . lsp))
   :config
+  ;; lsp-mode doesn't have a keymap so bind the keys locally when mode is
+  ;; activated
+  (add-hook 'lsp-mode-hook
+	    (lambda () (local-set-key (kbd "C-c C-f") 'lsp-format-buffer)))
   (use-package lsp-ui
     :ensure t
     :commands lsp-ui-mode)
   (use-package company-lsp
     :ensure t
-    :commands company-lsp))
+    :commands company-lsp
+    :config
+    (use-package yasnippet
+      :ensure t
+      :config
+      (yas-global-mode 1))))
 (use-package magit
   :ensure t
   :config
@@ -95,6 +106,10 @@
     (if (find-file (ivy-completing-read "Find recent file: " recentf-list))
 	(message "Opening file...")
       (message "Aborting"))))
+(use-package sane-term
+  :ensure t
+  :bind (("C-x t" . sane-term)
+	 ("C-x T" . sane-term-create)))
 (use-package smex
   :ensure t)
 
