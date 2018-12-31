@@ -27,7 +27,7 @@
 
   ;; Set meta key to Command
   (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier 'none)
+  (setq mac-option-modifier 'super)
   (setq mouse-wheel-scroll-amount '(1
                                     ((shift) . 5)
                                     ((control))))
