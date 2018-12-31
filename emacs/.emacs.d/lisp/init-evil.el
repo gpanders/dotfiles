@@ -20,6 +20,10 @@
   (define-key evil-leader-map "b" 'switch-to-buffer)
   (define-key evil-leader-map "e" 'find-file)
   (define-key evil-leader-map "w" 'save-buffer)
-  (define-key evil-normal-state-map (kbd "SPC SPC") 'counsel-M-x))
+  (define-key evil-normal-state-map (kbd "SPC SPC") 'counsel-M-x)
+
+  ;; Enable evil mode
+  (evil-mode 1)
+)
 
 (provide 'init-evil)

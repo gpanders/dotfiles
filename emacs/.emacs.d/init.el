@@ -1,3 +1,4 @@
+;;; init.el --- Greg Anders (gpanders)'s emacs init.el
 (require 'package)
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
@@ -39,6 +40,10 @@
   (exec-path-from-shell-initialize))
 (use-package flx
   :ensure t)
+(use-package flycheck
+  :ensure t
+  :config
+  (global-flycheck-mode))
 (use-package ivy
   :ensure t
   :delight
@@ -63,10 +68,13 @@
 	 (c++-mode . lsp)
 	 (python-mode . lsp))
   :config
+  (setq lsp-prefer-flymake nil)
   ;; lsp-mode doesn't have a keymap so bind the keys locally when mode is
   ;; activated
   (add-hook 'lsp-mode-hook
-	    (lambda () (local-set-key (kbd "C-c C-f") 'lsp-format-buffer)))
+	    (lambda ()
+	      (progn
+		(local-set-key (kbd "C-c C-f") 'lsp-format-buffer))))
   (use-package lsp-ui
     :ensure t
     :commands lsp-ui-mode)
@@ -76,6 +84,7 @@
     :config
     (use-package yasnippet
       :ensure t
+      :delight
       :config
       (yas-global-mode 1))))
 (use-package magit
@@ -84,7 +93,8 @@
   (setq magit-completing-read-function 'ivy-completing-read))
 (use-package projectile
   :ensure t
-  :bind-keymap ("C-c p" . projectile-command-map)
+  :bind-keymap (("s-p" . projectile-command-map)
+		("C-c p" . projectile-command-map))
   :config
   (setq projectile-project-search-path '("~/Development" "~/Projects"))
   (setq projectile-completion-system 'ivy)
@@ -131,3 +141,5 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
+
+;;; init.el ends here
