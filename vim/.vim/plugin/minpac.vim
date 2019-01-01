@@ -25,6 +25,7 @@ function! s:PackInit()
     call minpac#add('vimwiki/vimwiki')
     " call minpac#add('davidhalter/jedi-vim')
     call minpac#add('romainl/vim-qf')
+    call minpac#add('lervag/vimtex')
 
     " Neovim or Vim 8.1+ required
     if has('nvim')
