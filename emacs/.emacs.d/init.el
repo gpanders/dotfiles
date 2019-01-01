@@ -22,11 +22,6 @@
 (require 'init-evil)
 (require 'init-org)
 
-(use-package auctex
-  :ensure t
-  :config
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t))
 (use-package company
   :ensure t
   :delight
@@ -129,6 +124,11 @@
 	 ("C-x T" . sane-term-create)))
 (use-package smex
   :ensure t)
+(use-package tex
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t))
 
 ;; Show matching parens
 (show-paren-mode t)
