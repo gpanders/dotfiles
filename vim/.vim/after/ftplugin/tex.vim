@@ -1,4 +1,10 @@
 " LaTeX
+if &filetype !=# 'tex'
+  finish
+endif
+
 setlocal nocursorline
 setlocal norelativenumber
-:NoMatchParen
+" :NoMatchParen
+
+setlocal equalprg=latexindent

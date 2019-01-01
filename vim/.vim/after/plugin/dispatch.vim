@@ -8,7 +8,10 @@ augroup Dispatch
   " C/C++
   autocmd FileType c,cpp let b:dispatch = 'cppcheck %:S'
 
-  " " Python
+  " Python
   autocmd FileType python let b:start = 'ipython'
                       \ | let b:dispatch = 'pylint -f parseable -s no -- %:S'
+
+  " TeX
+  autocmd FileType tex let b:dispatch = 'chktex -q -v0 -- %:S'
 augroup END
