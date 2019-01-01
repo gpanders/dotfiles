@@ -474,7 +474,8 @@ augroup vimrc
   let blacklist = ['tex']
   au InsertEnter * if index(blacklist, &ft) < 0
         \| let b:cul = &cursorline | setl nocursorline | endif
-  au InsertLeave * if index(blacklist, &ft) < 0 | let &cursorline = b:cul | endif
+  au InsertLeave * if index(blacklist, &ft) < 0 && exists('b:cul')
+        \| let &cursorline = b:cul | endif
   " }}}
 
   " Open the quickfix window after any quickfix command
