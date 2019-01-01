@@ -22,9 +22,16 @@
 (require 'init-evil)
 (require 'init-org)
 
+(use-package auctex
+  :ensure t
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t))
 (use-package company
   :ensure t
-  :delight)
+  :delight
+  :config
+  (global-company-mode))
 (use-package cquery
   :ensure t
   :config
