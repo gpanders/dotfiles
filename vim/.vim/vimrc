@@ -35,11 +35,6 @@ let maplocalleader = '\'
 
 " Set color scheme {{{
 
-" Allow color schemes to do bright colors without forcing bold
-if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
-  set t_Co=16
-endif
-
 " Set background if $TERMBG is set, otherwise let vim decide
 if $TERMBG ==# 'light'
   set background=light
@@ -52,14 +47,16 @@ if has('termguicolors')
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 else
-  let g:solarized_use16 = 1
   let g:onedark_termcolors = 16
 endif
 
 " Solarized {{{
 " ---------
-" silent! packadd! vim-solarized8
-" silent! colorscheme solarized8
+" if &bg ==# 'light'
+"   silent! colorscheme flattened_light
+" else
+"   silent! colorscheme flattened_dark
+" endif
 " }}}
 " One Dark {{{
 " --------
@@ -124,7 +121,6 @@ set matchtime=2
 set matchpairs+=<:>
 set colorcolumn=80
 set foldmarker=\ {{{,\ }}}
-set fillchars+=vert:\|
 set modeline
 set virtualedit+=block
 set lazyredraw
