@@ -99,39 +99,41 @@ endif
 cnoreabbrev w!! w !sudo tee > /dev/null %
 
 " Settings {{{
-set smarttab               " Use whatever is already being used in the file
-set tabstop=2              " Tab width
-set softtabstop=2          " Tab width
-set shiftwidth=2           " Tab width
-set autoindent             " Auto indent
-set expandtab              " Use spaces instead of tabs
-set number                 " Show line numbers
-set hidden                 " Hide buffers instead of closing them
-set ignorecase             " Make searching case insensitive
-set smartcase              " ... unless the query has capital letters
-set gdefault               " Use 'g' flag by default with :s/foo/bar/.
-set magic                  " Use 'magic' patterns (extended regular expressions)
-set incsearch              " Show search matches as they are typed
-set hlsearch               " Highlight search results
-set splitbelow             " Open horizontal splits below current pane
-set splitright             " Open vertical splits to the right of current pane
-set nostartofline          " Don't move cursor to start of line when scrolling
-set scrolloff=2            " 2 lines above/below cursor when scrolling
-set sidescrolloff=5        " 5 lines to the right/left of cursor when scrolling
-set showmatch              " Show matching bracket in insert mode
-set matchtime=2            " Show matching bracket for 2 tenths of a second
-set matchpairs+=<:>        " Add angle brackets as match pairs
-set colorcolumn=80         " Show column at 80 characters
-set foldmarker=\ {{{,\ }}} " Make default fold marker have a space
-set modeline               " Enable vim modelines
-set virtualedit+=block     " Enable virtual editing in visual block mode
-set lazyredraw             " Don't redraw the screen during batch execution
-set linebreak              " Set lines at word boundaries
-set include=               " Let filetypes set this value themselves
-set nrformats-=octal       " Treat numbers with a leading zero as decimal, not octal
-set display+=lastline      " Show the last screen line
-set autoread               " Automatically external changes to the open file
-set confirm                " Give a prompt instead of just rejecting
+" Press K to open help docs for option under the cursor
+set smarttab
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set autoindent
+set expandtab
+set number
+set hidden
+set ignorecase
+set smartcase
+set gdefault
+set magic
+set incsearch
+set hlsearch
+set splitbelow
+set splitright
+set nostartofline
+set scrolloff=2
+set sidescrolloff=5
+set showmatch
+set matchtime=2
+set matchpairs+=<:>
+set colorcolumn=80
+set foldmarker=\ {{{,\ }}}
+set fillchars+=vert:\|
+set modeline
+set virtualedit+=block
+set lazyredraw
+set linebreak
+set include=
+set nrformats-=octal
+set display+=lastline
+set autoread
+set confirm
 
 " Indent wrapped lines
 silent! set breakindent
