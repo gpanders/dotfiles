@@ -14,4 +14,7 @@ augroup Dispatch
 
   " TeX
   autocmd FileType tex let b:dispatch = 'chktex -q -v0 -- %:S'
+
+  " Bash
+  autocmd FileType sh let b:dispatch = 'shellcheck -f gcc -- %:S'
 augroup END
