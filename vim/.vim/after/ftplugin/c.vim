@@ -14,7 +14,11 @@ setlocal include=^\\s*#\\s*include
 
 " Include headers on Unix
 if has('unix')
-  setlocal path+=/usr/include
+  if g:os ==# 'Darwin'
+    setlocal path+=/usr/local/opt/llvm/include/c++/v1
+  else
+    setlocal path+=/usr/include
+  endif
 endif
 
 if executable('clang-format')
