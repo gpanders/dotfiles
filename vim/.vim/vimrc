@@ -477,7 +477,7 @@ augroup vimrc
   " }}}
 
   " Open the quickfix window after any quickfix command
-  au QuickFixCmdPost [^l]* cwindow
+  " au QuickFixCmdPost [^l]* cwindow
 
   " Start insert immediately when terminal opens
   if exists('##TermOpen')

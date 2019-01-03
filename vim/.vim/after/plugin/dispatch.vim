@@ -6,11 +6,10 @@ augroup Dispatch
   autocmd!
 
   " C/C++
-  autocmd FileType c,cpp let b:dispatch = 'cppcheck %:S'
+  autocmd FileType c,cpp let b:dispatch = 'clang-tidy -quiet %:S'
 
   " Python
-  autocmd FileType python let b:start = 'ipython'
-                      \ | let b:dispatch = 'pylint -f parseable -s no -- %:S'
+  autocmd FileType python let b:dispatch = 'pylint -f parseable -s no -- %:S'
 
   " TeX
   autocmd FileType tex let b:dispatch = 'chktex -q -v0 -- %:S'
