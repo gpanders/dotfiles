@@ -35,13 +35,6 @@ let maplocalleader = '\'
 
 " Set color scheme {{{
 
-" Set background if $TERMBG is set, otherwise let vim decide
-if $TERMBG ==# 'light'
-  set background=light
-elseif $TERMBG ==# 'dark'
-  set background=dark
-endif
-
 if has('termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -476,8 +469,10 @@ augroup vimrc
         \| let &cursorline = b:cul | endif
   " }}}
 
-  " Open the quickfix window after any quickfix command
-  " au QuickFixCmdPost [^l]* cwindow
+  " Set marks by filetype for quick navigation
+  au BufLeave *.h normal! mH
+  au BufLeave *.c,*.cc,*.cpp normal! mC
+  au BufLeave *.py normal! mP
 
   " Start insert immediately when terminal opens
   if exists('##TermOpen')
@@ -487,7 +482,6 @@ augroup vimrc
   if has('nvim')
     au BufEnter term://* startinsert
   else
-    " au BufEnter * if &buftype ==# 'terminal' | normal i | endif
   endif
 
 augroup END
