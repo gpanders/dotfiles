@@ -1,11 +1,3 @@
-# Don't allow duplicates in path variables
-typeset -gU path fpath cdpath manpath
-
-path=(
-  /usr/local/bin
-  $path
-)
-
 # Set browser based on OS type
 if [[ "$OSTYPE" == darwin* ]]; then
   export BROWSER="open"
@@ -27,6 +19,13 @@ if [[ -z "$LANG" ]]; then
   export LANG="en_US.UTF-8"
 fi
 
+# Modify path
+path=(
+  $HOME/.local/bin
+  /usr/local/bin
+  $path
+)
+
 # Setup pyenv
 if [[ -s "$HOME/.pyenv/bin/pyenv" ]]; then
   export PYENV_ROOT="$HOME/.pyenv"
@@ -45,6 +44,9 @@ fi
 if (( $+commands[rbenv] )); then
   eval "$(rbenv init -)"
 fi
+
+# Remove duplicates in path variables
+typeset -gU path fpath cdpath manpath
 
 #
 # Grep
