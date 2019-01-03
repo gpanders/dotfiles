@@ -12,6 +12,7 @@ function! s:PackInit()
     call minpac#add('tpope/vim-commentary')
     call minpac#add('tpope/vim-rhubarb')
     call minpac#add('tpope/vim-dispatch')
+    call minpac#add('tpope/vim-projectionist')
     call minpac#add('tpope/vim-rsi')
     call minpac#add('justinmk/vim-dirvish')
     call minpac#add('justinmk/vim-sneak')
@@ -34,7 +35,7 @@ function! s:PackInit()
 
     " Colorschemes
     call minpac#add('joshdick/onedark.vim', {'type': 'opt'})
-    call minpac#add('lifepillar/vim-solarized8', {'type': 'opt'})
+    call minpac#add('romainl/flattened')
   endif
 endfunction
 
