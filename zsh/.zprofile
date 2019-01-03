@@ -8,9 +8,9 @@ path=(
 
 # Set browser based on OS type
 if [[ "$OSTYPE" == darwin* ]]; then
-  export BROWSER='open'
+  export BROWSER="open"
 elif [[ "$OSTYPE" == linux-gnu ]]; then
-  export BROWSER='xdg-open'
+  export BROWSER="xdg-open"
 fi
 
 # Editor and pager
@@ -24,7 +24,7 @@ if (( $+commands[nvim] )); then
 fi
 
 if [[ -z "$LANG" ]]; then
-  export LANG='en_US.UTF-8'
+  export LANG="en_US.UTF-8"
 fi
 
 # Setup pyenv
@@ -49,7 +49,7 @@ fi
 #
 # Grep
 #
-export GREP_COLOR='37;45'
+export GREP_COLOR="37;45"
 export GREP_COLORS="mt=${GREP_COLOR}"
 
 #
@@ -59,7 +59,7 @@ export GREP_COLORS="mt=${GREP_COLOR}"
 # Set the default Less options.
 # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
 # Remove -X and -F (exit if the content fits on one screen) to enable it.
-export LESS='-F -g -i -M -R -S -w -X -z-4'
+export LESS="-F -g -i -M -R -S -w -X -z-4"
 
 # Set the Less input preprocessor.
 # Try both `lesspipe` and `lesspipe.sh` as either might exist on a system.
