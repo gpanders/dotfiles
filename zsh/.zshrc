@@ -104,7 +104,11 @@ fi
 [[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
 
 # Source aliases
-[[ -f "${ZDOTDIR:-$HOME}/.zaliases" ]] && source "${ZDOTDIR:-$HOME}/.zaliases"
+if [[ -f "${ZDOTDIR:-$HOME}/.zaliases" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zaliases"
+fi
 
 # Source custom functions
-[[ -f "${ZDOTDIR:-$HOME}/.zfunctions" ]] && source "${ZDOTDIR:-$HOME}/.zfunctions"
+if [[ -f "${ZDOTDIR:-$HOME}/.zfunctions" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zfunctions"
+fi

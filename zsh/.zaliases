@@ -12,6 +12,18 @@ alias ls="ls --color=auto"
 alias l="ls -lh"
 alias ll="ls -Alh"
 
+function mkdcd() {
+  if [[ "$#" -eq 0 ]]; then
+    echo "$0: Missing operand"
+    return 1
+  elif [[ "$#" -gt 1 ]]; then
+    echo "$0: Too many arguments"
+    return 1
+  fi
+  mkdir "$1"
+  cd "$1"
+}
+
 alias ipy="ipython"
 alias py="python"
 alias py2="python2"
