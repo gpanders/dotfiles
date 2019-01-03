@@ -425,7 +425,7 @@ function! <sid>CCR()
     return "\<CR>:"
   elseif cmdline =~# '\v^\s*(dli%[st]|il%[ist])!?\s+\S'
     " like :dlist or :ilist but prompts for a count for :djump or :ijump
-    return "\<CR>:" . cmdline[0] . "j  " . split(cmdline, " ")[1] . "\<S-Left>\<Left>"
+    return "\<CR>:" . cmdline[0] . "j  " . join(split(cmdline, " ")[1:]) . "\<C-B>\<S-Right>\<Right>"
   elseif cmdline =~# '\v^\s*(cli|lli)%[st]!?\s*(\s\d+(,\s*\d+)?)?$'
     " like :clist or :llist but prompts for an error/location number
     return "\<CR>:sil " . repeat(cmdline[0], 2) . "\<Space>"
