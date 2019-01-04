@@ -42,7 +42,12 @@ fi
 
 # Setup rbenv
 if (( $+commands[rbenv] )); then
-  eval "$(rbenv init -)"
+  eval "$(rbenv init - --no-rehash zsh)"
+fi
+
+# Setup rust
+if [[ -s "$HOME/.cargo/env" ]]; then
+  source "$HOME/.cargo/env"
 fi
 
 # Remove duplicates in path variables
