@@ -19,13 +19,13 @@ footer = "\n"
 [Account Personal]
 localrepository = PersonalLocal
 remoterepository = PersonalRemote
-postsynchook = ~/.config/offlineimap/notmuch.sh "Personal"
+postsynchook = ~/.config/offlineimap/notmuch.sh
 
 [Account Gmail]
 localrepository = GmailLocal
 remoterepository = GmailRemote
 synclabels = yes
-postsynchook = ~/.config/offlineimap/notmuch.sh "Gmail"
+postsynchook = ~/.config/offlineimap/notmuch.sh
 
 [Repository PersonalLocal]
 type = Maildir
@@ -38,7 +38,7 @@ remotehost = mail.gandi.net
 remoteuser = greg@gpanders.com
 remotepasseval = get_pass("mail/greg@gpanders.com")
 nametrans = lambda f: "Sent" if f.startswith("Sent") else "Trash" if f.startswith("Trash") else f
-folderfilter = lambda f: f not in ["Junk", "Trash"]
+folderfilter = lambda f: f not in ["Junk", "Spam", "Trash"]
 
 [Repository GmailLocal]
 type = GmailMaildir
@@ -55,3 +55,4 @@ oauth2_client_secret_eval = get_pass("tokens/oauth/google/offlineimap")
 oauth2_request_url = https://accounts.google.com/o/oauth2/token
 oauth2_refresh_token_eval = get_secret("tokens/oauth/google/offlineimap", 2).split()[2]
 nametrans = lambda f: f.replace('[Gmail]/', '') if f.startswith('[Gmail]/') else f
+folderfilter = lambda f: f not in ["Junk", "Spam", "Trash"]
