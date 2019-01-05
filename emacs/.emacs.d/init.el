@@ -26,6 +26,8 @@
   :ensure t
   :delight
   :config
+  (setq company-idle-delay 0.1)
+  (setq company-dabbrev-downcase nil)
   (global-company-mode))
 (use-package cquery
   :ensure t
@@ -55,6 +57,7 @@
   (setq enable-recursive-minibuffers t)
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
   (use-package counsel
+    :ensure t
     :delight
     :config
     (global-set-key "\C-s" 'swiper)
@@ -68,7 +71,8 @@
   :commands lsp
   :hook ((c-mode . lsp)
 	 (c++-mode . lsp)
-	 (python-mode . lsp))
+	 (python-mode . lsp)
+	 (rust-mode . lsp))
   :config
   (setq lsp-prefer-flymake nil)
   ;; lsp-mode doesn't have a keymap so bind the keys locally when mode is
@@ -79,7 +83,9 @@
 		(local-set-key (kbd "C-c C-f") 'lsp-format-buffer))))
   (use-package lsp-ui
     :ensure t
-    :commands lsp-ui-mode)
+    :commands lsp-ui-mode
+    :init
+    (setq lsp-ui-sideline-enable nil))
   (use-package company-lsp
     :ensure t
     :commands company-lsp
@@ -118,6 +124,45 @@
     (if (find-file (ivy-completing-read "Find recent file: " recentf-list))
 	(message "Opening file...")
       (message "Aborting"))))
+(use-package rust-mode
+  :ensure t
+  :mode "\\.rs\\'"
+  :config
+  (setq rust-format-on-save t)
+  (defcustom cargo-run-args nil
+    "Arguments to \"cargo-run\" command."
+    :type 'string
+    :group 'cargo)
+  (defun cargo-run-from-root-dir (command)
+    "Change \"default-directory\" to Cargo root project directory."
+    (catch 'wrong-major-mode
+      (when (not (eq major-mode 'rust-mode))
+	(throw 'wrong-major-mode "You must be in rust-mode to use this command"))
+      (let ((cwd default-directory))
+	(cd (locate-dominating-file default-directory "Cargo.toml"))
+	(eval command)
+	(cd cwd))))
+  (defun cargo-test ()
+    "Run \"cargo test\""
+    (interactive)
+    (cargo-run-from-root-dir '(compile "cargo test")))
+  (defun cargo-run (args)
+    "Run \"cargo run\""
+    (interactive
+     (list
+	(let ((args (eval cargo-run-args)))
+	(if (or (not cargo-run-args) (car current-prefix-arg))
+	    (read-from-minibuffer "Arguments: " args)
+	    args))))
+    (setq cargo-run-args args)
+    (cargo-run-from-root-dir '(compile (concat "cargo run " args))))
+  (defun cargo-build ()
+      "Run \"cargo build\""
+    (interactive)
+    (cargo-run-from-root-dir '(compile "cargo build")))
+  (define-key rust-mode-map (kbd "C-c C-c t") 'cargo-test)
+  (define-key rust-mode-map (kbd "C-c C-c r") 'cargo-run)
+  (define-key rust-mode-map (kbd "C-c C-c b") 'cargo-build))
 (use-package sane-term
   :ensure t
   :bind (("C-x t" . sane-term)
@@ -140,6 +185,12 @@
 (setq kill-buffer-query-functions
       (remq 'process-kill-buffer-query-function
 	    kill-buffer-query-functions))
+
+;; Enable line numbers
+(global-display-line-numbers-mode)
+;; ...but disable them in some modes
+(dolist (hook '(help-mode-hook term-mode-hook compilation-mode-hook Custom-mode-hook))
+  (add-hook hook (lambda () (display-line-numbers-mode -1))))
 
 ;; Enable auto-revert mode globally
 (global-auto-revert-mode t)
