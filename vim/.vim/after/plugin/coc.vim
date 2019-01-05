@@ -6,7 +6,7 @@ inoremap <silent> <expr> <C-Space> coc#refresh()
 
 augroup CocSetup
   au!
-  autocmd FileType c,cpp,python
+  autocmd FileType c,cpp,python,rust
         \ setlocal formatexpr=CocAction('formatSelected') |
         \ exe "nmap <silent> <buffer> gd <Plug>(coc-definition)" |
         \ exe "nmap <silent> <buffer> K :\<C-U>call CocAction('doHover')\<CR>"
