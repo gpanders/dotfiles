@@ -4,8 +4,8 @@ if !exists('g:loaded_fzf')
 endif
 
 nnoremap <silent> <C-P> :Files<CR>
-nnoremap <silent> <leader>t :Tags<CR>
-nnoremap <silent> <leader>k :Marks<CR>
+nnoremap <silent> <leader>T :Tags<CR>
+nnoremap <silent> <leader>K :Marks<CR>
 nnoremap <silent> <leader>B :Buffers<CR>
 
 autocmd! FileType fzf
