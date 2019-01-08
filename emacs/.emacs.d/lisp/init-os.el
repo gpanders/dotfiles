@@ -1,4 +1,5 @@
 (when (eq system-type 'darwin)
+  (menu-bar-mode)
   (add-hook 'after-make-frame-functions
             (lambda (frame)
               (set-frame-parameter frame 'menu-bar-lines

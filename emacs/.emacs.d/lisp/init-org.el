@@ -1,4 +1,10 @@
-(setq org-gtd-directory "~/Dropbox/Documents/org/gtd/")
+(defcustom org-gtd-directory nil
+  "Location of GTD org mode files."
+  :type 'string)
+
+(setq org-gtd-directory
+      (cond ((eq system-type 'darwin) "~/Documents/Notes/gtd/")
+	    ((eq system-type 'gnu/linux) "~/notes/gtd/")))
 (setq org-agenda-files `(,(expand-file-name "inbox.org" org-gtd-directory)
 			 ,(expand-file-name "gtd.org" org-gtd-directory)
 			 ,(expand-file-name "tickler.org" org-gtd-directory)))
@@ -12,6 +18,9 @@
 			   (,(expand-file-name "someday.org" org-gtd-directory) :level . 1)
 			   (,(expand-file-name "tickler.org" org-gtd-directory) :maxlevel . 2)))
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
+(setq org-hide-leading-stars t)
+(setq org-hide-emphasis-markers t)
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
