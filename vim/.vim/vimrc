@@ -171,9 +171,9 @@ set ruler
 set wildmenu
 
 set wildcharm=<C-Z>
-set wildmode=longest:full,full
+set wildmode=full
 set wildignorecase
-set wildignore=*.swp,*.bak
+set wildignore=*.swp,*.bak,*~,#*#
 set wildignore+=*.o
 set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
 set wildignore+=tags
@@ -181,16 +181,6 @@ set wildignore+=tags
 
 " Statusline {{{
 " Set the statusline
-function! StatuslineGitBranch()
-  if exists('*FugitiveHead')
-    let branch = FugitiveHead()
-    if branch != ""
-      return " " . branch
-    endif
-  endif
-  return ""
-endfunction
-
 set laststatus=2
 set statusline=                              " Reset the statusline
 set statusline+=%1*\ %<%f                    " Filename
@@ -198,7 +188,18 @@ set statusline+=\ %h%m%r\                    " Help/modified/RO markers
 set statusline+=%2*\ %n\                     " Buffer number
 set statusline+=%3*                          " Reset color
 set statusline+=%=                           " Break point for right justify
-set statusline+=\ %{StatuslineGitBranch()}\  " Git branch (with icon)
+
+if exists('*FugitiveHead')
+  function! StatuslineGitBranch()
+    let branch = FugitiveHead()
+    if branch != ""
+      return " " . branch
+    endif
+    return ""
+  endfunction
+  set statusline+=\ %{StatuslineGitBranch()}\  " Git branch (with icon)
+endif
+
 set statusline+=\ %{&ft}\                    " Filetype
 set statusline+=%4*\ %P\                     " Percent through file
 set statusline+=%5*\ %(%l:%c%V%)\            " Line and column number
@@ -335,10 +336,7 @@ noremap <leader>cl :clist<CR>:sil cc<space>
 noremap <leader>ll :llist<CR>:sil ll<space>
 
 " <leader>f prefixes find files in path
-nnoremap <leader>ff :find *
-nnoremap <leader>ft :tabfind *
-nnoremap <leader>fs :sfind *
-nnoremap <leader>fv :vfind *
+nnoremap <leader>f :find *
 
 " Search for a tag by regex
 nnoremap <leader>t :tjump /
@@ -348,10 +346,7 @@ nnoremap <leader>p :ptjump /
 nnoremap <leader>k :marks<CR>:norm! `
 
 " Find files in current buffer's directory
-nnoremap <leader>ef :e <C-R>=expand('%:p:h') . '/' <CR>
-nnoremap <leader>et :tabe <C-R>=expand('%:p:h') . '/' <CR>
-nnoremap <leader>es :sp <C-R>=expand('%:p:h') . '/' <CR>
-nnoremap <leader>ev :vsp <C-R>=expand('%:p:h') . '/' <CR>
+nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/' <CR>
 
 " <Bslash>e opens .vimrc in new window
 nnoremap <Bslash>e :<C-U>tabe $MYVIMRC<CR>
