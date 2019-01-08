@@ -16,7 +16,7 @@ function! s:PackInit()
     call minpac#add('justinmk/vim-dirvish')
     call minpac#add('justinmk/vim-sneak')
     call minpac#add('sheerun/vim-polyglot')
-    " call minpac#add('junegunn/fzf.vim')
+    call minpac#add('junegunn/fzf.vim')
     call minpac#add('airblade/vim-gitgutter')
     call minpac#add('ludovicchabant/vim-gutentags')
     call minpac#add('mhinz/vim-startify')
@@ -28,7 +28,6 @@ function! s:PackInit()
     " Neovim or Vim 8.1+ required
     if has('nvim')
       call minpac#add('neoclide/coc.nvim', {'do': 'call coc#util#install()'})
-      call minpac#add('Shougo/denite.nvim', {'do': 'UpdateRemotePlugins'})
     elseif v:version >= 801
       call minpac#add('neoclide/coc.nvim', {'do': 'call coc#util#install() | silent! !yarn global add vim-node-rpc'})
     endif
