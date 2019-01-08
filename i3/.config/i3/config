@@ -190,4 +190,7 @@ for_window [class="^.*"] border pixel 0
 smart_borders on
 gaps inner 15
 
+# Start desktop notification daemon
+exec --no-startup-id dunst -config "$HOME/.config/dunst/dunstrc"
+
 # vim: sw=8
