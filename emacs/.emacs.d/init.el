@@ -36,10 +36,13 @@
                            ((eq system-type 'darwin) "/usr/local/bin/cquery")
                            ((eq system-type 'gnu/linux) "/usr/bin/cquery"))))
 (use-package delight
-  :ensure t)
+  :ensure t
+  :config
+  (delight '((eldoc-mode nil 'eldoc)
+	     (undo-tree-mode nil 'undo-tree))))
 (use-package exec-path-from-shell
   :ensure t
-  :if (memq window-system '(mac ns x))
+  :if (memq system-type '(darwin gnu/linux))
   :config
   (exec-path-from-shell-initialize))
 (use-package flx
@@ -92,19 +95,27 @@
     :config
     (use-package yasnippet
       :ensure t
-      :delight
       :config
+      (delight 'yas-minor-mode nil "yasnippet")
       (yas-global-mode 1))))
 (use-package magit
   :ensure t
   :config
   (setq magit-completing-read-function 'ivy-completing-read))
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+	 ("\\.md\\'" . markdown-mode)
+	 ("\\.markdown\\'" . markdown-mode)))
 (use-package projectile
   :ensure t
   :bind-keymap (("s-p" . projectile-command-map)
 		("C-c p" . projectile-command-map))
   :config
-  (setq projectile-project-search-path '("~/Development" "~/Projects"))
+  (setq projectile-project-search-path
+	(cond ((eq system-type 'darwin) '("~/Development" "~/Projects"))
+	      ((eq system-type 'gnu/linux) '("~/work"))))
   (setq projectile-completion-system 'ivy)
   (projectile-mode 1))
 (use-package recentf
