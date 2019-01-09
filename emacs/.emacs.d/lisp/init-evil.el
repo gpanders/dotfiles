@@ -26,6 +26,13 @@
   (define-key evil-leader-map "e" 'find-file)
   (define-key evil-leader-map "w" 'save-buffer)
 
+  (evil-define-key '(normal visual) 'global "Q" 'evil-fill-and-move)
+  (evil-define-key 'normal 'global "-" 'dired-jump)
+  (evil-define-key 'normal 'global (kbd "C-w C-k") 'evil-window-up)
+  (evil-define-key 'normal 'global (kbd "C-w C-j") 'evil-window-down)
+  (evil-define-key 'normal 'global (kbd "C-w C-h") 'evil-window-left)
+  (evil-define-key 'normal 'global (kbd "C-w C-l") 'evil-window-right)
+
   ;; Enable evil mode
   (evil-mode 1)
 )
