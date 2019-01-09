@@ -139,7 +139,7 @@
       (when (not (eq major-mode 'rust-mode))
 	(throw 'wrong-major-mode "You must be in rust-mode to use this command"))
       (let ((cwd default-directory))
-	(cd (locate-dominating-file default-directory "Cargo.toml"))
+	(cd (locate-dominating-file buffer-file-name "Cargo.toml"))
 	(eval command)
 	(cd cwd))))
   (defun cargo-test ()
