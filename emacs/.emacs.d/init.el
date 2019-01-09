@@ -38,12 +38,15 @@
 (use-package delight
   :ensure t
   :config
-  (delight '((eldoc-mode nil 'eldoc)
-	     (undo-tree-mode nil 'undo-tree))))
+  (delight '((eldoc-mode nil "eldoc")
+	     (undo-tree-mode nil "undo-tree"))))
 (use-package exec-path-from-shell
   :ensure t
   :if (memq system-type '(darwin gnu/linux))
   :config
+  (setq exec-path-from-shell-arguments nil)
+  (dolist (var '("http_proxy" "https_proxy" "no_proxy"))
+    (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 (use-package flx
   :ensure t)
@@ -66,7 +69,7 @@
     (global-set-key "\C-s" 'swiper)
     (global-set-key (kbd "C-c k") (cond ((executable-find "rg") 'counsel-rg)
 					((executable-find "ag") 'counsel-ag)
-					((exectuable-find "grep") 'counsel-grep)))
+					((executable-find "grep") 'counsel-grep)))
     (counsel-mode t))
   (ivy-mode t))
 (use-package lsp-mode
@@ -118,7 +121,7 @@
 		("C-c p" . projectile-command-map))
   :config
   (setq projectile-project-search-path
-	(cond ((eq system-type 'darwin) '("~/Development" "~/Projects"))
+	(cond ((eq system-type 'darwin) '("~/Projects"))
 	      ((eq system-type 'gnu/linux) '("~/work"))))
   (setq projectile-completion-system 'ivy)
   (projectile-mode 1))

@@ -7,8 +7,8 @@
 (setq org-agenda-files `(,(expand-file-name "inbox.org" org-gtd-directory)
 			 ,(expand-file-name "actions.org" org-gtd-directory)
 			 ,(expand-file-name "tickler.org" org-gtd-directory)))
-(setq org-capture-templates `(("t" "Todo [inbox]" entry
-			       (file+headline ,(expand-file-name "inbox.org" org-gtd-directory) "Tasks")
+(setq org-capture-templates `(("i" "Inbox" entry
+			       (file+headline ,(expand-file-name "inbox.org" org-gtd-directory) "Inbox")
 			       "* TODO %i%?")
 			      ("T" "Tickler" entry
 			       (file+headline ,(expand-file-name "tickler.org" org-gtd-directory) "Tickler")
