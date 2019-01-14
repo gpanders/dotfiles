@@ -19,10 +19,10 @@
 
 ;; Custom lisp packages in ~/.emacs.d/lisp directory
 (require 'init-backup)
-(require 'init-os)
 (require 'init-ui)
 (require 'init-evil)
 (require 'init-org)
+(require 'init-os)
 
 (use-package company
   :ensure t

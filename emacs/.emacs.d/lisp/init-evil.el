@@ -1,3 +1,5 @@
+;;; init-evil.el --- Customize evil mode
+
 (use-package evil
   :ensure t
   :init
@@ -42,6 +44,7 @@
 
   (define-key evil-motion-state-map evil-leader-key evil-leader-map)
   (define-key evil-leader-map evil-leader-key 'counsel-M-x)
+  (define-key evil-leader-map "x" 'counsel-M-x)
   (define-key evil-leader-map "b" 'switch-to-buffer)
   (define-key evil-leader-map "e" 'find-file)
   (define-key evil-leader-map "w" 'save-buffer)
@@ -56,6 +59,7 @@
   (evil-define-key '(motion normal) 'global (kbd "RET") nil)
   (evil-define-key '(motion normal) 'global (kbd "SPC") nil)
   (evil-define-key 'normal 'global (kbd "SPC u") 'universal-argument)
+  (evil-define-key 'normal 'global (kbd "SPC ;") 'counsel-M-x)
 
   ;; Enable evil mode
   (evil-mode 1)
