@@ -17,7 +17,7 @@
                   ("d" "Diary" entry
                    (file ,(expand-file-name (concat "diary/" (format-time-string "%Y-%m-%d") ".org") (file-name-directory (directory-file-name org-gtd-directory))))
                    "* %i%?")))
-(setq org-refile-targets `((,(expand-file-name "projects.org" org-gtd-directory) :level . 1)
+(setq org-refile-targets `((,(expand-file-name "projects.org" org-gtd-directory) :maxlevel . 2)
                (,(expand-file-name "actions.org" org-gtd-directory) :maxlevel . 1)
                (,(expand-file-name "someday.org" org-gtd-directory) :level . 1)
                (,(expand-file-name "tickler.org" org-gtd-directory) :maxlevel . 2)))
