@@ -1,3 +1,5 @@
+;;; init-ui.el --- Customize UI elements
+
 ;; Disable tool bar and scroll bar
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
