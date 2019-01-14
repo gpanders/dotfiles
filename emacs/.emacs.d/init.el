@@ -26,8 +26,11 @@
   :ensure t
   :delight
   :config
-  (setq company-idle-delay 0.1)
-  (setq company-dabbrev-downcase nil)
+  (setq company-idle-delay 0.2
+        company-minimum-prefix-length 2
+        company-require-match nil
+        company-dabbrev-ignore-case nil
+        company-dabbrev-downcase nil)
   (global-company-mode))
 (use-package cquery
   :ensure t
@@ -182,9 +185,12 @@
   (define-key rust-mode-map (kbd "C-c C-c r") 'cargo-run)
   (define-key rust-mode-map (kbd "C-c C-c b") 'cargo-build))
 (use-package sane-term
+  :disabled
   :ensure t
   :bind (("C-x t" . sane-term)
-	 ("C-x T" . sane-term-create)))
+	     ("C-x T" . sane-term-create)))
+(use-package smartparens
+  :ensure t)
 (use-package smex
   :ensure t)
 (use-package tex
@@ -193,13 +199,14 @@
   (setq TeX-auto-save t)
   (setq TeX-parse-self t))
 
+(global-set-key (kbd "C-x t") 'eshell)
+
 ;; Show matching parens
 (show-paren-mode t)
 
 ;; Disable some emacs prompts
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq confirm-nonexistent-file-or-buffer nil)
-(setq ido-create-new-buffer 'always)
 (setq kill-buffer-query-functions
       (remq 'process-kill-buffer-query-function
 	    kill-buffer-query-functions))
@@ -207,11 +214,16 @@
 ;; Enable line numbers
 (global-display-line-numbers-mode)
 ;; ...but disable them in some modes
-(dolist (hook '(help-mode-hook term-mode-hook compilation-mode-hook Custom-mode-hook))
+(dolist (hook '(help-mode-hook
+                term-mode-hook
+                shell-mode-hook
+                compilation-mode-hook
+                Custom-mode-hook
+                Info-mode-hook))
   (add-hook hook (lambda () (display-line-numbers-mode -1))))
 
 ;; Enable auto-revert mode globally
-(global-auto-revert-mode t)
+(global-auto-revert-mode)
 
 ;; Load customization file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))

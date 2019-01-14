@@ -1,6 +1,8 @@
 alias chmod="chmod --preserve-root -v"
 alias chown="chown --preserve-root -v"
 
+alias ec="emacsclient -nc"
+
 alias d="dirs -v"
 for index ({1..9}) alias "$index"="cd -${index}"; unset index
 
