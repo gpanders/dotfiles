@@ -44,7 +44,7 @@
   :ensure t
   :config
   (delight '((eldoc-mode nil "eldoc")
-	     (undo-tree-mode nil "undo-tree"))))
+             (undo-tree-mode nil "undo-tree"))))
 (use-package exec-path-from-shell
   :ensure t
   :if (memq system-type '(darwin gnu/linux))
@@ -73,25 +73,25 @@
     :config
     (global-set-key "\C-s" 'swiper)
     (global-set-key (kbd "C-c k") (cond ((executable-find "rg") 'counsel-rg)
-					((executable-find "ag") 'counsel-ag)
-					((executable-find "grep") 'counsel-grep)))
+                                        ((executable-find "ag") 'counsel-ag)
+                                        ((executable-find "grep") 'counsel-grep)))
     (counsel-mode t))
   (ivy-mode t))
 (use-package lsp-mode
   :ensure t
   :commands lsp
   :hook ((c-mode . lsp)
-	 (c++-mode . lsp)
-	 (python-mode . lsp)
-	 (rust-mode . lsp))
+         (c++-mode . lsp)
+         (python-mode . lsp)
+         (rust-mode . lsp))
   :config
   (setq lsp-prefer-flymake nil)
   ;; lsp-mode doesn't have a keymap so bind the keys locally when mode is
   ;; activated
   (add-hook 'lsp-mode-hook
-	    (lambda ()
-	      (progn
-		(local-set-key (kbd "C-c C-f") 'lsp-format-buffer))))
+            (lambda ()
+              (progn
+                (local-set-key (kbd "C-c C-f") 'lsp-format-buffer))))
   (use-package lsp-ui
     :ensure t
     :commands lsp-ui-mode
@@ -114,8 +114,8 @@
   :ensure t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
-	 ("\\.md\\'" . markdown-mode)
-	 ("\\.markdown\\'" . markdown-mode))
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
   :config
   (use-package pandoc-mode
     :ensure t
@@ -123,11 +123,11 @@
 (use-package projectile
   :ensure t
   :bind-keymap (("s-p" . projectile-command-map)
-		("C-c p" . projectile-command-map))
+                ("C-c p" . projectile-command-map))
   :config
   (setq projectile-project-search-path
-	(cond ((eq system-type 'darwin) '("~/Projects"))
-	      ((eq system-type 'gnu/linux) '("~/work"))))
+        (cond ((eq system-type 'darwin) '("~/Projects"))
+              ((eq system-type 'gnu/linux) '("~/work"))))
   (setq projectile-completion-system 'ivy)
   (projectile-mode 1))
 (use-package recentf
@@ -145,44 +145,42 @@
     "Use `ido-completing-read' to \\[find-file] a recent file"
     (interactive)
     (if (find-file (ivy-completing-read "Find recent file: " recentf-list))
-	(message "Opening file...")
+        (message "Opening file...")
       (message "Aborting"))))
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'"
   :config
   (setq rust-format-on-save t)
-  (defcustom cargo-run-args nil
-    "Arguments to \"cargo-run\" command."
-    :type 'string
-    :group 'cargo)
-  (defun cargo-run-from-root-dir (command)
-    "Change \"default-directory\" to Cargo root project directory."
-    (catch 'wrong-major-mode
-      (when (not (eq major-mode 'rust-mode))
-	(throw 'wrong-major-mode "You must be in rust-mode to use this command"))
-      (let ((cwd default-directory))
-	(cd (locate-dominating-file buffer-file-name "Cargo.toml"))
-	(eval command)
-	(cd cwd))))
+  (defvar cargo-run-args nil
+    "Arguments to \"cargo-run\" command.")
+  ;; (defun cargo-run-from-root-dir (command)
+  ;;   "Run a command from Cargo root project directory."
+  ;;   (catch 'wrong-major-mode
+  ;;     (when (not (eq major-mode 'rust-mode))
+  ;;    (throw 'wrong-major-mode "You must be in rust-mode to use this command"))
+  ;;     (let ((cwd default-directory))
+  ;;    (cd (locate-dominating-file buffer-file-name "Cargo.toml"))
+  ;;    (eval command)
+  ;;    (cd cwd))))
   (defun cargo-test ()
-    "Run \"cargo test\""
+    "Run \"cargo test\"."
     (interactive)
-    (cargo-run-from-root-dir '(compile "cargo test")))
+    (compile "cargo test"))
   (defun cargo-run (args)
-    "Run \"cargo run\""
+    "Run \"cargo run\"."
     (interactive
      (list
-	(let ((args (eval cargo-run-args)))
-	(if (or (not cargo-run-args) (car current-prefix-arg))
-	    (read-from-minibuffer "Arguments: " args)
-	    args))))
+        (let ((args (eval cargo-run-args)))
+        (if (or (not cargo-run-args) (car current-prefix-arg))
+            (read-from-minibuffer "Arguments: " args)
+            args))))
     (setq cargo-run-args args)
-    (cargo-run-from-root-dir '(compile (concat "cargo run " args))))
+    (compile (concat "cargo run " args)))
   (defun cargo-build ()
-      "Run \"cargo build\""
+      "Run \"cargo build\"."
     (interactive)
-    (cargo-run-from-root-dir '(compile "cargo build")))
+    (compile "cargo build"))
   (define-key rust-mode-map (kbd "C-c C-c t") 'cargo-test)
   (define-key rust-mode-map (kbd "C-c C-c r") 'cargo-run)
   (define-key rust-mode-map (kbd "C-c C-c b") 'cargo-build))
@@ -190,7 +188,7 @@
   :disabled
   :ensure t
   :bind (("C-x t" . sane-term)
-	     ("C-x T" . sane-term-create)))
+         ("C-x T" . sane-term-create)))
 (use-package smartparens
   :ensure t)
 (use-package smex
@@ -201,17 +199,27 @@
   (setq TeX-auto-save t)
   (setq TeX-parse-self t))
 
+;; Open eshell with a keybinding
 (global-set-key (kbd "C-x t") 'eshell)
 
-;; Show matching parens
-(show-paren-mode t)
+;; Enable dired-x
+(add-hook 'dired-load-hook
+          (lambda ()
+            (load "dired-x")
+            (setq  dired-omit-files
+                   (concat dired-omit-files "\\|^#.+#$"))
+            ))
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (dired-omit-mode 1)
+            ))
 
 ;; Disable some emacs prompts
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq confirm-nonexistent-file-or-buffer nil)
 (setq kill-buffer-query-functions
       (remq 'process-kill-buffer-query-function
-	    kill-buffer-query-functions))
+            kill-buffer-query-functions))
 
 ;; Enable line numbers
 (global-display-line-numbers-mode)
@@ -223,9 +231,6 @@
                 Custom-mode-hook
                 Info-mode-hook))
   (add-hook hook (lambda () (display-line-numbers-mode -1))))
-
-;; Enable auto-revert mode globally
-(global-auto-revert-mode)
 
 ;; Load customization file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
