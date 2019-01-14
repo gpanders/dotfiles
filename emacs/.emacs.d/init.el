@@ -17,6 +17,8 @@
 (eval-when-compile
   (require 'use-package))
 
+;; Custom lisp packages in ~/.emacs.d/lisp directory
+(require 'init-backup)
 (require 'init-os)
 (require 'init-ui)
 (require 'init-evil)
