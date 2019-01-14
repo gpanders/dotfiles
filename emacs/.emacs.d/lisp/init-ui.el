@@ -3,7 +3,6 @@
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
 (tooltip-mode -1)
-(setq tooltip-use-echo-area t)
 
 ;; Hide the splash screen and banner
 (setq inhibit-startup-message t
