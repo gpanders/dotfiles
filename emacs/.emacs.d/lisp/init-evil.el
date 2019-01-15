@@ -35,7 +35,8 @@
 
   ;; Configure default states for modes
   (dolist (var '(Custom-mode Info-mode))
-    (add-to-list 'evil-emacs-state-modes var))
+    (delete var evil-normal-state-modes)
+    (add-to-list 'evil-motion-state-modes var))
 
   (defvar evil-leader-key ","
     "Leader key for Evil mode.")
@@ -43,23 +44,30 @@
     "Keymap for \"leader key\" shortcuts.")
 
   (define-key evil-motion-state-map evil-leader-key evil-leader-map)
-  (define-key evil-leader-map evil-leader-key 'counsel-M-x)
-  (define-key evil-leader-map "x" 'counsel-M-x)
   (define-key evil-leader-map "b" 'switch-to-buffer)
   (define-key evil-leader-map "e" 'find-file)
   (define-key evil-leader-map "w" 'save-buffer)
   (define-key evil-leader-map "g" 'magit-status)
 
+  (evil-define-key 'motion 'global
+    (kbd "DEL") nil
+    (kbd "RET") nil
+    (kbd "SPC") nil)
+
   (evil-define-key '(normal visual) 'global "Q" 'evil-fill-and-move)
-  (evil-define-key 'normal 'global "-" 'dired-jump)
-  (evil-define-key 'normal 'global (kbd "C-w C-k") 'evil-window-up)
-  (evil-define-key 'normal 'global (kbd "C-w C-j") 'evil-window-down)
-  (evil-define-key 'normal 'global (kbd "C-w C-h") 'evil-window-left)
-  (evil-define-key 'normal 'global (kbd "C-w C-l") 'evil-window-right)
-  (evil-define-key '(motion normal) 'global (kbd "RET") nil)
-  (evil-define-key '(motion normal) 'global (kbd "SPC") nil)
-  (evil-define-key 'normal 'global (kbd "SPC u") 'universal-argument)
-  (evil-define-key 'normal 'global (kbd "SPC ;") 'counsel-M-x)
+  (evil-define-key 'normal 'global
+    "-" 'dired-jump
+    (kbd "C-w C-k") 'evil-window-up
+    (kbd "C-w C-j") 'evil-window-down
+    (kbd "C-w C-h") 'evil-window-left
+    (kbd "C-w C-l") 'evil-window-right
+    (kbd "SPC k") 'evil-window-up
+    (kbd "SPC j") 'evil-window-down
+    (kbd "SPC h") 'evil-window-left
+    (kbd "SPC l") 'evil-window-right
+    (kbd "SPC u") 'universal-argument
+    (kbd "RET") 'counsel-M-x
+    (kbd "DEL") 'evil-switch-to-windows-last-buffer)
 
   ;; Enable evil mode
   (evil-mode 1)
