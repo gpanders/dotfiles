@@ -32,8 +32,7 @@
     :ensure t
     :config
     (global-evil-visualstar-mode))
-  (use-package move-text
-    :ensure t)
+  (use-package move-text :ensure t)
 
   ;; Configure default states for modes
   (dolist (var '(Custom-mode Info-mode))
@@ -84,6 +83,9 @@
   (evil-define-key 'visual 'global
     (kbd "[ e") ":move'<--1"
     (kbd "] e") ":move'>+1")
+
+  ;; Exit insert mode with `jk'
+  (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 
   ;; Use SPC as prefix for window commands (C-W by default)
   ;; Equivalent to nnoremap <Space> <C-W> in vim
