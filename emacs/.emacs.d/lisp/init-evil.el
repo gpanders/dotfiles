@@ -22,8 +22,8 @@
   (use-package evil-numbers
     :ensure t
     :bind (:map evil-normal-state-map
-	   ("C-c +" . evil-numbers/inc-at-pt)
-	   ("C-c -" . evil-numbers/dec-at-pt)))
+                ("C-a" . evil-numbers/inc-at-pt)
+                ("C-c -" . evil-numbers/dec-at-pt)))
   (use-package evil-collection
     :ensure t
     :config
@@ -32,45 +32,68 @@
     :ensure t
     :config
     (global-evil-visualstar-mode))
+  (use-package move-text
+    :ensure t)
 
   ;; Configure default states for modes
   (dolist (var '(Custom-mode Info-mode))
     (delete var evil-normal-state-modes)
     (add-to-list 'evil-motion-state-modes var))
 
-  (defvar evil-leader-key ","
-    "Leader key for Evil mode.")
-  (defvar evil-leader-map (make-sparse-keymap)
-    "Keymap for \"leader key\" shortcuts.")
-
-  (define-key evil-motion-state-map evil-leader-key evil-leader-map)
-  (define-key evil-leader-map "b" 'switch-to-buffer)
-  (define-key evil-leader-map "e" 'find-file)
-  (define-key evil-leader-map "w" 'save-buffer)
-  (define-key evil-leader-map "g" 'magit-status)
-
   (evil-define-key 'motion 'global
+    ;; Unbind these in motion state since they often override other,
+    ;; more useful bindings
     (kbd "DEL") nil
     (kbd "RET") nil
-    (kbd "SPC") nil)
+    (kbd "\\") nil
+    (kbd "SPC") nil
+    ;; Make window commands easier
+    (kbd "C-w C-k") (lookup-key evil-motion-state-map (kbd "C-w k"))
+    (kbd "C-w C-j") (lookup-key evil-motion-state-map (kbd "C-w j"))
+    (kbd "C-w C-h") (lookup-key evil-motion-state-map (kbd "C-w h"))
+    (kbd "C-w C-l") (lookup-key evil-motion-state-map (kbd "C-w l"))
+  )
 
+  ;; Evil bindings
   (evil-define-key '(normal visual) 'global "Q" 'evil-fill-and-move)
   (evil-define-key 'normal 'global
-    "-" 'dired-jump
-    (kbd "C-w C-k") 'evil-window-up
-    (kbd "C-w C-j") 'evil-window-down
-    (kbd "C-w C-h") 'evil-window-left
-    (kbd "C-w C-l") 'evil-window-right
-    (kbd "SPC k") 'evil-window-up
-    (kbd "SPC j") 'evil-window-down
-    (kbd "SPC h") 'evil-window-left
-    (kbd "SPC l") 'evil-window-right
+    (kbd "-") 'dired-jump
+    (kbd ", w") 'save-buffer
+    (kbd ", b") 'switch-to-buffer
+    (kbd ", e") 'find-file
+    (kbd ", g") 'magit-status
+    (kbd "[ b") 'previous-buffer
+    (kbd "] b") 'next-buffer
+    (kbd "[ q") 'flycheck-previous-error
+    (kbd "] q") 'flycheck-next-error
+    (kbd "[ e") 'move-text-up
+    (kbd "] e") 'move-text-down
+    (kbd "[ SPC") (lambda (count) (interactive "p") (dotimes (_ count) (save-excursion (evil-insert-newline-above))))
+    (kbd "] SPC") (lambda (count) (interactive "p") (dotimes (_ count) (save-excursion (evil-insert-newline-below))))
+    ;; select pasted text
+    (kbd "g p") (kbd "` [ v ` ]")
+    ;; paste above or below with newline
+    (kbd "[ p") (lambda () (interactive) (evil-insert-newline-above) (evil-paste-after 1))
+    (kbd "] p") (lambda () (interactive) (evil-insert-newline-below) (evil-paste-after 1))
+    (kbd "\\\\") (lookup-key (current-global-map) (kbd "C-c k"))
     (kbd "SPC u") 'universal-argument
-    (kbd "RET") 'counsel-M-x
-    (kbd "DEL") 'evil-switch-to-windows-last-buffer)
+    (kbd "SPC SPC") 'counsel-M-x
+    (kbd "DEL") 'evil-switch-to-windows-last-buffer
+  )
+
+  (evil-define-key 'visual 'global
+    (kbd "[ e") ":move'<--1"
+    (kbd "] e") ":move'>+1")
+
+  ;; Use SPC as prefix for window commands (C-W by default)
+  ;; Equivalent to nnoremap <Space> <C-W> in vim
+  (dolist (var '("b" "c" "h" "j" "k" "l" "n" "o" "p" "q" "r" "s" "t" "w" "v" "H" "J" "K" "L"))
+    (define-key evil-normal-state-map
+      (kbd (concat "SPC " var))
+      (lookup-key evil-motion-state-map (kbd (concat "C-w " var)))))
 
   ;; Enable evil mode
   (evil-mode 1)
-)
+  )
 
 (provide 'init-evil)

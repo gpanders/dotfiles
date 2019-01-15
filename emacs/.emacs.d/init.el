@@ -58,6 +58,8 @@
 (use-package flycheck
   :ensure t
   :config
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda () (push 'emacs-lisp-checkdoc flycheck-disabled-checkers)))
   (global-flycheck-mode))
 (use-package ivy
   :ensure t
@@ -193,6 +195,8 @@
   :ensure t)
 (use-package smex
   :ensure t)
+(use-package tcl-mode
+  :mode ("\\.xdc\\'" . tcl-mode))
 (use-package tex
   :ensure auctex
   :config
