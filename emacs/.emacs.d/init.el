@@ -79,6 +79,10 @@
                                         ((executable-find "grep") 'counsel-grep)))
     (counsel-mode t))
   (ivy-mode t))
+(use-package key-chord
+  :ensure t
+  :config
+  (key-chord-mode 1))
 (use-package lsp-mode
   :ensure t
   :commands lsp
