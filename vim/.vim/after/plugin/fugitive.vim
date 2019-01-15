@@ -3,4 +3,4 @@ if !exists('g:loaded_fugitive')
 endif
 
 autocmd BufReadPost fugitive://* setlocal bufhidden=delete
-autocmd User Fugitive noremap <localleader>g :Gstatus<CR>
+autocmd User Fugitive noremap ,g :Gstatus<CR>

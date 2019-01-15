@@ -29,10 +29,6 @@ if has('syntax') && !exists('g:syntax_on')
   syntax enable
 endif
 
-" Set the leader key
-let mapleader = ','
-let maplocalleader = '\'
-
 " Set color scheme {{{
 
 if has('termguicolors')
@@ -288,7 +284,7 @@ inoremap <C-G><C-K> <C-K>
 " Normal mode mappings {{{
 
 " Save by pressing <leader>w
-nnoremap <silent> <leader>w :w<CR>
+nnoremap <silent> ,w :w<CR>
 
 " Navigate through wrapped lines individually
 nnoremap <silent> j gj
@@ -304,19 +300,19 @@ nnoremap g} <C-W>g}
 noremap Q gq
 
 " Buffer shortcuts
-nnoremap <silent> <leader>1 :b1<CR>
-nnoremap <silent> <leader>2 :b2<CR>
-nnoremap <silent> <leader>3 :b3<CR>
-nnoremap <silent> <leader>4 :b4<CR>
-nnoremap <silent> <leader>5 :b5<CR>
-nnoremap <silent> <leader>6 :b6<CR>
-nnoremap <silent> <leader>7 :b7<CR>
-nnoremap <silent> <leader>8 :b8<CR>
-nnoremap <silent> <leader>9 :b9<CR>
-nnoremap <silent> <leader>0 :b10<CR>
+nnoremap <silent> ,1 :b1<CR>
+nnoremap <silent> ,2 :b2<CR>
+nnoremap <silent> ,3 :b3<CR>
+nnoremap <silent> ,4 :b4<CR>
+nnoremap <silent> ,5 :b5<CR>
+nnoremap <silent> ,6 :b6<CR>
+nnoremap <silent> ,7 :b7<CR>
+nnoremap <silent> ,8 :b8<CR>
+nnoremap <silent> ,9 :b9<CR>
+nnoremap <silent> ,0 :b10<CR>
 
 " List buffers and put :b on the command line
-noremap <leader>b :buffers<CR>:b<Space>
+noremap ,b :buffers<CR>:b<Space>
 
 " Augment [I and ]I to place an :ij prompt below results for easy jumping
 noremap [I [I:ij<Space> <C-R><C-W><S-Left><Left>
@@ -329,49 +325,50 @@ noremap ]D ]D:dj<Space> <C-R><C-W><S-Left><Left>
 " Remap & to preserve substitution flags
 nnoremap <silent> & :&&<CR>
 
-" Open quickfix list and place :cc on the prompt
-noremap <leader>cl :clist<CR>:sil cc<space>
+" Backspace goes back to previous buffer
+nnoremap <silent> <Backspace> <C-^>
 
-" Open location list and place :ll on the prompt
-noremap <leader>ll :llist<CR>:sil ll<space>
+" Enter command line mode by pressing Return
+noremap <CR> :
 
-" <leader>f prefixes find files in path
-nnoremap <leader>f :find *
+" Since : is now provided by Return, we can map it to the native functionality
+" of , which is overriden by other mappings
+noremap : ,
+
+" ,f prefixes find files in path
+nnoremap ,f :find *
 
 " Search for a tag by regex
-nnoremap <leader>t :tjump /
-nnoremap <leader>p :ptjump /
+nnoremap ,t :tjump /
+nnoremap ,p :ptjump /
 
-" Show marks with <leader>k
-nnoremap <leader>k :marks<CR>:norm! `
+" Navigate between windows with ease
+nnoremap <Space> <C-W>
+
+" Toggle folds
+nnoremap <Space><Space> za
 
 " Find files in current buffer's directory
-nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/' <CR>
+nnoremap ,e :e <C-R>=expand('%:p:h') . '/' <CR>
 
 " <Bslash>e opens .vimrc in new window
-nnoremap <Bslash>e :<C-U>tabe $MYVIMRC<CR>
+nnoremap <Bslash>ev :<C-U>tabe $MYVIMRC<CR>
 
 " <Bslash>s sources .vimrc
-nnoremap <Bslash>s :<C-U>source $MYVIMRC<CR>
-
-" Space toggles folds
-nnoremap <Space> za
+nnoremap <Bslash>sv :<C-U>source $MYVIMRC<CR>
 
 " Clear search buffer with <C-L>
 nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR><C-L>
 vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
 
-" <leader>c changes directory to current buffer's directory
-nnoremap <silent> <leader>c :<C-U>cd %:h<CR>:echo 'Changed directory to ' . expand('%:p:h')<CR>
+" ,c changes directory to current buffer's directory
+nnoremap <silent> ,c :<C-U>cd %:h<CR>:echo 'Changed directory to ' . expand('%:p:h')<CR>
 
-" <localleader>c changes local buffer directory to current buffer's directory
-nnoremap <silent> <localleader>c :<C-U>lcd %:h<CR>:echo 'Changed local directory to ' . expand('%:p:h')<CR>
+" \c changes local buffer directory to current buffer's directory
+nnoremap <silent> <Bslash>c :<C-U>lcd %:h<CR>:echo 'Changed local directory to ' . expand('%:p:h')<CR>
 
-" <leader>q runs gq over the whole buffer
-nnoremap <leader>q m'1GgqG`'
-
-" <leader>= runs = over the whole buffer
-nnoremap <leader>= m'1G=G`'
+" Delete from cursor to end of line
+nnoremap <C-K> dg_
 
 " }}}
 
@@ -382,7 +379,6 @@ vnoremap # y?\V<C-R>"<CR>
 
 " Terminal mode mappings {{{
 if exists(':tmap')
-  tnoremap <Esc> <C-\><C-N>
   tnoremap <silent> <C-W> <C-\><C-N><C-W>
   tnoremap <C-W><C-W> <C-W>
 endif
@@ -399,10 +395,10 @@ elseif executable('ag')
   set grepprg=ag\ --vimgrep\ -S\ --hidden
 endif
 
-" Use <C-K> in Normal mode to use grepprg
+" Use \\ in Normal mode to use grepprg
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
 command! -nargs=+ -complete=file -bar -bang Grep silent! botright grep<bang> <args>|cwindow|redraw!
-nnoremap <C-K> :Grep!<space>
+nnoremap <Bslash><Bslash> :Grep!<space>
 " }}}
 
 " Pushing built-in commands beyond their limits {{{
