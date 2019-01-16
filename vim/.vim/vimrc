@@ -328,22 +328,12 @@ nnoremap <silent> & :&&<CR>
 " Backspace goes back to previous buffer
 nnoremap <silent> <Backspace> <C-^>
 
-" Enter command line mode by pressing Return
-noremap <CR> :
-
-" Since : is now provided by Return, we can map it to the native functionality
-" of , which is overriden by other mappings
-noremap : ,
-
 " ,f prefixes find files in path
 nnoremap ,f :find *
 
 " Search for a tag by regex
 nnoremap ,t :tjump /
 nnoremap ,p :ptjump /
-
-" Navigate between windows with ease
-nnoremap <Space> <C-W>
 
 " Toggle folds
 nnoremap <Space><Space> za
@@ -366,9 +356,6 @@ nnoremap <silent> ,c :<C-U>cd %:h<CR>:echo 'Changed directory to ' . expand('%:p
 
 " \c changes local buffer directory to current buffer's directory
 nnoremap <silent> <Bslash>c :<C-U>lcd %:h<CR>:echo 'Changed local directory to ' . expand('%:p:h')<CR>
-
-" Delete from cursor to end of line
-nnoremap <C-K> dg_
 
 " }}}
 
