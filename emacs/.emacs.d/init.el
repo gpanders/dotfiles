@@ -61,6 +61,8 @@
   (add-hook 'emacs-lisp-mode-hook
             (lambda () (push 'emacs-lisp-checkdoc flycheck-disabled-checkers)))
   (global-flycheck-mode))
+(use-package general
+  :ensure t)
 (use-package ivy
   :ensure t
   :delight
@@ -211,12 +213,9 @@
 (global-set-key (kbd "C-x t") 'eshell)
 
 ;; Enable dired-x
-(add-hook 'dired-load-hook
-          (lambda ()
-            (load "dired-x")
-            (setq  dired-omit-files
-                   (concat dired-omit-files "\\|^#.+#$"))
-            ))
+(load "dired-x")
+(setq  dired-omit-files
+        (concat dired-omit-files "\\|^#.+#$"))
 (add-hook 'dired-mode-hook
           (lambda ()
             (dired-omit-mode 1)
