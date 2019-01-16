@@ -7,6 +7,7 @@
   :init
   (setq evil-want-C-u-scroll t)
   (setq evil-want-keybinding nil)
+  (setq evil-ex-search-vim-style-regexp t)
   :config
   (use-package evil-surround
     :ensure t
