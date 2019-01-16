@@ -1,3 +1,8 @@
+# Exit if fzf directory does not exist
+if [ ! -d "$HOME/.fzf" ]; then
+    return 1
+fi
+
 # Setup fzf
 # ---------
 if [[ ! "$PATH" == *$HOME/.fzf/bin* ]]; then
