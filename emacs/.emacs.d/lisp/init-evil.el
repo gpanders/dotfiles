@@ -2,6 +2,8 @@
 
 (use-package evil
   :ensure t
+  :custom
+  (evil-search-module 'evil-search)
   :init
   (setq evil-want-C-u-scroll t)
   (setq evil-want-keybinding nil)
@@ -34,68 +36,72 @@
     (global-evil-visualstar-mode))
   (use-package move-text :ensure t)
 
-  ;; Configure default states for modes
-  (dolist (var '(Custom-mode Info-mode))
-    (delete var evil-normal-state-modes)
-    (add-to-list 'evil-motion-state-modes var))
-
-  (evil-define-key 'motion 'global
+  (general-def 'motion
     ;; Unbind these in motion state since they often override other,
     ;; more useful bindings
-    (kbd "DEL") nil
-    (kbd "RET") nil
-    (kbd "\\") nil
-    (kbd "SPC") nil
+    "DEL" nil
+    "RET" nil
+    "\\" nil
+    "SPC" nil
     ;; Make window commands easier
-    (kbd "C-w C-k") (lookup-key evil-motion-state-map (kbd "C-w k"))
-    (kbd "C-w C-j") (lookup-key evil-motion-state-map (kbd "C-w j"))
-    (kbd "C-w C-h") (lookup-key evil-motion-state-map (kbd "C-w h"))
-    (kbd "C-w C-l") (lookup-key evil-motion-state-map (kbd "C-w l"))
-  )
+    "C-w C-k" "C-w k"
+    "C-w C-j" "C-w j"
+    "C-w C-h" "C-w h"
+    "C-w C-l" "C-w l"
+    )
 
   ;; Evil bindings
-  (evil-define-key '(normal visual) 'global "Q" 'evil-fill-and-move)
-  (evil-define-key 'normal 'global
-    (kbd "-") 'dired-jump
-    (kbd ", w") 'save-buffer
-    (kbd ", b") 'switch-to-buffer
-    (kbd ", e") 'find-file
-    (kbd ", g") 'magit-status
-    (kbd "[ b") 'previous-buffer
-    (kbd "] b") 'next-buffer
-    (kbd "[ q") 'flycheck-previous-error
-    (kbd "] q") 'flycheck-next-error
-    (kbd "[ e") 'move-text-up
-    (kbd "] e") 'move-text-down
-    (kbd "[ SPC") (lambda (count) (interactive "p") (dotimes (_ count) (save-excursion (evil-insert-newline-above))))
-    (kbd "] SPC") (lambda (count) (interactive "p") (dotimes (_ count) (save-excursion (evil-insert-newline-below))))
-    ;; select pasted text
-    (kbd "g p") (kbd "` [ v ` ]")
-    ;; paste above or below with newline
-    (kbd "[ p") (lambda () (interactive) (evil-insert-newline-above) (evil-paste-after 1))
-    (kbd "] p") (lambda () (interactive) (evil-insert-newline-below) (evil-paste-after 1))
-    (kbd "\\\\") (lookup-key (current-global-map) (kbd "C-c k"))
-    (kbd "SPC u") 'universal-argument
-    (kbd "SPC SPC") 'counsel-M-x
-    (kbd "DEL") 'evil-switch-to-windows-last-buffer
-  )
+  (general-def '(normal visual)
+    "Q" 'evil-fill-and-move
+    )
 
-  (evil-define-key 'visual 'global
-    (kbd "[ e") ":move'<--1"
-    (kbd "] e") ":move'>+1")
+  (general-def 'normal
+    "-" 'dired-jump
+    ", w" 'save-buffer
+    ", b" 'switch-to-buffer
+    ", e" 'find-file
+    ", g" 'magit-status
+    "C-p" 'counsel-file-jump
+    ;; (kbd "C-p") (lambda () (interactive) (ivy-read "Find file: " (directory-files-recursively default-directory "")))
+    "[ b" 'previous-buffer
+    "] b" 'next-buffer
+    "[ q" 'flycheck-previous-error
+    "] q" 'flycheck-next-error
+    "[ e" 'move-text-up
+    "] e" 'move-text-down
+    "[ SPC" (lambda (count) (interactive "p") (dotimes (_ count) (save-excursion (evil-insert-newline-above))))
+    "] SPC" (lambda (count) (interactive "p") (dotimes (_ count) (save-excursion (evil-insert-newline-below))))
+    ;; paste above or below with newline
+    "[ p" (lambda () (interactive) (evil-insert-newline-above) (evil-paste-after 1))
+    "] p" (lambda () (interactive) (evil-insert-newline-below) (evil-paste-after 1))
+    ;; select pasted text
+    "g p" (kbd "` [ v ` ]")
+    "\\\\" (lookup-key (current-global-map) (kbd "C-c k"))
+    "DEL" 'evil-switch-to-windows-last-buffer
+    )
+
+  ;; Put space keys into an override map so that they are never
+  ;; overriden by local bindings from other packages
+  (general-def 'normal 'override
+    :prefix "SPC"
+    "SPC" 'counsel-M-x
+    "u" 'universal-argument
+    )
+
+
+  (general-def 'visual
+    "[ e" ":move'<--1"
+    "] e" ":move'>+1"
+    )
 
   ;; Exit insert mode with `jk'
-  (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
-
-  ;; Use SPC as prefix for window commands (C-W by default)
-  ;; Equivalent to nnoremap <Space> <C-W> in vim
-  (dolist (var '("b" "c" "h" "j" "k" "l" "n" "o" "p" "q" "r" "s" "t" "w" "v" "H" "J" "K" "L"))
-    (define-key evil-normal-state-map
-      (kbd (concat "SPC " var))
-      (lookup-key evil-motion-state-map (kbd (concat "C-w " var)))))
+  (general-define-key
+   :states 'insert
+   (general-chord "jk") 'evil-normal-state
+   )
 
   ;; Enable evil mode
   (evil-mode 1)
-  )
+)
 
 (provide 'init-evil)
