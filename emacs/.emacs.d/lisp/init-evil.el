@@ -54,6 +54,7 @@
   ;; Evil bindings
   (general-def '(normal visual)
     "Q" 'evil-fill-and-move
+    "C-l" 'evil-ex-nohighlight
     )
 
   (general-def 'normal
