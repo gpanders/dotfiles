@@ -11,17 +11,14 @@
   :config
   (use-package evil-surround
     :ensure t
-    :config
-    (evil-surround-mode))
+    :hook (evil-mode . global-evil-surround-mode))
   (use-package evil-commentary
     :ensure t
     :delight
-    :config
-    (evil-commentary-mode))
+    :hook (evil-mode . evil-commentary-mode))
   (use-package evil-matchit
     :ensure t
-    :config
-    (global-evil-matchit-mode 1))
+    :hook (evil-mode . global-evil-matchit-mode))
   (use-package evil-numbers
     :ensure t
     :bind (:map evil-normal-state-map
@@ -33,9 +30,9 @@
     (evil-collection-init))
   (use-package evil-visualstar
     :ensure t
-    :config
-    (global-evil-visualstar-mode))
-  (use-package move-text :ensure t)
+    :hook (evil-mode . global-evil-visualstar-mode))
+  (use-package move-text
+    :ensure t)
 
   (general-def 'motion
     ;; Unbind these in motion state since they often override other,
@@ -96,14 +93,14 @@
     "] e" ":move'>+1"
     )
 
-  ;; Exit insert mode with `jk'
+  ;; Exit insert/replace mode with `jk'
   (general-define-key
-   :states 'insert
+   :states '(insert replace)
    (general-chord "jk") 'evil-normal-state
    )
 
   ;; Enable evil mode
   (evil-mode 1)
-)
+  )
 
 (provide 'init-evil)
