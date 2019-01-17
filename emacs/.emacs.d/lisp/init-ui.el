@@ -34,7 +34,11 @@
     `(mode-line ((t (:background "#21242b" :foreground "#9ca0a4" :box (:color "#202328" :line-width 1)))))
     `(mode-line-buffer-id ((t (:weight bold))))
     `(mode-line-emphasis ((t (:weight bold))))
-    `(mode-line-inactive ((t (:background "#202328" :foreground "#5b6268" :box (:color "#202328" :line-width 1))))))
+    `(mode-line-inactive ((t (:background "#202328" :foreground "#5b6268" :box (:color "#202328" :line-width 1)))))
+    `(lazy-highlight ((t (:foreground "#282c34" :background "#e5c07b" :underline nil))))
+    `(evil-ex-lazy-highlight ((t (:inherit 'lazy-highlight))))
+    `(evil-ex-substitute-matches ((t (:inherit `evil-ex-search))))
+    `(evil-ex-search ((t (:foreground "#282c34" :background "#e5c07b")))))
 )
 
 (provide 'init-ui)

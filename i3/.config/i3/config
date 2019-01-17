@@ -9,9 +9,9 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-# $mod set to Alt, $sup to Win key
-set $mod Mod1
-set $sup Mod4
+# $mod set to Win, $sup to Alt
+set $mod Mod4
+set $sup Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -19,7 +19,7 @@ set $sup Mod4
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:Fira Code 11
+font pango:Fira Mono 11
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -33,7 +33,7 @@ floating_modifier $mod
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec st
+bindsym $mod+Return exec st -f "Hack:weight=medium:pixelsize=12:antialias=true:autohint=true"
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -49,19 +49,19 @@ bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
-bindsym $mod+l focus right
+bindsym $sup+l focus right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+# bindsym $mod+Left focus left
+# bindsym $mod+Down focus down
+# bindsym $mod+Up focus up
+# bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+bindsym $sup+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -74,6 +74,9 @@ bindsym $mod+backslash split h
 
 # split in vertical orientation
 bindsym $mod+minus split v
+
+# toggle split orientation
+bindsym $mod+q split toggle
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -90,7 +93,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+# bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -166,10 +169,24 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+set $mode_launcher Launch: [f]irefox [e]macs
+bindsym $mod+o mode "$mode_launcher"
+
+mode "$mode_launcher" {
+        bindsym f exec firefox; mode "default"
+        bindsym e exec emacsclient -nc; mode "default"
+
+        bindsym Escape mode "default"
+        bindsym Return mode "default"
+}
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
+        font pango:Fira Mono 10
         status_command $HOME/.config/i3/conky-i3bar
+        position top
+        tray_output primary
 
         colors {
                background #282c34
@@ -182,12 +199,13 @@ bar {
         }
 }
 
+
 # use smart edge borders
-hide_edge_borders smart
+hide_edge_borders smart_no_gaps
 
 # gaps
 for_window [class="^.*"] border pixel 0
-smart_borders on
+smart_borders no_gaps
 gaps inner 15
 
 # Start desktop notification daemon
