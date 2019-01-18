@@ -128,6 +128,9 @@
   (use-package pandoc-mode
     :ensure t
     :hook markdown-mode))
+(use-package matlab-mode
+  :ensure t
+  :mode ("\\.m\\'" . matlab-mode))
 (use-package projectile
   :ensure t
   :bind-keymap (("s-p" . projectile-command-map)

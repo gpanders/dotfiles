@@ -81,7 +81,7 @@
 
   ;; Put space keys into an override map so that they are never
   ;; overriden by local bindings from other packages
-  (general-def 'normal 'override
+  (general-def '(normal motion) 'override
     :prefix "SPC"
     "SPC" 'counsel-M-x
     "u" 'universal-argument
