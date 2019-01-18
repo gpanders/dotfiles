@@ -124,6 +124,7 @@ git config --global alias.m merge
 git config --global alias.p push
 git config --global alias.re reset
 git config --global alias.st status
+git config --global alias.snapshot "!git stash && git stash apply"
 
 # if [ ! -d "$HOME/.zprezto" ]; then
 #   read -r -p "Install prezto? [y/N] " ans
