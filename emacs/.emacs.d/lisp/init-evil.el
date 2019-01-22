@@ -93,6 +93,10 @@
     "] e" ":move'>+1"
     )
 
+  (general-def 'insert
+    "C-SPC" 'company-complete
+    )
+
   ;; Exit insert/replace mode with `jk'
   (general-define-key
    :states '(insert replace)
