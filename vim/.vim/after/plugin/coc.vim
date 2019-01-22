@@ -2,6 +2,7 @@ if !exists('g:did_coc_loaded')
   finish
 endif
 
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 inoremap <silent> <expr> <C-Space> coc#refresh()
 
 augroup CocSetup
