@@ -1,4 +1,5 @@
 {
+  "coc.preferences.autoTrigger": "none",
   "languageserver": {
     "cquery": {
       "command": "cquery",
