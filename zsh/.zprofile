@@ -19,12 +19,13 @@ if [[ -z "$LANG" ]]; then
   export LANG="en_US.UTF-8"
 fi
 
-# Modify path
-path=(
-  $HOME/.local/bin
-  /usr/local/bin
-  $path
-)
+# Add /usr/local/bin to path first
+path=(/usr/local/bin $path)
+
+# Add TeX installation to path, if it exists
+if [[ -d "/Library/TeX/texbin" ]]; then
+  path=("/Library/TeX/texbin" $path)
+fi
 
 # Setup pyenv
 if [[ -s "$HOME/.pyenv/bin/pyenv" ]]; then
@@ -49,6 +50,9 @@ fi
 if [[ -s "$HOME/.cargo/env" ]]; then
   source "$HOME/.cargo/env"
 fi
+
+# Make user's local bin directory the first thing in the path
+path=($HOME/.local/bin $path)
 
 # Remove duplicates in path variables
 typeset -gU path fpath cdpath manpath

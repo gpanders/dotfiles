@@ -1,7 +1,7 @@
 alias chmod="chmod --preserve-root -v"
 alias chown="chown --preserve-root -v"
 
-alias ec="emacsclient -nc"
+alias ec="emacsclient -a '' -nc"
 
 alias d="dirs -v"
 for index ({1..9}) alias "$index"="cd -${index}"; unset index
@@ -48,5 +48,7 @@ fi
 if [ ! -z $PAGER ]; then
   alias p="$PAGER"
 fi
+
+alias which="which -a"
 
 # vim:ft=zsh
