@@ -17,22 +17,50 @@
 (eval-when-compile
   (require 'use-package))
 
+;; Setup path before anything else
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq system-type '(darwin gnu/linux))
+  :config
+  (setq exec-path-from-shell-arguments nil)
+  (dolist (var '("http_proxy" "https_proxy" "no_proxy"))
+    (push var exec-path-from-shell-variables))
+  (exec-path-from-shell-initialize))
+
 ;; Custom lisp packages in ~/.emacs.d/lisp directory
 (require 'init-backup)
 (require 'init-ui)
 (require 'init-evil)
 (require 'init-org)
 (require 'init-os)
+(require 'init-python)
 
 (use-package company
   :ensure t
   :delight
   :config
-  (setq company-idle-delay 0.2
+  (setq company-idle-delay nil
+        company-tooltip-limit 10
         company-minimum-prefix-length 2
-        company-require-match nil
+        company-require-match 'never
         company-dabbrev-ignore-case nil
-        company-dabbrev-downcase nil)
+        company-dabbrev-downcase nil
+        company-dabbrev-code-other-buffers t
+        company-tooltip-align-annotations t
+        company-global-modes '(not eshell-mode comint-mode erc-mode message-mode help-mode gud-mode)
+        company-frontends '(company-pseudo-tooltip-frontend company-echo-metadata-frontend)
+        company-backends '(company-capf company-dabbrev company-ispell)
+        company-transformers '(company-sort-by-occurrence))
+  (use-package company-statistics
+    :ensure t
+    :config
+    (company-statistics-mode))
+  (use-package yasnippet
+    :ensure t
+    :config
+    (delight 'yas-minor-mode nil "yasnippet")
+    (push 'company-yasnippet company-backends)
+    (yas-global-mode))
   (global-company-mode))
 (use-package cquery
   :ensure t
@@ -45,14 +73,6 @@
   :config
   (delight '((eldoc-mode nil "eldoc")
              (undo-tree-mode nil "undo-tree"))))
-(use-package exec-path-from-shell
-  :ensure t
-  :if (memq system-type '(darwin gnu/linux))
-  :config
-  (setq exec-path-from-shell-arguments nil)
-  (dolist (var '("http_proxy" "https_proxy" "no_proxy"))
-    (add-to-list 'exec-path-from-shell-variables var))
-  (exec-path-from-shell-initialize))
 (use-package flx
   :ensure t)
 (use-package flycheck
@@ -90,7 +110,7 @@
   :commands lsp
   :hook ((c-mode . lsp)
          (c++-mode . lsp)
-         (python-mode . lsp)
+         ;; (python-mode . lsp)
          (rust-mode . lsp))
   :config
   (setq lsp-prefer-flymake nil)
@@ -107,17 +127,11 @@
     (setq lsp-ui-sideline-enable nil))
   (use-package company-lsp
     :ensure t
-    :commands company-lsp
-    :config
-    (use-package yasnippet
-      :ensure t
-      :config
-      (delight 'yas-minor-mode nil "yasnippet")
-      (yas-global-mode 1))))
+    :commands company-lsp))
 (use-package magit
   :ensure t
   :config
-  (setq magit-completing-read-function 'ivy-completing-read))
+  (setq magit-completing-read-function #'ivy-completing-read))
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
@@ -135,14 +149,15 @@
   :ensure t
   :bind-keymap (("s-p" . projectile-command-map)
                 ("C-c p" . projectile-command-map))
-  :config
-  (setq projectile-project-search-path
+  :init
+  (setq projectile-mode-line-function #'(lambda () (format " Proj[%s]" (s-truncate 20 (projectile-project-name))))
+        projectile-completion-system 'ivy
+        projectile-project-search-path
         (cond ((eq system-type 'darwin) '("~/Projects"))
               ((eq system-type 'gnu/linux) '("~/work"))))
-  (setq projectile-completion-system 'ivy)
+  :config
   (projectile-mode 1))
 (use-package recentf
-  :ensure nil
   :config
   ;; get rid of `find-file-read-only' and replace it with something
   ;; more useful
@@ -216,12 +231,10 @@
 (global-set-key (kbd "C-x t") 'eshell)
 
 ;; Enable dired-x
-(load "dired-x")
-(setq  dired-omit-files
-        (concat dired-omit-files "\\|^#.+#$"))
+;; (load "dired-x")
 (add-hook 'dired-mode-hook
           (lambda ()
-            (dired-omit-mode 1)
+            (dired-hide-details-mode 1)
             ))
 
 ;; Disable some emacs prompts
@@ -246,5 +259,9 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
+
+(if (not (server-running-p))
+    (server-start)
+  )
 
 ;;; init.el ends here

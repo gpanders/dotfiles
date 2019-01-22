@@ -9,7 +9,7 @@
  '(initial-frame-alist (quote ((fullscreen . maximized))))
  '(package-selected-packages
    (quote
-    (matlab-mode key-chord move-text smartparens evil-visualstar evil-matchit evil-numbers pandoc-mode evil-collection rust-mode auctex flx solarized-theme flycheck sane-term evil-commentary evil-leader evil-surround yasnippet counsel ivy delight magit exec-path-from-shell projectile smex company-lsp lsp-ui cquery atom-one-dark-theme evil use-package)))
+    (company-statistics pip-requirements elpy company-anaconda pyenv-mode matlab-mode key-chord move-text smartparens evil-visualstar evil-matchit evil-numbers pandoc-mode evil-collection rust-mode auctex flx solarized-theme flycheck sane-term evil-commentary evil-leader evil-surround yasnippet counsel ivy delight magit exec-path-from-shell projectile smex company-lsp lsp-ui cquery atom-one-dark-theme evil use-package)))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
