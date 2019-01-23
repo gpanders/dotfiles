@@ -88,6 +88,10 @@
   (global-flycheck-mode))
 (use-package general
   :ensure t)
+(use-package git-gutter
+  :ensure t
+  :config
+  (global-git-gutter-mode +1))
 (use-package ivy
   :ensure t
   :delight
@@ -169,7 +173,8 @@
   :bind-keymap (("s-p" . projectile-command-map)
                 ("C-c p" . projectile-command-map))
   :init
-  (setq projectile-mode-line-function #'(lambda () (format " Proj[%s]" (s-truncate 20 (projectile-project-name))))
+  (setq projectile-mode-line-prefix "Proj "
+        projectile-mode-line-function #'(lambda () (format " Proj[%s]" (s-truncate 20 (projectile-project-name))))
         projectile-completion-system 'ivy
         projectile-project-search-path
         (cond ((eq system-type 'darwin) '("~/Projects"))

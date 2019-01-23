@@ -48,4 +48,11 @@
     `(evil-ex-search ((t (:foreground "#282c34" :background "#e5c07b")))))
 )
 
+;; Light theme alternative
+(use-package leuven-theme
+  :disabled
+  :ensure t
+  :config
+  (load-theme 'leuven t))
+
 (provide 'init-ui)

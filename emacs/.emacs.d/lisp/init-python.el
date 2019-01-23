@@ -29,9 +29,25 @@
     (evil-define-key 'insert inferior-python-mode-map (kbd "C-p") 'comint-previous-input)
     (evil-define-key 'insert inferior-python-mode-map (kbd "C-n") 'comint-next-input)))
 
+(defun run-ipython ()
+  "Start an interactive IPython shell."
+  (interactive)
+  (when (pyenv-executable-find "ipython")
+    (require 'term)
+    (let* ((cmd "ipython")
+           (args "-i")
+           (switches (split-string-and-unquote args))
+           (termbuf (apply 'make-term "IPython" cmd nil switches)))
+      (set-buffer termbuf)
+      (term-mode)
+      (term-char-mode)
+      (switch-to-buffer termbuf))))
+
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
+  :bind (:map python-mode-map
+              ("C-c C-y" . run-ipython))
   :init
   (python-setup-shell)
   (add-hook 'inferior-python-mode-hook #'inferior-python-setup))
@@ -98,3 +114,5 @@
   :ensure t)
 
 (provide 'init-python)
+
+;;; init-python.el ends here
