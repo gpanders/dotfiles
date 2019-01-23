@@ -14,12 +14,19 @@
   :ensure t
   :config
   (load-theme 'atom-one-dark t)
-  (custom-set-faces
+  (custom-theme-set-faces 'atom-one-dark
    `(company-tooltip ((t (:background "#2c323c"))))
    `(company-tooltip-annotation ((t (:background "#2c323c"))))
    `(company-tooltip-common ((t (:background nil))))
    `(company-scrollbar-fg ((t (:background "#4b5363"))))
-   `(company-scrollbar-bg ((t (:background "#2c323c")))))
+   `(company-scrollbar-bg ((t (:background "#2c323c"))))
+   `(show-paren-match ((t (:background "#282c34" :foreground "#e06c75" :weight ultra-bold))))
+   `(show-paren-mismatch ((t (:background "#e06c75" :foreground "#282c34" :weight ultra-bold))))
+   `(cursor ((t (:background "#abb2bf" :foreground "#282c34"))))
+   `(lazy-highlight ((t (:foreground "#282c34" :background "#e5c07b" :underline nil))))
+   `(evil-ex-lazy-highlight ((t (:inherit 'lazy-highlight))))
+   `(evil-ex-substitute-matches ((t (:inherit `evil-ex-search))))
+   `(evil-ex-search ((t (:foreground "#e5c07b" :background "#5c6370")))))
 )
 
 (use-package doom-themes

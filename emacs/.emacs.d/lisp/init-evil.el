@@ -95,6 +95,10 @@
 
   (general-def 'insert
     "C-SPC" 'company-complete
+    "C-x C-f" 'company-files
+    "C-x C-o" 'company-capf
+    "C-x C-s" 'company-yasnippet
+    "C-x s" 'company-ispell
     )
 
   ;; Exit insert/replace mode with `jk'
