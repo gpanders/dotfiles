@@ -34,6 +34,11 @@
   (use-package move-text
     :ensure t)
 
+  ;; Fixes error message:
+  ;;   Error in post-command-hook (evil-repeat-post-hook): (wrong-type-argument number-or-marker-p nil)
+  ;; See https://github.com/company-mode/company-mode/issues/383
+  (evil-declare-change-repeat 'company-complete)
+
   (general-def 'motion
     ;; Unbind these in motion state since they often override other,
     ;; more useful bindings
@@ -54,14 +59,28 @@
     "C-l" 'evil-ex-nohighlight
     )
 
+  (defun ctrl-p-find-file ()
+    "Find files recursively from current directory."
+    (interactive)
+    (let ((find-program (cond ((executable-find "rg") "rg")
+                              ((executable-find "ag") "ag")
+                              (t find-program)))
+          (counsel-file-jump-args (cond ((executable-find "rg") "--files --hidden --glob '!.git'")
+                                        ((executable-find "ag") "-g '' --hidden --ignore '.git'")
+                                        (t counsel-file-jump-args))))
+      (counsel-file-jump)))
+
   (general-def 'normal
     "-" 'dired-jump
     ", w" 'save-buffer
     ", b" 'switch-to-buffer
     ", e" 'find-file
     ", g" 'magit-status
-    "C-p" 'counsel-file-jump
+    "C-p" 'ctrl-p-find-file
     ;; (kbd "C-p") (lambda () (interactive) (ivy-read "Find file: " (directory-files-recursively default-directory "")))
+    ;; Swap ; and :
+    ";" 'evil-ex
+    ":" 'evil-repeat-find-char
     "[ b" 'previous-buffer
     "] b" 'next-buffer
     "[ q" 'flycheck-previous-error
