@@ -27,10 +27,9 @@ function! s:PackInit()
     call minpac#add('lervag/vimtex')
 
     " Neovim or Vim 8.1+ required
-    if has('nvim')
+    if has('nvim') || v:version >= 801
       call minpac#add('neoclide/coc.nvim', {'do': 'call coc#util#install()'})
-    elseif v:version >= 801
-      call minpac#add('neoclide/coc.nvim', {'do': 'call coc#util#install() | silent! !yarn global add vim-node-rpc'})
+      call minpac#add('w0rp/ale')
     endif
 
     " Colorschemes

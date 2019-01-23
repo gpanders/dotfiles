@@ -1,5 +1,6 @@
 {
   "coc.preferences.autoTrigger": "none",
+  "coc.preferences.diagnostic.displayByAle": true,
   "languageserver": {
     "cquery": {
       "command": "cquery",
