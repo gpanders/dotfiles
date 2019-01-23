@@ -94,4 +94,7 @@
   :ensure t
   :mode ("/requirements.txt$" . pip-requirements-mode))
 
+(use-package ein
+  :ensure t)
+
 (provide 'init-python)

@@ -38,6 +38,13 @@
 (use-package company
   :ensure t
   :delight
+  :bind (:map company-active-map
+              ("C-w" . nil)
+              ("C-y" . company-complete)
+              ("C-e" . company-abort)
+              ("C-s" . company-filter-candidates)
+              ("C-SPC" . company-complete-common)
+              ([tab] . company-complete-common-or-cycle))
   :config
   (setq company-idle-delay nil
         company-tooltip-limit 10
@@ -48,8 +55,6 @@
         company-dabbrev-code-other-buffers t
         company-tooltip-align-annotations t
         company-global-modes '(not eshell-mode comint-mode erc-mode message-mode help-mode gud-mode)
-        company-frontends '(company-pseudo-tooltip-frontend company-echo-metadata-frontend)
-        company-backends '(company-capf company-dabbrev company-ispell)
         company-transformers '(company-sort-by-occurrence))
   (use-package company-statistics
     :ensure t
@@ -87,10 +92,24 @@
   :ensure t
   :delight
   :config
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  (setq enable-recursive-minibuffers t)
+  ;; (setq enable-recursive-minibuffers t)
+  (setq ivy-height 12
+        ivy-count-format "(%d/%d) "
+        ivy-use-virtual-buffers t
+        ivy-do-completion-in-region nil
+        ivy-wrap t
+        ivy-fixed-height-minibuffer t
+        projectile-completion-system 'ivy
+        smex-completion-method 'ivy
+        ;; Don't use ^ as initial input
+        ivy-initial-inputs-alist nil
+        ;; highlight til EOL
+        ivy-format-function #'ivy-format-function-line
+        ;; disable magic slash on non-match
+        ivy-magic-slash-non-match-action nil)
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (use-package ivy-hydra
+    :ensure t)
   (use-package counsel
     :ensure t
     :delight
@@ -154,7 +173,11 @@
         projectile-completion-system 'ivy
         projectile-project-search-path
         (cond ((eq system-type 'darwin) '("~/Projects"))
-              ((eq system-type 'gnu/linux) '("~/work"))))
+              ((eq system-type 'gnu/linux) '("~/work")))
+        projectile-generic-command
+        (cond ((executable-find "rg") "rg --files --hidden --glob '!.git' -0")
+              ((executable-find "ag") "ag -g '' --hidden --ignore '.git' -0")
+              (t projectile-generic-command)))
   :config
   (projectile-mode 1))
 (use-package recentf
@@ -244,16 +267,11 @@
       (remq 'process-kill-buffer-query-function
             kill-buffer-query-functions))
 
-;; Enable line numbers
-(global-display-line-numbers-mode)
-;; ...but disable them in some modes
-(dolist (hook '(help-mode-hook
-                term-mode-hook
-                shell-mode-hook
-                compilation-mode-hook
-                Custom-mode-hook
-                Info-mode-hook))
-  (add-hook hook (lambda () (display-line-numbers-mode -1))))
+;; Enable line numbers in programming modes
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
+;; Enable auto-fill mode in text modes
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; Load customization file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
