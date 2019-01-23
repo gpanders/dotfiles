@@ -328,6 +328,12 @@ nnoremap <silent> & :&&<CR>
 " Backspace goes back to previous buffer
 nnoremap <silent> <Backspace> <C-^>
 
+" Swap ; and :
+nnoremap : ;
+vnoremap : ;
+nnoremap ; :
+vnoremap ; :
+
 " ,f prefixes find files in path
 nnoremap ,f :find *
 
