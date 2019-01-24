@@ -14,7 +14,7 @@ alias ls="ls --color=auto"
 alias l="ls -lh"
 alias ll="ls -Alh"
 
-function mkdcd() {
+mkdcd() {
   if [[ "$#" -eq 0 ]]; then
     echo "$0: Missing operand"
     return 1
@@ -30,6 +30,7 @@ alias ipy="ipython"
 alias py="python"
 alias py2="python2"
 alias py3="python3"
+alias pipu="pip install -U \$(pip list -o | awk 'NR > 2 {print \$1}' | paste -sd ' ' -)"
 
 if (( $+commands[nvim] )); then
   alias vi="nvim"
