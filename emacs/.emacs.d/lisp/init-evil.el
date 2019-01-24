@@ -70,6 +70,15 @@
                                         (t counsel-file-jump-args))))
       (counsel-file-jump)))
 
+  (defun my-evil-backward-delete-line ()
+    "Kill line backward."
+    (interactive)
+    (if (looking-back "^" 0)
+        (backward-delete-char 1)
+      (if (looking-back "^\s*" 0)
+          (delete-region (point) (line-beginning-position))
+        (evil-delete (+ (line-beginning-position) (current-indentation)) (point)))))
+
   (general-def 'normal
     "-" 'dired-jump
     ", w" 'save-buffer
@@ -118,6 +127,8 @@
     "C-x C-o" 'company-capf
     "C-x C-s" 'company-yasnippet
     "C-x s" 'company-ispell
+    "C-d" 'evil-delete-char
+    "C-u" 'my-evil-backward-delete-line
     )
 
   ;; Exit insert/replace mode with `jk'
