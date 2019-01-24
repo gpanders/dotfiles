@@ -32,16 +32,18 @@
 (defun run-ipython ()
   "Start an interactive IPython shell."
   (interactive)
-  (when (pyenv-executable-find "ipython")
-    (require 'term)
-    (let* ((cmd "ipython")
-           (args "-i")
-           (switches (split-string-and-unquote args))
-           (termbuf (apply 'make-term "IPython" cmd nil switches)))
-      (set-buffer termbuf)
-      (term-mode)
-      (term-char-mode)
-      (switch-to-buffer termbuf))))
+  (if (pyenv-executable-find "ipython")
+      (progn
+        (require 'term)
+        (let* ((cmd "ipython")
+               (args "-i")
+               (switches (split-string-and-unquote args))
+               (termbuf (apply 'make-term "IPython" cmd nil switches)))
+          (set-buffer termbuf)
+          (term-mode)
+          (term-char-mode)
+          (switch-to-buffer termbuf)))
+    (message "IPython not found")))
 
 (use-package python
   :mode ("\\.py\\'" . python-mode)

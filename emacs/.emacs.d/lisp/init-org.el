@@ -51,6 +51,9 @@
   (interactive)
   (find-file (expand-file-name "someday.org" org-gtd-directory)))
 
+(org-babel-do-load-languages 'org-babel-load-languages
+                             '((python . t)))
+
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cc" 'org-capture)

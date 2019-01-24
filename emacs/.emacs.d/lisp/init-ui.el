@@ -11,6 +11,7 @@
       inhibit-startup-echo-area-message t)
 
 (use-package atom-one-dark-theme
+  :disabled
   :ensure t
   :config
   (load-theme 'atom-one-dark t)
@@ -54,5 +55,10 @@
   :ensure t
   :config
   (load-theme 'leuven t))
+
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  :config
+  (load-theme 'sanityinc-tomorrow-day t))
 
 (provide 'init-ui)

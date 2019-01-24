@@ -45,7 +45,7 @@
               ("C-s" . company-filter-candidates)
               ("C-SPC" . company-complete-common)
               ([tab] . company-complete-common-or-cycle))
-  :config
+  :init
   (setq company-idle-delay nil
         company-tooltip-limit 10
         company-minimum-prefix-length 2
@@ -54,25 +54,19 @@
         company-dabbrev-downcase nil
         company-dabbrev-code-other-buffers t
         company-tooltip-align-annotations t
-        company-global-modes '(not eshell-mode comint-mode erc-mode message-mode help-mode gud-mode)
+        company-global-modes '(not org-mode eshell-mode comint-mode erc-mode message-mode help-mode gud-mode)
         company-transformers '(company-sort-by-occurrence))
+  :config
   (use-package company-statistics
     :ensure t
     :config
     (company-statistics-mode))
-  (use-package yasnippet
-    :ensure t
-    :config
-    (delight 'yas-minor-mode nil "yasnippet")
-    (push 'company-yasnippet company-backends)
-    (yas-global-mode))
+
   (global-company-mode))
 (use-package cquery
   :ensure t
   :config
-  (setq cquery-executable (cond
-                           ((eq system-type 'darwin) "/usr/local/bin/cquery")
-                           ((eq system-type 'gnu/linux) "/usr/bin/cquery"))))
+  (setq cquery-executable (executable-find "cquery")))
 (use-package delight
   :ensure t
   :config
@@ -82,14 +76,15 @@
   :ensure t)
 (use-package flycheck
   :ensure t
+  :hook (prog-mode . flycheck-mode)
   :config
   (add-hook 'emacs-lisp-mode-hook
-            (lambda () (push 'emacs-lisp-checkdoc flycheck-disabled-checkers)))
-  (global-flycheck-mode))
+            (lambda () (push 'emacs-lisp-checkdoc flycheck-disabled-checkers))))
 (use-package general
   :ensure t)
 (use-package git-gutter
   :ensure t
+  :delight
   :config
   (global-git-gutter-mode +1))
 (use-package ivy
@@ -150,7 +145,16 @@
     (setq lsp-ui-sideline-enable nil))
   (use-package company-lsp
     :ensure t
-    :commands company-lsp))
+    :commands company-lsp
+    :init
+    (setq company-lsp-enable-snippet nil)))
+    ;; :config
+    ;; (use-package yasnippet
+    ;;   :ensure t
+    ;;   :delight yas-minor-mode
+    ;;   :config
+    ;;   (push 'company-yasnippet company-backends)
+    ;;   (yas-global-mode))))
 (use-package magit
   :ensure t
   :config
@@ -208,21 +212,12 @@
   (setq rust-format-on-save t)
   (defvar cargo-run-args nil
     "Arguments to \"cargo-run\" command.")
-  ;; (defun cargo-run-from-root-dir (command)
-  ;;   "Run a command from Cargo root project directory."
-  ;;   (catch 'wrong-major-mode
-  ;;     (when (not (eq major-mode 'rust-mode))
-  ;;    (throw 'wrong-major-mode "You must be in rust-mode to use this command"))
-  ;;     (let ((cwd default-directory))
-  ;;    (cd (locate-dominating-file buffer-file-name "Cargo.toml"))
-  ;;    (eval command)
-  ;;    (cd cwd))))
   (defun cargo-test ()
     "Run \"cargo test\"."
     (interactive)
     (compile "cargo test"))
   (defun cargo-run (args)
-    "Run \"cargo run\"."
+    "Run \"cargo run\" with the given ARGS."
     (interactive
      (list
         (let ((args (eval cargo-run-args)))
@@ -244,7 +239,10 @@
   :bind (("C-x t" . sane-term)
          ("C-x T" . sane-term-create)))
 (use-package smartparens
-  :ensure t)
+  :ensure t
+  :delight
+  :config
+  (smartparens-global-mode))
 (use-package smex
   :ensure t)
 (use-package tcl-mode
