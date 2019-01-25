@@ -172,12 +172,22 @@
 (use-package matlab-mode
   :ensure t
   :mode ("\\.m\\'" . matlab-mode))
+(use-package persp-mode
+  :ensure t
+  :config
+  (setq persp-autokill-buffer-on-remove 'kill-weak
+        persp-auto-save-fname "autosave"
+        persp-auto-save-opt 1
+        persp-nil-hidden t
+        persp-nil-name "nil"))
 (use-package projectile
   :ensure t
   :bind-keymap (("s-p" . projectile-command-map)
                 ("C-c p" . projectile-command-map))
+  :bind (([remap evil-jump-to-tag] . projectile-find-tag)
+         ([remap find-tag] . projectile-find-tag))
   :init
-  (setq projectile-mode-line-prefix "Proj "
+  (setq projectile-mode-line-prefix " Proj"
         projectile-mode-line-function #'(lambda () (format " Proj[%s]" (s-truncate 20 (projectile-project-name))))
         projectile-completion-system 'ivy
         projectile-project-search-path
@@ -188,53 +198,24 @@
               ((executable-find "ag") "ag -g '' --hidden --ignore '.git' -0")
               (t projectile-generic-command)))
   :config
+  (setq projectile-require-project-root nil)
+  (add-hook 'projectile-after-switch-project-hook
+            (lambda ()
+              (when (eq (projectile-project-vcs) 'git)
+                (setq projectile-tags-file-name ".git/etags"
+                      projectile-tags-command "git ls-files | ctags -e -L - -f \"%s\" %s"))))
   (projectile-mode 1))
-(use-package recentf
-  :config
-  ;; get rid of `find-file-read-only' and replace it with something
-  ;; more useful
-  (global-set-key (kbd "C-x C-r") 'counsel-recentf)
-
-  ;; enable recent files mode
-  (recentf-mode t)
-  (setq recentf-max-saved-items 50)
-
-  (defun ido-recentf-open ()
-    "Use `ido-completing-read' to \\[find-file] a recent file"
-    (interactive)
-    (if (find-file (ivy-completing-read "Find recent file: " recentf-list))
-        (message "Opening file...")
-      (message "Aborting"))))
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'"
   :config
   (setq rust-format-on-save t)
-  (defvar cargo-run-args nil
-    "Arguments to \"cargo-run\" command.")
-  (defun cargo-test ()
-    "Run \"cargo test\"."
-    (interactive)
-    (compile "cargo test"))
-  (defun cargo-run (args)
-    "Run \"cargo run\" with the given ARGS."
-    (interactive
-     (list
-        (let ((args (eval cargo-run-args)))
-        (if (or (not cargo-run-args) (car current-prefix-arg))
-            (read-from-minibuffer "Arguments: " args)
-            args))))
-    (setq cargo-run-args args)
-    (compile (concat "cargo run " args)))
-  (defun cargo-build ()
-      "Run \"cargo build\"."
-    (interactive)
-    (compile "cargo build"))
-  (define-key rust-mode-map (kbd "C-c C-c t") 'cargo-test)
-  (define-key rust-mode-map (kbd "C-c C-c r") 'cargo-run)
-  (define-key rust-mode-map (kbd "C-c C-c b") 'cargo-build))
+  (with-eval-after-load 'projectile
+    (projectile-register-project-type 'rust-cargo '("Cargo.toml")
+                                      :compile "cargo build"
+                                      :test "cargo test"
+                                      :run "cargo run")))
 (use-package sane-term
-  :disabled
   :ensure t
   :bind (("C-x t" . sane-term)
          ("C-x T" . sane-term-create)))
@@ -242,6 +223,7 @@
   :ensure t
   :delight
   :config
+  (sp-with-modes 'emacs-lisp-mode (sp-local-pair "'" nil :actions nil))
   (smartparens-global-mode))
 (use-package smex
   :ensure t)
@@ -252,9 +234,6 @@
   :config
   (setq TeX-auto-save t)
   (setq TeX-parse-self t))
-
-;; Open eshell with a keybinding
-(global-set-key (kbd "C-x t") 'eshell)
 
 ;; Enable dired-x
 ;; (load "dired-x")
