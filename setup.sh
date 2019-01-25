@@ -124,38 +124,7 @@ git config --global alias.m merge
 git config --global alias.p push
 git config --global alias.re reset
 git config --global alias.st status
-git config --global alias.snapshot "!git stash && git stash apply"
-
-# if [ ! -d "$HOME/.zprezto" ]; then
-#   read -r -p "Install prezto? [y/N] " ans
-#   if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-
-#     git clone --recursive https://github.com/gpanders/prezto.git "$HOME/.zprezto"
-
-#     for rcfile in "$HOME"/.zprezto/runcoms/!(README.md|zshenv); do
-#       if [ -h "$HOME/.${rcfile##*/}" ]; then
-#         rm "$HOME/.${rcfile##*/}"
-#       elif [ -f "$HOME/.${rcfile##*/}" ]; then
-#         mv "$HOME/.${rcfile##*/}" "$HOME/.${rcfile##*/}.bak"
-#       fi
-#       ln -vs "$rcfile" "$HOME/.${rcfile##*/}"
-#     done
-
-#     # Use an untracked copy of zshenv to store sensitive node-specific config
-#     if [ -h $HOME/.zshenv ]; then
-#       rm $HOME/.zshenv
-#     elif [ -f $HOME/.zshenv ]; then
-#       mv $HOME/.zshenv $HOME/.zshenv.bak
-#     fi
-#     cp $HOME/.zprezto/runcoms/zshenv $HOME/.zshenv
-
-#     # Install 3rd party (contrib) modules
-#     git clone --quiet --recursive https://github.com/belak/prezto-contrib.git $HOME/.zprezto/contrib
-#     if [ ! -d $HOME/.zprezto/contrib/fzf ]; then
-#       git clone --quiet --recursive https://github.com/gpanders/fzf-prezto.git $HOME/.zprezto/contrib/fzf
-#     fi
-#   fi
-# fi
+git config --global alias.snapshot "!git stash && git stash apply -q"
 
 if hash zsh 2>/dev/null; then
   if ! hash antibody 2>/dev/null; then
@@ -187,22 +156,24 @@ if [ ! -d "$HOME/.pyenv" ]; then
   fi
 fi
 
-# echo "Install solarized dircolors?"
-# echo "    1) light"
-# echo "    2) dark"
-# echo "    3) universal"
-# read -r -p "Selection (default: none): " ans
-# solarized_dircolors=
-# case $ans in
-#   1) solarized_dircolors="light" ;;
-#   2) solarized_dircolors="dark" ;;
-#   3) solarized_dircolors="universal" ;;
-# esac
-# if [ ! -z "$solarized_dircolors" ]; then
-#   echo "Installing $solarized_dircolors dircolors to $HOME/.dir_colors"
-#   curl -fsLo $HOME/.dir_colors \
-#     https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-$solarized_dircolors
-# fi
+if [ ]; then
+  echo "Install solarized dircolors?"
+  echo "    1) light"
+  echo "    2) dark"
+  echo "    3) universal"
+  read -r -p "Selection (default: none): " ans
+  solarized_dircolors=
+  case $ans in
+    1) solarized_dircolors="light" ;;
+    2) solarized_dircolors="dark" ;;
+    3) solarized_dircolors="universal" ;;
+  esac
+  if [ ! -z "$solarized_dircolors" ]; then
+    echo "Installing $solarized_dircolors dircolors to $HOME/.dir_colors"
+    curl -fsLo $HOME/.dir_colors \
+      https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-$solarized_dircolors
+  fi
+fi
 
 echo " "
 echo "Setup complete."
