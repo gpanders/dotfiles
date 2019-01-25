@@ -90,6 +90,8 @@
     ;; Swap ; and :
     ";" 'evil-ex
     ":" 'evil-repeat-find-char
+    ;; Map & to :&& in normal mode (repeat last substitution with flags)
+    "&" 'evil-ex-repeat-substitute-with-flags
     "[ b" 'previous-buffer
     "] b" 'next-buffer
     "[ q" 'flycheck-previous-error
