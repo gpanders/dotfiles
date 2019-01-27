@@ -61,7 +61,6 @@
     :ensure t
     :config
     (company-statistics-mode))
-
   (global-company-mode))
 (use-package cquery
   :ensure t
@@ -91,7 +90,6 @@
   :ensure t
   :delight
   :config
-  ;; (setq enable-recursive-minibuffers t)
   (setq ivy-height 12
         ivy-count-format "(%d/%d) "
         ivy-use-virtual-buffers t
@@ -113,7 +111,7 @@
     :ensure t
     :delight
     :config
-    (global-set-key "\C-s" 'swiper)
+    (global-set-key "\M-f" 'swiper)
     (global-set-key (kbd "C-c k") (cond ((executable-find "rg") 'counsel-rg)
                                         ((executable-find "ag") 'counsel-ag)
                                         ((executable-find "grep") 'counsel-grep)))
@@ -272,8 +270,8 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-(if (not (server-running-p))
-    (server-start)
-  )
+(require 'server)
+(unless (server-running-p)
+    (server-start))
 
 ;;; init.el ends here
