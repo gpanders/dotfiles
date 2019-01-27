@@ -187,7 +187,8 @@
   :bind (([remap evil-jump-to-tag] . projectile-find-tag)
          ([remap find-tag] . projectile-find-tag))
   :init
-  (setq projectile-mode-line-prefix " Proj"
+  (setq projectile-enable-caching t
+        projectile-mode-line-prefix " Proj"
         projectile-mode-line-function #'(lambda () (format " Proj[%s]" (s-truncate 20 (projectile-project-name))))
         projectile-completion-system 'ivy
         projectile-project-search-path
@@ -204,6 +205,11 @@
               (when (eq (projectile-project-vcs) 'git)
                 (setq projectile-tags-file-name ".git/etags"
                       projectile-tags-command "git ls-files | ctags -e -L - -f \"%s\" %s"))))
+  (use-package counsel-projectile
+    :ensure t
+    :after counsel
+    :config
+    (counsel-projectile-mode))
   (projectile-mode 1))
 (use-package rust-mode
   :ensure t
@@ -232,8 +238,13 @@
 (use-package tex
   :ensure auctex
   :config
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t))
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        TeX-engine 'luatex))
+
+;; Use simple shell for inferior shells
+(when (memq system-type '(darwin gnu/linux))
+    (setq shell-file-name "/bin/sh"))
 
 ;; Enable dired-x
 ;; (load "dired-x")
