@@ -157,6 +157,7 @@
     ;;   (yas-global-mode))))
 (use-package magit
   :ensure t
+  :hook (with-editor-mode . evil-insert-state)
   :config
   (setq magit-completing-read-function #'ivy-completing-read))
 (use-package markdown-mode
