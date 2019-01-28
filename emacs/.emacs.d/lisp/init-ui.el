@@ -79,4 +79,13 @@
 ;; Load theme (dark by default)
 (load-theme my-dark-theme t)
 
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode)
+  :init
+  (setq doom-modeline-major-mode-color-icon t)
+  :config
+  (use-package all-the-icons
+    :ensure t))
+
 (provide 'init-ui)
