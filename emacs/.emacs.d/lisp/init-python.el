@@ -46,7 +46,8 @@
     (message "IPython not found")))
 
 (use-package python
-  :mode ("\\.py\\'" . python-mode)
+  :mode (("\\.py\\'" . python-mode)
+         ("\\.pyx\\'" . python-mode))
   :interpreter ("python" . python-mode)
   :bind (:map python-mode-map
               ("C-c C-y" . run-ipython))
@@ -102,6 +103,8 @@
   (setq anaconda-mode-eldoc-as-single-line t)
   :config
   (add-hook 'anaconda-mode-hook #'anaconda-eldoc-mode)
+  (with-eval-after-load 'evil
+    (evil-define-key 'normal anaconda-mode-map (kbd "g r") 'anaconda-mode-find-references))
   (use-package company-anaconda
     :ensure t
     :after company
