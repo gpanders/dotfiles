@@ -1,4 +1,7 @@
 ;;; init.el --- Greg Anders (gpanders)'s emacs init.el
+(setq gc-cons-threshold 402653184
+      gc-cons-percentage 0.6)
+
 (require 'package)
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
@@ -44,9 +47,11 @@
               ("C-e" . company-abort)
               ("C-s" . company-filter-candidates)
               ("C-SPC" . company-complete-common)
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-prev)
               ([tab] . company-complete-common-or-cycle))
   :init
-  (setq company-idle-delay nil
+  (setq company-idle-delay 0.2
         company-tooltip-limit 10
         company-minimum-prefix-length 2
         company-require-match 'never
@@ -173,12 +178,29 @@
   :mode ("\\.m\\'" . matlab-mode))
 (use-package persp-mode
   :ensure t
+  :bind-keymap ("C-x p". persp-key-map)
+  :init
+  (setq persp-keymap-prefix (kbd "C-x p"))
   :config
   (setq persp-autokill-buffer-on-remove 'kill-weak
         persp-auto-save-fname "autosave"
         persp-auto-save-opt 1
         persp-nil-hidden t
-        persp-nil-name "nil"))
+        persp-nil-name "nil")
+  (with-eval-after-load 'evil
+    (evil-define-key 'normal persp-key-map (kbd "g t") #'persp-next)
+    (evil-define-key 'normal persp-key-map (kbd "g T") #'persp-prev))
+  (use-package persp-mode-projectile-bridge
+    :ensure t
+    :after projectile
+    :config
+    (add-hook 'persp-mode-projectile-bridge-mode-hook
+              #'(lambda ()
+                  (if persp-mode-projectile-bridge-mode
+                      (persp-mode-projectile-bridge-find-perspectives-for-all-buffers)
+                    (persp-mode-projectile-bridge-kill-perspectives))))
+    (persp-mode-projectile-bridge-mode 1))
+  (persp-mode 1))
 (use-package projectile
   :ensure t
   :bind-keymap (("s-p" . projectile-command-map)
@@ -274,4 +296,7 @@
 (unless (server-running-p)
     (server-start))
 
+(add-hook 'emacs-startup-hook
+          #'(lambda () (setq gc-cons-threshold 16777216
+                             gc-cons-percentage 0.1)))
 ;;; init.el ends here
