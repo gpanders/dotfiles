@@ -5,9 +5,11 @@
   :custom
   (evil-search-module 'evil-search)
   :init
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-keybinding nil)
-  (setq evil-ex-search-vim-style-regexp t)
+  (setq evil-want-C-u-scroll t
+        evil-want-keybinding nil
+        evil-vsplit-window-right t
+        evil-split-window-below t
+        evil-ex-search-vim-style-regexp t)
   :config
   (use-package evil-surround
     :ensure t
@@ -86,7 +88,6 @@
     ", e" 'find-file
     ", g" 'magit-status
     "C-p" 'ctrl-p-find-file
-    ;; (kbd "C-p") (lambda () (interactive) (ivy-read "Find file: " (directory-files-recursively default-directory "")))
     ;; Swap ; and :
     ";" 'evil-ex
     ":" 'evil-repeat-find-char
