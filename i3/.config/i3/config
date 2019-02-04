@@ -204,7 +204,7 @@ bar {
 hide_edge_borders smart_no_gaps
 
 # gaps
-for_window [class="^.*"] border pixel 0
+for_window [tiling] border pixel 0
 smart_borders no_gaps
 gaps inner 15
 
