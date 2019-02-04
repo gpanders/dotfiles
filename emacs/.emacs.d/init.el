@@ -212,15 +212,12 @@
         projectile-mode-line-prefix " Proj"
         projectile-mode-line-function #'(lambda () (format " Proj[%s]" (s-truncate 20 (projectile-project-name))))
         projectile-completion-system 'ivy
-        projectile-project-search-path
-        (cond ((eq system-type 'darwin) '("~/Projects"))
-              ((eq system-type 'gnu/linux) '("~/work")))
+        projectile-require-project-root nil
         projectile-generic-command
         (cond ((executable-find "rg") "rg --files --hidden --glob '!.git' -0")
               ((executable-find "ag") "ag -g '' --hidden --ignore '.git' -0")
               (t projectile-generic-command)))
   :config
-  (setq projectile-require-project-root nil)
   (add-hook 'projectile-after-switch-project-hook
             (lambda ()
               (when (eq (projectile-project-vcs) 'git)
@@ -236,12 +233,7 @@
   :ensure t
   :mode "\\.rs\\'"
   :config
-  (setq rust-format-on-save t)
-  (with-eval-after-load 'projectile
-    (projectile-register-project-type 'rust-cargo '("Cargo.toml")
-                                      :compile "cargo build"
-                                      :test "cargo test"
-                                      :run "cargo run")))
+  (setq rust-format-on-save t))
 (use-package sane-term
   :ensure t
   :bind (("C-x t" . sane-term)
@@ -251,6 +243,8 @@
   :delight
   :config
   (sp-with-modes 'emacs-lisp-mode (sp-local-pair "'" nil :actions nil))
+  (sp-with-modes 'python-mode
+    (sp-local-pair "'" nil :unless '(sp-point-before-word-p sp-point-after-word-p sp-point-before-same-p)))
   (smartparens-global-mode))
 (use-package smex
   :ensure t)
