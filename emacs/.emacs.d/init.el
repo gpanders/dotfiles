@@ -48,7 +48,7 @@
               ("C-s" . company-filter-candidates)
               ("C-SPC" . company-complete-common)
               ("C-n" . company-select-next)
-              ("C-p" . company-select-prev)
+              ("C-p" . company-select-previous)
               ([tab] . company-complete-common-or-cycle))
   :init
   (setq company-idle-delay 0.2
@@ -169,6 +169,8 @@
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
+  :init
+  (setq markdown-command "pandoc")
   :config
   (use-package pandoc-mode
     :ensure t
@@ -186,9 +188,9 @@
         persp-auto-save-opt 1
         persp-nil-hidden t
         persp-nil-name "nil")
-  (with-eval-after-load 'evil
-    (evil-global-set-key 'normal (kbd "g t") #'persp-next)
-    (evil-global-set-key 'normal (kbd "g T") #'persp-prev))
+  (general-def 'normal
+    "g t" 'persp-next
+    "g T" 'persp-prev)
   (use-package persp-mode-projectile-bridge
     :ensure t
     :after projectile
@@ -256,6 +258,10 @@
   (setq TeX-auto-save t
         TeX-parse-self t
         TeX-engine 'luatex))
+(use-package vhdl-mode
+  :config
+  (setq vhdl-intelligent-tab nil
+        vhdl-standard (quote (8 nil))))
 
 ;; Use simple shell for inferior shells
 (when (memq system-type '(darwin gnu/linux))
@@ -291,6 +297,7 @@
 (unless (server-running-p)
     (server-start))
 
+;; Set garbage collection setings back to reasonable values
 (add-hook 'emacs-startup-hook
           #'(lambda () (setq gc-cons-threshold 16777216
                              gc-cons-percentage 0.1)))
