@@ -214,12 +214,12 @@
         projectile-mode-line-prefix " Proj"
         projectile-mode-line-function #'(lambda () (format " Proj[%s]" (s-truncate 20 (projectile-project-name))))
         projectile-completion-system 'ivy
-        projectile-require-project-root nil
-        projectile-generic-command
+        projectile-require-project-root nil)
+  :config
+  (setq projectile-generic-command
         (cond ((executable-find "rg") "rg --files --hidden --glob '!.git' -0")
               ((executable-find "ag") "ag -g '' --hidden --ignore '.git' -0")
               (t projectile-generic-command)))
-  :config
   (add-hook 'projectile-after-switch-project-hook
             (lambda ()
               (when (eq (projectile-project-vcs) 'git)
