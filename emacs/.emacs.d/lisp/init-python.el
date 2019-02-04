@@ -42,6 +42,7 @@
           (set-buffer termbuf)
           (term-mode)
           (term-char-mode)
+          (setq term-prompt-regexp "In \\[[0-9]+\\]: ")
           (switch-to-buffer termbuf)))
     (message "IPython not found")))
 

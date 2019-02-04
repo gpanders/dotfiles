@@ -41,26 +41,6 @@
   ;; See https://github.com/company-mode/company-mode/issues/383
   (evil-declare-change-repeat 'company-complete)
 
-  (general-def 'motion
-    ;; Unbind these in motion state since they often override other,
-    ;; more useful bindings
-    "DEL" nil
-    "RET" nil
-    "\\" nil
-    "SPC" nil
-    ;; Make window commands easier
-    "C-w C-k" "C-w k"
-    "C-w C-j" "C-w j"
-    "C-w C-h" "C-w h"
-    "C-w C-l" "C-w l"
-    )
-
-  ;; Evil bindings
-  (general-def '(normal visual)
-    "Q" 'evil-fill-and-move
-    "C-l" 'evil-ex-nohighlight
-    )
-
   (defun ctrl-p-find-file ()
     "Find files recursively from current directory."
     (interactive)
@@ -81,6 +61,29 @@
           (delete-region (point) (line-beginning-position))
         (evil-delete (+ (line-beginning-position) (current-indentation)) (point)))))
 
+  (general-def 'motion
+    ;; Unbind these in motion state since they often override other,
+    ;; more useful bindings
+    "DEL" nil
+    "\\" nil
+    "SPC" nil
+    ;; Make window commands easier
+    "C-w C-k" "C-w k"
+    "C-w C-j" "C-w j"
+    "C-w C-h" "C-w h"
+    "C-w C-l" "C-w l"
+    )
+
+  ;; Normal + Visual
+  (general-def '(normal visual)
+    "Q" 'evil-fill-and-move
+    "C-l" 'evil-ex-nohighlight
+    ;; Swap ; and :
+    ";" 'evil-ex
+    ":" 'evil-repeat-find-char
+    )
+
+  ;; Normal only
   (general-def 'normal
     "-" 'dired-jump
     ", w" 'save-buffer
@@ -88,9 +91,6 @@
     ", e" 'find-file
     ", g" 'magit-status
     "C-p" 'ctrl-p-find-file
-    ;; Swap ; and :
-    ";" 'evil-ex
-    ":" 'evil-repeat-find-char
     ;; Map & to :&& in normal mode (repeat last substitution with flags)
     "&" 'evil-ex-repeat-substitute-with-flags
     "[ b" 'previous-buffer
@@ -110,6 +110,12 @@
     "DEL" 'evil-switch-to-windows-last-buffer
     )
 
+  ;; Visual only
+  (general-def 'visual
+    "[ e" ":move'<--1"
+    "] e" ":move'>+1"
+    )
+
   ;; Put space keys into an override map so that they are never
   ;; overriden by local bindings from other packages
   (general-def '(normal motion) 'override
@@ -118,12 +124,7 @@
     "u" 'universal-argument
     )
 
-
-  (general-def 'visual
-    "[ e" ":move'<--1"
-    "] e" ":move'>+1"
-    )
-
+  ;; Insert mode
   (general-def 'insert
     "C-SPC" 'company-complete
     "C-x C-f" 'company-files
