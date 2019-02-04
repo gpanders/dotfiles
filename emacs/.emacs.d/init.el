@@ -178,7 +178,6 @@
   :mode ("\\.m\\'" . matlab-mode))
 (use-package persp-mode
   :ensure t
-  :bind-keymap ("C-x p". persp-key-map)
   :init
   (setq persp-keymap-prefix (kbd "C-x p"))
   :config
@@ -188,8 +187,8 @@
         persp-nil-hidden t
         persp-nil-name "nil")
   (with-eval-after-load 'evil
-    (evil-define-key 'normal persp-key-map (kbd "g t") #'persp-next)
-    (evil-define-key 'normal persp-key-map (kbd "g T") #'persp-prev))
+    (evil-global-set-key 'normal (kbd "g t") #'persp-next)
+    (evil-global-set-key 'normal (kbd "g T") #'persp-prev))
   (use-package persp-mode-projectile-bridge
     :ensure t
     :after projectile
@@ -199,7 +198,8 @@
                   (if persp-mode-projectile-bridge-mode
                       (persp-mode-projectile-bridge-find-perspectives-for-all-buffers)
                     (persp-mode-projectile-bridge-kill-perspectives))))
-    (persp-mode-projectile-bridge-mode 1))
+    (add-hook 'projectile-mode-hook
+              #'(lambda () (persp-mode-projectile-bridge-mode 1))))
   (persp-mode 1))
 (use-package projectile
   :ensure t
@@ -276,7 +276,8 @@
             kill-buffer-query-functions))
 
 ;; Enable line numbers in programming modes
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(add-hook 'prog-mode-hook #'hl-line-mode)
 
 ;; Enable auto-fill mode in text modes
 (add-hook 'text-mode-hook 'turn-on-auto-fill)

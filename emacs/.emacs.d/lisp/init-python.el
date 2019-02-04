@@ -58,8 +58,19 @@
 (use-package pyenv-mode
   :ensure t
   :if (executable-find "pyenv")
-  :hook (python-mode . pyenv-mode)
+  :commands (pyenv-mode-versions pyenv-mode-version)
   :init
+  (setq pyenv-mode-mode-line-format "")
+
+  (defun pyenv-add-venv-to-modeline ()
+    "Add version string to the major mode name in the modeline."
+    (let ((venv (pyenv-mode-version)))
+      (setq mode-name
+            (if venv
+                (format "Python (%s)" venv)
+              "Python"))))
+  (add-hook 'python-mode-hook #'pyenv-add-venv-to-modeline)
+
   ;; Cribbed from Spacemacs
   (defun pyenv-mode-set-local-version ()
     "Set pyenv version from \".python-version\" by looking in parent directories."
@@ -77,12 +88,11 @@
               (pyenv-mode-set version)
             (message "pyenv: version `%s' is not installed (set by %s)"
                      version file-path))))))
+  (add-hook 'python-mode-hook #'pyenv-mode-set-local-version)
+  (add-hook 'projectile-after-switch-project-hook #'pyenv-mode-set-local-version)
 
   (dolist (func '(pyenv-mode-set pyenv-mode-unset))
-    (advice-add func :after 'python-setup-shell))
-
-  (add-hook 'python-mode-hook #'pyenv-mode-set-local-version)
-  (add-hook 'projectile-after-switch-project-hook #'pyenv-mode-set-local-version))
+    (advice-add func :after 'python-setup-shell)))
 
 ;; (use-package elpy
 ;;   :disabled
