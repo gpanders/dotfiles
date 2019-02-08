@@ -244,10 +244,12 @@
   :ensure t
   :delight
   :config
-  (sp-with-modes 'emacs-lisp-mode (sp-local-pair "'" nil :actions nil))
+  (require 'smartparens-config)
   (sp-with-modes 'python-mode
     (sp-local-pair "'" nil :unless '(sp-point-before-word-p sp-point-after-word-p sp-point-before-same-p)))
-  (smartparens-global-mode))
+  (sp-with-modes '(c-mode c++-mode rust-mode)
+    (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+  (setq sp-cancel-autoskip-on-backward-movement nil))
 (use-package smex
   :ensure t)
 (use-package tcl-mode
@@ -284,6 +286,7 @@
 ;; Enable line numbers in programming modes
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'prog-mode-hook #'hl-line-mode)
+(add-hook 'prog-mode-hook #'smartparens-mode)
 
 ;; Enable auto-fill mode in text modes
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
