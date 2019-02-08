@@ -190,7 +190,11 @@
         persp-nil-name "nil")
   (general-def 'normal
     "g t" 'persp-next
-    "g T" 'persp-prev)
+    "g T" 'persp-prev
+    "g s" 'persp-frame-switch)
+  (defun persp-uncontained-buffer-p (buffer)
+    (not (persp-contain-buffer-p buffer)))
+  (add-to-list 'ivy-ignore-buffers #'persp-uncontained-buffer-p)
   (use-package persp-mode-projectile-bridge
     :ensure t
     :after projectile
