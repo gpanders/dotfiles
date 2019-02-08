@@ -145,7 +145,8 @@
     :ensure t
     :commands lsp-ui-mode
     :init
-    (setq lsp-ui-sideline-enable nil))
+    (setq lsp-ui-sideline-show-hover nil
+          lsp-enable-snippet nil))
   (use-package company-lsp
     :ensure t
     :commands company-lsp
