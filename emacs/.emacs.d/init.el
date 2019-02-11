@@ -4,18 +4,19 @@
 
 (require 'package)
 
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(eval-and-compile
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
-(setq package-enable-at-startup nil)
-(package-initialize)
+  (setq package-enable-at-startup nil)
+  (package-initialize)
 
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+  (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package)))
 
 (eval-when-compile
   (require 'use-package))
@@ -23,7 +24,7 @@
 ;; Setup path before anything else
 (use-package exec-path-from-shell
   :ensure t
-  :if (memq system-type '(darwin gnu/linux))
+  :if (eq system-type 'darwin)
   :config
   (setq exec-path-from-shell-arguments nil)
   (dolist (var '("http_proxy" "https_proxy" "no_proxy"))
@@ -34,9 +35,7 @@
 (require 'init-backup)
 (require 'init-ui)
 (require 'init-evil)
-(require 'init-org)
 (require 'init-os)
-(require 'init-python)
 
 (use-package company
   :ensure t
@@ -50,17 +49,17 @@
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
               ([tab] . company-complete-common-or-cycle))
-  :init
-  (setq company-idle-delay 0.2
-        company-tooltip-limit 10
-        company-minimum-prefix-length 2
-        company-require-match 'never
-        company-dabbrev-ignore-case nil
-        company-dabbrev-downcase nil
-        company-dabbrev-code-other-buffers t
-        company-tooltip-align-annotations t
-        company-global-modes '(not org-mode eshell-mode comint-mode erc-mode message-mode help-mode gud-mode)
-        company-transformers '(company-sort-by-occurrence))
+  :custom
+  (company-idle-delay 0.2)
+  (company-tooltip-limit 10)
+  (company-tooltip-align-annotations t)
+  (company-minimum-prefix-length 2)
+  (company-dabbrev-ignore-case nil)
+  (company-dabbrev-downcase nil)
+  (company-dabbrev-code-other-buffers t)
+  (company-require-match 'never)
+  (company-global-modes '(not org-mode eshell-mode comint-mode erc-mode message-mode help-mode gud-mode))
+  (company-transformers '(company-sort-by-occurrence))
   :config
   (use-package company-statistics
     :ensure t
@@ -69,6 +68,7 @@
   (global-company-mode))
 (use-package cquery
   :ensure t
+  :after lsp-mode
   :config
   (setq cquery-executable (executable-find "cquery")))
 (use-package delight
@@ -84,8 +84,6 @@
   :config
   (add-hook 'emacs-lisp-mode-hook
             (lambda () (push 'emacs-lisp-checkdoc flycheck-disabled-checkers))))
-(use-package general
-  :ensure t)
 (use-package git-gutter
   :ensure t
   :delight
@@ -101,8 +99,6 @@
         ivy-do-completion-in-region nil
         ivy-wrap t
         ivy-fixed-height-minibuffer t
-        projectile-completion-system 'ivy
-        smex-completion-method 'ivy
         ;; Don't use ^ as initial input
         ivy-initial-inputs-alist nil
         ;; highlight til EOL
@@ -181,33 +177,71 @@
   :mode ("\\.m\\'" . matlab-mode))
 (use-package persp-mode
   :ensure t
+  :demand
+  :bind (:map evil-normal-state-map
+         ("g t" . persp-next)
+         ("g T" . persp-prev)
+         ("g s" . persp-frame-switch))
   :init
   (setq persp-keymap-prefix (kbd "C-x p"))
   :config
   (setq persp-autokill-buffer-on-remove 'kill-weak
-        persp-auto-save-fname "autosave"
         persp-auto-save-opt 1
         persp-nil-hidden t
         persp-nil-name "nil")
-  (general-def 'normal
-    "g t" 'persp-next
-    "g T" 'persp-prev
-    "g s" 'persp-frame-switch)
   (defun persp-uncontained-buffer-p (buffer)
     (not (persp-contain-buffer-p buffer)))
   (add-to-list 'ivy-ignore-buffers #'persp-uncontained-buffer-p)
   (use-package persp-mode-projectile-bridge
     :ensure t
-    :after projectile
+    :after (persp-mode projectile)
     :config
     (add-hook 'persp-mode-projectile-bridge-mode-hook
-              #'(lambda ()
+              (lambda ()
                   (if persp-mode-projectile-bridge-mode
                       (persp-mode-projectile-bridge-find-perspectives-for-all-buffers)
                     (persp-mode-projectile-bridge-kill-perspectives))))
-    (add-hook 'projectile-mode-hook
-              #'(lambda () (persp-mode-projectile-bridge-mode 1))))
+    (add-hook 'projectile-mode-hook #'persp-mode-projectile-bridge-mode))
   (persp-mode 1))
+(use-package org
+  :ensure t
+  :mode ("\\.org\\'" . org-mode)
+  :bind (("\C-cl" . org-store-link)
+         ("\C-ca" . org-agenda)
+         ("\C-cc" . org-capture)
+         ("\C-cb" . org-switchb))
+  :init
+  (defvar org-gtd-directory nil "Location of GTD org mode files.")
+
+  (setq org-gtd-directory
+        (cond ((eq system-type 'darwin) "~/Documents/Notes/gtd/")
+              ((eq system-type 'gnu/linux) "~/notes/gtd/")))
+  (defun open-gtd-inbox ()
+    "Open GTD inbox."
+    (interactive)
+    (find-file (expand-file-name "inbox.org" org-gtd-directory)))
+
+  (defun open-gtd-actions ()
+    "Open GTD next actions list."
+    (interactive)
+    (find-file (expand-file-name "actions.org" org-gtd-directory)))
+
+  (defun open-gtd-projects ()
+    "Open GTD projects list."
+    (interactive)
+    (find-file (expand-file-name "projects.org" org-gtd-directory)))
+
+  (defun open-gtd-tickler ()
+    "Open GTD tickler."
+    (interactive)
+    (find-file (expand-file-name "tickler.org" org-gtd-directory)))
+
+  (defun open-gtd-someday-maybe ()
+    "Open GTD someday/maybe list."
+    (interactive)
+    (find-file (expand-file-name "someday.org" org-gtd-directory)))
+  :config
+  (require 'init-org))
 (use-package projectile
   :ensure t
   :bind-keymap (("s-p" . projectile-command-map)
@@ -216,10 +250,13 @@
          ([remap find-tag] . projectile-find-tag))
   :init
   (setq projectile-enable-caching t
-        projectile-mode-line-prefix " Proj"
-        projectile-mode-line-function #'(lambda () (format " Proj[%s]" (s-truncate 20 (projectile-project-name))))
         projectile-completion-system 'ivy
-        projectile-require-project-root nil)
+        projectile-mode-line-prefix " Proj"
+        projectile-mode-line-function (lambda () (format " Proj[%s]" (s-truncate 20 (projectile-project-name))))
+        projectile-completion-system 'ivy
+        projectile-require-project-root nil
+        projectile-globally-ignored-files '(".DS_Store" "TAGS")
+        projectile-globally-ignored-file-suffixes '(".elc" ".pyc" ".o"))
   :config
   (setq projectile-generic-command
         (cond ((executable-find "rg") "rg --files --hidden --glob '!.git' -0")
@@ -236,6 +273,14 @@
     :config
     (counsel-projectile-mode))
   (projectile-mode 1))
+(use-package python
+  :mode (("\\.py\\'" . python-mode)
+         ("\\.pyx\\'" . python-mode))
+  :interpreter ("python" . python-mode)
+  :bind (:map python-mode-map
+              ("C-c C-y" . run-ipython))
+  :init
+  (require 'init-python))
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'"
@@ -250,10 +295,12 @@
   :delight
   :config
   (require 'smartparens-config)
-  (sp-with-modes 'python-mode
-    (sp-local-pair "'" nil :unless '(sp-point-before-word-p sp-point-after-word-p sp-point-before-same-p)))
-  (sp-with-modes '(c-mode c++-mode rust-mode)
-    (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+  (sp-local-pair 'python-mode "'" nil
+                 :unless '(sp-point-before-word-p sp-point-after-word-p sp-point-before-same-p))
+  (dolist (char '("{" "(" "["))
+    (sp-local-pair 'prog-mode char nil :post-handlers '(("||\n[i]" "RET"))))
+  (sp-local-pair '(c-mode c++-mode rust-mode)
+                 "/*" "*/" :post-handlers '(("* ||\n[i]" "RET")))
   (setq sp-cancel-autoskip-on-backward-movement nil))
 (use-package smex
   :ensure t)
@@ -261,11 +308,14 @@
   :mode ("\\.xdc\\'" . tcl-mode))
 (use-package tex
   :ensure auctex
+  :mode ("\\.tex\\'" . LaTeX-mode)
   :config
   (setq TeX-auto-save t
         TeX-parse-self t
         TeX-engine 'luatex))
 (use-package vhdl-mode
+  :mode (("\\.vhd\\'" . vhdl-mode)
+         ("\\.vhdl\\'" . vhdl-mode))
   :config
   (setq vhdl-intelligent-tab nil
         vhdl-standard (quote (8 nil))))
@@ -276,10 +326,7 @@
 
 ;; Enable dired-x
 ;; (load "dired-x")
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (dired-hide-details-mode 1)
-            ))
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
 ;; Disable some emacs prompts
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -294,7 +341,7 @@
 (add-hook 'prog-mode-hook #'smartparens-mode)
 
 ;; Enable auto-fill mode in text modes
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'text-mode-hook #'turn-on-auto-fill)
 
 ;; Load customization file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -307,6 +354,6 @@
 
 ;; Set garbage collection setings back to reasonable values
 (add-hook 'emacs-startup-hook
-          #'(lambda () (setq gc-cons-threshold 16777216
-                             gc-cons-percentage 0.1)))
+          (lambda () (setq gc-cons-threshold 16777216
+                           gc-cons-percentage 0.1)))
 ;;; init.el ends here

@@ -18,16 +18,19 @@
   (if (memq my-light-theme custom-enabled-themes)
       (progn
         (disable-theme my-light-theme)
-        (load-theme my-dark-theme t))
+        (load-theme my-dark-theme t)
+        (--extend-my-dark-theme))
     (progn
       (disable-theme my-dark-theme)
-      (load-theme my-light-theme t))))
+      (load-theme my-light-theme t)
+      (--extend-my-light-theme))))
 
 ;; (use-package atom-one-dark-theme
 ;;   :disabled
 ;;   :ensure t
 ;;   :config
 ;;   (setq my-dark-theme 'atom-one-dark)
+;;   (load-theme 'atom-one-dark t)
 ;;   (custom-theme-set-faces 'atom-one-dark
 ;;    `(company-tooltip ((t (:background "#2c323c"))))
 ;;    `(company-tooltip-annotation ((t (:background "#2c323c"))))
@@ -50,13 +53,17 @@
         doom-themes-enable-italic t)
   (setq my-light-theme 'doom-tomorrow-day
         my-dark-theme 'doom-one)
-  (load-theme 'doom-one t)
   (doom-themes-org-config)
-  (custom-theme-set-faces 'doom-one
-    `(lazy-highlight ((t (:foreground "#282c34" :background "#e5c07b" :underline nil))))
-    `(evil-ex-lazy-highlight ((t (:inherit 'lazy-highlight))))
-    `(evil-ex-substitute-matches ((t (:inherit `evil-ex-search))))
-    `(evil-ex-search ((t (:foreground "#282c34" :background "#e5c07b")))))
+  (defun --extend-my-dark-theme ()
+    (custom-theme-set-faces my-dark-theme
+                            `(lazy-highlight ((t (:foreground "#282c34" :background "#e5c07b" :underline nil))))
+                            `(evil-ex-lazy-highlight ((t (:inherit 'lazy-highlight))))
+                            `(evil-ex-search ((t (:foreground "#e5c07b" :background "#5c6370"))))))
+  (defun --extend-my-light-theme ()
+    (custom-theme-set-faces my-light-theme
+                            `(lazy-highlight ((t (:foreground "#f2f2f2" :background "#4271ae"))))
+                            `(evil-ex-lazy-highlight ((t (:inherit 'lazy-highlight))))
+                            `(evil-ex-search ((t (:foreground "#ffffff" :background "#4271ae" :weight bold))))))
 )
 
 ;; Light theme alternative
@@ -65,12 +72,6 @@
 ;;   :ensure t
 ;;   :config
 ;;   (setq my-light-theme 'leuven))
-;
-;; (use-package color-theme-sanityinc-tomorrow
-;;   :disabled
-;;   :ensure t
-;;   :config
-;;   (setq my-light-theme 'sanityinc-tomorrow-day))
 
 (use-package doom-modeline
   :ensure t
@@ -80,5 +81,7 @@
   :config
   (use-package all-the-icons
     :ensure t))
+
+(add-hook 'after-init-hook #'(lambda () (load-theme my-dark-theme t) (--extend-my-dark-theme)))
 
 (provide 'init-ui)
