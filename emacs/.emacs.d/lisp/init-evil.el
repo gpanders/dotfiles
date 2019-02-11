@@ -13,13 +13,16 @@
   :config
   (use-package evil-surround
     :ensure t
+    :commands evil-surround-mode
     :hook (evil-mode . global-evil-surround-mode))
   (use-package evil-commentary
     :ensure t
     :delight
+    :commands evil-commentary-mode
     :hook (evil-mode . evil-commentary-mode))
   (use-package evil-matchit
     :ensure t
+    :commands evil-matchit-mode
     :hook (evil-mode . global-evil-matchit-mode))
   (use-package evil-numbers
     :ensure t
@@ -32,8 +35,10 @@
     (evil-collection-init))
   (use-package evil-visualstar
     :ensure t
+    :commands evil-visualstar-mode
     :hook (evil-mode . global-evil-visualstar-mode))
   (use-package move-text
+    :commands (move-text-up move-text-down)
     :ensure t)
 
   ;; Fixes error message:
@@ -61,85 +66,83 @@
           (delete-region (point) (line-beginning-position))
         (evil-delete (+ (line-beginning-position) (current-indentation)) (point)))))
 
-  (general-def 'motion
+  (evil-define-key 'motion 'global
     ;; Unbind these in motion state since they often override other,
     ;; more useful bindings
-    "DEL" nil
+    (kbd "DEL") nil
     "\\" nil
-    "SPC" nil
+    (kbd "SPC") nil
     ;; Make window commands easier
-    "C-w C-k" "C-w k"
-    "C-w C-j" "C-w j"
-    "C-w C-h" "C-w h"
-    "C-w C-l" "C-w l"
-    )
+    (kbd "C-w C-k") "C-w k"
+    (kbd "C-w C-j") "C-w j"
+    (kbd "C-w C-h") "C-w h"
+    (kbd "C-w C-l") "C-w l"
+  )
 
   ;; Normal + Visual
-  (general-def '(normal visual)
+  (evil-define-key '(normal visual) 'global
     "Q" 'evil-fill-and-move
-    "C-l" 'evil-ex-nohighlight
+    (kbd "C-l") 'evil-ex-nohighlight
     ;; Swap ; and :
     ";" 'evil-ex
     ":" 'evil-repeat-find-char
     )
 
   ;; Normal only
-  (general-def 'normal
-    "-" 'dired-jump
-    ", w" 'save-buffer
-    ", b" 'switch-to-buffer
-    ", e" 'find-file
-    ", g" 'magit-status
-    "C-p" 'ctrl-p-find-file
+  (evil-define-key 'normal 'global
+    (kbd "-") 'dired-jump
+    (kbd ", w") 'save-buffer
+    (kbd ", b") 'switch-to-buffer
+    (kbd ", e") 'find-file
+    (kbd ", g") 'magit-status
+    (kbd "C-p") 'ctrl-p-find-file
     ;; Map & to :&& in normal mode (repeat last substitution with flags)
-    "&" 'evil-ex-repeat-substitute-with-flags
-    "[ b" 'previous-buffer
-    "] b" 'next-buffer
-    "[ q" 'flycheck-previous-error
-    "] q" 'flycheck-next-error
-    "[ e" 'move-text-up
-    "] e" 'move-text-down
-    "[ SPC" (lambda (count) (interactive "p") (dotimes (_ count) (save-excursion (evil-insert-newline-above))))
-    "] SPC" (lambda (count) (interactive "p") (dotimes (_ count) (save-excursion (evil-insert-newline-below))))
+    (kbd "&") 'evil-ex-repeat-substitute-with-flags
+    (kbd "[ b") 'previous-buffer
+    (kbd "] b") 'next-buffer
+    (kbd "[ q") 'flycheck-previous-error
+    (kbd "] q") 'flycheck-next-error
+    (kbd "[ e") 'move-text-up
+    (kbd "] e") 'move-text-down
+    (kbd "[ SPC") (lambda (count) (interactive "p") (dotimes (_ count) (save-excursion (evil-insert-newline-above))))
+    (kbd "] SPC") (lambda (count) (interactive "p") (dotimes (_ count) (save-excursion (evil-insert-newline-below))))
     ;; paste above or below with newline
-    "[ p" (lambda () (interactive) (evil-insert-newline-above) (evil-paste-after 1))
-    "] p" (lambda () (interactive) (evil-insert-newline-below) (evil-paste-after 1))
+    (kbd "[ p") (lambda () (interactive) (evil-insert-newline-above) (evil-paste-after 1))
+    (kbd "] p") (lambda () (interactive) (evil-insert-newline-below) (evil-paste-after 1))
     ;; select pasted text
-    "g p" (kbd "` [ v ` ]")
-    "\\\\" (lookup-key (current-global-map) (kbd "C-c k"))
-    "DEL" 'evil-switch-to-windows-last-buffer
+    (kbd "g p") (kbd "` [ v ` ]")
+    (kbd "\\\\") (lookup-key (current-global-map) (kbd "C-c k"))
+    (kbd "DEL") 'evil-switch-to-windows-last-buffer
     )
 
   ;; Visual only
-  (general-def 'visual
-    "[ e" ":move'<--1"
-    "] e" ":move'>+1"
+  (evil-define-key 'visual 'global
+    (kbd "[ e") ":move'<--1"
+    (kbd "] e") ":move'>+1"
     )
 
   ;; Put space keys into an override map so that they are never
   ;; overriden by local bindings from other packages
-  (general-def '(normal motion) 'override
-    :prefix "SPC"
-    "SPC" 'counsel-M-x
-    "u" 'universal-argument
+  (evil-define-key '(normal motion) 'global
+    (kbd "SPC SPC") 'counsel-M-x
+    (kbd "SPC u") 'universal-argument
     )
 
   ;; Insert mode
-  (general-def 'insert
-    "C-SPC" 'company-complete
-    "C-x C-f" 'company-files
-    "C-x C-o" 'company-capf
-    "C-x C-s" 'company-yasnippet
-    "C-x s" 'company-ispell
-    "C-d" 'evil-delete-char
-    "C-u" 'my-evil-backward-delete-line
+  (evil-define-key 'insert 'global
+    (kbd "C-SPC") 'company-complete
+    (kbd "C-x C-f") 'company-files
+    (kbd "C-x C-o") 'company-capf
+    (kbd "C-x C-s") 'company-yasnippet
+    (kbd "C-x s") 'company-ispell
+    (kbd "C-d") 'evil-delete-char
+    (kbd "C-u") 'my-evil-backward-delete-line
     )
 
   ;; Exit insert/replace mode with `jk'
-  (general-define-key
-   :states '(insert replace)
-   (general-chord "jk") 'evil-normal-state
-   )
+  (with-eval-after-load 'key-chord
+    (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+    (key-chord-define evil-replace-state-map "jk" 'evil-normal-state))
 
   ;; Enable evil mode
   (evil-mode 1)

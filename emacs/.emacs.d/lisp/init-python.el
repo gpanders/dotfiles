@@ -46,15 +46,6 @@
           (switch-to-buffer termbuf)))
     (message "IPython not found")))
 
-(use-package python
-  :mode (("\\.py\\'" . python-mode)
-         ("\\.pyx\\'" . python-mode))
-  :interpreter ("python" . python-mode)
-  :bind (:map python-mode-map
-              ("C-c C-y" . run-ipython))
-  :init
-  (python-setup-shell)
-  (add-hook 'inferior-python-mode-hook #'inferior-python-setup))
 
 (use-package pyenv-mode
   :ensure t
@@ -62,16 +53,6 @@
   :commands (pyenv-mode-versions pyenv-mode-version)
   :init
   (setq pyenv-mode-mode-line-format "")
-
-  (defun pyenv-add-venv-to-modeline ()
-    "Add version string to the major mode name in the modeline."
-    (let ((venv (pyenv-mode-version)))
-      (setq mode-name
-            (if venv
-                (format "Python (%s)" venv)
-              "Python"))))
-  (add-hook 'python-mode-hook #'pyenv-add-venv-to-modeline)
-
   ;; Cribbed from Spacemacs
   (defun pyenv-mode-set-local-version ()
     "Set pyenv version from \".python-version\" by looking in parent directories."
@@ -95,17 +76,6 @@
   (dolist (func '(pyenv-mode-set pyenv-mode-unset))
     (advice-add func :after 'python-setup-shell)))
 
-;; (use-package elpy
-;;   :disabled
-;;   :ensure t
-;;   :config
-;;   (elpy-enable)
-;;   (setq python-shell-interpreter "jupyter"
-;;         python-shell-interpreter-args "console --simple-prompt"
-;;         python-shell-prompt-detect-failure-warning nil)
-;;   (add-to-list 'python-shell-completion-native-disabled-interpreters
-;;                "jupyter"))
-
 (use-package anaconda-mode
   :ensure t
   :after python
@@ -127,7 +97,11 @@
   :mode ("/requirements.txt$" . pip-requirements-mode))
 
 (use-package ein
+  :commands (ein:run ein:login)
   :ensure t)
+
+(add-hook 'python-mode #'python-setup-shell)
+(add-hook 'inferior-python-mode-hook #'inferior-python-setup)
 
 (provide 'init-python)
 
