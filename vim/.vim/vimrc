@@ -256,6 +256,11 @@ endif
 " Load matchit.vim
 runtime! macros/matchit.vim
 
+" Highlight trailing whitespace
+highlight TrailingWhitespace ctermbg=204 guibg=#E06C75
+match TrailingWhitespace /\s\+\%#\@<!$/
+
+
 " Insert mode mappings {{{
 
 " jk in Insert mode escapes to Normal mode
@@ -467,7 +472,6 @@ augroup vimrc
     au BufEnter term://* startinsert
   else
   endif
-
 augroup END
 " }}}
 
