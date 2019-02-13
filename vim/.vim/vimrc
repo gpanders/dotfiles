@@ -119,6 +119,7 @@ set nrformats-=octal
 set display+=lastline
 set autoread
 set confirm
+set pumheight=10
 
 " Indent wrapped lines
 silent! set breakindent
