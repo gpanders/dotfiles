@@ -31,6 +31,7 @@
                 ("C-c -" . evil-numbers/dec-at-pt)))
   (use-package evil-collection
     :ensure t
+    :functions evil-collection-init
     :config
     (evil-collection-init))
   (use-package evil-visualstar
@@ -73,10 +74,10 @@
     "\\" nil
     (kbd "SPC") nil
     ;; Make window commands easier
-    (kbd "C-w C-k") "C-w k"
-    (kbd "C-w C-j") "C-w j"
-    (kbd "C-w C-h") "C-w h"
-    (kbd "C-w C-l") "C-w l"
+    (kbd "C-w C-k") (kbd "C-w k")
+    (kbd "C-w C-j") (kbd "C-w j")
+    (kbd "C-w C-h") (kbd "C-w h")
+    (kbd "C-w C-l") (kbd "C-w l")
   )
 
   ;; Normal + Visual
