@@ -24,7 +24,7 @@
 ;; Setup path before anything else
 (use-package exec-path-from-shell
   :ensure t
-  :if (eq system-type 'darwin)
+  :if (memq system-type '(darwin gnu/linux))
   :config
   (setq exec-path-from-shell-arguments nil)
   (dolist (var '("http_proxy" "https_proxy" "no_proxy"))
@@ -49,17 +49,17 @@
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
               ([tab] . company-complete-common-or-cycle))
-  :custom
-  (company-idle-delay 0.2)
-  (company-tooltip-limit 10)
-  (company-tooltip-align-annotations t)
-  (company-minimum-prefix-length 2)
-  (company-dabbrev-ignore-case nil)
-  (company-dabbrev-downcase nil)
-  (company-dabbrev-code-other-buffers t)
-  (company-require-match 'never)
-  (company-global-modes '(not org-mode eshell-mode comint-mode erc-mode message-mode help-mode gud-mode))
-  (company-transformers '(company-sort-by-occurrence))
+  :init
+  (setq company-idle-delay 0.2
+        company-tooltip-limit 10
+        company-tooltip-align-annotations t
+        company-minimum-prefix-length 2
+        company-dabbrev-ignore-case nil
+        company-dabbrev-downcase nil
+        company-dabbrev-code-other-buffers t
+        company-require-match 'never
+        company-global-modes '(not org-mode eshell-mode comint-mode erc-mode message-mode help-mode gud-mode)
+        company-transformers '(company-sort-by-occurrence))
   :config
   (use-package company-statistics
     :ensure t
@@ -206,10 +206,10 @@
 (use-package org
   :ensure t
   :mode ("\\.org\\'" . org-mode)
-  :bind (("\C-cl" . org-store-link)
-         ("\C-ca" . org-agenda)
-         ("\C-cc" . org-capture)
-         ("\C-cb" . org-switchb))
+  :bind (("C-c l" . org-store-link)
+         ("C-c a" . org-agenda)
+         ("C-c c" . org-capture)
+         ("C-c b" . org-switchb))
   :init
   (defvar org-gtd-directory nil "Location of GTD org mode files.")
 
