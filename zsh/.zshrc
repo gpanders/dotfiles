@@ -100,6 +100,9 @@ if (( $+commands[dircolors] )); then
   eval "$(dircolors --sh)"
 fi
 
+# Export GPG TTY
+export GPG_TTY=$(tty)
+
 # Configure fzf
 [[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
 
