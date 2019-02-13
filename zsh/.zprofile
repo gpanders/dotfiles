@@ -46,7 +46,7 @@ if (( $+commands[rbenv] )); then
   eval "$(rbenv init - --no-rehash zsh)"
 fi
 
-# Setup rust
+# Setup cargo
 if [[ -s "$HOME/.cargo/env" ]]; then
   source "$HOME/.cargo/env"
 fi
