@@ -120,6 +120,7 @@ set display+=lastline
 set autoread
 set confirm
 set pumheight=10
+set noshowmode
 
 " Indent wrapped lines
 silent! set breakindent
@@ -178,28 +179,73 @@ set wildignore+=tags
 
 " Statusline {{{
 " Set the statusline
-set laststatus=2
-set statusline=                              " Reset the statusline
-set statusline+=%1*\ %<%f                    " Filename
-set statusline+=\ %h%m%r\                    " Help/modified/RO markers
-set statusline+=%2*\ %n\                     " Buffer number
-set statusline+=%3*                          " Reset color
-set statusline+=%=                           " Break point for right justify
+function! StatuslineLineEnding()
+  if &ff ==# 'unix'
+    return 'LF'
+  elseif &ff ==# 'dos'
+    return 'CRLF'
+  elseif &ff ==# 'mac'
+    return 'CR'
+  endif
+endfunction
 
-if exists('*FugitiveHead')
-  function! StatuslineGitBranch()
+function! StatuslineGitBranch()
+  if exists('*FugitiveHead')
     let branch = FugitiveHead()
     if branch != ""
-      return " " . branch
+      return "   " . branch . " "
     endif
-    return ""
-  endfunction
-  set statusline+=\ %{StatuslineGitBranch()}\  " Git branch (with icon)
-endif
+  endif
+  return ""
+endfunction
 
-set statusline+=\ %{&ft}\                    " Filetype
-set statusline+=%4*\ %P\                     " Percent through file
-set statusline+=%5*\ %(%l:%c%V%)\            " Line and column number
+function! StatuslineMode()
+  let m = mode()
+  if m ==# 'n'
+    highlight! link StatuslineMode StatuslineModeNormal
+    return 'N'
+  elseif m ==# 't'
+    highlight! link StatuslineMode StatuslineModeNormal
+    return 'T'
+  elseif m ==# 'i'
+    highlight! link StatuslineMode StatuslineModeInsert
+    return 'I'
+  elseif m ==# 'R'
+    highlight! link StatuslineMode StatuslineModeReplace
+    return 'R'
+  elseif m ==? 'v' || m==# ''
+    highlight! link StatuslineMode StatuslineModeVisual
+    return 'V'
+  endif
+endfunction
+
+function! StatuslineFlags()
+  let str = ''
+  if &mod
+    let str .= '+ '
+  endif
+  if &ro
+    let str .= '[RO] '
+  endif
+  return str
+endfunction
+
+set laststatus=2
+set statusline=                               " Reset the statusline
+set statusline+=%#StatuslineMode#
+set statusline+=\ %{StatuslineMode()}\        " Mode indicator
+set statusline+=%*
+set statusline+=%1*\ %<%f\                    " Filename
+set statusline+=%{StatuslineFlags()}          " Help/modified/RO markers
+set statusline+=%2*\ %n\                      " Buffer number
+set statusline+=%3*                           " Reset color
+set statusline+=%{StatuslineGitBranch()}      " Git branch (with icon)
+set statusline+=%=                            " Break point for right justify
+
+set statusline+=%{&ft}\                       " Filetype
+set statusline+=%{StatuslineLineEnding()}\    " Line ending type
+set statusline+=%4*\ %(%l:%c%V%)\             " Line and column number
+set statusline+=%5*\ %P\                      " Percent through file
 
 " Set User1-9 highlight groups for statusline
 " These are used by adding %N* to the statusline, where {N} is 1-9
@@ -207,24 +253,42 @@ set statusline+=%5*\ %(%l:%c%V%)\            " Line and column number
 if exists('g:colors_name')
   if g:colors_name ==# 'solarized8'
     if &background ==# 'light'
-      hi User1 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
-      hi User2 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
-      hi User3 ctermfg=11 ctermbg=7 guifg=#657b83 guibg=#eee8d5
-      hi User4 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
-      hi User5 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
+      hi User1 ctermfg=15 ctermbg=11 guifg=#FDF6E3 guibg=#657B83
+      hi User2 ctermfg=15 ctermbg=14 guifg=#FDF6E3 guibg=#93A1A1
+      hi User3 ctermfg=11 ctermbg=7 guifg=#657B83 guibg=#EEE8D5
+      hi User4 ctermfg=15 ctermbg=14 guifg=#FDF6E3 guibg=#93A1A1
+      hi User5 ctermfg=15 ctermbg=11 guifg=#FDF6E3 guibg=#657B83
+
+      " Colors for statusline mode indicator
+      hi StatuslineModeNormal ctermfg=145 ctermbg=236 guifg=#ABB2BF guibg=#2C323C
+      hi StatuslineModeInsert ctermfg=235 ctermbg=39 guifg=#282C34 guibg=#61AFEF
+      hi StatuslineModeReplace ctermfg=235 ctermbg=204 guifg=#282C34 guibg=#E06C75
+      hi StatuslineModeVisual ctermfg=235 ctermbg=170 guifg=#282C34 guibg=#C678DD
     else
-      hi User1 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
-      hi User2 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
+      hi User1 ctermfg=8 ctermbg=12 guifg=#002B36 guibg=#839496
+      hi User2 ctermfg=8 ctermbg=10 guifg=#002B36 guibg=#586E75
       hi User3 ctermfg=12 ctermbg=0 guifg=#839496 guibg=#073642
-      hi User4 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
-      hi User5 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
+      hi User4 ctermfg=8 ctermbg=10 guifg=#002B36 guibg=#586E75
+      hi User5 ctermfg=8 ctermbg=12 guifg=#002B36 guibg=#839496
+
+      " Colors for statusline mode indicator
+      hi StatuslineModeNormal ctermfg=145 ctermbg=236 guifg=#ABB2BF guibg=#2C323C
+      hi StatuslineModeInsert ctermfg=235 ctermbg=39 guifg=#282C34 guibg=#61AFEF
+      hi StatuslineModeReplace ctermfg=235 ctermbg=204 guifg=#282C34 guibg=#E06C75
+      hi StatuslineModeVisual ctermfg=235 ctermbg=170 guifg=#282C34 guibg=#C678DD
     endif
   elseif g:colors_name ==# 'onedark'
     hi User1 cterm=reverse gui=reverse
-    hi User2 ctermbg=237 guibg=#3e4452
-    hi User3 ctermfg=145 ctermbg=235 guifg=#abb2bf guibg=#282c34
-    hi User4 ctermbg=237 guibg=#3e4452
+    hi User2 ctermbg=237 guibg=#3E4452
+    hi User3 ctermfg=145 ctermbg=235 guifg=#ABB2BF guibg=#282C34
+    hi User4 ctermbg=237 guibg=#3E4452
     hi User5 cterm=reverse gui=reverse
+
+    " Colors for statusline mode indicator
+    hi StatuslineModeNormal ctermfg=145 ctermbg=236 guifg=#ABB2BF guibg=#2C323C
+    hi StatuslineModeInsert ctermfg=235 ctermbg=39 guifg=#282C34 guibg=#61AFEF
+    hi StatuslineModeReplace ctermfg=235 ctermbg=204 guifg=#282C34 guibg=#E06C75
+    hi StatuslineModeVisual ctermfg=235 ctermbg=170 guifg=#282C34 guibg=#C678DD
   endif
 endif
 " }}}
