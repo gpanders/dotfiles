@@ -89,6 +89,9 @@
   :delight
   :config
   (global-git-gutter-mode +1))
+(use-package htmlize
+  :ensure t
+  :commands (htmlize-file htmlize-buffer))
 (use-package ivy
   :ensure t
   :delight
