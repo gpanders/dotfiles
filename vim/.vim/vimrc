@@ -318,6 +318,11 @@ else
   set directory^=~/.vim/cache/swap//
 endif
 
+" Set dictionary if it exists
+if g:os !=# 'Windows' && filereadable('/usr/share/dict/words')
+  set dictionary+=/usr/share/dict/words
+endif
+
 " Load matchit.vim
 runtime! macros/matchit.vim
 
@@ -397,12 +402,18 @@ nnoremap <silent> & :&&<CR>
 
 " Backspace goes back to previous buffer
 nnoremap <silent> <Backspace> <C-^>
+nnoremap <silent> <Space><Tab> <C-^>
+
+" Map ,, to ,
+nnoremap ,, ,
 
 " Swap ; and :
 nnoremap : ;
 vnoremap : ;
 nnoremap ; :
 vnoremap ; :
+nnoremap q; q:
+vnoremap q; q:
 
 " ,f prefixes find files in path
 nnoremap ,f :find *

@@ -2,8 +2,9 @@ if !exists('g:loaded_sneak_plugin')
   finish
 endif
 
-" vim-sneak tries to map this to , but since that is the leader, it won't do
-" it. So use ,, instead
-nmap ,, <Plug>Sneak_,
-omap ,, <Plug>Sneak_,
-xmap ,, <Plug>Sneak_,
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
+map : <Plug>Sneak_;
+map ,, <Plug>Sneak_,
