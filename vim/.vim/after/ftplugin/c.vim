@@ -7,7 +7,7 @@ endif
 setlocal commentstring=//%s
 
 " Include macros in completion
-setlocal complete+=d
+setlocal complete+=i,d
 
 " Set include pattern
 setlocal include=^\\s*#\\s*include
@@ -21,8 +21,10 @@ if has('unix')
   endif
 endif
 
+let b:undo_ftplugin .= '|setl cms< cpt< inc< path<'
+
 if executable('clang-format')
   setlocal formatprg=clang-format
+  let b:undo_ftplugin .= '|setl fp<'
 endif
 
-let b:undo_ftplugin .= '|setlocal commentstring< complete< include< path<'
