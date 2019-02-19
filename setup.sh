@@ -99,6 +99,18 @@ if hash tmux 2>/dev/null; then
   # Install tmux plugins in a background session
   git submodule update --init
   tmux new-session -s install_plugins -d "tmux run-shell $HOME/.tmux/plugins/tpm/bindings/install_plugins"
+
+  # Create tmux-256color terminfo entry to allow italics in tmux
+  cat > terminfo << EOF
+tmux|tmux terminal multiplexer,
+    ritm=\E[23m, rmso=\E[27m, sitm=\E[3m, smso=\E[7m, Ms@,
+    use=xterm, use=screen,
+
+tmux-256color|tmux with 256 colors,
+    use=xterm-256color, use=tmux,
+EOF
+  tic -x terminfo
+  rm terminfo
 fi
 
 # Configure git

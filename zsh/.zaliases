@@ -37,6 +37,8 @@ if (( $+commands[nvim] )); then
   alias vim="nvim"
   alias view="nvim -R"
 fi
+# Force ssh to always forward xterm-256color as TERM
+alias ssh="TERM=xterm-256color ssh"
 
 if [ ! -z $EDITOR ]; then
   alias e="$EDITOR"
