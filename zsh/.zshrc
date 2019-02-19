@@ -80,7 +80,7 @@ setopt EXTENDEDGLOB
 setopt MULTIOS
 
 # Disable flow control
-setopt NO_FLOW_CONTROL
+unsetopt FLOW_CONTROL
 
 # Don't throw an error if there is no match
 unsetopt NOMATCH
