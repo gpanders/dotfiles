@@ -11,3 +11,8 @@ if exists('b:undo_ftplugin')
 else
   let b:undo_ftplugin = 'setl tw< spell<'
 endif
+
+if exists(':Goyo')
+  Goyo
+  let b:undo_ftplugin .= '|Goyo!'
+endif
