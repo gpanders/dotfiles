@@ -91,6 +91,8 @@ WORDCHARS=${WORDCHARS/\/}
 bindkey '^ ' autosuggest-accept
 bindkey '^P' history-substring-search-up
 bindkey '^N' history-substring-search-down
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 bindkey '^Q' push-line-or-edit
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
