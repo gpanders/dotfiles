@@ -528,9 +528,9 @@ augroup vimrc
 
   " Highlight the current line in the current window but disable in Insert mode {{{
   let blacklist = ['tex']
-  au InsertEnter * if index(blacklist, &ft) < 0
+  au InsertEnter,WinLeave * if index(blacklist, &ft) < 0
         \| let b:cul = &cursorline | setl nocursorline | endif
-  au InsertLeave * if index(blacklist, &ft) < 0 && exists('b:cul')
+  au InsertLeave,WinEnter * if index(blacklist, &ft) < 0 && exists('b:cul')
         \| let &cursorline = b:cul | endif
   " }}}
 
