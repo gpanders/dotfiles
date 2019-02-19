@@ -27,6 +27,7 @@ function! s:PackInit()
     call minpac#add('vimwiki/vimwiki')
     call minpac#add('romainl/vim-qf')
     call minpac#add('lervag/vimtex')
+    call minpac#add('janko/vim-test')
 
     " Neovim or Vim 8.1+ required
     if has('nvim') || v:version >= 801
