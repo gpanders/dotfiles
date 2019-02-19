@@ -5,10 +5,10 @@ endif
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <leader>a= :Tabularize /=<CR>
-vnoremap <leader>a= :Tabularize /=<CR>
-nnoremap <leader>a: :Tabularize /:<CR>
-vnoremap <leader>a: :Tabularize /:<CR>
+nnoremap ,a= :Tabularize /=<CR>
+vnoremap ,a= :Tabularize /=<CR>
+nnoremap ,a: :Tabularize /:<CR>
+vnoremap ,a: :Tabularize /:<CR>
 
 " Source: https://gist.github.com/tpope/287147
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a

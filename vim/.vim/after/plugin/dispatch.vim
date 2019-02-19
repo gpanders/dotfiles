@@ -2,6 +2,14 @@ if !exists('g:loaded_dispatch')
   finish
 endif
 
+if !exists('g:dispatch_compilers')
+  let g:dispatch_compilers = {}
+endif
+
+" The pytest compiler uses `py.test' as its command, so Dispatch won't find it
+" when the command is `pytest' (without the dot) unless we add this
+let g:dispatch_compilers['pytest'] = 'pytest'
+
 augroup Dispatch
   autocmd!
 

@@ -1,8 +1,7 @@
 " Generate include path for python
 function! python#include_path()
   let python_include_path = ''
-  echom "Here"
-  python << EOF
+  python3 << EOF
 import os
 import sys
 import vim
