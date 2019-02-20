@@ -4,12 +4,12 @@ if &filetype !=# 'rust'
 endif
 
 if executable('rustfmt')
-  setl formatprg=rustfmt
+  setl equalprg=rustfmt
 
   if exists('b:undo_ftplugin')
-    let b:undo_ftplugin .= '|setl fp<'
+    let b:undo_ftplugin .= '|setl ep<'
   else
-    let b:undo_ftplugin = 'setl fp<'
+    let b:undo_ftplugin = 'setl ep<'
   endif
 endif
 
