@@ -61,6 +61,10 @@ endif
 " Try to make comments italic
 highlight Comment gui=italic cterm=italic
 
+" Highlight trailing whitespace
+highlight TrailingWhitespace ctermbg=204 guibg=#E06C75
+match TrailingWhitespace /\s\+\%#\@<!$/
+
 " }}}
 
 " GUI settings {{{
@@ -75,6 +79,16 @@ if has('gui_running')
   set columns=180
 endif
 " }}}
+
+" Set curor shape based on mode
+if !has('nvim')
+  " Vertical bar in insert mode
+  let &t_SI = "\e[6 q"
+  " Underline in replace mode
+  let &t_SR = "\e[4 q"
+  " Block in normal mode
+  let &t_EI = "\e[2 q"
+endif
 
 " Use UTF-8 if we can and env LANG didn't tell us not to
 if has('multi_byte') && !exists('$LANG') && &encoding ==# 'latin1'
@@ -164,15 +178,11 @@ set sessionoptions-=options
 set path-=/usr/include     " Let C/C++ filetypes set this
 set path+=**               " Search current directory's whole tree
 
-set laststatus=2
 set ruler
 set wildmenu
-
 set wildcharm=<C-Z>
 set wildmode=full
 set wildignorecase
-set wildignore=*.swp,*.bak,*~,#*#
-set wildignore+=*.o
 set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
 set wildignore+=tags
 " }}}
@@ -323,14 +333,6 @@ if g:os !=# 'Windows' && filereadable('/usr/share/dict/words')
   set dictionary+=/usr/share/dict/words
 endif
 
-" Load matchit.vim
-runtime! macros/matchit.vim
-
-" Highlight trailing whitespace
-highlight TrailingWhitespace ctermbg=204 guibg=#E06C75
-match TrailingWhitespace /\s\+\%#\@<!$/
-
-
 " Insert mode mappings {{{
 
 " jk in Insert mode escapes to Normal mode
@@ -401,7 +403,6 @@ noremap ]D ]D:dj<Space> <C-R><C-W><S-Left><Left>
 nnoremap <silent> & :&&<CR>
 
 " Backspace goes back to previous buffer
-nnoremap <silent> <Backspace> <C-^>
 nnoremap <silent> <Space><Tab> <C-^>
 
 " Map ,, to ,
@@ -421,9 +422,6 @@ nnoremap ,f :find *
 " Search for a tag by regex
 nnoremap ,t :tjump /
 nnoremap ,p :ptjump /
-
-" Toggle folds
-nnoremap <Space><Space> za
 
 " Find files in current buffer's directory
 nnoremap ,e :e <C-R>=expand('%:p:h') . '/' <CR>
