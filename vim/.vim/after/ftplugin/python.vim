@@ -17,3 +17,8 @@ if exists('b:undo_ftplugin')
 else
   let b:undo_ftplugin = '|setl cpt<'
 endif
+
+if executable('yapf')
+  setl formatprg=yapf
+  let b:undo_ftplugin .= ' fp<'
+endif
