@@ -1,14 +1,12 @@
-" Generate include path for python
+" Generate include path for python. This function is very expensive so the
+" result should be cached into a variable and only called if that variable is
+" undefined or empty
 function! python#include_path()
-  let python_include_path = ''
-  python3 << EOF
-import os
-import sys
-import vim
-for p in sys.path:
-  # Add each directory in sys.path if it exists
-  if os.path.isdir(p):
-    vim.command(r"let python_include_path .= ',%s'" % p)
-EOF
+  let pystr = join([
+        \ 'import os',
+        \ 'import sys',
+        \ 'print(\",\".join(list(filter(lambda d: os.path.isdir(d), sys.path))))'],
+        \ ';')
+  let python_include_path = substitute(system('python -c "' . pystr . '"'), '\n', '', '')
   return python_include_path
 endfunction
