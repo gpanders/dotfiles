@@ -63,7 +63,6 @@ highlight Comment gui=italic cterm=italic
 
 " Highlight trailing whitespace
 highlight TrailingWhitespace ctermbg=204 guibg=#E06C75
-match TrailingWhitespace /\s\+\%#\@<!$/
 
 " }}}
 
@@ -114,6 +113,7 @@ set gdefault
 set magic
 set incsearch
 set hlsearch
+set cursorline
 set splitbelow
 set splitright
 set nostartofline
@@ -544,8 +544,10 @@ augroup vimrc
 
   if has('nvim')
     au BufEnter term://* startinsert
-  else
   endif
+
+  " Create syntax group for trailing whitespace in each new buffer
+  au Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
 augroup END
 " }}}
 
