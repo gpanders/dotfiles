@@ -12,6 +12,9 @@ setlocal complete+=i,d
 " Set include pattern
 setlocal include=^\\s*#\\s*include
 
+" Use improved :Man command as keywordprg
+setlocal keywordprg=:Man
+
 " Include headers on Unix
 if has('unix')
   if g:os ==# 'Darwin'
@@ -21,10 +24,10 @@ if has('unix')
   endif
 endif
 
-let b:undo_ftplugin .= '|setl cms< cpt< inc< path<'
+let b:undo_ftplugin .= '|setl cms< cpt< inc< path< kp<'
 
 if executable('clang-format')
   setlocal equalprg=clang-format
-  let b:undo_ftplugin .= '|setl ep<'
+  let b:undo_ftplugin .= ' ep<'
 endif
 

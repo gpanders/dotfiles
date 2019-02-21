@@ -14,6 +14,5 @@ augroup CocSetup
         \ setlocal formatexpr=CocAction('formatSelected') |
         \ exe "nmap <silent> <buffer> gr <Plug>(coc-references)" |
         \ exe "nmap <silent> <buffer> gd <Plug>(coc-definition)" |
-        \ exe "nmap <buffer> K :\<C-U>call CocAction('doHover')\<CR>" |
         \ exe "au CursorHoldI,CursorMovedI <buffer> call CocAction('showSignatureHelp')"
 augroup END
