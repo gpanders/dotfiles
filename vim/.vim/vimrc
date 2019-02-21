@@ -434,11 +434,11 @@ nnoremap <Bslash>sv :<C-U>source $MYVIMRC<CR>
 nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR><C-L>
 vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
 
-" ,c changes directory to current buffer's directory
-nnoremap <silent> ,c :<C-U>cd %:h<CR>:echo 'Changed directory to ' . expand('%:p:h')<CR>
+" \c changes directory to current buffer's directory
+nnoremap <silent> \c :<C-U>cd %:h<CR>:echo 'Changed directory to ' . expand('%:p:h')<CR>
 
-" \c changes local buffer directory to current buffer's directory
-nnoremap <silent> <Bslash>c :<C-U>lcd %:h<CR>:echo 'Changed local directory to ' . expand('%:p:h')<CR>
+" ,c changes local buffer directory to current buffer's directory
+nnoremap <silent> ,c :<C-U>lcd %:h<CR>:echo 'Changed local directory to ' . expand('%:p:h')<CR>
 
 " }}}
 
