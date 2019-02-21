@@ -97,6 +97,19 @@ endif
 " Sudo save
 cnoreabbrev w!! w !sudo tee > /dev/null %
 
+" Type ~ when using :edit to jump back to the home directory
+" e.g:
+"   :e /some/long/path/~ => :e ~/
+function! <SID>JumpToHome()
+  let cmdline = getcmdline()
+  if cmdline[0:1] ==# 'e ' || cmdline[0:1] ==# 'ed'
+    return "\<C-\>e'e ~/'\<CR>"
+  else
+    return '~/'
+  endif
+endfunction
+cnoremap <expr> ~/ <SID>JumpToHome()
+
 " Settings {{{
 " Press K to open help docs for option under the cursor
 set smarttab
