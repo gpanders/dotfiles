@@ -1,7 +1,7 @@
 " coc.nvim configuration
 " Author: Greg Anders
 
-if !exists('g:did_coc_loaded')
+if !exists('g:did_coc_loaded') || !has('nvim')
   finish
 endif
 
