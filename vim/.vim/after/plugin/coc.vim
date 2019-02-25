@@ -1,3 +1,6 @@
+" coc.nvim configuration
+" Author: Greg Anders
+
 if !exists('g:did_coc_loaded')
   finish
 endif
