@@ -153,8 +153,7 @@ let &colorcolumn = '+' . join(range(1, 255), ',+')
 silent! set breakindent
 
 " Add more completion options
-set completeopt+=longest   " Insert longest common substring
-set completeopt+=menuone   " Show the menu even when there's only one match
+set completeopt=menuone,longest,preview
 
 if !has('nvim') && &ttimeoutlen == -1
   set ttimeout
@@ -420,8 +419,6 @@ nnoremap : ;
 vnoremap : ;
 nnoremap ; :
 vnoremap ; :
-nnoremap q; q:
-vnoremap q; q:
 
 " ,f prefixes find files in path
 nnoremap ,f :find *
