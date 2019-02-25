@@ -6,6 +6,9 @@ endif
 " gz opens a split window with a python shell
 nmap <buffer> gz <Plug>(PytermOpen)
 
+" Don't complete from include files (there are too many!)
+setl complete-=i
+
 " Populate path from python's sys.path. This is an expensive operation so we
 " only call it once and then cache the result
 if !exists('g:python_include_path')
