@@ -100,16 +100,14 @@ cnoreabbrev w!! w !sudo tee > /dev/null %
 " Settings {{{
 " Press K to open help docs for option under the cursor
 set smarttab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set softtabstop=4
+set shiftwidth=4
 set autoindent
 set expandtab
 set number
 set hidden
 set ignorecase
 set smartcase
-set gdefault
 set magic
 set incsearch
 set hlsearch
@@ -122,7 +120,6 @@ set sidescrolloff=5
 set showmatch
 set matchtime=2
 set matchpairs+=<:>
-set colorcolumn=80
 set foldmarker=\ {{{,\ }}}
 set modeline
 set virtualedit+=block
@@ -135,6 +132,9 @@ set autoread
 set confirm
 set pumheight=10
 set noshowmode
+
+" Color the whole area outside of 'textwidth'
+let &colorcolumn = '+' . join(range(1, 255), ',+')
 
 " Indent wrapped lines
 silent! set breakindent
@@ -366,12 +366,6 @@ nnoremap <silent> ,w :w<CR>
 " Navigate through wrapped lines individually
 nnoremap <silent> j gj
 nnoremap <silent> k gk
-
-" Make :tjump easier
-nnoremap g] g<C-]>
-
-" Open tag under cursor in preview window
-nnoremap g} <C-W>g}
 
 " Map Q to gq
 noremap Q gq
