@@ -418,13 +418,17 @@ vnoremap q; q:
 
 " ,f prefixes find files in path
 nnoremap ,f :find *
+nnoremap ,vf :vert sf *
+nnoremap ,sf :sf *
 
 " Search for a tag by regex
 nnoremap ,t :tjump /
 nnoremap ,p :ptjump /
 
 " Find files in current buffer's directory
-nnoremap ,e :e <C-R>=expand('%:p:h') . '/' <CR>
+nnoremap ,e :e <C-R>=expand('%:p:h') . '/'<CR>
+nnoremap ,ve :vs <C-R>=expand('%:p:h') . '/'<CR>
+nnoremap ,se :sp <C-R>=expand('%:p:h') . '/'<CR>
 
 " <Bslash>e opens .vimrc in new window
 nnoremap <Bslash>ev :<C-U>tabe $MYVIMRC<CR>
