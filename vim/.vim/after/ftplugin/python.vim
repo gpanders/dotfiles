@@ -24,6 +24,6 @@ else
 endif
 
 if executable('yapf')
-  setl equalprg=yapf
-  let b:undo_ftplugin .= ' ep<'
+  setl formatprg=yapf
+  let b:undo_ftplugin .= ' fp<'
 endif

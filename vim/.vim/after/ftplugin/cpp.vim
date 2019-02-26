@@ -27,7 +27,7 @@ endif
 let b:undo_ftplugin .= '|setl cms< cpt< inc< path< kp<'
 
 if executable('clang-format')
-  setlocal equalprg=clang-format
-  let b:undo_ftplugin .= ' ep<'
+  setlocal formatprg=clang-format
+  let b:undo_ftplugin .= ' fp<'
 endif
 
