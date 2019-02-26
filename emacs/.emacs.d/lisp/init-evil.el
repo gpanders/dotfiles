@@ -113,7 +113,6 @@
     ;; select pasted text
     (kbd "g p") (kbd "` [ v ` ]")
     (kbd "\\\\") (lookup-key (current-global-map) (kbd "C-c k"))
-    (kbd "DEL") 'evil-switch-to-windows-last-buffer
     )
 
   ;; Visual only
@@ -127,6 +126,7 @@
   (evil-define-key '(normal motion) 'global
     (kbd "SPC SPC") 'counsel-M-x
     (kbd "SPC u") 'universal-argument
+    (kbd "SPC TAB") 'evil-switch-to-windows-last-buffer
     )
 
   ;; Insert mode
