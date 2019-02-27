@@ -10,12 +10,18 @@ if !exists('g:os')
 endif
 " }}}
 
+" Set $MYVIMRUNTIME
+if g:os ==# 'Windows'
+  let $MYVIMRUNTIME = $HOME . '/vimfiles'
+else
+  let $MYVIMRUNTIME = $HOME . '/.vim'
+endif
+
 " Use vim-pathogen if native packages are not supported {{{
 if !has('packages')
   " Use vim-pathogen to emulate native packaging behavior
-  let s:vimdir = g:os ==# 'Windows' ? ($HOME . '/vimfiles') : ($HOME . '/.vim')
-  if empty(glob(s:vimdir . '/autoload/pathogen.vim'))
-    silent execute '!curl -LSso ' . s:vimdir . '/autoload/pathogen.vim https://tpo.pe/pathogen.vim'
+  if empty(glob($MYVIMRUNTIME . '/autoload/pathogen.vim'))
+    silent execute '!curl -LSso ' . $MYVIMRUNTIME . '/autoload/pathogen.vim https://tpo.pe/pathogen.vim'
   endif
   silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
 endif
@@ -357,17 +363,15 @@ inoremap <C-U> <C-G>u<C-U>
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
 
-" Remap <C-H> to delete one shiftwidth of indent in the current line
-inoremap <C-H> <C-D>
-
-" Delete character under cursor
-inoremap <C-D> <Del>
-
-" Kill the rest of the line (similar to Emacs binding)
-inoremap <C-K> <C-G>u<C-O>D
-
-" <C-G><C-K> to enter digraphs (originally <C-K>'s job)
-inoremap <C-G><C-K> <C-K>
+" Make insert completion easier
+inoremap <silent> ,f <C-X><C-F>
+inoremap <silent> ,l <C-X><C-L>
+inoremap <silent> ,d <C-X><C-D>
+inoremap <silent> ,o <C-X><C-O>
+inoremap <silent> ,i <C-X><C-I>
+inoremap <silent> ,n <C-X><C-N>
+inoremap <silent> ,t <C-X><C-]>
+inoremap <silent> ,u <C-X><C-U>
 
 " }}}
 
@@ -398,14 +402,6 @@ nnoremap <silent> ,0 :b10<CR>
 " List buffers and put :b on the command line
 noremap ,b :buffers<CR>:b<Space>
 
-" Augment [I and ]I to place an :ij prompt below results for easy jumping
-noremap [I [I:ij<Space> <C-R><C-W><S-Left><Left>
-noremap ]I ]I:ij<Space> <C-R><C-W><S-Left><Left>
-
-" Augment [D and ]D to place an :dj prompt below results for easy jumping
-noremap [D [D:dj<Space> <C-R><C-W><S-Left><Left>
-noremap ]D ]D:dj<Space> <C-R><C-W><S-Left><Left>
-
 " Remap & to preserve substitution flags
 nnoremap <silent> & :&&<CR>
 
@@ -414,12 +410,6 @@ nnoremap <silent> <Space><Tab> <C-^>
 
 " Map ,, to ,
 nnoremap ,, ,
-
-" Swap ; and :
-nnoremap : ;
-vnoremap : ;
-nnoremap ; :
-vnoremap ; :
 
 " ,f prefixes find files in path
 nnoremap ,f :find *
@@ -473,16 +463,17 @@ endif
 " Use ripgrep or ag as grepprg if available
 if executable('rg')
   " Use rg over grep
-  set grepprg=rg\ --vimgrep\ -S\ --hidden
+  set grepprg=rg\ --vimgrep\ --smart-case
+  set grepformat^=%f:%l:%c:%m
 elseif executable('ag')
   " Use ag over grep
-  set grepprg=ag\ --vimgrep\ -S\ --hidden
+  set grepprg=ag\ --vimgrep\ --smart-case
+  set grepformat^=%f:%l:%c:%m
 endif
 
-" Use \\ in Normal mode to use grepprg
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
 command! -nargs=+ -complete=file -bar -bang Grep silent! botright grep<bang> <args>|cwindow|redraw!
-nnoremap <Bslash><Bslash> :Grep!<space>
+nnoremap <Bslash><Bslash> :Grep<space>
 " }}}
 
 " This comes from vimrc_example.vim. See :h :DiffOrig
