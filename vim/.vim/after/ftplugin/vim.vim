@@ -9,4 +9,7 @@ setlocal foldmethod=marker
 nnoremap <buffer> Z: ^"zyg_:<C-R>z<CR>
 vnoremap <buffer> Z: "zy:<C-U><C-R>=substitute(@z, "\n", "<Bar>", "g")<CR><BS>
 
+" Source current file with c<Enter>
+nnoremap c<CR> :source %<CR>
+
 let b:undo_ftplugin .= '|setl fdm<'
