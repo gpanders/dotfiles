@@ -1,4 +1,5 @@
 " ALE configuration
+" This file is executed AFTER ALE is loaded
 " Author: Greg Anders
 
 if !exists('g:loaded_ale')
