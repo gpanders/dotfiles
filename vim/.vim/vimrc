@@ -145,9 +145,10 @@ set autoread
 set confirm
 set pumheight=10
 set noshowmode
+set nolangremap
 
 " Color the whole area outside of 'textwidth'
-let &colorcolumn = '+' . join(range(1, 255), ',+')
+let &colorcolumn = '+' . join(range(1, 256), ',+')
 
 " Indent wrapped lines
 silent! set breakindent
@@ -226,9 +227,6 @@ function! StatuslineMode()
   if m ==# 'n'
     highlight! link StatuslineMode StatuslineModeNormal
     return 'N'
-  elseif m ==# 't'
-    highlight! link StatuslineMode StatuslineModeNormal
-    return 'T'
   elseif m ==# 'i'
     highlight! link StatuslineMode StatuslineModeInsert
     return 'I'
@@ -238,6 +236,9 @@ function! StatuslineMode()
   elseif m ==? 'v' || m==# ''
     highlight! link StatuslineMode StatuslineModeVisual
     return 'V'
+  else
+    highlight! link StatuslineMode StatuslineModeNormal
+    return toupper(m)
   endif
 endfunction
 
@@ -308,9 +309,9 @@ if exists('g:colors_name')
 
     " Colors for statusline mode indicator
     hi StatuslineModeNormal ctermfg=145 ctermbg=236 guifg=#ABB2BF guibg=#2C323C
-    hi StatuslineModeInsert ctermfg=235 ctermbg=39 guifg=#282C34 guibg=#61AFEF
-    hi StatuslineModeReplace ctermfg=235 ctermbg=204 guifg=#282C34 guibg=#E06C75
-    hi StatuslineModeVisual ctermfg=235 ctermbg=170 guifg=#282C34 guibg=#C678DD
+    hi StatuslineModeInsert ctermfg=235 ctermbg=39 guifg=#61AFEF guibg=#282C34
+    hi StatuslineModeReplace ctermfg=235 ctermbg=204 guifg=#E06C75 guibg=#282C34
+    hi StatuslineModeVisual ctermfg=235 ctermbg=170 guifg=#C678DD guibg=#282C34
   endif
 endif
 " }}}
@@ -445,10 +446,11 @@ nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR><C-L>
 vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
 
 " \c changes directory to current buffer's directory
-nnoremap <silent> \c :<C-U>cd %:h<CR>:echo 'Changed directory to ' . expand('%:p:h')<CR>
+nnoremap <silent> \c :<C-U>cd %:h<Bar>echo 'Changed directory to ' . getcwd()<CR>
 
-" ,c changes local buffer directory to current buffer's directory
-nnoremap <silent> ,c :<C-U>lcd %:h<CR>:echo 'Changed local directory to ' . expand('%:p:h')<CR>
+" ,c changes local buffer directory to project directory (if the buffer is in
+" a recognized Projectionist project) or the current buffer's directory
+nnoremap <expr> ,c ":" . (exists(":Plcd")?"Plcd":"lcd %:h") . "\<Bar>echo 'Changed local directory to ' . getcwd()\<CR>"
 
 " }}}
 
@@ -463,6 +465,8 @@ if exists(':tmap')
   tnoremap <C-W><C-W> <C-W>
 endif
 " }}}
+
+" Commands {{{
 
 " Grep {{{
 
@@ -479,6 +483,12 @@ endif
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
 command! -nargs=+ -complete=file -bar -bang Grep silent! botright grep<bang> <args>|cwindow|redraw!
 nnoremap <Bslash><Bslash> :Grep!<space>
+" }}}
+
+" This comes from vimrc_example.vim. See :h :DiffOrig
+command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+      \ | wincmd p | diffthis
+
 " }}}
 
 " Pushing built-in commands beyond their limits {{{
