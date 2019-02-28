@@ -5,10 +5,17 @@ endif
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap ,a= :Tabularize /=<CR>
-vnoremap ,a= :Tabularize /=<CR>
-nnoremap ,a: :Tabularize /:<CR>
-vnoremap ,a: :Tabularize /:<CR>
+function! s:tabularize(dir)
+  let char = nr2char(getchar())
+  if a:dir ==# 'left'
+    execute 'Tabularize/'.char.'/l1'
+  else
+    execute 'Tabularize/'.char.'/r1'
+  endif
+endfunction
+
+noremap <silent> gl :<C-U>call <SID>tabularize('left')<CR>
+noremap <silent> gL :<C-U>call <SID>tabularize('right')<CR>
 
 " Source: https://gist.github.com/tpope/287147
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
