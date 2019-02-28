@@ -14,6 +14,9 @@ function! s:PackInit()
     call minpac#add('tpope/vim-dispatch')
     call minpac#add('tpope/vim-projectionist')
     call minpac#add('tpope/vim-rsi')
+    call minpac#add('tpope/vim-eunuch')
+    call minpac#add('tpope/vim-characterize')
+    call minpac#add('tpope/vim-abolish')
 
     " Better directory browser
     call minpac#add('justinmk/vim-dirvish')
@@ -54,8 +57,17 @@ function! s:PackInit()
     " Quickfix window improvements
     call minpac#add('romainl/vim-qf')
 
+    " Populate results of :ilist and :dlist in quickfix window
+    call minpac#add('romainl/vim-qlist')
+
     " Run tests from within vim
     call minpac#add('janko/vim-test')
+
+    " Add more text objects to operate on
+    call minpac#add('wellle/targets.vim')
+
+    " Code snippets
+    call minpac#add('SirVer/ultisnips')
 
     " Language specific
     " Python
