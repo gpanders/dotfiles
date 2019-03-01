@@ -17,6 +17,7 @@ function! s:PackInit()
     call minpac#add('tpope/vim-eunuch')
     call minpac#add('tpope/vim-characterize')
     call minpac#add('tpope/vim-abolish')
+    call minpac#add('tpope/vim-speeddating')
 
     " Better directory browser
     call minpac#add('justinmk/vim-dirvish')
@@ -28,7 +29,7 @@ function! s:PackInit()
     call minpac#add('sheerun/vim-polyglot')
 
     " Align lines to a character, e.g. =, ;, :, etc.
-    call minpac#add('godlygeek/tabular')
+    call minpac#add('junegunn/vim-easy-align')
 
     " Fuzzy file finder and bonus commands
     call minpac#add('junegunn/fzf.vim')
