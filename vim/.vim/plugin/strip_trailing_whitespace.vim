@@ -127,3 +127,6 @@ endfunction
 " User command for the above
 command! -range=% StripTrailingWhitespace
       \ call <SID>Strip(<line1>, <line2>)
+
+" Mapping for command
+nnoremap <Space><C-S> :StripTrailingWhitespace<CR>

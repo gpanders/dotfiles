@@ -1,6 +1,7 @@
 " ALE configuration
 " This file is executed BEFORE ALE is loaded
-" Author: Greg Anders
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2019-02-27
 
 " This variable must be set before ALE is loaded so that it can create the
 " proper autocmds

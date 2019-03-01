@@ -1,5 +1,8 @@
 " Configuration for vim-test
-if !exists('g:loaded_test')
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2019-02-19
+
+if !get(g:, 'loaded_test', 0)
   finish
 endif
 

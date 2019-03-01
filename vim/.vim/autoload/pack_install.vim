@@ -1,5 +1,6 @@
 " Install and remove packages from vim's pack directory
 " Author: Greg Anders <greg@gpanders.com>
+" Date: 2018-12-04
 
 if g:os ==# 'Windows'
   let g:pack_install#pack_dir = $HOME . '\vimfiles\pack\'

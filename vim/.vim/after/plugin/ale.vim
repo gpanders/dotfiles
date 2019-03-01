@@ -1,8 +1,9 @@
 " ALE configuration
 " This file is executed AFTER ALE is loaded
-" Author: Greg Anders
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2019-01-23
 
-if !exists('g:loaded_ale')
+if !get(g:, 'loaded_ale', 0)
   finish
 endif
 

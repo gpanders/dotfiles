@@ -1,8 +1,20 @@
-if !exists('g:loaded_projectionist')
+" vim-projectionist configuration
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2019-01-04
+
+if !get(g:, 'loaded_projectionist', 0)
   finish
 endif
 
-let g:projectionist_heuristics ={
+if !exists('g:projectionist_transformations')
+  let g:projectionist_transformations = {}
+endif
+
+function! g:projectionist_transformations.date(input, o) abort
+  return strftime('%Y-%m-%d')
+endfunction
+
+let g:projectionist_heuristics = {
       \ 'Cargo.toml&src/': {
       \   'src/*.rs': {'type': 'src'},
       \   'Cargo.toml': {'type': 'toml' }
@@ -11,19 +23,21 @@ let g:projectionist_heuristics ={
       \   'vimrc': { 'type': 'vimrc' },
       \   'plugin/*.vim': {
       \     'type': 'plugin',
-      \     'template': ['" {} configuration', '" Author: Greg Anders', '', 'if <condition>', "\tfinish", 'endif']
+      \     'template': ['" {}', '" Author: Greg Anders <greg@gpanders.com>', '" Date: {date}', '', 'if 0', "\tfinish", 'endif'],
+      \     'alternate': 'after/plugin/{}.vim'
       \   },
       \   'after/plugin/*.vim': {
       \     'type': 'plugin',
-      \     'template': ['" {}', '" Author: Greg Anders', '', 'if <condition>', "\tfinish", 'endif']
+      \     'template': ['" {}', '" Author: Greg Anders <greg@gpanders.com>', '" Date: {date}', '', 'if 0', "\tfinish", 'endif'],
+      \     'alternate': 'plugin/{}.vim'
       \   },
       \   'ftplugin/*.vim': {
       \     'type': 'ftplugin',
-      \     'template': ['" {} filetype plugin', '" Author: Greg Anders', '', 'if &filetype !=# ''{}''', "\tfinish", 'endif']
+      \     'template': ['" {} filetype plugin', '" Author: Greg Anders <greg@gpanders.com>', '', 'if &filetype !=# ''{}''', "\tfinish", 'endif']
       \   },
       \   'after/ftplugin/*.vim': {
       \     'type': 'ftplugin',
-      \     'template': ['" {} filetype plugin', '" Author: Greg Anders', '', 'if &filetype !=# ''{}''', "\tfinish", 'endif']
+      \     'template': ['" {} filetype plugin', '" Author: Greg Anders <greg@gpanders.com>', '', 'if &filetype !=# ''{}''', "\tfinish", 'endif']
       \   },
       \   'compiler/*.vim': {
       \     'type': 'compiler',

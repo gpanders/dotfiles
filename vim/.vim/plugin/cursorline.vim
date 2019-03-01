@@ -1,5 +1,6 @@
 " Highlight the current line in the current window but disable in Insert mode
-" Author: Greg Anders
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2019-02-25
 
 if exists('g:loaded_cursorline')
   finish

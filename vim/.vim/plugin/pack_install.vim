@@ -1,3 +1,7 @@
+" Ultra-minimal package manager for vim
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2018-12-04
+
 " Disable this plugin for now
 if 0
 

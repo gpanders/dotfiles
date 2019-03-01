@@ -1,4 +1,8 @@
-if !exists('g:loaded_dispatch')
+" vim-dispatch configuration
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2018-12-03
+
+if !get(g:, 'loaded_dispatch', 0)
   finish
 endif
 

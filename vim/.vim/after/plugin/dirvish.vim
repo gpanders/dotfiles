@@ -1,4 +1,8 @@
-if !exists('g:loaded_dirvish')
+" vim-dirvish configuration
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2018-12-06
+
+if !get(g:, 'loaded_dirvish', 0)
   unlet g:loaded_netrwPlugin
   runtime plugin/netrwPlugin.vim
   finish

@@ -1,10 +1,10 @@
-if !exists('g:loaded_denite')
+if !get(g:, 'loaded_denite', 0)
   finish
 endif
 
 if executable('rg')
   call denite#custom#var('file/rec', 'command',
-        \ ['rg', '--files', '--glob', '!.git']) 
+        \ ['rg', '--files', '--glob', '!.git'])
   call denite#custom#var('grep', 'command', ['rg'])
   call denite#custom#var('grep', 'default_opts',
         \ ['-S', '--vimgrep', '--no-heading'])
