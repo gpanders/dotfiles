@@ -1,4 +1,6 @@
-" C++
+" C++ filetype plugin
+" Author: Greg Anders <greg@gpanders.com>
+
 if &filetype !=# 'cpp'
   finish
 endif
