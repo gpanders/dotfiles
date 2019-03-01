@@ -1,4 +1,7 @@
-if &filetype !=# 'help'
+" help filetype plugin
+" Author: Greg Anders <greg@gpanders.com>
+
+if &filetype !=# 'help' || !&readonly
   finish
 endif
 

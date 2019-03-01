@@ -480,6 +480,19 @@ nnoremap <Bslash><Bslash> :Grep!<space>
 command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
       \ | wincmd p | diffthis
 
+" Edit ftplugin file for current filetype
+function! s:EditFtplugin()
+  if empty(&ft)
+    echohl Error
+    echom 'Error: This buffer has no filetype'
+    return
+  endif
+
+  let ft = &ft
+  execute 'e ' . $MYVIMRUNTIME . '/after/ftplugin/' . ft . '.vim'
+endfunction
+command! EditFtplugin call s:EditFtplugin()
+
 " }}}
 
 " Pushing built-in commands beyond their limits {{{
