@@ -4,6 +4,9 @@ function! s:PackInit()
   if exists('*minpac#init')
     call minpac#init()
 
+    " My plugins
+    call minpac#add('gpanders/vim-recentf')
+
     " Tim Pople plugin suite
     call minpac#add('tpope/vim-unimpaired')
     call minpac#add('tpope/vim-fugitive')
