@@ -472,8 +472,8 @@ elseif executable('ag')
 endif
 
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
-command! -nargs=+ -complete=file -bar -bang Grep silent! botright grep<bang> <args>|cwindow|redraw!
-nnoremap <Bslash><Bslash> :Grep<space>
+command! -nargs=+ -bang Grep execute 'silent botright grep<bang> <args>' | copen | redraw!
+nnoremap <Bslash><Bslash> :Grep!<space>
 " }}}
 
 " This comes from vimrc_example.vim. See :h :DiffOrig
