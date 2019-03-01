@@ -1,11 +1,14 @@
 " vim-startify configuration
-" Author: Greg Anders
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2019-02-13
 
-if !exists('g:loaded_startify')
+if !get(g:, 'loaded_startify', 0)
   finish
 endif
 
 let g:startify_session_persistence = 1
+let g:startify_change_to_vcs_root = 1
+let g:startify_fortune_use_unicode = 1
 let g:startify_bookmarks = [{'c': $MYVIMRC}]
 
 " Add wikis to bookmarks

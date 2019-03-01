@@ -1,3 +1,7 @@
+" Make read only files more pager-like
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2018-12-18
+
 augroup readonly
   au!
   au BufReadPost * if &readonly

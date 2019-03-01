@@ -1,4 +1,8 @@
-if !exists('g:loaded_qf')
+" vim-qf configuration
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2018-12-09
+
+if !get(g:, 'loaded_qf', 0)
   finish
 endif
 

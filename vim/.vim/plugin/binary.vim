@@ -1,3 +1,10 @@
+" Improved editing of binary files
+" This makes vim a slightly more tolerable hex editor, although there are
+" still better options out there
+" Most of the magic happens in the xxd filetype plugin, not here
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2018-12-24
+
 augroup Binary
   autocmd!
   autocmd BufReadPost  * if &bin | %!xxd

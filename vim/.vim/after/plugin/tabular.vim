@@ -1,4 +1,8 @@
-if !exists('g:tabular_loaded')
+" tabular configuration
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2019-01-08
+
+if !get(g:, 'tabular_loaded', 0)
   finish
 endif
 

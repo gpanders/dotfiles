@@ -1,5 +1,5 @@
 " FZF must be installed to ~/.fzf
-if !exists('g:loaded_fzf')
+if !get(g:, 'loaded_fzf', 0)
   finish
 endif
 

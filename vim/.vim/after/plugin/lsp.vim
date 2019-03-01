@@ -1,4 +1,8 @@
-if !exists('g:lsp_loaded')
+" vim-lsp configuration
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2018-12-03
+
+if !get(g:, 'lsp_loaded', 0)
   finish
 endif
 
