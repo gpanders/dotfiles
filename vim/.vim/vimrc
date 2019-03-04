@@ -118,40 +118,46 @@ cnoremap <expr> ~/ <SID>JumpToHome()
 
 " Settings {{{
 " Press K to open help docs for option under the cursor
-set smarttab
-set softtabstop=4
-set shiftwidth=4
 set autoindent
-set expandtab
-set number
-set hidden
-set ignorecase
-set smartcase
-set magic
-set incsearch
-set hlsearch
+set autoread
+set backup
+set confirm
 set cursorline
-set splitbelow
-set splitright
-set nostartofline
-set scrolloff=2
-set sidescrolloff=5
-set showmatch
-set matchtime=2
-set matchpairs+=<:>
+set display+=lastline
+set expandtab
 set foldmarker=\ {{{,\ }}}
-set modeline
-set virtualedit+=block
+set hidden
+set hlsearch
+set ignorecase
+set include=
+set incsearch
 set lazyredraw
 set linebreak
-set include=
-set nrformats-=octal
-set display+=lastline
-set autoread
-set confirm
-set pumheight=10
-set noshowmode
+set magic
+set matchpairs+=<:>
+set matchtime=2
+set modeline
 set nolangremap
+set noshowmode
+set nostartofline
+set nrformats-=octal
+set number
+set pumheight=10
+set scrolloff=2
+set shiftwidth=4
+set showmatch
+set sidescrolloff=5
+set smartcase
+set smarttab
+set softtabstop=4
+set splitbelow
+set splitright
+set virtualedit+=block
+
+" Enable undofile if possible
+if has('persistent_undo')
+  set undofile
+endif
 
 " Color the whole area outside of 'textwidth'
 let &colorcolumn = '+' . join(range(1, 256), ',+')
@@ -160,7 +166,7 @@ let &colorcolumn = '+' . join(range(1, 256), ',+')
 silent! set breakindent
 
 " Add more completion options
-set completeopt=menuone,longest,preview
+set completeopt=menu,preview
 
 if !has('nvim') && &ttimeoutlen == -1
   set ttimeout
@@ -322,30 +328,20 @@ if exists('g:colors_name')
 endif
 " }}}
 
-" Set a single backup directory
-set backup
+" Keep temporary files in a single location
 if g:os ==# 'Windows'
-  set backupdir^=~/vimfiles/cache/backup
+  let cachedir = $HOME . '/vimfiles/cache'
 else
-  set backupdir^=~/.vim/cache/backup
-endif
-
-" Enable persistent undo
-if has('persistent_undo')
-  set undofile
-  if g:os ==# 'Windows'
-    set undodir^=~/vimfiles/cache/undo
+  if exists('$XDG_CACHE_HOME')
+    let cachedir = $XDG_CACHE_HOME . '/vim'
   else
-    set undodir^=~/.vim/cache/undo
+    let cachedir = $HOME . '/.cache/vim'
   endif
 endif
 
-" Keep swap files in one place
-if g:os ==# 'Windows'
-  set directory^=~/vimfiles/cache/swap//
-else
-  set directory^=~/.vim/cache/swap//
-endif
+let &g:backupdir = cachedir . '/backup//' . ',' . &g:backupdir
+let &g:undodir = cachedir . '/undo//' . ',' . &g:undodir
+let &g:directory = cachedir . '/swap//' . ',' . &g:directory
 
 " Set dictionary if it exists
 if g:os !=# 'Windows' && filereadable('/usr/share/dict/words')
