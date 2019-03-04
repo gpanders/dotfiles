@@ -4,10 +4,7 @@ function! s:PackInit()
   if exists('*minpac#init')
     call minpac#init()
 
-    " My plugins
-    call minpac#add('gpanders/vim-recentf')
-
-    " Tim Pople plugin suite
+    " Tim Pope plugin suite
     call minpac#add('tpope/vim-unimpaired')
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-surround')
@@ -37,7 +34,7 @@ function! s:PackInit()
     " Fuzzy file finder and bonus commands
     call minpac#add('junegunn/fzf.vim')
 
-    " Fun pluging for writing plain text. Highlight current paragraph
+    " Fun plugin for writing plain text. Highlight current paragraph
     call minpac#add('junegunn/limelight.vim')
 
     " Use :Goyo to enable focus mode

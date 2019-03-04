@@ -123,6 +123,7 @@ if ! git config --global --get user.email 1>/dev/null ; then
   git config --global user.email "${ans:-greg@gpanders.com}"
 fi
 
+git config --global commit.verbose 1
 git config --global init.templatedir "$HOME/.config/git/template"
 git config --global alias.a add
 git config --global alias.b branch
