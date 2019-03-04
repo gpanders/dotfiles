@@ -19,4 +19,5 @@ nmap ]q <Plug>(qf_qf_next)
 nmap [l <Plug>(qf_loc_previous)
 nmap ]l <Plug>(qf_loc_next)
 
-nmap \q <Plug>(qf_qf_toggle)
+nmap <Space>q <Plug>(qf_qf_toggle)
+nmap <Space>l <Plug>(qf_loc_toggle)

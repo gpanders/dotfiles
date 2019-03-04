@@ -428,6 +428,9 @@ nnoremap <silent> \c :<C-U>cd %:h<Bar>echo 'Changed directory to ' . getcwd()<CR
 " a recognized Projectionist project) or the current buffer's directory
 nnoremap <expr> ,c ":" . (exists(":Plcd")?"Plcd":"lcd %:h") . "\<Bar>echo 'Changed local directory to ' . getcwd()\<CR>"
 
+" Format whole buffer with formatprg without changing cursor position
+nnoremap <Space>f mzHmygggqG`yzt`z
+
 " }}}
 
 " Visual mode mappings {{{
