@@ -93,7 +93,7 @@ if hash neomutt 2>/dev/null; then
 fi
 
 # Create cache directories for vim
-mkdir -p "$HOME"/.vim/cache/{backup,undo,swap}
+mkdir -p "$HOME"/.cache/vim/{backup,undo,swap}
 
 if hash tmux 2>/dev/null; then
   # Install tmux plugins in a background session
