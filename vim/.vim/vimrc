@@ -206,7 +206,7 @@ set path+=**               " Search current directory's whole tree
 set ruler
 set wildmenu
 set wildcharm=<C-Z>
-set wildmode=full
+set wildmode=longest:full,full
 set wildignorecase
 set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
 set wildignore+=tags
@@ -358,16 +358,6 @@ inoremap <C-U> <C-G>u<C-U>
 
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
-
-" Make insert completion easier
-inoremap <silent> ,f <C-X><C-F>
-inoremap <silent> ,l <C-X><C-L>
-inoremap <silent> ,d <C-X><C-D>
-inoremap <silent> ,o <C-X><C-O>
-inoremap <silent> ,i <C-X><C-I>
-inoremap <silent> ,n <C-X><C-N>
-inoremap <silent> ,t <C-X><C-]>
-inoremap <silent> ,u <C-X><C-U>
 
 " }}}
 
