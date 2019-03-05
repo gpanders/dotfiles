@@ -2,9 +2,9 @@
 
 notmuch new
 notmuch tag +inbox -- folder:/INBOX/
-notmuch tag +archive -inbox -- folder:/Archive/
-notmuch tag +sent -inbox -- folder:/Sent/
-notmuch tag +trash -inbox -archive -- folder:/Trash/
+notmuch tag +archive -- folder:/Archive/
+notmuch tag +sent -- folder:/Sent/
+notmuch tag +trash -archive -- folder:/Trash/
 
 # Remove new tag from anything not in the inbox
-notmuch tag -new -- NOT tag:inbox
+notmuch tag -new -inbox -- NOT tag:inbox

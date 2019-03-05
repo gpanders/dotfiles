@@ -38,7 +38,6 @@ source ~/.config/mutt/colors/one-dark.muttrc
 
 folder-hook .          source ~/.config/mutt/config.default
 folder-hook "Personal" source ~/.config/mutt/config.personal
-folder-hook "Gmail"    source ~/.config/mutt/config.gmail
 
 # Set up notmuch virtual mailboxes
 set virtual_spoolfile = no
