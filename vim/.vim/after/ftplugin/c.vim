@@ -17,7 +17,7 @@ setlocal keywordprg=:Man
 
 " Include headers on Unix
 if has('unix')
-  if g:os ==# 'Darwin'
+  if get(g:, 'os', '') ==# 'Darwin'
     setlocal path+=/usr/local/opt/llvm/include/c++/v1
   else
     setlocal path+=/usr/include

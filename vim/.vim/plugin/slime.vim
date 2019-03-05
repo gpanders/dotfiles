@@ -3,6 +3,9 @@
 " Author: Greg Anders <greg@gpanders.com>
 " Date: 2018-12-19
 
+let s:cpo_save = &cpo
+set cpo&vim
+
 if exists("$TMUX")
   let g:slime_target = "tmux"
   let g:slime_paste_file = tempname()
@@ -16,4 +19,4 @@ else
   let g:slime_target = "vimterminal"
 endif
 
-
+let &cpo = s:cpo_save
