@@ -32,7 +32,7 @@ function! s:PackInit()
     call minpac#add('junegunn/vim-easy-align')
 
     " Fuzzy file finder and bonus commands
-    call minpac#add('junegunn/fzf.vim')
+    " call minpac#add('junegunn/fzf.vim')
 
     " Fun plugin for writing plain text. Highlight current paragraph
     call minpac#add('junegunn/limelight.vim')
