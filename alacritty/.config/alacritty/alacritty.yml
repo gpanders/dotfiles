@@ -673,6 +673,7 @@ key_bindings:
   - { key: F12,      mods: Super,   chars: "\x1b[24;3~"                      }
   - { key: NumpadEnter,             chars: "\n"                              }
   - { key: B,        mods: Alt,     chars: "\x1bb"                           }
+  - { key: C,        mods: Alt,     chars: "\x1bc"                           }
   - { key: D,        mods: Alt,     chars: "\x1bd"                           }
   - { key: F,        mods: Alt,     chars: "\x1bf"                           }
   - { key: N,        mods: Alt,     chars: "\x1bn"                           }
