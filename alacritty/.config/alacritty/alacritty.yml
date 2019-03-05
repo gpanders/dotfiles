@@ -27,7 +27,7 @@ window:
   # by DPI and the specified value is always added at both opposing sides.
   padding:
     x: 5
-    y: 5
+    y: 0
 
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: false
@@ -86,7 +86,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux) monospace
     #   - (Windows) Consolas
-    family: Hack
+    family: Fira Code
 
     # The `style` can be specified to pick a specific face.
     style: Regular
@@ -97,7 +97,7 @@ font:
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: Hack
+    family: Fira Code
 
     # The `style` can be specified to pick a specific face.
     style: Bold
@@ -114,7 +114,7 @@ font:
     style: Italic
 
   # Point size
-  size: 11.0
+  size: 13.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -151,10 +151,10 @@ render_timer: false
 # Keep the log file after quitting Alacritty.
 persistent_logging: false
 
-# If `true`, bold text is drawn using the bright color variants.
-draw_bold_text_with_bright_colors: true
+# Colors
 
-# Colors (Tomorrow Night Bright)
+# Tomorrow Night Bright
+#draw_bold_text_with_bright_colors: true
 #colors:
 #  # Default colors
 #  primary:
@@ -223,36 +223,102 @@ draw_bold_text_with_bright_colors: true
 #  #
 #  indexed_colors: []
 
-# Colors (One Dark)
+# One Dark
+# draw_bold_text_with_bright_colors: true
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x282c34'
+#     foreground: '0xabb2bf'
+
+#   # Normal colors
+#   normal:
+#     # NOTE: Use '0x131613' for the `black` color if you'd like to see
+#     # black text on the background.
+#     black:   '0x282c34'
+#     red:     '0xe06c75'
+#     green:   '0x98c379'
+#     yellow:  '0xd19a66'
+#     blue:    '0x61afef'
+#     magenta: '0xc678dd'
+#     cyan:    '0x56b6c2'
+#     white:   '0xabb2bf'
+
+#   # Bright colors
+#   bright:
+#     black:   '0x5c6370'
+#     red:     '0xe06c75'
+#     green:   '0x98c379'
+#     yellow:  '0xd19a66'
+#     blue:    '0x61afef'
+#     magenta: '0xc678dd'
+#     cyan:    '0x56b6c2'
+#     white:   '0xffffff'
+
+# Apprentice
+# draw_bold_text_with_bright_colors: true
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x262626'
+#     foreground: '0xbcbcbc'
+
+#   # Normal colors
+#   normal:
+#     black:   '0x1c1c1c'
+#     red:     '0xaf5f5f'
+#     green:   '0x5f875f'
+#     yellow:  '0x87875f'
+#     blue:    '0x5f87af'
+#     magenta: '0x5f5f87'
+#     cyan:    '0x5f8787'
+#     white:   '0x6c6c6c'
+
+#   # Bright colors
+#   bright:
+#     black:   '0x444444'
+#     red:     '0xff8700'
+#     green:   '0x87af87'
+#     yellow:  '0xffffaf'
+#     blue:    '0x8fafd7'
+#     magenta: '0x8787af'
+#     cyan:    '0x5fafaf'
+#     white:   '0xffffff'
+
+# Base 16 Eighties
+draw_bold_text_with_bright_colors: false
 colors:
   # Default colors
   primary:
-    background: '0x282c34'
-    foreground: '0xabb2bf'
+    background: '0x2d2d2d'
+    foreground: '0xd3d0c8'
+
+  # Colors the cursor will use if `custom_cursor_colors` is true
+  cursor:
+    text: '0x2d2d2d'
+    cursor: '0xd3d0c8'
 
   # Normal colors
   normal:
-    # NOTE: Use '0x131613' for the `black` color if you'd like to see
-    # black text on the background.
-    black:   '0x282c34'
-    red:     '0xe06c75'
-    green:   '0x98c379'
-    yellow:  '0xd19a66'
-    blue:    '0x61afef'
-    magenta: '0xc678dd'
-    cyan:    '0x56b6c2'
-    white:   '0xabb2bf'
+    black:   '0x2d2d2d'
+    red:     '0xf2777a'
+    green:   '0x99cc99'
+    yellow:  '0xffcc66'
+    blue:    '0x6699cc'
+    magenta: '0xcc99cc'
+    cyan:    '0x66cccc'
+    white:   '0xd3d0c8'
 
   # Bright colors
   bright:
-    black:   '0x5c6370'
-    red:     '0xe06c75'
-    green:   '0x98c379'
-    yellow:  '0xd19a66'
-    blue:    '0x61afef'
-    magenta: '0xc678dd'
-    cyan:    '0x56b6c2'
-    white:   '0xffffff'
+    black:   '0x747369'
+    red:     '0xf99157'
+    green:   '0x393939'
+    yellow:  '0x515151'
+    blue:    '0xa09f93'
+    magenta: '0xe8e6df'
+    cyan:    '0xd27b53'
+    white:   '0xf2f0ec'
 
 # Visual Bell
 #
@@ -328,7 +394,7 @@ mouse:
     #   - (macOS) open
     #   - (Linux) xdg-open
     #   - (Windows) explorer
-    #launcher: open
+    launcher: open
 
     # URL modifiers
     #
@@ -596,3 +662,8 @@ key_bindings:
   - { key: F11,      mods: Super,   chars: "\x1b[23;3~"                      }
   - { key: F12,      mods: Super,   chars: "\x1b[24;3~"                      }
   - { key: NumpadEnter,             chars: "\n"                              }
+  - { key: B,        mods: Alt,     chars: "\x1bb"                           }
+  - { key: D,        mods: Alt,     chars: "\x1bd"                           }
+  - { key: F,        mods: Alt,     chars: "\x1bf"                           }
+  - { key: N,        mods: Alt,     chars: "\x1bn"                           }
+  - { key: P,        mods: Alt,     chars: "\x1bp"                           }
