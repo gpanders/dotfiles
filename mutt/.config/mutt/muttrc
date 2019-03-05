@@ -34,7 +34,7 @@ source ~/.config/mutt/config.default
 source ~/.config/mutt/config.sidebar
 
 # Colorscheme
-source ~/.config/mutt/colors/one-dark.muttrc
+source ~/.config/mutt/colors/base16.muttrc
 
 folder-hook .          source ~/.config/mutt/config.default
 folder-hook "Personal" source ~/.config/mutt/config.personal
