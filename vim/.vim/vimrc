@@ -428,10 +428,10 @@ nnoremap <silent> \c :<C-U>cd %:h<Bar>echo 'Changed directory to ' . getcwd()<CR
 
 " ,c changes local buffer directory to project directory (if the buffer is in
 " a recognized Projectionist project) or the current buffer's directory
-nnoremap <expr> ,c ":" . (exists(":Plcd")?"Plcd":"lcd %:h") . "\<Bar>echo 'Changed local directory to ' . getcwd()\<CR>"
+nnoremap <expr> ,c ":" . (exists(":Plcd")?"Plcd":"lcd %:h") . "\<Bar>echo 'Changed directory of current window to ' . getcwd()\<CR>"
 
 " Format whole buffer with formatprg without changing cursor position
-nnoremap <Space>f mzHmygggqG`yzt`z
+nnoremap <Space>gq mzHmygggqG`yzt`z
 
 " }}}
 
