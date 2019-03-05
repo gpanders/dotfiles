@@ -54,9 +54,14 @@ bind  index       gg  first-entry
 # from a pop server
 bind  index       G   last-entry
 
+bind  index,pager ]   next-undeleted
+bind  index,pager [   previous-undeleted
+
 # Navigate like vim
 bind  index,pager \Cu previous-page
 bind  index,pager \Cd next-page
+bind  pager       j   next-line
+bind  pager       k   previous-line
 macro pager       gg  <top><refresh>
 macro pager       G   <bottom><refresh>
 
