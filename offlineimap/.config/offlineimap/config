@@ -1,6 +1,3 @@
-# Sample minimal config file.  Copy this to ~/.offlineimaprc and edit to
-# get started fast.
-
 [general]
 ui = ttyui
 metadata = ~/.config/offlineimap
@@ -32,4 +29,6 @@ remotehost = mail.gandi.net
 remoteuser = greg@gpanders.com
 remotepasseval = get_pass("mail/greg@gpanders.com")
 nametrans = lambda f: "Sent" if f.startswith("Sent") else "Trash" if f.startswith("Trash") else f
-folderfilter = lambda f: f not in ["Junk", "Spam", "Trash"]
+folderfilter = lambda f: f not in ["Junk", "Spam"]
+
+# vim: ft=conf
