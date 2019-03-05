@@ -1,1 +1,1 @@
-autocmd BufRead,BufNewFile *.muttrc set filetype=muttrc
+autocmd BufRead,BufNewFile */.config/mutt/* setf muttrc
