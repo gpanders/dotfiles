@@ -1,3 +1,4 @@
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
-source ~/.vim/vimrc
+let $MYVIMRC = expand('~/.vim/vimrc')
+source $MYVIMRC
