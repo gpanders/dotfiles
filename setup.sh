@@ -78,13 +78,23 @@ if hash offlineimap 2>/dev/null; then
 fi
 
 if ! hash mutt 2>/dev/null && ! hash neomutt 2>/dev/null; then
-    read -r -p "Install mutt? [y/N] " ans
+    read -r -p "Install neomutt? [y/N] " ans
     if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
         install neomutt
+    fi
+    if ! hash urlview 2>/dev/null; then
+        install urlview
+    fi
+    if ! hash msmtp 2>/dev/null; then
+        install msmtp
+    fi
+    if ! hash w3m 2>/dev/null; then
+        install w3m
     fi
 fi
 
 if hash neomutt 2>/dev/null; then
+    # Symlink neomutt to mutt
     if ! hash mutt 2>/dev/null; then
         ln -s "$(command -v neomutt)" /usr/local/bin/mutt
     else
@@ -92,13 +102,6 @@ if hash neomutt 2>/dev/null; then
     fi
     echo "Creating symlinks for mutt"
     stow -t "$HOME" mutt
-fi
-
-if ! hash msmtp 2>/dev/null; then
-    read -r -p "Install msmtp? [y/N] " ans
-    if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-        install msmtp
-    fi
 fi
 
 if hash msmtp 2>/dev/null; then
