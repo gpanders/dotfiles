@@ -3,6 +3,10 @@ if &filetype !=# 'python'
   finish
 endif
 
+" If a valid formatter executable is found, autoformat the buffer when writing
+" the file
+let g:python_format_on_write = 1
+
 " gz opens a split window with a python shell
 nmap <buffer> gz <Plug>(PytermOpen)
 
@@ -20,13 +24,25 @@ endif
 
 let &l:path = &path . ',' . g:python_include_path
 
-if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= '|setl path< cpt< cc<'
-else
-  let b:undo_ftplugin = '|setl path< cpt< cc<'
+let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
+let b:undo_ftplugin .= '|setl path< cpt< cc<'
+
+if executable('black')
+  setl formatprg=black\ -q\ -
+elseif executable('yapf')
+  setl formatprg=yapf
 endif
 
-if executable('yapf')
-  setl formatprg=yapf
-  let b:undo_ftplugin .= ' fp<'
+if !empty(&l:formatprg)
+  augroup python.vim.PreWrite
+    autocmd!
+    autocmd BufWritePre <buffer>
+          \ if g:python_format_on_write |
+          \   let view = winsaveview() |
+          \   execute '%!' . &l:formatprg |
+          \   call winrestview(view) |
+          \   unlet view |
+          \ endif
+  augroup END
+  let b:undo_ftplugin .= ' fp<|au! python.vim.PreWrite'
 endif
