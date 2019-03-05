@@ -32,7 +32,6 @@ set sidebar_new_mail_only = no
 # Any mailboxes that are whitelisted will always be visible, even if the
 # sidebar_new_mail_only option is enabled.
 sidebar_whitelist '~/.mail/personal/INBOX'
-sidebar_whitelist '~/.mail/gmail/INBOX'
 
 # When searching for mailboxes containing new mail, should the search wrap
 # around when it reaches the end of the list?
