@@ -391,7 +391,7 @@ noremap ,b :buffers<CR>:b<Space>
 " Remap & to preserve substitution flags
 nnoremap <silent> & :&&<CR>
 
-" Backspace goes back to previous buffer
+" <Space><Tab> goes back to previous buffer
 nnoremap <silent> <Space><Tab> <C-^>
 
 " Map ,, to ,
