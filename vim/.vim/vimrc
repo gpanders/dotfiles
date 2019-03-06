@@ -59,55 +59,65 @@ function! s:ColorSchemePostSetup()
   endif
   if g:colors_name ==# 'flattened'
     if &background ==# 'light'
-      hi User1 ctermfg=15 ctermbg=11 guifg=#FDF6E3 guibg=#657B83
-      hi User2 ctermfg=15 ctermbg=14 guifg=#FDF6E3 guibg=#93A1A1
-      hi User3 ctermfg=11 ctermbg=7 guifg=#657B83 guibg=#EEE8D5
-      hi User4 ctermfg=15 ctermbg=14 guifg=#FDF6E3 guibg=#93A1A1
-      hi User5 ctermfg=15 ctermbg=11 guifg=#FDF6E3 guibg=#657B83
-      hi StatuslineModeNormal ctermfg=145 ctermbg=236 guifg=#ABB2BF guibg=#2C323C
-      hi StatuslineModeInsert ctermfg=235 ctermbg=39 guifg=#282C34 guibg=#61AFEF
-      hi StatuslineModeReplace ctermfg=235 ctermbg=204 guifg=#282C34 guibg=#E06C75
-      hi StatuslineModeVisual ctermfg=235 ctermbg=170 guifg=#282C34 guibg=#C678DD
+      hi User1 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
+      hi User2 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
+      hi User3 ctermfg=11 ctermbg=7 guifg=#657b83 guibg=#eee8d5
+      hi User4 ctermfg=15 ctermbg=14 guifg=#fdf6e3 guibg=#93a1a1
+      hi User5 ctermfg=15 ctermbg=11 guifg=#fdf6e3 guibg=#657b83
+      hi link StatuslineModeNormal Normal
+      hi StatuslineModeInsert ctermfg=4 guifg=#61afef
+      hi StatuslineModeReplace ctermfg=1 guifg=#e06c75
+      hi StatuslineModeVisual ctermfg=5 guifg=#c678dd
     else
-      hi User1 ctermfg=8 ctermbg=12 guifg=#002B36 guibg=#839496
-      hi User2 ctermfg=8 ctermbg=10 guifg=#002B36 guibg=#586E75
+      hi User1 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
+      hi User2 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
       hi User3 ctermfg=12 ctermbg=0 guifg=#839496 guibg=#073642
-      hi User4 ctermfg=8 ctermbg=10 guifg=#002B36 guibg=#586E75
-      hi User5 ctermfg=8 ctermbg=12 guifg=#002B36 guibg=#839496
-      hi StatuslineModeNormal ctermfg=145 ctermbg=236 guifg=#ABB2BF guibg=#2C323C
-      hi StatuslineModeInsert ctermfg=235 ctermbg=39 guifg=#282C34 guibg=#61AFEF
-      hi StatuslineModeReplace ctermfg=235 ctermbg=204 guifg=#282C34 guibg=#E06C75
-      hi StatuslineModeVisual ctermfg=235 ctermbg=170 guifg=#282C34 guibg=#C678DD
+      hi User4 ctermfg=8 ctermbg=10 guifg=#002b36 guibg=#586e75
+      hi User5 ctermfg=8 ctermbg=12 guifg=#002b36 guibg=#839496
+      hi link StatuslineModeNormal Normal
+      hi StatuslineModeInsert ctermfg=4 guifg=#61afef
+      hi StatuslineModeReplace ctermfg=1 guifg=#e06c75
+      hi StatuslineModeVisual ctermfg=5 guifg=#c678dd
     endif
   elseif g:colors_name ==# 'base16-eighties'
-    hi User1 ctermbg=11 guibg=#515151
-    hi User2 ctermfg=7 ctermbg=0 guifg=#D3D0C8 guibg=#2D2D2D
-    hi User3 ctermfg=8 guifg=#747369
-    hi User4 ctermfg=7 ctermbg=0 guifg=#D3D0C8 guibg=#2D2D2D
-    hi User5 ctermbg=11 guibg=#515151
-    hi StatuslineModeNormal ctermfg=7 guifg=#D3D0D8
-    hi StatuslineModeInsert ctermfg=4 guifg=#6699CC
-    hi StatuslineModeReplace ctermfg=1 guifg=#F2777A
-    hi StatuslineModeVisual ctermfg=5 guifg=#CC99CC
+    hi User1 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#a09f93 guibg=#515151
+    hi User2 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#747369 guibg=#2d2d2d
+    hi User3 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#747369 guibg=#2d2d2d
+    hi User4 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#a09f93 guibg=#515151
+    hi User5 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#a09f93 guibg=#515151
 
+    hi link StatuslineModeNormal Normal
+    hi StatuslineModeInsert ctermfg=4 guifg=#6699cc
+    hi StatuslineModeReplace ctermfg=1 guifg=#f2777a
+    hi StatuslineModeVisual ctermfg=5 guifg=#cc99cc
+
+    " These groups look really bad by default, so make them better
     hi SpellBad term=underline cterm=underline ctermfg=1 gui=underline guifg=#f2777a
-    hi WildMenu ctermbg=11 ctermfg=15 guibg=#515151 guifg=#F2F0EC
+    hi WildMenu ctermbg=11 ctermfg=15 guibg=#515151 guifg=#f2f0ec
+    hi clear Underlined
+    hi Underlined term=underline cterm=underline gui=underline
   elseif g:colors_name ==# 'base16-onedark'
     hi User1 cterm=reverse gui=reverse
-    hi User2 ctermbg=237 guibg=#3E4452
-    hi User3 ctermfg=145 ctermbg=235 guifg=#ABB2BF guibg=#282C34
-    hi User4 ctermbg=237 guibg=#3E4452
+    hi User2 ctermbg=10 guibg=#353b45
+    hi User3 ctermfg=7 guifg=#abb2bf
+    hi link User4 User2
     hi User5 cterm=reverse gui=reverse
-    hi StatuslineModeNormal ctermfg=145 ctermbg=236 guifg=#ABB2BF guibg=#2C323C
-    hi StatuslineModeInsert ctermfg=235 ctermbg=39 guifg=#61AFEF guibg=#282C34
-    hi StatuslineModeReplace ctermfg=235 ctermbg=204 guifg=#E06C75 guibg=#282C34
-    hi StatuslineModeVisual ctermfg=235 ctermbg=170 guifg=#C678DD guibg=#282C34
+
+    hi link StatuslineModeNormal Normal
+    hi StatuslineModeInsert ctermfg=4 guifg=#61afef
+    hi StatuslineModeReplace ctermfg=1 guifg=#e06c75
+    hi StatuslineModeVisual ctermfg=5 guifg=#c678dd
   elseif g:colors_name ==# 'apprentice'
-    hi link User1 StatusLine
-    hi link User2 StatusLine
-    hi link User3 StatusLine
-    hi link User4 StatusLine
-    hi link User5 StatusLine
+    hi User1 term=bold,reverse ctermfg=235 ctermbg=101 guifg=#262626 guibg=#87875f
+    hi User2 ctermfg=242 ctermbg=235 guifg=#6c6c6c guibg=#262626
+    hi User3 ctermfg=242 ctermbg=235 guifg=#6c6c6c guibg=#262626
+    hi User4 term=bold,reverse ctermfg=235 ctermbg=101 guifg=#262626 guibg=#87875f
+    hi User5 term=bold,reverse ctermfg=235 ctermbg=101 guifg=#262626 guibg=#87875f
+
+    hi link StatuslineModeNormal Normal
+    hi StatuslineModeInsert ctermfg=4 guifg=#5f87af
+    hi StatuslineModeReplace ctermfg=1 guifg=#af5f5f
+    hi StatuslineModeVisual ctermfg=5 guifg=#5f5f87
   endif
 endfunction
 
@@ -273,7 +283,7 @@ function! StatuslineGitBranch()
   if exists('*FugitiveHead')
     let branch = FugitiveHead()
     if branch != ""
-      return "  " . branch . " "
+      return branch
     endif
   endif
   return ""
@@ -299,6 +309,9 @@ function! StatuslineMode()
   endif
 endfunction
 
+" Initialize StatuslineMode highlight group
+highlight! link StatuslineMode StatuslineModeNormal
+
 function! StatuslineFlags()
   let str = ''
   if &mod
@@ -311,22 +324,20 @@ function! StatuslineFlags()
 endfunction
 
 set laststatus=2
-set statusline=                               " Reset the statusline
-set statusline+=%#StatuslineMode#
-set statusline+=\ %{StatuslineMode()}\        " Mode indicator
-set statusline+=%*
-set statusline+=%1*\ %<%f\                    " Filename
-set statusline+=%{StatuslineFlags()}          " Help/modified/RO markers
-set statusline+=%2*\ %n\                      " Buffer number
-set statusline+=%3*                           " Reset color
-set statusline+=%{StatuslineGitBranch()}      " Git branch (with icon)
-set statusline+=%=                            " Break point for right justify
+set statusline=                             | " Reset the statusline
+set statusline+=%#StatuslineMode#           |
+set statusline+=\ %{StatuslineMode()}\      | " Mode indicator
+set statusline+=%*                          |
+set statusline+=%1*\ %<%f\                  | " Filename
+set statusline+=%{StatuslineFlags()}        | " Help/modified/RO markers
+set statusline+=%2*\ %{&ft}\                | " Filetype
+set statusline+=%{StatuslineLineEnding()}\  | " Line ending
+set statusline+=%3*                         | " Reset color
+set statusline+=%=                          | " Break point for right justify
 
-set statusline+=%{&ft}\                       " Filetype
-set statusline+=%{StatuslineLineEnding()}\    " Line ending type
-set statusline+=%4*\ %(%l:%c%V%)\             " Line and column number
-set statusline+=%5*\ %P\                      " Percent through file
-
+set statusline+=%{StatuslineGitBranch()}\   | " Git branch (with icon)
+set statusline+=%4*\ %(%l:%c%V%)\           | " Line and column number
+set statusline+=%5*\ %P\                    | " Percent through file
 
 " }}}
 
