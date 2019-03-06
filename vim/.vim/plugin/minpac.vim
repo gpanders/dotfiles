@@ -86,7 +86,6 @@ function! s:PackInit()
     endif
 
     " Colorschemes
-    call minpac#add('joshdick/onedark.vim')
     call minpac#add('romainl/flattened')
     call minpac#add('romainl/Apprentice')
     call minpac#add('chriskempson/base16-vim')
