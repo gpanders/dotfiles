@@ -79,7 +79,20 @@ function! s:ColorSchemePostSetup()
       hi StatuslineModeReplace ctermfg=235 ctermbg=204 guifg=#282C34 guibg=#E06C75
       hi StatuslineModeVisual ctermfg=235 ctermbg=170 guifg=#282C34 guibg=#C678DD
     endif
-  elseif g:colors_name ==# 'onedark'
+  elseif g:colors_name ==# 'base16-eighties'
+    hi User1 ctermbg=11 guibg=#515151
+    hi User2 ctermfg=7 ctermbg=0 guifg=#D3D0C8 guibg=#2D2D2D
+    hi User3 ctermfg=8 guifg=#747369
+    hi User4 ctermfg=7 ctermbg=0 guifg=#D3D0C8 guibg=#2D2D2D
+    hi User5 ctermbg=11 guibg=#515151
+    hi StatuslineModeNormal ctermfg=7 guifg=#D3D0D8
+    hi StatuslineModeInsert ctermfg=4 guifg=#6699CC
+    hi StatuslineModeReplace ctermfg=1 guifg=#F2777A
+    hi StatuslineModeVisual ctermfg=5 guifg=#CC99CC
+
+    hi SpellBad term=underline cterm=underline ctermfg=1 gui=underline guifg=#f2777a
+    hi WildMenu ctermbg=11 ctermfg=15 guibg=#515151 guifg=#F2F0EC
+  elseif g:colors_name ==# 'base16-onedark'
     hi User1 cterm=reverse gui=reverse
     hi User2 ctermbg=237 guibg=#3E4452
     hi User3 ctermfg=145 ctermbg=235 guifg=#ABB2BF guibg=#282C34
@@ -95,19 +108,6 @@ function! s:ColorSchemePostSetup()
     hi link User3 StatusLine
     hi link User4 StatusLine
     hi link User5 StatusLine
-  elseif g:colors_name ==# 'base16-eighties'
-    hi User1 ctermbg=11 guibg=#515151
-    hi User2 ctermfg=7 ctermbg=0 guifg=#D3D0C8 guibg=#2D2D2D
-    hi User3 ctermfg=8 guifg=#747369
-    hi User4 ctermfg=7 ctermbg=0 guifg=#D3D0C8 guibg=#2D2D2D
-    hi User5 ctermbg=11 guibg=#515151
-    hi StatuslineModeNormal ctermfg=7 guifg=#D3D0D8
-    hi StatuslineModeInsert ctermfg=4 guifg=#6699CC
-    hi StatuslineModeReplace ctermfg=1 guifg=#F2777A
-    hi StatuslineModeVisual ctermfg=5 guifg=#CC99CC
-
-    hi SpellBad term=underline cterm=underline ctermfg=1 gui=underline guifg=#f2777a
-    hi WildMenu ctermbg=11 ctermfg=15 guibg=#515151 guifg=#F2F0EC
   endif
 endfunction
 
@@ -273,7 +273,7 @@ function! StatuslineGitBranch()
   if exists('*FugitiveHead')
     let branch = FugitiveHead()
     if branch != ""
-      return "   " . branch . " "
+      return "  " . branch . " "
     endif
   endif
   return ""
