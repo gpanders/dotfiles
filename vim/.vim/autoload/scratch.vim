@@ -18,5 +18,7 @@ function! scratch#open(command, ...)
     execute 'vglobal/' . a:1 . '/delete'
   endif
   silent %substitute/\%^\_s*\n\|\_s*\%$
+  let height = min([line('$'), 20])
+  execute height . 'wincmd_'
   0
 endfunction
