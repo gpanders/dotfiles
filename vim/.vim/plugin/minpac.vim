@@ -73,6 +73,7 @@ function! s:PackInit()
     " Language specific
     " Python
     call minpac#add('davidhalter/jedi-vim')
+    call minpac#add('drgarcia1986/python-compilers.vim')
 
     " LaTeX
     call minpac#add('lervag/vimtex')

@@ -207,6 +207,7 @@ set smarttab
 set softtabstop=4
 set splitbelow
 set splitright
+set tagcase=smart
 set virtualedit+=block
 
 " Enable undofile if possible
@@ -435,14 +436,34 @@ nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR><C-L>
 vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
 
 " \c changes directory to current buffer's directory
-nnoremap <silent> \c :<C-U>cd %:h<Bar>echo 'Changed directory to ' . getcwd()<CR>
+nnoremap <silent> \c :cd %:p:h<Bar>echo 'Changed directory to ' . getcwd()<CR>
 
-" ,c changes local buffer directory to project directory (if the buffer is in
-" a recognized Projectionist project) or the current buffer's directory
-nnoremap <expr> ,c ":" . (exists(":Plcd")?"Plcd":"lcd %:h") . "\<Bar>echo 'Changed directory of current window to ' . getcwd()\<CR>"
+" ,c changes local working directory to buffer's directory
+nnoremap <silent> ,c :lcd %:p:h<Bar>echo 'Changed directory to ' . getcwd()<CR>
 
 " Format whole buffer with formatprg without changing cursor position
 nnoremap <Space>gq mzHmygggqG`yzt`z
+
+" Show tag stack
+nnoremap <Space>t :tags<CR>
+
+" Navigate through tag stack
+nnoremap <expr> >t ":\<C-U>" . (v:count ? v:count : '') . "tag\<CR>"
+
+" This is the same as CTRL-T, but it's nice to have symmetry
+nnoremap <expr> <t ":\<C-U>" . (v:count ? v:count : '') . "pop\<CR>"
+
+" Show registers
+nnoremap <Space>r :registers<CR>
+
+" Show marks
+nnoremap <Space>m :marks<CR>:norm! `
+
+" Show only user placed marks (A-Z and a-z)
+let alphabet = join(map(
+      \ range(char2nr('A'), char2nr('Z')) + range(char2nr('a'), char2nr('z')),
+      \ 'nr2char(v:val)'), '')
+execute 'nnoremap <Space>M :marks ' . alphabet . '<CR>'
 
 " }}}
 

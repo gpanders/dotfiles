@@ -21,7 +21,7 @@ augroup Dispatch
   autocmd FileType c,cpp let b:dispatch = 'clang-tidy -quiet %:S'
 
   " Python
-  autocmd FileType python let b:dispatch = 'pylint -f parseable -s no -- %:S'
+  autocmd FileType python let b:dispatch = 'pytest --tb=short -q'
 
   " TeX
   autocmd FileType tex let b:dispatch = 'chktex -q -v0 -- %:S'

@@ -13,6 +13,9 @@ nmap <buffer> gz <Plug>(PytermOpen)
 " Don't complete from include files (there are too many!)
 setlocal complete-=i
 
+" Use flake8 as makeprg for linting
+compiler flake8
+
 " Show boundary at 80 characters
 let &l:colorcolumn = join(range(80, 336), ',')
 

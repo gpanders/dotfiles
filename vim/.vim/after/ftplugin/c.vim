@@ -1,5 +1,7 @@
-" C
-if &filetype !=# 'c'
+" C filetype plugin
+" Author: Greg Anders <greg@gpanders.com>
+
+if &filetype !=# 'c' && &filetype !=# 'cpp'
   finish
 endif
 
@@ -12,19 +14,18 @@ setlocal complete+=i,d
 " Set include pattern
 setlocal include=^\\s*#\\s*include
 
-" Use improved :Man command as keywordprg
-setlocal keywordprg=:Man
-
 " Include headers on Unix
 if has('unix')
-  if get(g:, 'os', '') ==# 'Darwin'
-    setlocal path+=/usr/local/opt/llvm/include/c++/v1
-  else
-    setlocal path+=/usr/include
-  endif
+  setlocal path=.,/usr/local/include,/usr/include,,
 endif
 
-let b:undo_ftplugin .= '|setl cms< cpt< inc< path< kp<'
+let b:undo_ftplugin .= '|setl cms< cpt< inc< path<'
+
+" Use improved :Man command as keywordprg
+if exists(':Man')
+  setlocal keywordprg=:Man
+  let b:undo_ftplugin .= ' kp<'
+endif
 
 if executable('clang-format')
   setlocal formatprg=clang-format
