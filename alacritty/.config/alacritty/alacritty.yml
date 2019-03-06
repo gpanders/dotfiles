@@ -664,3 +664,5 @@ key_bindings:
   - { key: F,        mods: Alt,     chars: "\x1bf"                           }
   - { key: N,        mods: Alt,     chars: "\x1bn"                           }
   - { key: P,        mods: Alt,     chars: "\x1bp"                           }
+  - { key: T,        mods: Alt,     chars: "\x1bt"                           }
+  - { key: V,        mods: Alt,     chars: "\x1bv"                           }
