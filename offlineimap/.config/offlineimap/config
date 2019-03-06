@@ -8,15 +8,15 @@ accounts = gpanders
 enabled = yes
 filename = ~/.config/mutt/mailboxes
 header = "mailboxes "
-peritem = "+%(accountname)s/%(foldername)s"
+peritem = "+%(foldername)s"
 sep = " "
 footer = "\n"
-#incremental = no
 
 [Account gpanders]
 localrepository = Local
 remoterepository = Remote
-postsynchook = ~/.config/offlineimap/notmuch.sh
+# postsynchook = ~/.config/offlineimap/notmuch.sh
+postsynchook = notmuch new
 
 [Repository Local]
 type = Maildir

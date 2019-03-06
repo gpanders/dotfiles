@@ -1,1 +1,4 @@
 subscribe ^kernelnewbies@kernelnewbies\\.org$
+subscribe ^neomutt-users@neomutt\\.org$
+
+# vim: ft=neomuttrc
