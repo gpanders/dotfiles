@@ -45,4 +45,14 @@ let g:projectionist_heuristics = {
       \   'after/compiler/*.vim': {
       \     'type': 'compiler',
       \   }
+      \ },
+      \ 'CMakeLists.txt&build/': {
+      \   '*': { 'dispatch': '-dir=build -- make -f build/Makefile' },
+      \ },
+      \ 'include/': {
+      \   '*.h':   { 'path': 'include' },
+      \   '*.hpp': { 'path': 'include' },
+      \   '*.c':   { 'path': 'include' },
+      \   '*.cc':  { 'path': 'include' },
+      \   '*.cpp': { 'path': 'include' },
       \ }}
