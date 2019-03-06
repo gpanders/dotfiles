@@ -2,7 +2,7 @@
 
 set from = "greg@gpanders.com"
 set mbox_type = Maildir
-set folder = "~/.mail"
+set folder = ~/.mail
 set spoolfile = +INBOX
 set postponed = +Drafts
 set record = +Sent
@@ -24,6 +24,16 @@ set text_flowed
 set sort = threads
 set sort_aux = reverse-last-date-received
 set pager_index_lines = 10
+
+# Don't ask to append messages to a mailbox
+set confirmappend = no
+
+# Don't ask to delete messages, just do it
+set delete = yes
+
+# Automatically apply actions to all tagged messages. This is how most modern
+# email clients work anyway
+set auto_tag = yes
 
 set alias_file = ~/.config/mutt/aliases
 set sort_alias = alias
@@ -47,52 +57,9 @@ set message_cachedir = ~/.cache/mutt/messages
 source ~/.config/mutt/colors/base16.muttrc
 
 # Bindings
-
-# g is group-reply by default, we'll map that to R instead
-bind  index,pager g   noop
-bind  index       gg  first-entry
-
-# G is fetch-mail by default, since I use offlineimap I don't ever fetch mail
-# from a pop server
-bind  index       G   last-entry
-
-bind  index,pager ]   next-undeleted
-bind  index,pager [   previous-undeleted
-
-# Navigate like vim
-bind  index,pager \Cu previous-page
-bind  index,pager \Cd next-page
-bind  pager       j   next-line
-bind  pager       k   previous-line
-macro pager       gg  <top><refresh>
-macro pager       G   <bottom><refresh>
-
-# Bind R to group-reply
-bind  index,pager R   group-reply
-
-# For some reason the screen gets borked after closing a message and requires
-# a redraw
-macro pager       q   <exit><refresh>
+source ~/.config/mutt/bindings
 
 # Set up notmuch virtual mailboxes
-set virtual_spoolfile = yes
-set vfolder_format = "  %f %?n?%4n new?"
+# ifdef notmuch 'source ~/.config/mutt/notmuch'
 
-set nm_default_uri = notmuch://`notmuch config get database.path`
-set nm_record = yes
-set nm_record_tags = "-inbox,-unread,+archive,+sent"
-set nm_unread_tag = "unread"
-
-macro index,pager c <change-vfolder>?
-bind index,pager Y modify-labels
-bind index,pager S vfolder-from-query
-
-virtual-mailboxes "Inbox" "notmuch://?query=folder:INBOX"
-virtual-mailboxes "Archive" "notmuch://?query=folder:Archive"
-virtual-mailboxes "Sent" "notmuch://?query=folder:Sent"
-virtual-mailboxes "Trash" "notmuch://?query=folder:Trash"
-
-folder-hook "INBOX" 'macro index,pager A "<tag-prefix><modify-labels>-inbox +archive\n<save-message>=Archive\ny<sync-mailbox>" "Archive message"'
-folder-hook "Archive" 'macro index,pager A "<tag-prefix><modify-labels>+inbox -archive\n<save-message>=INBOX\ny<sync-mailbox>y" "Unarchive message"'
-
-# vim: syntax=neomuttrc
+# vim: ft=neomuttrc
