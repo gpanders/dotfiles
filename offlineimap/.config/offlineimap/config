@@ -2,7 +2,7 @@
 ui = ttyui
 metadata = ~/.config/offlineimap
 pythonfile = ~/.config/offlineimap/helpers.py
-accounts = Personal
+accounts = gpanders
 
 [mbnames]
 enabled = yes
@@ -13,16 +13,16 @@ sep = " "
 footer = "\n"
 #incremental = no
 
-[Account Personal]
-localrepository = PersonalLocal
-remoterepository = PersonalRemote
+[Account gpanders]
+localrepository = Local
+remoterepository = Remote
 postsynchook = ~/.config/offlineimap/notmuch.sh
 
-[Repository PersonalLocal]
+[Repository Local]
 type = Maildir
-localfolders = ~/.mail/Personal
+localfolders = ~/.mail
 
-[Repository PersonalRemote]
+[Repository Remote]
 type = IMAP
 sslcacertfile = /etc/ssl/cert.pem
 remotehost = mail.gandi.net
