@@ -1,17 +1,29 @@
+# Greg Anders (gpanders)'s muttrc <https://github.com/gpanders/dotfiles.git>
+
+set from = "greg@gpanders.com"
+set mbox_type = Maildir
 set folder = "~/.mail"
+set spoolfile = +INBOX
+set postponed = +Drafts
+set record = +Sent
+set mbox = +Archive
+set trash = +Trash
 source ~/.config/mutt/mailboxes
 
 set mailcap_path = ~/.config/mutt/mailcap
 alternative_order text/plain text/enriched text/html
 auto_view text/html
 
-set my_name = "Greg Anders"
-set realname = $my_name
+set realname = "Greg Anders"
 set editor = `echo \$EDITOR`
 set use_from = yes
-set envelope_from = yes
+set use_envelope_from = yes
 set sendmail = msmtp
 set edit_headers = yes
+set text_flowed
+set sort = threads
+set sort_aux = reverse-last-date-received
+set pager_index_lines = 10
 
 set alias_file = ~/.config/mutt/aliases
 set sort_alias = alias
@@ -31,20 +43,10 @@ set header_cache = ~/.cache/mutt/headers
 # This will cost important disk usage according to your e-mail amount.
 set message_cachedir = ~/.cache/mutt/messages
 
-set nm_default_uri = "notmuch://$HOME/.mail"
-set nm_record = yes
-set nm_record_tags = "-inbox,-unread,+archive,+sent"
-set nm_unread_tag = "unread"
-
-macro index \\ "<vfolder-from-query>"
-macro index,pager A "<save-message>=Archive\n<sync-mailbox>" "Archive message"
-macro index,pager X "<change-vfolder>?" "Change to vfolder overview"
-bind index,pager + entire-thread
-bind index < vfolder-window-backward
-bind index > vfolder-window-forward
-
 # Colorscheme
 source ~/.config/mutt/colors/base16.muttrc
+
+# Bindings
 
 # g is group-reply by default, we'll map that to R instead
 bind  index,pager g   noop
@@ -68,20 +70,29 @@ macro pager       G   <bottom><refresh>
 # Bind R to group-reply
 bind  index,pager R   group-reply
 
-# For some reason the screen gets borked after closing a message and requires a
-# redraw
+# For some reason the screen gets borked after closing a message and requires
+# a redraw
 macro pager       q   <exit><refresh>
 
-folder-hook .          source ~/.config/mutt/config.default
-folder-hook "Personal" source ~/.config/mutt/config.personal
-
 # Set up notmuch virtual mailboxes
-set virtual_spoolfile = no
+set virtual_spoolfile = yes
+set vfolder_format = "  %f %?n?%4n new?"
 
-virtual-mailboxes "Inbox" "notmuch://?query=tag:inbox and not tag:archive"
-virtual-mailboxes "Archive" "notmuch://?query=tag:archive"
-virtual-mailboxes "Sent" "notmuch://?query=tag:sent"
-virtual-mailboxes "Trash" "notmuch://?query=tag:trash"
+set nm_default_uri = notmuch://`notmuch config get database.path`
+set nm_record = yes
+set nm_record_tags = "-inbox,-unread,+archive,+sent"
+set nm_unread_tag = "unread"
 
-# Use Personal mailbox as default
-source ~/.config/mutt/config.personal
+macro index,pager c <change-vfolder>?
+bind index,pager Y modify-labels
+bind index,pager S vfolder-from-query
+
+virtual-mailboxes "Inbox" "notmuch://?query=folder:INBOX"
+virtual-mailboxes "Archive" "notmuch://?query=folder:Archive"
+virtual-mailboxes "Sent" "notmuch://?query=folder:Sent"
+virtual-mailboxes "Trash" "notmuch://?query=folder:Trash"
+
+folder-hook "INBOX" 'macro index,pager A "<tag-prefix><modify-labels>-inbox +archive\n<save-message>=Archive\ny<sync-mailbox>" "Archive message"'
+folder-hook "Archive" 'macro index,pager A "<tag-prefix><modify-labels>+inbox -archive\n<save-message>=INBOX\ny<sync-mailbox>y" "Unarchive message"'
+
+# vim: syntax=neomuttrc
