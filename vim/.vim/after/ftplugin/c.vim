@@ -22,7 +22,7 @@ endif
 let b:undo_ftplugin .= '|setl cms< cpt< inc< path<'
 
 " Use improved :Man command as keywordprg
-if exists(':Man')
+if exists(':Man') == 2
   setlocal keywordprg=:Man
   let b:undo_ftplugin .= ' kp<'
 endif

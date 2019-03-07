@@ -18,20 +18,11 @@ set cpo-=C
 CompilerSet makeprg=py.test\ --tb=short\ -q
 
 CompilerSet errorformat=
-      \%-G=%#\ ERRORS\ =%#,
-      \%-G=%#\ FAILURES\ =%#,
-      \%-G%\\s%\\*%\\d%\\+\ tests\ deselected%.%#,
-      \ERROR:\ %m,
-      \%E_%\\+\ %m\ _%\\+,
-      \%Cfile\ %f\\,\ line\ %l,
-      \%CE\ %#%m,
-      \%EE\ \ \ \ \ File\ \"%f\"\\,\ line\ %l,
-      \%ZE\ \ \ %[%^\ ]%\\@=%m,
-      \%Z%f:%l:\ %m,
-      \%Z%f:%l,
-      \%C%.%#,
-      \%-G%.%#\ seconds,
-      \%-G%.%#,
+  \%*[_]\ %m\ %*[_],
+  \%A%>%f:%l:\ %.%#,
+  \%-Z>%*[\ ]%m,
+  \E%m,
+  \%-G%.%#
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
