@@ -186,27 +186,28 @@ set hlsearch
 set ignorecase
 set include=
 set incsearch
+set nolangremap
 set lazyredraw
 set linebreak
 set magic
 set matchpairs+=<:>
 set matchtime=2
 set modeline
-set nolangremap
-set noshowmode
-set nostartofline
 set nrformats-=octal
 set number
 set pumheight=10
 set scrolloff=2
 set shiftwidth=4
 set showmatch
+set noshowmode
 set sidescrolloff=5
 set smartcase
 set smarttab
 set softtabstop=4
 set splitbelow
 set splitright
+set nostartofline
+set noswapfile
 set tagcase=smart
 set virtualedit+=block
 
@@ -460,10 +461,10 @@ nnoremap <Space>r :registers<CR>
 nnoremap <Space>m :marks<CR>:norm! `
 
 " Show only user placed marks (A-Z and a-z)
-let alphabet = join(map(
+let s:alphabet = join(map(
       \ range(char2nr('A'), char2nr('Z')) + range(char2nr('a'), char2nr('z')),
       \ 'nr2char(v:val)'), '')
-execute 'nnoremap <Space>M :marks ' . alphabet . '<CR>'
+execute 'nnoremap <Space>M :marks ' . s:alphabet . '<CR>'
 
 " }}}
 
@@ -473,7 +474,7 @@ vnoremap # y?\V<C-R>"<CR>
 " }}}
 
 " Terminal mode mappings {{{
-if exists(':tmap')
+if exists(':tmap') == 2
   tnoremap <silent> <C-W> <C-\><C-N><C-W>
   tnoremap <C-W><C-W> <C-W>
 endif
@@ -495,7 +496,7 @@ elseif executable('ag')
 endif
 
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
-command! -nargs=+ -bang Grep execute 'silent botright grep<bang> <args>' | copen | redraw!
+command! -nargs=+ -bang Grep silent botright grep<bang> <q-args> | copen | redraw!
 nnoremap <Bslash><Bslash> :Grep!<space>
 " }}}
 
