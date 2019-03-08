@@ -82,15 +82,6 @@ if ! hash mutt 2>/dev/null && ! hash neomutt 2>/dev/null; then
     if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
         install neomutt
     fi
-    if ! hash urlview 2>/dev/null; then
-        install urlview
-    fi
-    if ! hash msmtp 2>/dev/null; then
-        install msmtp
-    fi
-    if ! hash w3m 2>/dev/null; then
-        install w3m
-    fi
 fi
 
 if hash neomutt 2>/dev/null; then
@@ -100,6 +91,20 @@ if hash neomutt 2>/dev/null; then
     else
         echo "Both mutt and neomutt installed!"
     fi
+
+    # Install mail utilities
+    if ! hash urlview 2>/dev/null; then
+        install urlview
+    fi
+
+    if ! hash msmtp 2>/dev/null; then
+        install msmtp
+    fi
+
+    if ! hash w3m 2>/dev/null; then
+        install w3m
+    fi
+
     echo "Creating symlinks for mutt"
     stow -t "$HOME" mutt
 fi
