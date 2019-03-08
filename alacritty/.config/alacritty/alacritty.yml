@@ -152,80 +152,81 @@ render_timer: false
 persistent_logging: false
 
 # If `true`, bold text is drawn using the bright color variants.
-draw_bold_text_with_bright_colors: false
+draw_bold_text_with_bright_colors: true
 
 # Colors
 
 # Tomorrow Night Bright
-#colors:
-#  # Default colors
-#  primary:
-#    background: '0x000000'
-#    foreground: '0xeaeaea'
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x000000'
+#     foreground: '0xeaeaea'
 
-#    # Bright and dim foreground colors
-#    #
-#    # The dimmed foreground color is calculated automatically if it is not present.
-#    # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
-#    # is `false`, the normal foreground color will be used.
-#    #dim_foreground: '0x9a9a9a'
-#    #bright_foreground: '0xffffff'
+#     # Bright and dim foreground colors
+#     #
+#     # The dimmed foreground color is calculated automatically if it is not present.
+#     # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
+#     # is `false`, the normal foreground color will be used.
+#     #dim_foreground: '0x9a9a9a'
+#     #bright_foreground: '0xffffff'
 
-#  # Cursor colors
-#  #
-#  # Colors which should be used to draw the terminal cursor. If these are unset,
-#  # the cursor color will be the inverse of the cell color.
-#  #cursor:
-#  #  text: '0x000000'
-#  #  cursor: '0xffffff'
+#   # Cursor colors
+#   #
+#   # Colors which should be used to draw the terminal cursor. If these are unset,
+#   # the cursor color will be the inverse of the cell color.
+#   #cursor:
+#   #  text: '0x000000'
+#   #  cursor: '0xffffff'
 
-#  # Normal colors
-#  normal:
-#    black:   '0x000000'
-#    red:     '0xd54e53'
-#    green:   '0xb9ca4a'
-#    yellow:  '0xe6c547'
-#    blue:    '0x7aa6da'
-#    magenta: '0xc397d8'
-#    cyan:    '0x70c0ba'
-#    white:   '0xeaeaea'
+#   # Normal colors
+#   normal:
+#     black:   '0x000000'
+#     red:     '0xd54e53'
+#     green:   '0xb9ca4a'
+#     yellow:  '0xe6c547'
+#     blue:    '0x7aa6da'
+#     magenta: '0xc397d8'
+#     cyan:    '0x70c0ba'
+#     white:   '0xeaeaea'
 
-#  # Bright colors
-#  bright:
-#    black:   '0x666666'
-#    red:     '0xff3334'
-#    green:   '0x9ec400'
-#    yellow:  '0xe7c547'
-#    blue:    '0x7aa6da'
-#    magenta: '0xb77ee0'
-#    cyan:    '0x54ced6'
-#    white:   '0xffffff'
+#   # Bright colors
+#   bright:
+#     black:   '0x666666'
+#     red:     '0xff3334'
+#     green:   '0x9ec400'
+#     yellow:  '0xe7c547'
+#     blue:    '0x7aa6da'
+#     magenta: '0xb77ee0'
+#     cyan:    '0x54ced6'
+#     white:   '0xffffff'
 
-#  # Dim colors
-#  #
-#  # If the dim colors are not set, they will be calculated automatically based
-#  # on the `normal` colors.
-#  #dim:
-#  #  black:   '0x000000'
-#  #  red:     '0x8c3336'
-#  #  green:   '0x7a8530'
-#  #  yellow:  '0x97822e'
-#  #  blue:    '0x506d8f'
-#  #  magenta: '0x80638e'
-#  #  cyan:    '0x497e7a'
-#  #  white:   '0x9a9a9a'
+#   # Dim colors
+#   #
+#   # If the dim colors are not set, they will be calculated automatically based
+#   # on the `normal` colors.
+#   #dim:
+#   #  black:   '0x000000'
+#   #  red:     '0x8c3336'
+#   #  green:   '0x7a8530'
+#   #  yellow:  '0x97822e'
+#   #  blue:    '0x506d8f'
+#   #  magenta: '0x80638e'
+#   #  cyan:    '0x497e7a'
+#   #  white:   '0x9a9a9a'
 
-#  # Indexed Colors
-#  #
-#  # The indexed colors include all colors from 16 to 256.
-#  # When these are not set, they're filled with sensible defaults.
-#  #
-#  # Example:
-#  #   `- { index: 16, color: '0xff00ff' }`
-#  #
-#  indexed_colors: []
+#   # Indexed Colors
+#   #
+#   # The indexed colors include all colors from 16 to 256.
+#   # When these are not set, they're filled with sensible defaults.
+#   #
+#   # Example:
+#   #   `- { index: 16, color: '0xff00ff' }`
+#   #
+#   indexed_colors: []
 
-# Base 16 Eighties
+# Base16 Eighties 256 - alacritty color config
+# Chris Kempson (http://chriskempson.com)
 colors:
   # Default colors
   primary:
@@ -239,28 +240,26 @@ colors:
 
   # Normal colors
   normal:
-    black:   '0x2d2d2d' # 0
-    red:     '0xf2777a' # 1
-    green:   '0x99cc99' # 2
-    yellow:  '0xffcc66' # 3
-    blue:    '0x6699cc' # 4
-    magenta: '0xcc99cc' # 5
-    cyan:    '0x66cccc' # 6
-    white:   '0xd3d0c8' # 7
+    black:   '0x2d2d2d'
+    red:     '0xf2777a'
+    green:   '0x99cc99'
+    yellow:  '0xffcc66'
+    blue:    '0x6699cc'
+    magenta: '0xcc99cc'
+    cyan:    '0x66cccc'
+    white:   '0xd3d0c8'
 
   # Bright colors
   bright:
-    black:   '0x747369' # 8
-    red:     '0xf99157' # 9
-    green:   '0x393939' # 10
-    yellow:  '0x515151' # 11
-    blue:    '0xa09f93' # 12
-    magenta: '0xe8e6df' # 13
-    cyan:    '0xd27b53' # 14
-    white:   '0xf2f0ec' # 15
+    black:   '0x747369'
+    red:     '0xf2777a'
+    green:   '0x99cc99'
+    yellow:  '0xffcc66'
+    blue:    '0x6699cc'
+    magenta: '0xcc99cc'
+    cyan:    '0x66cccc'
+    white:   '0xf2f0ec'
 
-  # Some programs can only use 256 colors (e.g. mutt) so the base16 color files
-  # for those programs need to have some additional colors defined
   indexed_colors:
     - { index: 16, color: '0xf99157' }
     - { index: 17, color: '0xd27b53' }
@@ -269,7 +268,7 @@ colors:
     - { index: 20, color: '0xa09f93' }
     - { index: 21, color: '0xe8e6df' }
 
-# Base16 OneDark - alacritty color config
+# Base16 OneDark 256 - alacritty color config
 # Lalit Magant (http://github.com/tilal6991)
 # colors:
 #   # Default colors
@@ -296,23 +295,21 @@ colors:
 #   # Bright colors
 #   bright:
 #     black:   '0x545862'
-#     red:     '0xd19a66'
-#     green:   '0x353b45'
-#     yellow:  '0x3e4451'
-#     blue:    '0x565c64'
-#     magenta: '0xb6bdca'
-#     cyan:    '0xbe5046'
+#     red:     '0xe06c75'
+#     green:   '0x98c379'
+#     yellow:  '0xe5c07b'
+#     blue:    '0x61afef'
+#     magenta: '0xc678dd'
+#     cyan:    '0x56b6c2'
 #     white:   '0xc8ccd4'
 
-#   # Some programs can only use 256 colors (e.g. mutt) so the base16 color files
-#   # for those programs need to have some additional colors defined
 #   indexed_colors:
-#    - { index: 16, color: '0xd19a66' }
-#    - { index: 17, color: '0xbe5046' }
-#    - { index: 18, color: '0x353b45' }
-#    - { index: 19, color: '0x3e4451' }
-#    - { index: 20, color: '0x565c64' }
-#    - { index: 21, color: '0xb6bdca' }
+#     - { index: 16, color: '0xd19a66' }
+#     - { index: 17, color: '0xbe5046' }
+#     - { index: 18, color: '0x353b45' }
+#     - { index: 19, color: '0x3e4451' }
+#     - { index: 20, color: '0x565c64' }
+#     - { index: 21, color: '0xb6bdca' }
 
 # Apprentice
 # https://github.com/romainl/Apprentice
@@ -691,6 +688,7 @@ key_bindings:
   - { key: C,        mods: Alt,     chars: "\x1bc"                           }
   - { key: D,        mods: Alt,     chars: "\x1bd"                           }
   - { key: F,        mods: Alt,     chars: "\x1bf"                           }
+  - { key: K,        mods: Alt,     chars: "\x1bk"                           }
   - { key: N,        mods: Alt,     chars: "\x1bn"                           }
   - { key: P,        mods: Alt,     chars: "\x1bp"                           }
   - { key: T,        mods: Alt,     chars: "\x1bt"                           }
