@@ -4,6 +4,9 @@ function! s:PackInit()
   if exists('*minpac#init')
     call minpac#init()
 
+    call minpac#add('gpanders/vim-man')
+    call minpac#add('gpanders/vim-oldfiles')
+
     " Tim Pope plugin suite
     call minpac#add('tpope/vim-unimpaired')
     call minpac#add('tpope/vim-fugitive')
@@ -18,6 +21,7 @@ function! s:PackInit()
     call minpac#add('tpope/vim-characterize')
     call minpac#add('tpope/vim-abolish')
     call minpac#add('tpope/vim-speeddating')
+    call minpac#add('tpope/vim-scriptease')
 
     " Better directory browser
     call minpac#add('justinmk/vim-dirvish')
