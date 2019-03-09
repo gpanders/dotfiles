@@ -1,6 +1,6 @@
 " Load editexisting.vim
 if has('packages') && !has('nvim')
-  packadd! editexisting
+  packadd editexisting
 else
   silent! runtime macros/editexisting.vim
 endif
