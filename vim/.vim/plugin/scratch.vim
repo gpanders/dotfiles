@@ -8,6 +8,4 @@ if exists('g:loaded_scratch')
 endif
 let g:loaded_scratch = 1
 
-command! -nargs=+ Scratch     call scratch#open(<f-args>)
-command! -nargs=? Scriptnames call scratch#open('scriptnames', <f-args>)
-command! -nargs=? Oldfiles    call scratch#open('oldfiles', <f-args>)
+command! -nargs=+ Scratch call scratch#open(<f-args>)

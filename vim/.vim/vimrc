@@ -128,6 +128,7 @@ autocmd vimrc ColorScheme * call s:ColorSchemePostSetup()
 autocmd vimrc ColorScheme * highlight Comment gui=italic cterm=italic
 
 " Load colorscheme
+let base16colorspace = 256
 silent! colorscheme base16-eighties
 
 " If no other colorscheme, use vim default
@@ -373,6 +374,9 @@ inoremap <C-U> <C-G>u<C-U>
 
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
+
+" Insert current date with <C-\>d
+inoremap <silent> <C-\>d <C-R>=strftime('%Y-%m-%d')<CR>
 
 " }}}
 
