@@ -1,12 +1,12 @@
 " FZF must be installed to ~/.fzf
-if !get(g:, 'loaded_fzf', 0)
+if !get(g:, 'loaded_fzf', 0) || exists(':Files') != 2
   finish
 endif
 
-nnoremap <silent> <C-P> :Files<CR>
+nnoremap <silent> ,f :Files<CR>
 nnoremap <silent> ,t :Tags<CR>
-nnoremap <silent> ,k :Marks<CR>
 nnoremap <silent> ,b :Buffers<CR>
+nnoremap <silent> <Space>m :Marks<CR>
 
 " Emacs-like M-x command
 nnoremap <silent> <Space><Space> :Commands<CR>
