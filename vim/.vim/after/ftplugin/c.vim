@@ -19,6 +19,12 @@ if has('unix')
   setlocal path=.,/usr/local/include,/usr/include,,
 endif
 
+" Make [[, ]], etc. work even when {'s are not in the first column
+noremap [[ ?{<CR>w99[{
+noremap ][ /}<CR>b99]}
+noremap ]] j0[[%/{<CR>
+noremap [] k$][%?}<CR>
+
 let b:undo_ftplugin .= '|setl cms< cpt< inc< path<'
 
 " Use improved :Man command as keywordprg
