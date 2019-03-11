@@ -36,13 +36,7 @@ function! s:PackInit()
     call minpac#add('junegunn/vim-easy-align')
 
     " Fuzzy file finder and bonus commands
-    " call minpac#add('junegunn/fzf.vim')
-
-    " Fun plugin for writing plain text. Highlight current paragraph
-    call minpac#add('junegunn/limelight.vim')
-
-    " Use :Goyo to enable focus mode
-    call minpac#add('junegunn/goyo.vim')
+    call minpac#add('junegunn/fzf.vim')
 
     " Show change signs in the gutter for git files
     call minpac#add('airblade/vim-gitgutter')
@@ -64,9 +58,6 @@ function! s:PackInit()
 
     " Populate results of :ilist and :dlist in quickfix window
     call minpac#add('romainl/vim-qlist')
-
-    " Run tests from within vim
-    call minpac#add('janko/vim-test')
 
     " Add more text objects to operate on
     call minpac#add('wellle/targets.vim')
