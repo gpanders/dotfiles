@@ -53,7 +53,7 @@ endif
 
 " Set User1-9 highlight groups for statusline
 " These are used by adding %N* to the statusline, where {N} is 1-9
-function! s:ColorSchemePostSetup()
+function! s:colors()
   if !exists('g:colors_name')
     finish
   endif
@@ -121,7 +121,7 @@ function! s:ColorSchemePostSetup()
   endif
 endfunction
 
-autocmd vimrc ColorScheme * call s:ColorSchemePostSetup()
+autocmd vimrc ColorScheme * call s:colors()
 " }}}
 "
 " Try to make comments italic
@@ -453,10 +453,15 @@ nnoremap <Space>gq mzHmygggqG`yzt`z
 nnoremap <Space>t :tags<CR>
 
 " Navigate through tag stack
-nnoremap <expr> >t ":\<C-U>" . (v:count ? v:count : '') . "tag\<CR>"
+nnoremap <expr> >t ":\<C-U>" . v:count1 . "tag\<CR>"
 
 " This is the same as CTRL-T, but it's nice to have symmetry
-nnoremap <expr> <t ":\<C-U>" . (v:count ? v:count : '') . "pop\<CR>"
+nnoremap <expr> <t ":\<C-U>" . v:count1 . "pop\<CR>"
+
+nnoremap <expr> <q ":\<C-U>colder " . v:count1 . "\<CR>"
+nnoremap <expr> >q ":\<C-U>cnewer " . v:count1 . "\<CR>"
+nnoremap <expr> <l ":\<C-U>lolder " . v:count1 . "\<CR>"
+nnoremap <expr> >l ":\<C-U>lnewer " . v:count1 . "\<CR>"
 
 " Show registers
 nnoremap <Space>r :registers<CR>
