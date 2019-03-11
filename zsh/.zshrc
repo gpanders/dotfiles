@@ -15,6 +15,7 @@ if [[ ! -f "${ZDOTDIR:-$HOME}/.zplugins" ]]; then
     sorin-ionescu/prezto path:modules/gnu-utility
     mafredri/zsh-async
     sindresorhus/pure
+    chriskempson/base16-shell
   " > ${ZDOTDIR:-$HOME}/.zplugins
 fi
 source "${ZDOTDIR:-$HOME}/.zplugins"
@@ -96,6 +97,11 @@ bindkey '^[[B' history-substring-search-down
 bindkey '^Q' push-line-or-edit
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
+
+# Disable flow control
+if (( $+commands[stty] )); then
+  stty -ixon
+fi
 
 # Enable dircolors
 if (( $+commands[dircolors] )); then
