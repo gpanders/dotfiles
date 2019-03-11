@@ -4,7 +4,7 @@ function! s:PackInit()
   if exists('*minpac#init')
     call minpac#init()
 
-    call minpac#add('gpanders/vim-man')
+    call minpac#add('gpanders/vim-man', {'type': 'opt'})
     call minpac#add('gpanders/vim-oldfiles')
 
     " Tim Pope plugin suite
@@ -73,13 +73,10 @@ function! s:PackInit()
     " LaTeX
     call minpac#add('lervag/vimtex')
 
-    " Neovim or Vim 8.1+ required
-    if has('nvim') || v:version >= 801
-      " Language Server Client
-      " call minpac#add('neoclide/coc.nvim', {'do': 'call coc#util#install()'})
-      " Asynchronous linting
-      call minpac#add('w0rp/ale')
-    endif
+    " Language Server Client
+    call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'do': 'call coc#util#install()'})
+    " Asynchronous linting
+    call minpac#add('w0rp/ale', {'type': 'opt'})
 
     " Colorschemes
     call minpac#add('romainl/flattened')
@@ -88,6 +85,6 @@ function! s:PackInit()
   endif
 endfunction
 
-command! PackUpdate call <SID>PackInit() | call minpac#update('', {'do': 'call minpac#status()'})
-command! PackClean  call <SID>PackInit() | call minpac#clean()
-command! PackStatus call <SID>PackInit() | call minpac#status()
+let s:file = expand('<sfile>:p')
+command! PackUpdate execute 'source ' . s:file | call <SID>PackInit() | call minpac#update('', {'do': 'call minpac#status()'})
+command! PackClean  execute 'source ' . s:file | call <SID>PackInit() | call minpac#clean()
