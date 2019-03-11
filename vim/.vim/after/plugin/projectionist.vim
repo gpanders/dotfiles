@@ -49,7 +49,7 @@ let g:projectionist_heuristics = {
       \ 'CMakeLists.txt&build/': {
       \   '*': { 'dispatch': '-dir=build -- make -f build/Makefile' },
       \ },
-      \ 'include/': {
+      \ 'include/**/*.h': {
       \   '*.h':   { 'path': 'include' },
       \   '*.hpp': { 'path': 'include' },
       \   '*.c':   { 'path': 'include' },
