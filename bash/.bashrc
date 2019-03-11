@@ -44,6 +44,11 @@ if [ -f /usr/local/share/git-core/contrib/completion/git-prompt.sh ]; then
   source /usr/local/share/git-core/contrib/completion/git-prompt.sh
 fi
 
+# If __git_ps1 is not defined create a dummy function
+if ! type __git_ps1 2>/dev/null; then
+  __git_ps1() { echo ""; }
+fi
+
 if [ "$color_prompt" = yes ]; then
   # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
   PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[30m\]$(__git_ps1 " %s")\n$([ ! -z "$SSH_TTY" ] && echo "\h " )\[\033[$([ $? -eq 0 ] && echo 35 || echo 31);1m\]\$ \[\033[00m\]'
