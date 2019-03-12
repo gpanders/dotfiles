@@ -272,24 +272,36 @@ set wildignore+=tags
 
 " Statusline {{{
 " Set the statusline
+
+let s:statusline_separator = ' / '
+
 function! StatuslineLineEnding()
   if &ff ==# 'unix'
-    return 'LF'
+    return 'LF' . s:statusline_separator
   elseif &ff ==# 'dos'
-    return 'CRLF'
+    return 'CRLF' . s:statusline_separator
   elseif &ff ==# 'mac'
-    return 'CR'
+    return 'CR' . s:statusline_separator
+  endif
+  return ''
+endfunction
+
+function! StatuslineFileType()
+  if &ft ==# ''
+    return 'none'
+  else
+    return &ft
   endif
 endfunction
 
 function! StatuslineGitBranch()
   if exists('*FugitiveHead')
     let branch = FugitiveHead()
-    if branch != ""
-      return branch
+    if branch != ''
+      return branch . s:statusline_separator
     endif
   endif
-  return ""
+  return ''
 endfunction
 
 function! StatuslineMode()
@@ -303,7 +315,7 @@ function! StatuslineMode()
   elseif m ==# 'R'
     highlight! link StatuslineMode StatuslineModeReplace
     return 'R'
-  elseif m ==? 'v' || m==# ''
+  elseif m ==? 'v' || m ==# ''
     highlight! link StatuslineMode StatuslineModeVisual
     return 'V'
   else
@@ -333,14 +345,17 @@ set statusline+=\ %{StatuslineMode()}\      | " Mode indicator
 set statusline+=%*                          |
 set statusline+=%1*\ %<%f\                  | " Filename
 set statusline+=%{StatuslineFlags()}        | " Help/modified/RO markers
-set statusline+=%2*\ %{&ft}\                | " Filetype
-set statusline+=%{StatuslineLineEnding()}\  | " Line ending
-set statusline+=%3*                         | " Reset color
+set statusline+=%2*                         | " Filetype
 set statusline+=%=                          | " Break point for right justify
 
-set statusline+=%{StatuslineGitBranch()}\   | " Git branch (with icon)
-set statusline+=%4*\ %(%l:%c%V%)\           | " Line and column number
-set statusline+=%5*\ %P\                    | " Percent through file
+set statusline+=%3*                         | " Reset color
+set statusline+=%{StatuslineGitBranch()}    | " Git branch (with icon)
+set statusline+=%{StatuslineLineEnding()}   | " Line ending
+set statusline+=%{StatuslineFileType()}\    | " Filetype
+set statusline+=%4*\                      | " Color boundary
+set statusline+=%(%l:%c%V%)                 | " Line and column number
+set statusline+=\ %5*                       | " Color boundary 5
+set statusline+=%P\                         | " Percent through file
 
 " }}}
 
