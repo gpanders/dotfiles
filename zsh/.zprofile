@@ -54,6 +54,12 @@ if [[ -s "$HOME/.cargo/env" ]]; then
   source "$HOME/.cargo/env"
 fi
 
+# Setup nvm
+if [[ -s "$HOME/.nvm" ]]; then
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+fi
+
 # Remove duplicates in path variables
 typeset -gU path fpath cdpath manpath
 
