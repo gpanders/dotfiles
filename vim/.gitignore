@@ -1,5 +1,5 @@
 .vim/.netrwhist
-.vim/wiki
+.vim/wikis.vim
 .vim/session
 .vim/pack/*
 !.vim/pack/minpac/opt/minpac
