@@ -5,7 +5,7 @@ endif
 
 " If a valid formatter executable is found, autoformat the buffer when writing
 " the file
-let g:python_format_on_write = 1
+let g:python_format_on_write = 0
 
 " gz opens a split window with a python shell
 nmap <buffer> gz <Plug>(PytermOpen)
