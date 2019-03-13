@@ -3,6 +3,8 @@ if &filetype !=# 'markdown'
   finish
 endif
 
+compiler pandoc
+
 setlocal textwidth=80
 setlocal spell
 
