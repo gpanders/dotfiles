@@ -520,7 +520,7 @@ elseif executable('ag')
 endif
 
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
-command! -nargs=+ -bang Grep silent botright grep<bang> <q-args> | copen | redraw!
+command! -nargs=+ -bang Grep execute 'silent botright grep<bang> ' . shellescape(<q-args>, 1) | cwindow | redraw!
 nnoremap <Bslash><Bslash> :Grep!<space>
 " }}}
 
