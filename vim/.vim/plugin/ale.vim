@@ -7,7 +7,7 @@ if !has('nvim') && v:version < 801
   finish
 endif
 
-" silent! packadd ale
+silent! packadd ale
 
 " This variable must be set before ALE is loaded so that it can create the
 " proper autocmds

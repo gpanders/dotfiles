@@ -4,8 +4,8 @@
 " Date: 2019-02-25
 
 " Only load coc when using nvim
-if !has('nvim') && v:version < 801
+if !has('nvim')
   finish
 endif
 
-" silent! packadd coc.nvim
+silent! packadd coc.nvim

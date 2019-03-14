@@ -8,6 +8,7 @@ if !get(g:, 'loaded_ale', 0)
 endif
 
 let g:ale_python_pylint_change_directory = 0
+let g:ale_c_parse_compile_commands = 1
 
 let g:ale_fixers = {
       \ 'python': ['isort'],
