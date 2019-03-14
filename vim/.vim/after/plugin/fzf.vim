@@ -1,16 +1,11 @@
-" FZF must be installed to ~/.fzf
-if !get(g:, 'loaded_fzf', 0) || exists(':Files') != 2
+" fzf configuration
+" Author: Greg Anders <greg@gpanders.com>
+
+if !get(g:, 'loaded_fzf', 0)
   finish
 endif
 
-nnoremap <silent> ,f :Files<CR>
-nnoremap <silent> ,t :Tags<CR>
-nnoremap <silent> ,b :Buffers<CR>
-nnoremap <silent> <Space>m :Marks<CR>
+nnoremap <silent> ,f :FZF<CR>
 
-" Emacs-like M-x command
-nnoremap <silent> <Space><Space> :Commands<CR>
-
-autocmd! FileType fzf
-autocmd FileType fzf set laststatus=0 noruler
-      \| autocmd BufLeave <buffer> set laststatus=2 ruler
+autocmd! FileType fzf set laststatus=0 noruler
+      \ | autocmd BufLeave <buffer> set laststatus=2 ruler

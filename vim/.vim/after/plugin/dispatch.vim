@@ -14,7 +14,7 @@ endif
 " when the command is `pytest' (without the dot) unless we add this
 let g:dispatch_compilers['pytest'] = 'pytest'
 
-augroup Dispatch
+augroup plugin.dispatch
   autocmd!
 
   " C/C++

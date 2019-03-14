@@ -5,12 +5,17 @@ if &filetype !=# 'css'
   finish
 endif
 
+let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
+
 let g:css_format_on_write = 1
 
 if executable('prettier')
   setlocal formatprg=prettier\ %
-  let b:undo_ftplugin = get(b:, 'undo_ftplugin', '') . '|setl fp<'
-  augroup css.vim.PreWrite
+endif
+
+if !empty(&l:formatprg)
+  let b:undo_ftplugin .= '|setl fp<'
+  augroup ftplugin.css
     autocmd!
     autocmd BufWritePre <buffer>
           \ if g:css_format_on_write |
@@ -20,5 +25,5 @@ if executable('prettier')
           \   unlet view |
           \ endif
   augroup END
-  let b:undo_ftplugin .= '|au! css.vim.PreWrite'
+  let b:undo_ftplugin .= '|exe "au! ftplugin.css * <buffer>"'
 endif
