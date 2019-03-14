@@ -5,7 +5,7 @@
 " Author: Greg Anders <greg@gpanders.com>
 " Date: 2018-12-24
 
-augroup Binary
+augroup plugin.binary
   autocmd!
   autocmd BufReadPost  * if &bin | %!xxd
   autocmd BufReadPost  * set ft=xxd
@@ -17,4 +17,4 @@ augroup Binary
 augroup END
 
 " Delete the augroup if not in binary mode
-au VimEnter * if !&binary | au! Binary | endif
+au VimEnter * if !&binary | au! plugin.binary | endif

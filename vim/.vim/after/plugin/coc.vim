@@ -8,15 +8,20 @@ endif
 
 let g:coc_filetypes = ['c', 'cpp', 'rust']
 
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-inoremap <silent> <expr> <C-Space> coc#refresh()
-
-augroup CocSetup
+augroup plugin.coc
   autocmd!
-  autocmd FileType * if index(g:coc_filetypes, &ft) >= 0 |
-        \ setlocal formatexpr=CocAction('formatSelected') |
-        \ exe "nmap <silent> <buffer> gr <Plug>(coc-references)" |
-        \ exe "nmap <silent> <buffer> gd <Plug>(coc-definition)" |
-        \ exe "au CursorHoldI,CursorMovedI <buffer> call CocAction('showSignatureHelp')" |
+  autocmd FileType *
+        \ if index(g:coc_filetypes, &ft) >= 0 |
+        \   inoremap <buffer> <silent> <expr> <C-Space> coc#refresh() |
+        \   setlocal formatexpr=CocAction('formatSelected') |
+        \   nmap <silent> <buffer> gr <Plug>(coc-references) |
+        \   nmap <silent> <buffer> gd <Plug>(coc-definition) |
+        \   exec 'au! plugin.coc CursorHoldI,CursorMovedI <buffer> call CocAction("showSignatureHelp")' |
+        \   let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
+        \     . '|setl fex<'
+        \     . '|iun <buffer> <C-Space>'
+        \     . '|nun <buffer> gr'
+        \     . '|nun <buffer> gd'
+        \     . '|exe "au! plugin.coc * <buffer>"' |
         \ endif
 augroup END

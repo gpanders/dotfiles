@@ -3,6 +3,8 @@ if &filetype !=# 'python'
   finish
 endif
 
+let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
+
 " If a valid formatter executable is found, autoformat the buffer when writing
 " the file
 let g:python_format_on_write = 0
@@ -27,17 +29,16 @@ endif
 
 let &l:path = &path . ',' . g:python_include_path
 
-let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 let b:undo_ftplugin .= '|setl path< cpt< cc<'
 
 if executable('black')
-  setl formatprg=black\ -q\ -
+  setlocal formatprg=black\ -q\ -
 elseif executable('yapf')
-  setl formatprg=yapf
+  setlocal formatprg=yapf
 endif
 
 if !empty(&l:formatprg)
-  augroup python.vim.PreWrite
+  augroup ftplugin.python
     autocmd!
     autocmd BufWritePre <buffer>
           \ if g:python_format_on_write |
@@ -47,5 +48,5 @@ if !empty(&l:formatprg)
           \   unlet view |
           \ endif
   augroup END
-  let b:undo_ftplugin .= ' fp<|au! python.vim.PreWrite'
+  let b:undo_ftplugin .= ' fp<|exe "au! ftplugin.python * <buffer>"'
 endif
