@@ -35,9 +35,6 @@ function! s:PackInit()
     " Align lines to a character, e.g. =, ;, :, etc.
     call minpac#add('junegunn/vim-easy-align')
 
-    " Fuzzy file finder and bonus commands
-    call minpac#add('junegunn/fzf.vim')
-
     " Show change signs in the gutter for git files
     call minpac#add('airblade/vim-gitgutter')
 
