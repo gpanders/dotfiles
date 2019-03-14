@@ -17,6 +17,8 @@ if exists('g:vimwiki_list')
     if get(a:wiki, 'syntax', 'markdown') ==# 'markdown'
       " Settings for markdown wikis
       call extend(a:wiki, {
+            \ 'syntax': 'markdown',
+            \ 'ext': '.md',
             \ 'custom_wiki2html': $MYVIMRUNTIME . '/plugin/vimwiki/convert.py',
             \ 'template_default': 'mindoc-pandoc',
             \ 'template_ext': 'html',
