@@ -17,9 +17,6 @@ let g:dispatch_compilers['pytest'] = 'pytest'
 augroup plugin.dispatch
   autocmd!
 
-  " C/C++
-  autocmd FileType c,cpp let b:dispatch = 'clang-tidy -quiet %:S'
-
   " Python
   autocmd FileType python let b:dispatch = 'pytest --tb=short -q'
 
