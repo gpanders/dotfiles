@@ -13,16 +13,31 @@ let g:vimwiki_toc_header_level = 1
 
 " Extend wikis with default values
 if exists('g:vimwiki_list')
-  call map(g:vimwiki_list, { _, val -> extend(val,
-        \ {
-        \   'syntax': 'markdown',
-        \   'ext': '.md',
-        \   'path_html': simplify(val.path . '/html'),
-        \   'custom_wiki2html': $MYVIMRUNTIME . '/plugin/vimwiki/convert.py',
-        \   'template_path': $MYVIMRUNTIME . '/plugin/vimwiki/templates/',
-        \   'template_default': 'mindoc-pandoc',
-        \   'template_ext': 'html',
-        \   'css_name': $MYVIMRUNTIME . '/plugin/vimwiki/style.css',
-        \   'auto_tags': 1,
-        \ }, 'keep')})
+  function! s:extend(index, wiki)
+    if get(a:wiki, 'syntax', 'markdown') ==# 'markdown'
+      " Settings for markdown wikis
+      call extend(a:wiki, {
+            \ 'custom_wiki2html': $MYVIMRUNTIME . '/plugin/vimwiki/convert.py',
+            \ 'template_default': 'mindoc-pandoc',
+            \ 'template_ext': 'html',
+            \ }, 'keep')
+    else
+      " Settings for wiki-style wikis
+      call extend(a:wiki, {
+            \ 'auto_toc': 1,
+            \ }, 'keep')
+    endif
+
+    " Settings for all wikis
+    call extend(a:wiki, {
+          \ 'path_html': simplify(a:wiki.path . '/html'),
+          \ 'template_path': $MYVIMRUNTIME . '/plugin/vimwiki/templates/',
+          \ 'css_name': $MYVIMRUNTIME . '/plugin/vimwiki/style.css',
+          \ 'auto_tags': 1,
+          \ }, 'keep')
+
+    return a:wiki
+  endfunction
+
+  call map(filter(g:vimwiki_list, '!empty(v:val.path)'), function('s:extend'))
 endif
