@@ -1,2 +1,0 @@
-.weechat/sec.conf filter=git-crypt diff=git-crypt
-.weechat/irc.conf filter=git-crypt diff=git-crypt
