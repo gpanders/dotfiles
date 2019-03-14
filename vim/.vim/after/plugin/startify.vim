@@ -9,6 +9,7 @@ endif
 let g:startify_session_persistence = 1
 let g:startify_change_to_vcs_root = 1
 let g:startify_fortune_use_unicode = 1
+let g:startify_session_dir = $MYVIMRUNTIME . '/session'
 let g:startify_bookmarks = [{'c': $MYVIMRC}]
 
 " Add wikis to bookmarks
@@ -33,13 +34,11 @@ if exists('g:vimwiki_list')
     endif
     let wiki_key = 'w' . cnt
     let diary_key = 'd' . cnt
-    let wiki_path = wiki.path . wiki_index . wiki_ext
-    let diary_path = wiki.path . 'diary/diary' . wiki_ext
+    let wiki_path = simplify(wiki.path . '/' . wiki_index . wiki_ext)
+    let diary_path = simplify(wiki.path . '/diary/diary' . wiki_ext)
     let cnt += 1
-    call extend(g:startify_bookmarks, [
-                \ {wiki_key: wiki_path},
-                \ {diary_key: diary_path}
-                \ ])
+    call extend(g:startify_bookmarks,
+          \ [{wiki_key: wiki_path}, {diary_key: diary_path}])
   endfor
 endif
 
