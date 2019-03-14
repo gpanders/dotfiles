@@ -212,6 +212,10 @@ set noswapfile
 set tagcase=smart
 set virtualedit+=block
 
+if has('nvim')
+  set inccommand=nosplit
+endif
+
 " Enable undofile if possible
 if has('persistent_undo')
   set undofile
