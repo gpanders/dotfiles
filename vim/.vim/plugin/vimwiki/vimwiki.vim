@@ -22,6 +22,7 @@ if exists('g:vimwiki_list')
             \ 'custom_wiki2html': $MYVIMRUNTIME . '/plugin/vimwiki/convert.py',
             \ 'template_default': 'mindoc-pandoc',
             \ 'template_ext': 'html',
+            \ 'list_margin': 0,
             \ }, 'keep')
     else
       " Settings for wiki-style wikis
