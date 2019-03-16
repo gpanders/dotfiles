@@ -10,6 +10,7 @@ set mbox = +Archive
 set trash = +Trash
 source ~/.config/mutt/mailboxes
 
+# Settings for handling MIME types
 set mailcap_path = ~/.config/mutt/mailcap
 alternative_order text/plain text/enriched text/html
 auto_view text/html
@@ -18,12 +19,23 @@ set realname = "Greg Anders"
 set editor = `echo \$EDITOR`
 set use_from = yes
 set use_envelope_from = yes
+
+# Program to send mail
 set sendmail = msmtp
+
+# Allow headers to be editable
 set edit_headers = yes
+
+# Enable text_flowed formatting
 set text_flowed
+
+# Sort by threads, newest to oldest
 set sort = threads
 set sort_aux = reverse-last-date-received
 set pager_index_lines = 10
+
+# Don't mark messages as "old" if they're still unread
+set mark_old = no
 
 # Don't ask to append messages to a mailbox
 set confirmappend = no
