@@ -162,6 +162,7 @@ set modeline
 set nrformats-=octal
 set number
 set pumheight=10
+set ruler
 set scrolloff=2
 set shiftwidth=4
 set showmatch
@@ -175,10 +176,9 @@ set splitright
 set nostartofline
 set noswapfile
 set tagcase=smart
-set virtualedit+=block
 set ttimeout
 set ttimeoutlen=100
-set ruler
+set virtualedit+=block
 
 if has('nvim')
   set inccommand=nosplit
