@@ -3,7 +3,9 @@
 " Clear all vimrc autocmds at the beginning
 augroup vimrc | autocmd! | augroup END
 
-" Detect OS {{{
+" Setup {{{
+
+" Detect OS
 if !exists('g:os')
   if has('win64') || has('win32') || has('win16')
     let g:os = "Windows"
@@ -11,7 +13,6 @@ if !exists('g:os')
     let g:os = substitute(system('uname'), '\n', '', '')
   endif
 endif
-" }}}
 
 " Set $MYVIMRUNTIME
 if g:os ==# 'Windows'
@@ -20,7 +21,7 @@ else
   let $MYVIMRUNTIME = $HOME . '/.vim'
 endif
 
-" Use vim-pathogen if native packages are not supported {{{
+" Use vim-pathogen if native packages are not supported
 if !has('packages')
   " Use vim-pathogen to emulate native packaging behavior
   if empty(glob($MYVIMRUNTIME . '/autoload/pathogen.vim'))
@@ -28,7 +29,6 @@ if !has('packages')
   endif
   silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
 endif
-" }}}
 
 if has('autocmd')
   filetype plugin indent on
@@ -37,14 +37,14 @@ endif
 if has('syntax') && !exists('g:syntax_on')
   syntax enable
 endif
+" }}}
 
-" Set color scheme {{{
+" Colorscheme {{{
+
 if has('termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
-else
-  let g:onedark_termcolors = 16
 endif
 
 " Colorscheme post-setup {{{
@@ -123,54 +123,19 @@ endfunction
 
 autocmd vimrc ColorScheme * call s:colors()
 " }}}
-"
+
 " Try to make comments italic
 autocmd vimrc ColorScheme * highlight Comment gui=italic cterm=italic
 
 " Load colorscheme
 let base16colorspace = 256
 silent! colorscheme base16-eighties
-
-" If no other colorscheme, use vim default
-if !exists('g:colors_name')
-  set bg=dark
-endif
+set bg=dark
 
 " Highlight trailing whitespace
 highlight TrailingWhitespace ctermbg=204 guibg=#E06C75
 
 " }}}
-
-" GUI settings {{{
-if has('gui_running')
-  if g:os ==# 'Windows'
-    set guifont=Fira_Mono:h10:cANSI:qDRAFT
-  elseif g:os ==# 'Darwin'
-    set guifont=FiraMono-Regular:h11
-  endif
-  set guioptions=teMg!
-  set lines=60
-  set columns=180
-endif
-" }}}
-
-" Set curor shape based on mode
-if !has('nvim')
-  " Vertical bar in insert mode
-  let &t_SI = "\e[6 q"
-  " Underline in replace mode
-  let &t_SR = "\e[4 q"
-  " Block in normal mode
-  let &t_EI = "\e[2 q"
-endif
-
-" Use UTF-8 if we can and env LANG didn't tell us not to
-if has('multi_byte') && !exists('$LANG') && &encoding ==# 'latin1'
-  set encoding=utf-8
-endif
-
-" Sudo save
-cnoreabbrev w!! w !sudo tee > /dev/null %
 
 " Settings {{{
 " Press K to open help docs for option under the cursor
@@ -211,6 +176,9 @@ set nostartofline
 set noswapfile
 set tagcase=smart
 set virtualedit+=block
+set ttimeout
+set ttimeoutlen=100
+set ruler
 
 if has('nvim')
   set inccommand=nosplit
@@ -229,11 +197,6 @@ silent! set breakindent
 
 " Add more completion options
 set completeopt=menu,preview
-
-if !has('nvim') && &ttimeoutlen == -1
-  set ttimeout
-  set ttimeoutlen=100
-endif
 
 " Allow backspacing over all whitespace
 set backspace=indent,eol,start
@@ -262,19 +225,82 @@ endif
 " Don't save options in session files
 set sessionoptions-=options
 
-set path-=/usr/include     " Let C/C++ filetypes set this
-set path+=**               " Search current directory's whole tree
+" Let C/C++ filetypes set this
+set path-=/usr/include
 
-set ruler
+" Search current directory's whole tree
+set path+=**
+
+" Use ripgrep or ag as grepprg if available
+if executable('rg')
+  " Use rg over grep
+  set grepprg=rg\ --vimgrep\ --smart-case\ --hidden\ --glob\ '!.git'
+  set grepformat^=%f:%l:%c:%m
+elseif executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --vimgrep\ --smart-case
+  set grepformat^=%f:%l:%c:%m
+endif
+
+" GUI settings
+if has('gui_running')
+  if g:os ==# 'Windows'
+    set guifont=Fira_Mono:h10:cANSI:qDRAFT
+  elseif g:os ==# 'Darwin'
+    set guifont=FiraMono-Regular:h11
+  endif
+  set guioptions=teMg!
+  set lines=60
+  set columns=180
+endif
+
+" Set curor shape based on mode
+if !has('nvim')
+  " Vertical bar in insert mode
+  let &t_SI = "\e[6 q"
+  " Underline in replace mode
+  let &t_SR = "\e[4 q"
+  " Block in normal mode
+  let &t_EI = "\e[2 q"
+endif
+
+" Use UTF-8 if we can and env LANG didn't tell us not to
+if has('multi_byte') && !exists('$LANG') && &encoding ==# 'latin1'
+  set encoding=utf-8
+endif
+
+" Wild menu
 set wildmenu
 set wildcharm=<C-Z>
 set wildmode=longest:full,full
 set wildignorecase
 set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
 set wildignore+=tags
+
+" Keep temporary files in a single location
+if g:os ==# 'Windows'
+  let cachedir = $HOME . '/vimfiles/cache'
+else
+  if exists('$XDG_CACHE_HOME')
+    let cachedir = $XDG_CACHE_HOME . '/vim'
+  else
+    let cachedir = $HOME . '/.cache/vim'
+  endif
+endif
+
+let &g:backupdir = cachedir . '/backup//' . ',' . &g:backupdir
+let &g:undodir = cachedir . '/undo//' . ',' . &g:undodir
+let &g:directory = cachedir . '/swap//' . ',' . &g:directory
+
+" Set dictionary if it exists
+if g:os !=# 'Windows' && filereadable('/usr/share/dict/words')
+  set dictionary+=/usr/share/dict/words
+endif
+
 " }}}
 
 " Statusline {{{
+
 " Set the statusline
 
 let s:statusline_separator = ' / '
@@ -363,27 +389,9 @@ set statusline+=%P\                         | " Percent through file
 
 " }}}
 
-" Keep temporary files in a single location
-if g:os ==# 'Windows'
-  let cachedir = $HOME . '/vimfiles/cache'
-else
-  if exists('$XDG_CACHE_HOME')
-    let cachedir = $XDG_CACHE_HOME . '/vim'
-  else
-    let cachedir = $HOME . '/.cache/vim'
-  endif
-endif
+" Mappings {{{
 
-let &g:backupdir = cachedir . '/backup//' . ',' . &g:backupdir
-let &g:undodir = cachedir . '/undo//' . ',' . &g:undodir
-let &g:directory = cachedir . '/swap//' . ',' . &g:directory
-
-" Set dictionary if it exists
-if g:os !=# 'Windows' && filereadable('/usr/share/dict/words')
-  set dictionary+=/usr/share/dict/words
-endif
-
-" Insert mode mappings {{{
+" Insert {{{
 
 " jk in Insert mode escapes to Normal mode
 inoremap jk <Esc>l
@@ -399,7 +407,7 @@ inoremap <silent> <C-\>d <C-R>=strftime('%Y-%m-%d')<CR>
 
 " }}}
 
-" Normal mode mappings {{{
+" Normal {{{
 
 " Save by pressing <leader>w
 nnoremap <silent> ,w :w<CR>
@@ -496,37 +504,34 @@ execute 'nnoremap <Space>M :marks ' . s:alphabet . '<CR>'
 
 " }}}
 
-" Visual mode mappings {{{
+" Visual {{{
 vnoremap * y/\V<C-R>"<CR>
 vnoremap # y?\V<C-R>"<CR>
 " }}}
 
-" Terminal mode mappings {{{
+" Terminal {{{
 if exists(':tmap') == 2
   tnoremap <silent> <C-W> <C-\><C-N><C-W>
   tnoremap <C-W><C-W> <C-W>
 endif
 " }}}
 
+" }}}
+
+" Abbreviations {{{
+
+" Command {{{
+" Sudo save
+cnoreabbrev w!! w !sudo tee > /dev/null %
+" }}}
+
+" }}}
+
 " Commands {{{
-
-" Grep {{{
-
-" Use ripgrep or ag as grepprg if available
-if executable('rg')
-  " Use rg over grep
-  set grepprg=rg\ --vimgrep\ --smart-case
-  set grepformat^=%f:%l:%c:%m
-elseif executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --vimgrep\ --smart-case
-  set grepformat^=%f:%l:%c:%m
-endif
 
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
 command! -nargs=+ -bang Grep execute 'silent botright grep<bang> ' . shellescape(<q-args>, 1) | cwindow | redraw!
 nnoremap <Bslash><Bslash> :Grep!<space>
-" }}}
 
 " This comes from vimrc_example.vim. See :h :DiffOrig
 command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
@@ -540,50 +545,6 @@ command! EditFtplugin
       \   execute 'e ' . $MYVIMRUNTIME . '/after/ftplugin/' . &ft . '.vim' |
       \ endif
 
-" }}}
-
-" Pushing built-in commands beyond their limits {{{
-" https://gist.github.com/Konfekt/d8ce5626a48f4e56ecab31a89449f1f0
-function! <sid>CCR()
-  if getcmdtype() isnot# ':'
-    return "\<CR>"
-  endif
-  let cmdline = getcmdline()
-  if cmdline =~# '\v^\s*(ls|files|buffers)!?\s*(\s[+\-=auhx%#]+)?$'
-    " like :ls but prompts for a buffer command
-    return "\<CR>:b"
-  elseif cmdline =~# '\v/(#|nu%[mber])$'
-    " like :g//# but prompts for a command
-    return "\<CR>:"
-  elseif cmdline =~# '\v^\s*(dli%[st]|il%[ist])!?\s+\S'
-    " like :dlist or :ilist but prompts for a count for :djump or :ijump
-    return "\<CR>:" . cmdline[0] . "j  " . join(split(cmdline, " ")[1:]) . "\<C-B>\<S-Right>\<Right>"
-  elseif cmdline =~# '\v^\s*(cli|lli)%[st]!?\s*(\s\d+(,\s*\d+)?)?$'
-    " like :clist or :llist but prompts for an error/location number
-    return "\<CR>:sil " . repeat(cmdline[0], 2) . "\<Space>"
-  elseif cmdline =~# '\v^\s*ol%[dfiles]\s*$'
-    " like :oldfiles but prompts for an old file to edit
-    set nomore
-    return "\<CR>:sil se more|e #<"
-  elseif cmdline =~# '^\s*changes\s*$'
-    " like :changes but prompts for a change to jump to
-    set nomore
-    return "\<CR>:sil se more|norm! g;\<S-Left>"
-  elseif cmdline =~# '\v^\s*ju%[mps]'
-    " like :jumps but prompts for a position to jump to
-    set nomore
-    return "\<CR>:sil se more|norm! \<C-o>\<S-Left>"
-  elseif cmdline =~ '\v^\s*marks\s*(\s\w+)?$'
-    " like :marks but prompts for a mark to jump to
-    return "\<CR>:norm! `"
-  elseif cmdline =~# '\v^\s*undol%[ist]'
-    " like :undolist but prompts for a change to undo
-    return "\<CR>:u "
-  else
-    return "\<c-]>\<CR>"
-  endif
-endfunction
-cnoremap <expr> <CR> <sid>CCR()
 " }}}
 
 " Autocommands {{{
@@ -609,10 +570,16 @@ endif
 " Create syntax group for trailing whitespace in each new buffer
 autocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
 
+" Enable omnicompletion from syntax if no other option available
+" See :h ft-syntax-omni
+if exists('+omnifunc')
+  autocmd FileType *
+        \ if &omnifunc == '' |
+        \   setlocal omnifunc=syntaxcomplete#Complete |
+        \ endif
+endif
+
 augroup END
 " }}}
 
-" Enable per-project configuration {{{
-set exrc
-set secure
-" }}}
+" vim: fdl=0
