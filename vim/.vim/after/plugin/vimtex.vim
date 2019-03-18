@@ -6,10 +6,7 @@ if executable('skim')
   let g:vimtex_view_method = 'skim'
 endif
 
-if get(g:, 'os', '') ==# 'Darwin'
-  let g:vimtex_compiler_program = 'nvr'
-endif
-
+let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_toc_config = {'refresh_always' : 0}
 
