@@ -405,6 +405,12 @@ inoremap {<CR> {<CR>}<Esc>ko
 " Insert current date with <C-\>d
 inoremap <silent> <C-\>d <C-R>=strftime('%Y-%m-%d')<CR>
 
+" Insert current filename with <C-\>f
+inoremap <silent> <C-\>f <C-R>=expand('%:t')<CR>
+
+" Insert full path to file with <C-\>p
+inoremap <silent> <C-\>p <C-R>=expand('%:p')<CR>
+
 " }}}
 
 " Normal {{{

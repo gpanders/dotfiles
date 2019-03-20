@@ -13,7 +13,6 @@ augroup plugin.coc
   autocmd FileType *
         \ if index(g:coc_filetypes, &ft) >= 0 |
         \   inoremap <buffer> <silent> <expr> <C-Space> coc#refresh() |
-        \   setlocal formatexpr=CocAction('formatSelected') |
         \   nmap <silent> <buffer> gr <Plug>(coc-references) |
         \   nmap <silent> <buffer> gd <Plug>(coc-definition) |
         \   exec 'au! plugin.coc CursorHoldI,CursorMovedI <buffer> call CocAction("showSignatureHelp")' |
