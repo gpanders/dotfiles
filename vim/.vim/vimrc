@@ -130,7 +130,11 @@ autocmd vimrc ColorScheme * highlight Comment gui=italic cterm=italic
 " Load colorscheme
 let base16colorspace = 256
 silent! colorscheme base16-eighties
-set bg=dark
+
+" If no other colorscheme, use vim default
+if !exists('g:colors_name')
+  set background=dark
+endif
 
 " Highlight trailing whitespace
 highlight TrailingWhitespace ctermbg=204 guibg=#E06C75
@@ -139,46 +143,68 @@ highlight TrailingWhitespace ctermbg=204 guibg=#E06C75
 
 " Settings {{{
 " Press K to open help docs for option under the cursor
-set autoindent
-set autoread
 set backup
+set completeopt^=menuone
 set confirm
-set cursorline
-set display+=lastline
 set expandtab
 set foldmarker=\ {{{,\ }}}
 set hidden
-set hlsearch
 set ignorecase
 set include=
-set incsearch
-set nolangremap
 set lazyredraw
 set linebreak
-set magic
 set matchpairs+=<:>
 set matchtime=2
-set modeline
-set nrformats-=octal
 set number
 set pumheight=10
-set ruler
 set scrolloff=2
 set shiftwidth=4
 set showmatch
 set noshowmode
 set sidescrolloff=5
 set smartcase
-set smarttab
 set softtabstop=4
 set splitbelow
 set splitright
 set nostartofline
 set noswapfile
 set tagcase=smart
-set ttimeout
-set ttimeoutlen=100
 set virtualedit+=block
+
+" Set options which are defaults in nvim
+if !has('nvim')
+  set autoindent
+  set autoread
+  set backspace=indent,eol,start  " Allow vim to delete whitespace
+  set display=lastline
+  set formatoptions+=j  " Remove comment character when joining lines
+  set history=10000
+  set hlsearch
+  set incsearch
+  set nolangremap
+  set nrformats-=octal  " Don't interpret numbers starting with 0 as octal
+  set ruler
+  set sessionoptions-=options  " Don't save options in session files
+  set smarttab
+  set tabpagemax=50  " Increase maximum number of tab pages allowed
+  set ttimeout
+  set ttimeoutlen=50
+  set viminfo^=!  " Keep and store UPPERCASE global variables
+  set wildmenu
+
+  " Use UTF-8 if we can and env LANG didn't tell us not to
+  if has('multi_byte') && !exists('$LANG') && &encoding ==# 'latin1'
+    set encoding=utf-8
+  endif
+
+  " Set cursor shape based on mode (:h termcap-cursor-shape)
+  " Vertical bar in insert mode
+  let &t_SI = "\e[6 q"
+  " Underline in replace mode
+  let &t_SR = "\e[4 q"
+  " Block in normal mode
+  let &t_EI = "\e[2 q"
+endif
 
 if has('nvim')
   set inccommand=nosplit
@@ -195,35 +221,12 @@ let &colorcolumn = '+' . join(range(1, 256), ',+')
 " Indent wrapped lines
 silent! set breakindent
 
-" Add more completion options
-set completeopt=menu,preview
-
-" Allow backspacing over all whitespace
-set backspace=indent,eol,start
-
 " Specify whitespace chars
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-
-" Delete comment characters when joining commented lines
-set formatoptions+=j
 
 if has('path_extra')
   setglobal tags-=./tags tags-=./tags; tags^=./tags;
 endif
-
-" Increase Vim's command history
-set history=1000
-
-" Set max number of tab pages
-set tabpagemax=50
-
-" Keep and store UPPERCASE global variables
-if !empty(&viminfo)
-  set viminfo^=!
-endif
-
-" Don't save options in session files
-set sessionoptions-=options
 
 " Let C/C++ filetypes set this
 set path-=/usr/include
@@ -254,23 +257,7 @@ if has('gui_running')
   set columns=180
 endif
 
-" Set curor shape based on mode
-if !has('nvim')
-  " Vertical bar in insert mode
-  let &t_SI = "\e[6 q"
-  " Underline in replace mode
-  let &t_SR = "\e[4 q"
-  " Block in normal mode
-  let &t_EI = "\e[2 q"
-endif
-
-" Use UTF-8 if we can and env LANG didn't tell us not to
-if has('multi_byte') && !exists('$LANG') && &encoding ==# 'latin1'
-  set encoding=utf-8
-endif
-
 " Wild menu
-set wildmenu
 set wildcharm=<C-Z>
 set wildmode=longest:full,full
 set wildignorecase
@@ -455,8 +442,8 @@ nnoremap ,vf :vert sf *
 nnoremap ,sf :sf *
 
 " Search for a tag by regex
-nnoremap ,t :tjump /
-nnoremap ,p :ptjump /
+nnoremap ,t :tag /
+nnoremap ,T :ptag /
 
 " Find files in current buffer's directory
 nnoremap ,e :e <C-R>=expand('%:p:h') . '/'<CR>
@@ -485,16 +472,16 @@ nnoremap <Space>gq mzHmygggqG`yzt`z
 " Show tag stack
 nnoremap <Space>t :tags<CR>
 
-" Navigate through tag stack
-nnoremap <expr> >t ":\<C-U>" . v:count1 . "tag\<CR>"
+" Navigate through tag stack. <t is the same as CTRL-T, but it's nice to have
+" symmetry
+nnoremap <silent> <expr> >t ":\<C-U>" . v:count1 . "tag\<CR>"
+nnoremap <silent> <expr> <t ":\<C-U>" . v:count1 . "pop\<CR>"
 
-" This is the same as CTRL-T, but it's nice to have symmetry
-nnoremap <expr> <t ":\<C-U>" . v:count1 . "pop\<CR>"
-
-nnoremap <expr> <q ":\<C-U>colder " . v:count1 . "\<CR>"
-nnoremap <expr> >q ":\<C-U>cnewer " . v:count1 . "\<CR>"
-nnoremap <expr> <l ":\<C-U>lolder " . v:count1 . "\<CR>"
-nnoremap <expr> >l ":\<C-U>lnewer " . v:count1 . "\<CR>"
+" Navigate through quickfix/location lists
+nnoremap <silent> <expr> <q ":\<C-U>colder " . v:count1 . "\<CR>"
+nnoremap <silent> <expr> >q ":\<C-U>cnewer " . v:count1 . "\<CR>"
+nnoremap <silent> <expr> <l ":\<C-U>lolder " . v:count1 . "\<CR>"
+nnoremap <silent> <expr> >l ":\<C-U>lnewer " . v:count1 . "\<CR>"
 
 " Show registers
 nnoremap <Space>r :registers<CR>
@@ -536,7 +523,7 @@ cnoreabbrev w!! w !sudo tee > /dev/null %
 " Commands {{{
 
 " Define a custom command to wrap :grep with :silent, :copen, and :redraw
-command! -nargs=+ -bang Grep execute 'silent botright grep<bang> ' . shellescape(<q-args>, 1) | cwindow | redraw!
+command! -nargs=+ -bang Grep silent botright grep<bang> <args> | copen | redraw!
 nnoremap <Bslash><Bslash> :Grep!<space>
 
 " This comes from vimrc_example.vim. See :h :DiffOrig

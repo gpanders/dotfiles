@@ -76,9 +76,9 @@ function! s:PackInit()
     call minpac#add('w0rp/ale', {'type': 'opt'})
 
     " Colorschemes
-    call minpac#add('romainl/flattened')
-    call minpac#add('romainl/Apprentice')
-    call minpac#add('danielwe/base16-vim')
+    call minpac#add('romainl/flattened', {'type': 'opt'})
+    call minpac#add('romainl/Apprentice', {'type': 'opt'})
+    call minpac#add('danielwe/base16-vim', {'type': 'opt'})
   endif
 endfunction
 
