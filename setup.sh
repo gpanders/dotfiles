@@ -114,6 +114,19 @@ if hash msmtp 2>/dev/null; then
     stow -t "$HOME" msmtp
 fi
 
+if ! hash weechat 2>/dev/null; then
+    read -r -p "Install weechat? [y/N] " ans
+    if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+        install weechat
+    fi
+fi
+
+if hash weechat 2>/dev/null; then
+    echo "Creating symlinks for weechat"
+    stow -t "$HOME" weechat
+fi
+
+
 # Create cache directories for vim
 mkdir -p "$HOME"/.cache/vim/{backup,undo,swap}
 
