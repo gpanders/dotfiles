@@ -5,6 +5,6 @@ if &filetype !=# 'cpp'
   finish
 endif
 
-if get(g:, 'os', '') ==# 'Darwin'
+if isdirectory('/Library/Developer/CommandLineTools')
   let &l:path = glob('/Library/Developer/CommandLineTools/usr/include/c++/*') . ',' . &path
 endif

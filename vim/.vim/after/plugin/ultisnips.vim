@@ -8,5 +8,5 @@ endif
 
 let g:UltiSnipsEnableSnipMate = 0
 let g:UltiSnipsEditSplit = 'tabdo'
-let g:UltiSnipsSnippetsDir = $MYVIMRUNTIME . '/snips'
+let g:UltiSnipsSnippetsDir = $VIMHOME . '/snips'
 let g:UltiSnipsSnippetDirectories = ['snips']
