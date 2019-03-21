@@ -15,8 +15,9 @@ footer = "\n"
 [Account gpanders]
 localrepository = Local
 remoterepository = Remote
-# postsynchook = ~/.config/offlineimap/notmuch.sh
 postsynchook = notmuch new
+autorefresh = 0.5
+quick = 10
 
 [Repository Local]
 type = Maildir
@@ -30,5 +31,7 @@ remoteuser = greg@gpanders.com
 remotepasseval = get_pass("mail/greg@gpanders.com")
 nametrans = lambda f: "Sent" if f.startswith("Sent") else "Trash" if f.startswith("Trash") else f
 folderfilter = lambda f: f not in ["Junk", "Spam"]
+keepalive = 60
+holdconnectionopen = yes
 
 # vim: ft=conf
