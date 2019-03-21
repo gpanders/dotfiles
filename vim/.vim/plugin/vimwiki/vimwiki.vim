@@ -4,7 +4,8 @@
 " Date: 2019-03-12
 
 " Machine specific wiki paths
-" This file should be located at $MYVIMRUNTIME/wikis.vim
+" This file should be located at ~/.vim/wikis.vim (or ~/vimfiles/wikis.vim on
+" Windows)
 runtime wikis.vim
 
 let g:vimwiki_hl_headers = 1
@@ -17,7 +18,7 @@ if !empty(get(g:, 'vimwiki_list', []))
       " Settings for markdown wikis
       call extend(a:wiki, {
             \ 'ext': '.md',
-            \ 'custom_wiki2html': $MYVIMRUNTIME . '/plugin/vimwiki/convert.py',
+            \ 'custom_wiki2html': $VIMHOME . '/plugin/vimwiki/convert.py',
             \ 'template_default': 'mindoc-pandoc',
             \ 'template_ext': 'html',
             \ 'list_margin': 0,
@@ -32,8 +33,8 @@ if !empty(get(g:, 'vimwiki_list', []))
     " Settings for all wikis
     call extend(a:wiki, {
           \ 'path_html': simplify(a:wiki.path . '/html'),
-          \ 'template_path': $MYVIMRUNTIME . '/plugin/vimwiki/templates/',
-          \ 'css_name': $MYVIMRUNTIME . '/plugin/vimwiki/style.css',
+          \ 'template_path': $VIMHOME . '/plugin/vimwiki/templates/',
+          \ 'css_name': $VIMHOME . '/plugin/vimwiki/style.css',
           \ 'auto_tags': 1,
           \ }, 'keep')
 

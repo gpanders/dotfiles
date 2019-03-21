@@ -5,27 +5,18 @@ augroup vimrc | autocmd! | augroup END
 
 " Setup {{{
 
-" Detect OS
-if !exists('g:os')
-  if has('win64') || has('win32') || has('win16')
-    let g:os = "Windows"
-  else
-    let g:os = substitute(system('uname'), '\n', '', '')
-  endif
-endif
-
-" Set $MYVIMRUNTIME
-if g:os ==# 'Windows'
-  let $MYVIMRUNTIME = $HOME . '/vimfiles'
+" Set $VIMHOME
+if has('unix')
+  let $VIMHOME = $HOME . '/.vim'
 else
-  let $MYVIMRUNTIME = $HOME . '/.vim'
+  let $VIMHOME = $HOME . '/vimfiles'
 endif
 
 " Use vim-pathogen if native packages are not supported
 if !has('packages')
   " Use vim-pathogen to emulate native packaging behavior
-  if empty(glob($MYVIMRUNTIME . '/autoload/pathogen.vim'))
-    silent execute '!curl -LSso ' . $MYVIMRUNTIME . '/autoload/pathogen.vim https://tpo.pe/pathogen.vim'
+  if empty(glob($VIMHOME . '/autoload/pathogen.vim'))
+    silent execute '!curl -LSso ' . $VIMHOME . '/autoload/pathogen.vim https://tpo.pe/pathogen.vim'
   endif
   silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
 endif
@@ -40,12 +31,6 @@ endif
 " }}}
 
 " Colorscheme {{{
-
-if has('termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
 
 " Colorscheme post-setup {{{
 " Modify color schemes in this function. This function will be called after the colorscheme is set
@@ -80,11 +65,11 @@ function! s:colors()
       hi StatuslineModeVisual ctermfg=5 guifg=#c678dd
     endif
   elseif g:colors_name ==# 'base16-eighties'
-    hi User1 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#a09f93 guibg=#515151
+    hi User1 term=bold,reverse ctermfg=20 ctermbg=19 guifg=#a09f93 guibg=#515151
     hi User2 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#747369 guibg=#2d2d2d
     hi User3 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#747369 guibg=#2d2d2d
-    hi User4 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#a09f93 guibg=#515151
-    hi User5 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#a09f93 guibg=#515151
+    hi User4 term=bold,reverse ctermfg=20 ctermbg=19 guifg=#a09f93 guibg=#515151
+    hi User5 term=bold,reverse ctermfg=20 ctermbg=19 guifg=#a09f93 guibg=#515151
 
     hi link StatuslineModeNormal Normal
     hi StatuslineModeInsert ctermfg=4 guifg=#6699cc
@@ -92,10 +77,12 @@ function! s:colors()
     hi StatuslineModeVisual ctermfg=5 guifg=#cc99cc
 
     " These groups look really bad by default, so make them better
-    hi SpellBad term=underline cterm=underline ctermfg=1 gui=underline guifg=#f2777a
-    hi WildMenu ctermbg=11 ctermfg=15 guibg=#515151 guifg=#f2f0ec
-    hi clear Underlined
-    hi Underlined term=underline cterm=underline gui=underline
+    hi SpellBad ctermbg=NONE ctermfg=9
+    hi SpellCap ctermbg=NONE ctermfg=12
+    hi SpellRare ctermbg=NONE ctermfg=13
+    hi SpellLocal ctermbg=NONE ctermfg=14
+    hi WildMenu ctermfg=15 ctermbg=19 guifg=#f2f0ec guibg=#515151
+    hi Underlined ctermfg=NONE guifg=NONE
   elseif g:colors_name ==# 'base16-onedark'
     hi User1 cterm=reverse gui=reverse
     hi User2 ctermbg=10 guibg=#353b45
@@ -137,7 +124,7 @@ if !exists('g:colors_name')
 endif
 
 " Highlight trailing whitespace
-highlight TrailingWhitespace ctermbg=204 guibg=#E06C75
+highlight link TrailingWhitespace Error
 
 " }}}
 
@@ -247,14 +234,11 @@ endif
 
 " GUI settings
 if has('gui_running')
-  if g:os ==# 'Windows'
-    set guifont=Fira_Mono:h10:cANSI:qDRAFT
-  elseif g:os ==# 'Darwin'
-    set guifont=FiraMono-Regular:h11
-  endif
-  set guioptions=teMg!
   set lines=60
   set columns=180
+  if has('win32')
+    set guioptions-=t
+  endif
 endif
 
 " Wild menu
@@ -265,22 +249,32 @@ set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
 set wildignore+=tags
 
 " Keep temporary files in a single location
-if g:os ==# 'Windows'
-  let cachedir = $HOME . '/vimfiles/cache'
+if exists('$XDG_CACHE_HOME')
+  let s:cachedir = $XDG_CACHE_HOME . '/vim'
+elseif isdirectory($HOME . '/Library/Caches/')
+  let s:cachedir = $HOME . '/Library/Caches/vim'
+elseif has('unix')
+  let s:cachedir = $HOME . '/.cache/vim'
 else
-  if exists('$XDG_CACHE_HOME')
-    let cachedir = $XDG_CACHE_HOME . '/vim'
-  else
-    let cachedir = $HOME . '/.cache/vim'
-  endif
+  let s:cachedir = $HOME . '/vimfiles/cache'
 endif
 
-let &g:backupdir = cachedir . '/backup//' . ',' . &g:backupdir
-let &g:undodir = cachedir . '/undo//' . ',' . &g:undodir
-let &g:directory = cachedir . '/swap//' . ',' . &g:directory
+let &backupdir = s:cachedir . '/backup//' . ',' . &backupdir
+let &undodir = s:cachedir . '/undo//' . ',' . &undodir
+let &directory = s:cachedir . '/swap//' . ',' . &directory
+
+" Create directories if they don't exist (neovim already does this)
+if !has('nvim') && exists('*mkdir')
+  for opt in [&backupdir, &undodir, &directory]
+    let dir = simplify(split(opt, ',')[0])
+    if !isdirectory(s:cachedir . '/' . dir)
+      call mkdir(s:cachedir . '/' . dir, 'p')
+    endif
+  endfor
+endif
 
 " Set dictionary if it exists
-if g:os !=# 'Windows' && filereadable('/usr/share/dict/words')
+if empty(&dictionary) && filereadable('/usr/share/dict/words')
   set dictionary+=/usr/share/dict/words
 endif
 
@@ -535,7 +529,7 @@ command! EditFtplugin
       \ if empty(&ft) |
       \   echohl Error | echo 'Error: This buffer has no filetype' |
       \ else |
-      \   execute 'e ' . $MYVIMRUNTIME . '/after/ftplugin/' . &ft . '.vim' |
+      \   execute 'e ' . $VIMHOME . '/after/ftplugin/' . &ft . '.vim' |
       \ endif
 
 " }}}
