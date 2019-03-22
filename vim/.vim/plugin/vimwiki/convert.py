@@ -37,24 +37,29 @@ def convert(
         lines = f.read()
 
     lines = re.sub(r"\[([^]]+)\]\((.+)\)", repl, lines)
-    subprocess.run(
-        [
-            "pandoc",
-            "--section-divs",
-            "--template",
-            path.join(template_path, template_default + path.extsep + template_ext),
-            "-f",
-            "markdown",
-            "-t",
-            "html",
-            "-o",
-            output_file,
-            "-",
-        ],
-        check=True,
-        encoding="utf8",
-        input=lines,
-    )
+
+    template = path.join(template_path, template_default + path.extsep + template_ext)
+    command = [
+        "pandoc",
+        "--section-divs",
+        "--template={}".format(template) if path.isfile(template) else "",
+        "-s",
+        "--highlight-style=pygments",
+        custom_args if custom_args != "-" else "",
+        "-f",
+        "markdown",
+        "-t",
+        "html",
+        "-o",
+        output_file,
+        "-",
+    ]
+
+    # Prune empty elements from command list
+    command = list(filter(None, command))
+
+    # Run command
+    subprocess.run(command, check=True, encoding="utf8", input=lines)
 
 
 def repl(match):

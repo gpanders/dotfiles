@@ -8,6 +8,7 @@
 " Windows)
 runtime wikis.vim
 
+let g:vimwiki_global_ext = 0
 let g:vimwiki_hl_headers = 1
 let g:vimwiki_dir_link = 'index'
 
@@ -19,14 +20,16 @@ if !empty(get(g:, 'vimwiki_list', []))
       call extend(a:wiki, {
             \ 'ext': '.md',
             \ 'custom_wiki2html': $VIMHOME . '/plugin/vimwiki/convert.py',
-            \ 'template_default': 'mindoc-pandoc',
-            \ 'template_ext': 'html',
+            \ 'custom_wiki2html_args':
+            \   get(g:, 'vimwiki_html_header_numbering') ? '-N' : '',
+            \ 'template_default': 'pandoc',
             \ 'list_margin': 0,
             \ }, 'keep')
     else
       " Settings for wiki-style wikis
       call extend(a:wiki, {
             \ 'auto_toc': 1,
+            \ 'template_default': 'default',
             \ }, 'keep')
     endif
 
@@ -34,7 +37,7 @@ if !empty(get(g:, 'vimwiki_list', []))
     call extend(a:wiki, {
           \ 'path_html': simplify(a:wiki.path . '/html'),
           \ 'template_path': $VIMHOME . '/plugin/vimwiki/templates/',
-          \ 'css_name': $VIMHOME . '/plugin/vimwiki/style.css',
+          \ 'template_ext': 'html',
           \ 'auto_tags': 1,
           \ }, 'keep')
 
