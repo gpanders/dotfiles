@@ -267,8 +267,8 @@ let &directory = s:cachedir . '/swap//' . ',' . &directory
 if !has('nvim') && exists('*mkdir')
   for opt in [&backupdir, &undodir, &directory]
     let dir = simplify(split(opt, ',')[0])
-    if !isdirectory(s:cachedir . '/' . dir)
-      call mkdir(s:cachedir . '/' . dir, 'p')
+    if !isdirectory(dir)
+      call mkdir(dir, 'p')
     endif
   endfor
 endif
