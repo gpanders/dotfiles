@@ -41,7 +41,7 @@ alias pipu="pip install -U \$(pip list -o | awk 'NR > 2 {print \$1}' | paste -sd
 alias ssh="TERM=xterm-256color ssh"
 
 # Attach to existing session if it exists
-alias tmux="tmux attach -t local || tmux new-session -s local"
+alias tmuxa="tmux attach -t local || tmux new-session -s local"
 
 if [ ! -z $EDITOR ]; then
     alias e="$EDITOR"
