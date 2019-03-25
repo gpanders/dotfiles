@@ -5,73 +5,9 @@ elif [[ "$OSTYPE" == linux-gnu ]]; then
   export BROWSER="xdg-open"
 fi
 
-# Editor and pager
-export EDITOR="vim"
-export VISUAL="view"
-export PAGER="less"
-
-if (( $+commands[nvim] )); then
-  export EDITOR="nvim"
-  export VISUAL="nvim"
-fi
-
-if [[ -z "$LANG" ]]; then
-  export LANG="en_US.UTF-8"
-fi
-
-# Add /usr/local/bin to path first
-path=(/usr/local/bin $path)
-
-# Add pip binary directory to path
-path=($HOME/.local/bin $path)
-
-# Add TeX installation to path, if it exists
-if [[ -d "/Library/TeX/texbin" ]]; then
-  path=("/Library/TeX/texbin" $path)
-fi
-
-# Setup pyenv
-if [[ -s "$HOME/.pyenv/bin/pyenv" ]]; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  path=("$PYENV_ROOT/bin" $path)
-fi
-
-if (( $+commands[pyenv] )); then
-  if [[ -z "$PYENV_ROOT" ]]; then
-    export PYENV_ROOT=$(pyenv root)
-  fi
-
-  eval "$(pyenv init - --no-rehash zsh)"
-fi
-
-# Setup rbenv
-if (( $+commands[rbenv] )); then
-  eval "$(rbenv init - --no-rehash zsh)"
-fi
-
-# Setup cargo
-if [[ -s "$HOME/.cargo/env" ]]; then
-  source "$HOME/.cargo/env"
-fi
-
-# Setup nvm
-if [[ -s "$HOME/.nvm" ]]; then
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-fi
-
-# Remove duplicates in path variables
-typeset -gU path fpath cdpath manpath
-
-#
 # Grep
-#
 export GREP_COLOR="37;45"
 export GREP_COLORS="mt=${GREP_COLOR}"
-
-#
-# Less
-#
 
 # Set the default Less options.
 # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
