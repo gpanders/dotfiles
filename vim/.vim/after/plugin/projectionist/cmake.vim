@@ -11,21 +11,21 @@ let g:projectionist_heuristics = get(g:, 'projectionist_heuristics', {})
 call extend(g:projectionist_heuristics, {
       \ 'CMakeLists.txt&build/': {
       \   '*': {
-      \     'dispatch': 'cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .',
-      \     'make': 'cmake --build build',
+      \     'make': 'cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .',
+      \     'dispatch': '-dir=build make',
       \   },
       \   'CMakeLists.txt': { 'type': 'list' },
       \   'src/*.cc': {
       \     'type': 'src',
-      \     'alternate': ['include/{}.h', 'src/{}.h'],
+      \     'alternate': ['include/{}.h', 'src/{}.h', 'test/test_{}.cc'],
       \   },
       \   'src/*.cpp': {
       \     'type': 'src',
-      \     'alternate': ['include/{}.h', 'src/{}.h'],
+      \     'alternate': ['include/{}.h', 'src/{}.h', 'test/test_{}.cpp'],
       \   },
       \   'src/*.h': {
       \     'type': 'header',
-      \     'alternate': ['src/{}.cc', 'src/{}.cpp'],
+      \     'alternate': ['src/{}.cc', 'src/{}.cpp', 'test/test_{}.cc', 'test/test_{}.cpp'],
       \     'template': [
       \       '#ifndef _{project|basename|snakecase|uppercase}_{snakecase|uppercase}_H_',
       \       '#define _{project|basename|snakecase|uppercase}_{snakecase|uppercase}_H_',
@@ -35,7 +35,7 @@ call extend(g:projectionist_heuristics, {
       \   },
       \   'include/*.h': {
       \     'type': 'header',
-      \     'alternate': ['src/{}.cc', 'src/{}.cpp'],
+      \     'alternate': ['src/{}.cc', 'src/{}.cpp', 'test/test_{}.cc', 'test/test_{}.cpp'],
       \     'template': [
       \       '#ifndef _{project|basename|snakecase|uppercase}_{uppercase}_H_',
       \       '#define _{project|basename|snakecase|uppercase}_{uppercase}_H_',
@@ -44,11 +44,4 @@ call extend(g:projectionist_heuristics, {
       \     ],
       \   },
       \   'README.md': { 'type': 'doc' },
-      \ },
-      \ 'include/': {
-      \   '*.h':   { 'path': 'include' },
-      \   '*.hpp': { 'path': 'include' },
-      \   '*.c':   { 'path': 'include' },
-      \   '*.cc':  { 'path': 'include' },
-      \   '*.cpp': { 'path': 'include' },
       \ }})
