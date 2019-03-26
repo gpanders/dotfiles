@@ -12,7 +12,7 @@ if [[ ! -f "${ZDOTDIR:-$HOME}/.zplugins" ]]; then
     zsh-users/zsh-autosuggestions
     zsh-users/zsh-history-substring-search
     robbyrussell/oh-my-zsh path:plugins/fzf
-    robbyrussell/oh-my-zsh path:plugins/gnu-utils
+    sorin-ionescu/prezto path:modules/gnu-utility
     mafredri/zsh-async
     sindresorhus/pure
     chriskempson/base16-shell
