@@ -30,7 +30,7 @@ def convert(
         sys.exit(1)
 
     input_file_name = path.splitext(path.basename(input_file))[0]
-    output_file = "{}/{}.html".format(output_dir, input_file_name)
+    output_file = path.join(putput_dir, input_file_name) + path.extsep + "html"
 
     with open(input_file, "r", encoding="utf8") as f:
         lines = f.read()
