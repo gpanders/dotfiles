@@ -29,14 +29,21 @@ def convert(
         print("Error: Unsupported syntax", file=sys.stderr)
         sys.exit(1)
 
-    output_file = "{}/{}.html".format(
-        output_dir, path.splitext(path.basename(input_file))[0]
-    )
+    input_file_name = path.splitext(path.basename(input_file))[0]
+    output_file = "{}/{}.html".format(output_dir, input_file_name)
 
     with open(input_file, "r", encoding="utf8") as f:
         lines = f.read()
 
     lines = re.sub(r"\[([^]]+)\]\((.+)\)", repl, lines)
+
+    # Look for title in metadata
+    match = re.search(
+        "^(?:---|\.\.\.)$\n.*title: ([^\n]+)$\n.*^(?:---|\.\.\.)$",
+        lines,
+        re.MULTILINE | re.DOTALL,
+    )
+    title = match.group(1) if match else input_file_name.title()
 
     template = path.join(template_path, template_default + path.extsep + template_ext)
     command = [
@@ -45,6 +52,8 @@ def convert(
         "--template={}".format(template) if path.isfile(template) else "",
         "-s",
         "--highlight-style=pygments",
+        "--metadata",
+        "pagetitle={}".format(title),
         custom_args if custom_args != "-" else "",
         "-f",
         "markdown",
