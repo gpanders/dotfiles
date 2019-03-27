@@ -18,5 +18,9 @@ endif
 CompilerSet makeprg=pandoc\ -s\ --metadata\ pagetitle=\"%:t:r\"\ -o\ %:t:r.html\ %:S
 CompilerSet errorformat=
 
+if exists('$BROWSER')
+  CompilerSet makeprg+=\ &&\ $BROWSER\ %:t:r.html
+endif
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
