@@ -14,6 +14,9 @@ setlocal complete+=i,d
 " Set include pattern
 setlocal include=^\\s*#\\s*include
 
+" Keep lines at 80 characters or fewer
+setlocal textwidth=79
+
 " Include headers on Unix
 if has('unix')
   setlocal path=.,/usr/local/include,/usr/include,,
@@ -25,7 +28,7 @@ noremap ][ /}<CR>b99]}
 noremap ]] j0[[%/{<CR>
 noremap [] k$][%?}<CR>
 
-let b:undo_ftplugin .= '|setl cms< cpt< inc< path<'
+let b:undo_ftplugin .= '|setl cms< cpt< inc< path< tw<'
 
 " Use improved :Man command as keywordprg
 if exists(':Man') == 2

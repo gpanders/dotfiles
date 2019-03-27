@@ -11,3 +11,7 @@ let g:oldfiles_blacklist = [
       \ '^fugitive://',
       \ '/\.git/.\+'
       \ ]
+
+if exists(':Oldfiles') == 2
+  nnoremap <silent> go :Oldfiles<CR>
+endif
