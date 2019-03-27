@@ -1,4 +1,6 @@
-" Markdown
+" Markdown filetype plugin
+" Author: Greg Anders <greg@gpanders.com>
+
 if &filetype !=# 'markdown'
   finish
 endif
@@ -14,7 +16,7 @@ else
   let b:undo_ftplugin = 'setl tw< spell<'
 endif
 
-if exists(':Goyo') == 2
-  Goyo
-  let b:undo_ftplugin .= '|Goyo!'
+if has('conceal')
+  setlocal conceallevel=2
+  let b:undo_ftplugin = 'setl cole<'
 endif
