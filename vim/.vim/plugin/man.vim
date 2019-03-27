@@ -3,5 +3,5 @@
 " Date: 2019-03-09
 
 if !has('nvim')
-  packadd vim-man
+  silent! packadd vim-man
 endif
