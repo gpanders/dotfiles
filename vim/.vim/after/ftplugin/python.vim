@@ -15,11 +15,14 @@ nmap <buffer> gz <Plug>(PytermOpen)
 " Don't complete from include files (there are too many!)
 setlocal complete-=i
 
+" Set textwidth
+setlocal textwidth=79
+
+" Set format options
+setlocal formatoptions-=t " Don't auto-wrap lines unless they're comments
+
 " Use flake8 as makeprg for linting
 compiler flake8
-
-" Show boundary at 80 characters
-let &l:colorcolumn = join(range(80, 336), ',')
 
 " Populate path from python's sys.path. This is an expensive operation so we
 " only call it once and then cache the result
@@ -29,7 +32,7 @@ endif
 
 let &l:path = &path . ',' . g:python_include_path
 
-let b:undo_ftplugin .= '|setl path< cpt< cc<'
+let b:undo_ftplugin .= '|setl path< cpt< tw< fo<'
 
 if executable('black')
   setlocal formatprg=black\ -q\ -
