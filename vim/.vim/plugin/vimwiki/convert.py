@@ -30,36 +30,30 @@ def convert(
         sys.exit(1)
 
     input_file_name = path.splitext(path.basename(input_file))[0]
-    output_file = path.join(putput_dir, input_file_name) + path.extsep + "html"
+    output_file = path.join(output_dir, input_file_name) + path.extsep + "html"
 
     with open(input_file, "r", encoding="utf8") as f:
-        lines = f.read()
+        lines = re.sub(r"\[([^]]+)\]\((.+)\)", repl, f.read())
 
-    lines = re.sub(r"\[([^]]+)\]\((.+)\)", repl, lines)
+    # Extract page title from text, if possible. Otherwise just use the name of
+    # the input file
+    title = extract_title(lines) or input_file_name.title()
 
-    # Look for title in metadata
-    match = re.search(
-        "^(?:---|\.\.\.)$\n.*title: ([^\n]+)$\n.*^(?:---|\.\.\.)$",
-        lines,
-        re.MULTILINE | re.DOTALL,
-    )
-    title = match.group(1) if match else input_file_name.title()
-
+    # Build path to template file
     template = path.join(template_path, template_default + path.extsep + template_ext)
+
+    # Build the command string
     command = [
         "pandoc",
         "--section-divs",
         "--template={}".format(template) if path.isfile(template) else "",
-        "-s",
-        "--highlight-style=pygments",
+        "--standalone",
         "--metadata",
         "pagetitle={}".format(title),
         custom_args if custom_args != "-" else "",
-        "-f",
-        "markdown",
-        "-t",
-        "html",
-        "-o",
+        "--from=markdown",
+        "--to=html",
+        "--output",
         output_file,
         "-",
     ]
@@ -74,6 +68,32 @@ def convert(
 def repl(match):
     link = path.splitext(match.group(2))[0] + ".html"
     return "[{}]({})".format(match.group(1), link)
+
+
+def extract_title(text):
+    """Try to extract the page title from metadata in the file contents. The
+    file metadata can be in YAML form such as
+
+    ---
+    title: My title
+    ---
+
+    anywhere in the file or
+
+    % title
+
+    at the beginning. The title can also span multiple lines as long as each
+    newline is preceded with a space.  All of these caveats are why the
+    following regex is so complicated.
+    """
+    match = re.match(
+        r"(?:^% (.+?)\n^[^ ]|(?:.*^\s*\n|)^-{3}\ntitle: ([^\n]+)\n.*^(?:-{3}|\.{3})$)",
+        text,
+        re.MULTILINE | re.DOTALL,
+    )
+
+    if match:
+        return match.group(1) or match.group(2)
 
 
 if __name__ == "__main__":
