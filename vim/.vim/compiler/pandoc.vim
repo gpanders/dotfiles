@@ -15,7 +15,7 @@ if exists(':CompilerSet') != 2
   command -nargs=* CompilerSet setlocal <args>
 endif
 
-CompilerSet makeprg=pandoc\ -s\ --metadata\ pagetitle=\"%:t:r\"\ -o\ %:t:r.html\ %:S
+CompilerSet makeprg=pandoc\ -s\ --katex\ -o\ %:t:r.html\ %:S
 CompilerSet errorformat=
 
 if exists('$BROWSER')

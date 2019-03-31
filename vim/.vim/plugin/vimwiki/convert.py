@@ -48,6 +48,7 @@ def convert(
         "--section-divs",
         "--template={}".format(template) if path.isfile(template) else "",
         "--standalone",
+        "--katex",
         "--metadata",
         "pagetitle={}".format(title),
         custom_args if custom_args != "-" else "",
