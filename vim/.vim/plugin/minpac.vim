@@ -13,7 +13,6 @@ function! s:PackInit()
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-repeat')
     call minpac#add('tpope/vim-commentary')
-    call minpac#add('tpope/vim-rhubarb')
     call minpac#add('tpope/vim-dispatch')
     call minpac#add('tpope/vim-projectionist')
     call minpac#add('tpope/vim-rsi')
@@ -56,9 +55,6 @@ function! s:PackInit()
     " Populate results of :ilist and :dlist in quickfix window
     call minpac#add('romainl/vim-qlist')
 
-    " Add more text objects to operate on
-    call minpac#add('wellle/targets.vim')
-
     " Code snippets
     call minpac#add('SirVer/ultisnips')
 
@@ -71,7 +67,7 @@ function! s:PackInit()
     call minpac#add('lervag/vimtex')
 
     " Language Server Client
-    call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'do': 'call coc#util#install()'})
+    " call minpac#add('neoclide/coc.nvim', {'branch': 'v0.0.64', 'type': 'opt', 'do': 'call coc#util#install()'})
     " Asynchronous linting
     call minpac#add('w0rp/ale', {'type': 'opt'})
 
