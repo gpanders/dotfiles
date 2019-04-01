@@ -19,69 +19,20 @@
       (progn
         (disable-theme my-light-theme)
         (load-theme my-dark-theme t)
-        (--extend-my-dark-theme))
+        (if (fboundp '--extend-my-dark-theme)
+            (--extend-my-dark-theme)))
     (progn
       (disable-theme my-dark-theme)
       (load-theme my-light-theme t)
-      (--extend-my-light-theme))))
+      (if (fboundp '--extend-my-light-theme)
+        (--extend-my-light-theme)))))
 
-;; (use-package atom-one-dark-theme
-;;   :disabled
-;;   :ensure t
-;;   :config
-;;   (setq my-dark-theme 'atom-one-dark)
-;;   (load-theme 'atom-one-dark t)
-;;   (custom-theme-set-faces 'atom-one-dark
-;;    `(company-tooltip ((t (:background "#2c323c"))))
-;;    `(company-tooltip-annotation ((t (:background "#2c323c"))))
-;;    `(company-tooltip-common ((t (:background nil))))
-;;    `(company-scrollbar-fg ((t (:background "#4b5363"))))
-;;    `(company-scrollbar-bg ((t (:background "#2c323c"))))
-;;    `(show-paren-match ((t (:background "#282c34" :foreground "#e06c75" :weight ultra-bold))))
-;;    `(show-paren-mismatch ((t (:background "#e06c75" :foreground "#282c34" :weight ultra-bold))))
-;;    `(cursor ((t (:background "#abb2bf" :foreground "#282c34"))))
-;;    `(lazy-highlight ((t (:foreground "#282c34" :background "#e5c07b" :underline nil))))
-;;    `(evil-ex-lazy-highlight ((t (:inherit 'lazy-highlight))))
-;;    `(evil-ex-substitute-matches ((t (:inherit `evil-ex-search))))
-;;    `(evil-ex-search ((t (:foreground "#e5c07b" :background "#5c6370")))))
-;; )
-
-(use-package doom-themes
+(use-package base16-theme
   :ensure t
   :config
-  (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t)
-  (setq my-light-theme 'doom-tomorrow-day
-        my-dark-theme 'doom-one)
-  (doom-themes-org-config)
-  (defun --extend-my-dark-theme ()
-    (custom-theme-set-faces my-dark-theme
-                            `(lazy-highlight ((t (:foreground "#282c34" :background "#e5c07b" :underline nil))))
-                            `(evil-ex-lazy-highlight ((t (:inherit 'lazy-highlight))))
-                            `(evil-ex-search ((t (:foreground "#e5c07b" :background "#5c6370"))))))
-  (defun --extend-my-light-theme ()
-    (custom-theme-set-faces my-light-theme
-                            `(lazy-highlight ((t (:foreground "#f2f2f2" :background "#4271ae"))))
-                            `(evil-ex-lazy-highlight ((t (:inherit 'lazy-highlight))))
-                            `(evil-ex-search ((t (:foreground "#ffffff" :background "#4271ae" :weight bold))))))
-)
+  (setq my-dark-theme 'base16-eighties
+        my-light-theme 'base16-google-light))
 
-;; Light theme alternative
-;; (use-package leuven-theme
-;;   :disabled
-;;   :ensure t
-;;   :config
-;;   (setq my-light-theme 'leuven))
-
-(use-package doom-modeline
-  :ensure t
-  :hook (after-init . doom-modeline-mode)
-  :init
-  (setq doom-modeline-major-mode-color-icon t)
-  :config
-  (use-package all-the-icons
-    :ensure t))
-
-(add-hook 'after-init-hook #'(lambda () (load-theme my-dark-theme t) (--extend-my-dark-theme)))
+(add-hook 'after-init-hook #'(lambda () (load-theme my-dark-theme t) (if (fboundp '--extend-my-dark-theme) (--extend-my-dark-theme))))
 
 (provide 'init-ui)

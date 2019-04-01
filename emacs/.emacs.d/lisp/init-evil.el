@@ -47,7 +47,7 @@
   ;; See https://github.com/company-mode/company-mode/issues/383
   (evil-declare-change-repeat 'company-complete)
 
-  (defun ctrl-p-find-file ()
+  (defun find-file-in-path ()
     "Find files recursively from current directory."
     (interactive)
     (let ((find-program (cond ((executable-find "rg") "rg")
@@ -84,9 +84,6 @@
   (evil-define-key '(normal visual) 'global
     "Q" 'evil-fill-and-move
     (kbd "C-l") 'evil-ex-nohighlight
-    ;; Swap ; and :
-    ";" 'evil-ex
-    ":" 'evil-repeat-find-char
     )
 
   ;; Normal only
@@ -95,8 +92,8 @@
     (kbd ", w") 'save-buffer
     (kbd ", b") 'switch-to-buffer
     (kbd ", e") 'find-file
-    (kbd ", g") 'magit-status
-    (kbd "C-p") 'ctrl-p-find-file
+    (kbd ", f") 'find-file-in-path
+    (kbd "\\ g") 'magit-status
     ;; Map & to :&& in normal mode (repeat last substitution with flags)
     (kbd "&") 'evil-ex-repeat-substitute-with-flags
     (kbd "[ b") 'previous-buffer
@@ -126,7 +123,6 @@
   (evil-define-key '(normal motion) 'global
     (kbd "SPC SPC") 'counsel-M-x
     (kbd "SPC u") 'universal-argument
-    (kbd "SPC TAB") 'evil-switch-to-windows-last-buffer
     )
 
   ;; Insert mode

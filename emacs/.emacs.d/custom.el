@@ -12,7 +12,7 @@
  '(initial-frame-alist (quote ((fullscreen . maximized))))
  '(package-selected-packages
    (quote
-    (persp-mode-projectile-bridge counsel-projectile doom-modeline persp-mode python-pytest color-theme-sanityinc-tomorrow git-gutter leuven-theme ein emacs-ipython-notebook ivy-hydra company-statistics pip-requirements elpy company-anaconda pyenv-mode matlab-mode key-chord move-text smartparens evil-visualstar evil-matchit evil-numbers pandoc-mode evil-collection rust-mode auctex flx solarized-theme flycheck sane-term evil-commentary evil-leader evil-surround yasnippet counsel ivy delight magit exec-path-from-shell projectile smex company-lsp lsp-ui cquery atom-one-dark-theme evil use-package)))
+    (base16-theme persp-mode-projectile-bridge counsel-projectile doom-modeline persp-mode python-pytest color-theme-sanityinc-tomorrow git-gutter leuven-theme ein emacs-ipython-notebook ivy-hydra company-statistics pip-requirements elpy company-anaconda pyenv-mode matlab-mode key-chord move-text smartparens evil-visualstar evil-matchit evil-numbers pandoc-mode evil-collection rust-mode auctex flx solarized-theme flycheck sane-term evil-commentary evil-leader evil-surround yasnippet counsel ivy delight magit exec-path-from-shell projectile smex company-lsp lsp-ui cquery atom-one-dark-theme evil use-package)))
  '(safe-local-variable-values (quote ((encoding . utf-8))))
  '(show-paren-mode t)
  '(tab-width 4))
