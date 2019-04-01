@@ -7,4 +7,4 @@ if exists('g:loaded_taglist')
 endif
 let g:loaded_taglist = 1
 
-command! -nargs=0 Taglist call taglist#open()
+command! -nargs=? Taglist call taglist#open(<f-args>)
