@@ -3,8 +3,8 @@ if [[ -z "$LANG" ]]; then
   export LANG="en_US.UTF-8"
 fi
 
-# Add /usr/local/bin to path first
-path=(/usr/local/bin $path)
+# Add /usr/local/{s,}bin to path first
+path=(/usr/local/bin /usr/local/sbin $path)
 
 # Add pip binary directory to path
 path=($HOME/.local/bin $path)
