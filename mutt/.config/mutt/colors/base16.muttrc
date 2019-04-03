@@ -44,36 +44,36 @@
 
 # basic colors ---------------------------------------------------------
 #     name        foreground  background  pattern
-color normal      color20     color0
+color normal      color12     color0
 color error       color1      color0
-color tilde       color20     color0
-color message     color20     color0
+color tilde       color12     color0
+color message     color12     color0
 color markers     color1      color0
 color attachment  color8      color0
 color search      color2      color0
-color status      color8      color18
-color indicator   color7      color19
-color tree        color19     color0                  # arrow in threads
+color status      color8      color10
+color indicator   color7      color11
+color tree        color11     color0                  # arrow in threads
 
-color index       color20     color0       "~A"       # all messages
+color index       color12     color0       "~A"       # all messages
 color index       color1      color0       "~F"       # flagged messages
-color index       color20     color0       "~v~(!~N)" # collapsed thread with no unread
+color index       color12     color0       "~v~(!~N)" # collapsed thread with no unread
 color index       color4      color0       "~U"       # unread messages
 color index       color4      color0       "~v~(~N)"  # collapsed thread with some unread
 color index       color1      color0       "~v~(~F)"  # collapsed thread with some flagged
 color index       color0      color1       "~D"       # deleted messages
 
 # header
-color hdrdefault  color20     color18
-color header      color20     color18      "^"
-color header      color7      color18      "^(From)"
-color header      color7      color18      "^(Subject)"
+color hdrdefault  color12     color10
+color header      color12     color10      "^"
+color header      color7      color10      "^(From)"
+color header      color7      color10      "^(Subject)"
 
 # body
 color normal      color7      color0
 color underline   color7      color0
 color bold        color7      color0
-color signature   color20     color0
+color signature   color12     color0
 
 color quoted      color3      color0
 color quoted1     color2      color0
@@ -84,7 +84,7 @@ color quoted4     color4      color0
 # pgp
 color body        color2      color0       "(Good signature)"
 color body        color2      color0       "^gpg: Good signature .*"
-color body        color20     color0       "^gpg: "
+color body        color12     color0       "^gpg: "
 color body        color1      color0       "(BAD signature)"
 color body        color1      color1       "^gpg: BAD signature from.*"
 
