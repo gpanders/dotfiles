@@ -2,10 +2,6 @@
 " Author: Greg Anders
 " Date: 2018-12-02
 
-if &filetype !=# 'mail'
-  finish
-endif
-
 setlocal formatoptions+=wa
 setlocal wrapmargin=0
 setlocal nonumber

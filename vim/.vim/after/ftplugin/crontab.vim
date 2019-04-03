@@ -1,8 +1,4 @@
 " crontab
-if &filetype !=# 'crontab'
-  finish
-endif
-
 setlocal nobackup
 setlocal nowritebackup
 

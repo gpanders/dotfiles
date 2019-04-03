@@ -23,11 +23,11 @@ call extend(g:projectionist_heuristics, {
       \   },
       \   'ftplugin/*.vim': {
       \     'type': 'ftplugin',
-      \     'template': ['" {} filetype plugin', '" Author: Greg Anders <greg@gpanders.com>', '', 'if &filetype !=# ''{}''', "\tfinish", 'endif']
+      \     'template': ['" {} filetype plugin', '" Author: Greg Anders <greg@gpanders.com>', '', 'let b:undo_ftplugin = get(b:, ''undo_ftplugin'')', '']
       \   },
       \   'after/ftplugin/*.vim': {
       \     'type': 'ftplugin',
-      \     'template': ['" {} filetype plugin', '" Author: Greg Anders <greg@gpanders.com>', '', 'if &filetype !=# ''{}''', "\tfinish", 'endif']
+      \     'template': ['" {} filetype plugin', '" Author: Greg Anders <greg@gpanders.com>', '', 'let b:undo_ftplugin = get(b:, ''undo_ftplugin'')', '']
       \   },
       \   'compiler/*.vim': {
       \     'type': 'compiler',

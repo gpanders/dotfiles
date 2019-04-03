@@ -1,10 +1,6 @@
 " C filetype plugin
 " Author: Greg Anders <greg@gpanders.com>
 
-if &filetype !=# 'c' && &filetype !=# 'cpp'
-  finish
-endif
-
 " Set comment string
 setlocal commentstring=//%s
 

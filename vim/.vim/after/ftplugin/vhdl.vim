@@ -1,10 +1,6 @@
 " VHDL filetype plugin
 " Author: Greg Anders <greg@gpanders.com>
 
-if &filetype !=# 'vhdl'
-  finish
-endif
-
 setlocal commentstring=--%s
 setlocal tagcase=ignore
 

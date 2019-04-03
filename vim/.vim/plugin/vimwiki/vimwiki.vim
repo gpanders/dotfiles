@@ -16,7 +16,7 @@ let g:vimwiki_conceal_pre = 1
 " Extend wikis with default values
 if !empty(get(g:, 'vimwiki_list', []))
   function! s:extend(index, wiki)
-    if get(a:wiki, 'syntax', '') ==# 'markdown'
+    if get(a:wiki, 'syntax') ==# 'markdown'
       " Settings for markdown wikis
       call extend(a:wiki, {
             \ 'ext': '.md',

@@ -1,8 +1,4 @@
 " Rust
-if &filetype !=# 'rust'
-  finish
-endif
-
 if executable('rustfmt')
   setl formatprg=rustfmt
 
