@@ -14,12 +14,10 @@ function! s:toggle_bg()
     endif
 
     if g:colors_name ==# g:toggle_bg_dark
-      let g:colors_name = g:toggle_bg_light
+      execute 'colorscheme' g:toggle_bg_light
     else
-      let g:colors_name = g:toggle_bg_dark
+      execute 'colorscheme' g:toggle_bg_dark
     endif
-    " :syntax enable sources the colorscheme file
-    syntax enable
   else
     " If no colorschemes are defined then just toggle the bg setting
     if &bg ==# 'dark'

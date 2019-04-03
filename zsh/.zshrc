@@ -15,7 +15,6 @@ if [[ ! -f "${ZDOTDIR:-$HOME}/.zplugins" ]]; then
     sorin-ionescu/prezto path:modules/gnu-utility
     mafredri/zsh-async
     sindresorhus/pure
-    chriskempson/base16-shell
   " > ${ZDOTDIR:-$HOME}/.zplugins
 fi
 source "${ZDOTDIR:-$HOME}/.zplugins"

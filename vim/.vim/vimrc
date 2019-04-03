@@ -64,36 +64,72 @@ function! s:colors()
       hi StatuslineModeReplace ctermfg=1 guifg=#e06c75
       hi StatuslineModeVisual ctermfg=5 guifg=#c678dd
     endif
-  elseif g:colors_name ==# 'base16-eighties'
-    hi User1 term=bold,reverse ctermfg=20 ctermbg=19 guifg=#a09f93 guibg=#515151
-    hi User2 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#747369 guibg=#2d2d2d
-    hi User3 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#747369 guibg=#2d2d2d
-    hi User4 term=bold,reverse ctermfg=20 ctermbg=19 guifg=#a09f93 guibg=#515151
-    hi User5 term=bold,reverse ctermfg=20 ctermbg=19 guifg=#a09f93 guibg=#515151
+  elseif g:colors_name =~# 'base16'
+    hi User1 term=bold,reverse ctermfg=12 ctermbg=11
+    hi User2 term=bold,reverse ctermfg=8 ctermbg=0
+    hi User3 term=bold,reverse ctermfg=8 ctermbg=0
+    hi User4 term=bold,reverse ctermfg=12 ctermbg=11
+    hi User5 term=bold,reverse ctermfg=12 ctermbg=11
 
     hi link StatuslineModeNormal Normal
-    hi StatuslineModeInsert ctermfg=4 guifg=#6699cc
-    hi StatuslineModeReplace ctermfg=1 guifg=#f2777a
-    hi StatuslineModeVisual ctermfg=5 guifg=#cc99cc
+    hi StatuslineModeInsert ctermfg=4
+    hi StatuslineModeReplace ctermfg=1
+    hi StatuslineModeVisual ctermfg=5
 
-    " These groups look really bad by default, so make them better
-    hi SpellBad ctermbg=NONE ctermfg=9
-    hi SpellCap ctermbg=NONE ctermfg=12
-    hi SpellRare ctermbg=NONE ctermfg=13
-    hi SpellLocal ctermbg=NONE ctermfg=14
-    hi WildMenu ctermfg=15 ctermbg=19 guifg=#f2f0ec guibg=#515151
+    hi SpellBad ctermbg=NONE ctermfg=1
+    hi SpellCap ctermbg=NONE ctermfg=4
+    hi SpellRare ctermbg=NONE ctermfg=5
+    hi SpellLocal ctermbg=NONE ctermfg=6
+    hi WildMenu ctermfg=7 ctermbg=11
     hi Underlined ctermfg=NONE guifg=NONE
-  elseif g:colors_name ==# 'base16-onedark'
-    hi User1 cterm=reverse gui=reverse
-    hi User2 ctermbg=10 guibg=#353b45
-    hi User3 ctermfg=7 guifg=#abb2bf
-    hi link User4 User2
-    hi User5 cterm=reverse gui=reverse
 
-    hi link StatuslineModeNormal Normal
-    hi StatuslineModeInsert ctermfg=4 guifg=#61afef
-    hi StatuslineModeReplace ctermfg=1 guifg=#e06c75
-    hi StatuslineModeVisual ctermfg=5 guifg=#c678dd
+    " Set GUI colors in case 'termguicolors' is enabled
+    if g:colors_name ==# 'base16-eighties'
+      hi User1 guifg=#a09f93 guibg=#515151
+      hi User2 guifg=#747369 guibg=#2d2d2d
+      hi User3 guifg=#747369 guibg=#2d2d2d
+      hi User4 guifg=#a09f93 guibg=#515151
+      hi User5 guifg=#a09f93 guibg=#515151
+
+      hi StatuslineModeInsert guifg=#6699cc
+      hi StatuslineModeReplace guifg=#f2777a
+      hi StatuslineModeVisual guifg=#cc99cc
+
+      hi SpellBad guifg=#f2777a
+      hi SpellCap guifg=#6699cc
+      hi SpellRare guifg=#cc99cc
+      hi SpellLocal guifg=#66cccc
+    elseif g:colors_name ==# 'base16-tomorrow'
+      hi User1 guifg=#969896 guibg=#d6d6d6
+      hi User2 guifg=#8e908c guibg=#ffffff
+      hi User3 guifg=#8e908c guibg=#ffffff
+      hi User4 guifg=#969896 guibg=#d6d6d6
+      hi User5 guifg=#969896 guibg=#d6d6d6
+
+      hi StatuslineModeInsert guifg=#4271ae
+      hi StatuslineModeReplace guifg=#c82829
+      hi StatuslineModeVisual guifg=#8959a8
+
+      hi SpellBad guifg=#c82829
+      hi SpellCap guifg=#4271ae
+      hi SpellRare guifg=#8959a8
+      hi SpellLocal guifg=#3e999f
+    elseif g:colors_name ==# 'base16-onedark'
+      hi User1 guifg=#565c64 guibg=#3e4451
+      hi User2 guifg=#545862 guibg=#282c34
+      hi User3 guifg=#545862 guibg=#282c34
+      hi User4 guifg=#565c64 guibg=#3e4451
+      hi User5 guifg=#565c64 guibg=#3e4451
+
+      hi StatuslineModeInsert guifg=#61afef
+      hi StatuslineModeReplace guifg=#e06c75
+      hi StatuslineModeVisual guifg=#c678dd
+
+      hi SpellBad guifg=#e06c75
+      hi SpellCap guifg=#61afef
+      hi SpellRare guifg=#c678dd
+      hi SpellLocal guifg=#56b6c2
+    endif
   elseif g:colors_name ==# 'apprentice'
     hi User1 term=bold,reverse ctermfg=235 ctermbg=101 guifg=#262626 guibg=#87875f
     hi User2 ctermfg=242 ctermbg=235 guifg=#6c6c6c guibg=#262626
@@ -115,7 +151,6 @@ autocmd vimrc ColorScheme * call s:colors()
 autocmd vimrc ColorScheme * highlight Comment gui=italic cterm=italic
 
 " Load colorscheme
-let base16colorspace = 256
 silent! colorscheme base16-eighties
 
 " If no other colorscheme, use vim default
