@@ -80,7 +80,7 @@ function! s:colors()
     hi SpellCap ctermbg=NONE ctermfg=4
     hi SpellRare ctermbg=NONE ctermfg=5
     hi SpellLocal ctermbg=NONE ctermfg=6
-    hi WildMenu ctermfg=7 ctermbg=11
+    hi WildMenu ctermfg=15 ctermbg=11
     hi Underlined ctermfg=NONE guifg=NONE
 
     " Set GUI colors in case 'termguicolors' is enabled
@@ -99,6 +99,7 @@ function! s:colors()
       hi SpellCap guifg=#6699cc
       hi SpellRare guifg=#cc99cc
       hi SpellLocal guifg=#66cccc
+      hi WildMenu guifg=#f2f0ec guibg=#515151
     elseif g:colors_name ==# 'base16-tomorrow'
       hi User1 guifg=#969896 guibg=#d6d6d6
       hi User2 guifg=#8e908c guibg=#ffffff
@@ -114,6 +115,7 @@ function! s:colors()
       hi SpellCap guifg=#4271ae
       hi SpellRare guifg=#8959a8
       hi SpellLocal guifg=#3e999f
+      hi WildMenu guifg=#1d1f21 guibg=#d6d6d6
     elseif g:colors_name ==# 'base16-onedark'
       hi User1 guifg=#565c64 guibg=#3e4451
       hi User2 guifg=#545862 guibg=#282c34
@@ -129,6 +131,7 @@ function! s:colors()
       hi SpellCap guifg=#61afef
       hi SpellRare guifg=#c678dd
       hi SpellLocal guifg=#56b6c2
+      hi WildMenu guifg=#c8ccd4 guibg=#3e4451
     endif
   elseif g:colors_name ==# 'apprentice'
     hi User1 term=bold,reverse ctermfg=235 ctermbg=101 guifg=#262626 guibg=#87875f
