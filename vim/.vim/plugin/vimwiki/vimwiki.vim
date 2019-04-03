@@ -9,7 +9,7 @@
 runtime wikis.vim
 
 let g:vimwiki_global_ext = 0
-let g:vimwiki_hl_headers = 1
+let g:vimwiki_hl_headers = 0
 let g:vimwiki_dir_link = 'index'
 let g:vimwiki_conceal_pre = 1
 

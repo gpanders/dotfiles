@@ -34,6 +34,9 @@ function! s:PackInit()
     " Align lines to a character, e.g. =, ;, :, etc.
     call minpac#add('junegunn/vim-easy-align')
 
+    " Distraction-free writing
+    call minpac#add('junegunn/goyo.vim')
+
     " Show change signs in the gutter for git files
     call minpac#add('airblade/vim-gitgutter')
 
