@@ -1,8 +1,4 @@
 " LaTeX
-if &filetype !=# 'tex'
-  finish
-endif
-
 let g:tex_flavor = 'latex'
 
 setlocal nocursorline

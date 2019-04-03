@@ -1,10 +1,6 @@
 " Markdown filetype plugin
 " Author: Greg Anders <greg@gpanders.com>
 
-if &filetype !=# 'markdown'
-  finish
-endif
-
 compiler pandoc
 
 setlocal textwidth=80

@@ -1,8 +1,4 @@
 " Vim
-if &filetype !=# 'vim'
-  finish
-endif
-
 setlocal foldmethod=marker
 
 " Z: execute current line or visually selected region in command mode

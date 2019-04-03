@@ -2,10 +2,6 @@
 " Author: Greg Anders <greg@gpanders.com>
 " Written: 24 Dec 2018
 
-if &filetype !=# 'xxd'
-  finish
-endif
-
 normal! 11|
 
 " Number of bytes per line. xxd default is 16

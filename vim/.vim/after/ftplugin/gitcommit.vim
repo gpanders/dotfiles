@@ -1,10 +1,6 @@
 " git commit filetype plugin
 " Author: Greg Anders <greg@gpanders.com>
 
-if &filetype !=# 'gitcommit'
-  finish
-endif
-
 " enable spell check
 setlocal spell
 setlocal textwidth=72

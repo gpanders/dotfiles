@@ -1,8 +1,4 @@
 " Python specific settings
-if &filetype !=# 'python'
-  finish
-endif
-
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
 " If a valid formatter executable is found, autoformat the buffer when writing
