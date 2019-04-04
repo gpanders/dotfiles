@@ -202,19 +202,29 @@ if !has('nvim')
   set autoindent
   set autoread
   set backspace=indent,eol,start  " Allow vim to delete whitespace
+  set belloff=all
+  set complete-=i
   set display=lastline
+  set nofsync
   set formatoptions+=j  " Remove comment character when joining lines
   set history=10000
   set hlsearch
   set incsearch
+  set langnoremap
   set nolangremap
+  set laststatus=2
   set nrformats-=octal  " Don't interpret numbers starting with 0 as octal
   set ruler
   set sessionoptions-=options  " Don't save options in session files
+  set shortmess+=F
+  set showcmd
+  set sidescroll=1
   set smarttab
   set tabpagemax=50  " Increase maximum number of tab pages allowed
+  set tags=./tags;,tags
   set ttimeout
   set ttimeoutlen=50
+  set ttyfast
   set viminfo^=!  " Keep and store UPPERCASE global variables
   set wildmenu
 
@@ -232,8 +242,10 @@ if !has('nvim')
   let &t_EI = "\e[2 q"
 endif
 
+" Neovim specific settings
 if has('nvim')
   set inccommand=nosplit
+  set backupdir-=.
 endif
 
 " Enable undofile if possible
@@ -249,10 +261,6 @@ silent! set breakindent
 
 " Specify whitespace chars
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-
-if has('path_extra')
-  setglobal tags-=./tags tags-=./tags; tags^=./tags;
-endif
 
 " Let C/C++ filetypes set this
 set path-=/usr/include
@@ -287,23 +295,25 @@ set wildignorecase
 set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
 set wildignore+=tags
 
-" Keep temporary files in a single location
-if exists('$XDG_CACHE_HOME')
-  let s:cachedir = $XDG_CACHE_HOME . '/vim'
-elseif isdirectory($HOME . '/Library/Caches/')
-  let s:cachedir = $HOME . '/Library/Caches/vim'
-elseif has('unix')
-  let s:cachedir = $HOME . '/.cache/vim'
-else
-  let s:cachedir = $HOME . '/vimfiles/cache'
+" Keep temporary files in a single location (vim only)
+if !has('nvim')
+  if exists('$XDG_CACHE_HOME')
+    let s:cachedir = $XDG_CACHE_HOME . '/vim'
+  elseif isdirectory($HOME . '/Library/Caches/')
+    let s:cachedir = $HOME . '/Library/Caches/vim'
+  elseif has('unix')
+    let s:cachedir = $HOME . '/.cache/vim'
+  else
+    let s:cachedir = $HOME . '/vimfiles/cache'
+  endif
+
+  let &backupdir = s:cachedir . '/backup//' . ',' . &backupdir
+  let &undodir = s:cachedir . '/undo//' . ',' . &undodir
+  let &directory = s:cachedir . '/swap//' . ',' . &directory
 endif
 
-let &backupdir = s:cachedir . '/backup//' . ',' . &backupdir
-let &undodir = s:cachedir . '/undo//' . ',' . &undodir
-let &directory = s:cachedir . '/swap//' . ',' . &directory
-
-" Create directories if they don't exist (neovim already does this)
-if !has('nvim') && exists('*mkdir')
+" Create directories if they don't exist
+if exists('*mkdir')
   for opt in [&backupdir, &undodir, &directory]
     let dir = simplify(split(opt, ',')[0])
     if !isdirectory(dir)
