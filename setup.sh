@@ -173,6 +173,7 @@ git config --global alias.p push
 git config --global alias.re reset
 git config --global alias.st status
 git config --global alias.snapshot "!git stash && git stash apply -q"
+git config --global alias.t tag
 
 if hash zsh 2>/dev/null; then
     if ! hash antibody 2>/dev/null; then
