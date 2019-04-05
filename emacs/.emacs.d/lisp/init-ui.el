@@ -27,11 +27,13 @@
       (if (fboundp '--extend-my-light-theme)
         (--extend-my-light-theme)))))
 
+(global-set-key (kbd "<f5>") #'toggle-dark-light-theme)
+
 (use-package base16-theme
   :ensure t
   :config
   (setq my-dark-theme 'base16-eighties
-        my-light-theme 'base16-google-light))
+        my-light-theme 'base16-tomorrow))
 
 (add-hook 'after-init-hook #'(lambda () (load-theme my-dark-theme t) (if (fboundp '--extend-my-dark-theme) (--extend-my-dark-theme))))
 

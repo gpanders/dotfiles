@@ -17,8 +17,17 @@
                            (,(expand-file-name "tickler.org" org-gtd-directory) :maxlevel . 2)))
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
+(setq org-export-with-section-numbers nil)
 (setq org-hide-leading-stars t)
 (setq org-hide-emphasis-markers t)
+(setq org-html-head
+"<style type=\"text/css\">
+  html { font-family: sans-serif; }
+  body { padding: 2% 5%; margin: auto; }
+  @media screen and (min-width: 48em) {
+    body { max-width: 60%; }
+  }
+</style>")
 
 (org-babel-do-load-languages 'org-babel-load-languages
                              '((python . t)))
