@@ -37,6 +37,12 @@
 (require 'init-evil)
 (require 'init-os)
 
+(use-package ccls
+  :ensure t
+  :if (executable-find "ccls")
+  :after lsp-mode
+  :config
+  (setq ccls-executable (executable-find "ccls")))
 (use-package company
   :ensure t
   :delight
@@ -68,6 +74,7 @@
   (global-company-mode))
 (use-package cquery
   :ensure t
+  :if (executable-find "cquery")
   :after lsp-mode
   :config
   (setq cquery-executable (executable-find "cquery")))
