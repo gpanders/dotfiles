@@ -507,7 +507,7 @@ vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
 nnoremap <silent> \c :cd %:p:h<Bar>echo 'Changed directory to ' . getcwd()<CR>
 
 " ,c changes local working directory to buffer's directory
-nnoremap <silent> ,c :lcd %:p:h<Bar>echo 'Changed directory to ' . getcwd()<CR>
+nnoremap <silent> ,c :lcd %:p:h<Bar>echo 'Changed directory to ' . getcwd() . ' for current window'<CR>
 
 " Format whole buffer with formatprg without changing cursor position
 nnoremap <Space>gq mzHmygggqG`yzt`z

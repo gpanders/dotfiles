@@ -1,6 +1,8 @@
 alias l="ls -lh"
 alias ll="ls -Alh"
 
+alias g="git"
+
 if hash nvim 2>/dev/null; then
   alias vi="nvim"
   alias vim="nvim"
@@ -17,11 +19,11 @@ fi
 alias open="xdg-open"
 alias d="dirs -v"
 
-function mkdcd {
+mkdcd() {
   mkdir -p "$1" && cd "$1"
 }
 
-function __cd {
+__cd() {
   builtin cd "$@"
   if [ $? -eq 0 ]; then
     pushd -n "$(pwd)" >/dev/null

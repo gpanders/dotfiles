@@ -45,7 +45,7 @@ if [ -f /usr/local/share/git-core/contrib/completion/git-prompt.sh ]; then
 fi
 
 # If __git_ps1 is not defined create a dummy function
-if ! type __git_ps1 2>/dev/null; then
+if ! type __git_ps1 2>&1 >/dev/null; then
   __git_ps1() { echo ""; }
 fi
 
