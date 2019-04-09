@@ -37,8 +37,9 @@ if [ ! -z "$FZF_DEFAULT_COMMAND" ]; then
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
 
+export FZF_CTRL_T_OPTS="--preview '! grep -qI . {} && echo {} is a binary file || (highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2>/dev/null | head -200'"
+
 if (( $+commands[tree] )); then
-    export FZF_CTRL_T_OPTS="--preview '! grep -qI . {} && echo {} is a binary file || (highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2>/dev/null | head -200'"
     export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 fi
 
