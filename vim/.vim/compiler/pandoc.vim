@@ -18,9 +18,5 @@ endif
 CompilerSet makeprg=pandoc\ -s\ --katex\ -o\ %:t:r.html\ %:S
 CompilerSet errorformat=
 
-if exists('$BROWSER')
-  CompilerSet makeprg+=\ &&\ $BROWSER\ %:t:r.html
-endif
-
 let &cpo = s:save_cpo
 unlet s:save_cpo
