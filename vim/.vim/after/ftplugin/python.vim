@@ -11,8 +11,8 @@ nmap <buffer> gz <Plug>(PytermOpen)
 " Don't complete from include files (there are too many!)
 setlocal complete-=i
 
-" Set textwidth
-setlocal textwidth=79
+" Set textwidth to 88 to mimic black
+setlocal textwidth=88
 
 " Set format options
 setlocal formatoptions-=t " Don't auto-wrap lines unless they're comments
