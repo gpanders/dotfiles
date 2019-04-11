@@ -265,9 +265,6 @@ set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 " Let C/C++ filetypes set this
 set path-=/usr/include
 
-" Search current directory's whole tree
-set path+=**
-
 " Use ripgrep or ag as grepprg if available
 if executable('rg')
   " Use rg over grep
