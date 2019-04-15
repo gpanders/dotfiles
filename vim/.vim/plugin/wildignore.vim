@@ -19,145 +19,150 @@ function! s:Wildignore() abort
 
   " Archives
   let l:ignores += [
-        \ '*.7z'
-        \,'*.bz2'
-        \,'*.gz'
-        \,'*.jar'
-        \,'*.rar'
-        \,'*.tar'
-        \,'*.xz'
-        \,'*.zip'
+        \ '*.7z',
+        \ '*.bz2',
+        \ '*.gz',
+        \ '*.jar',
+        \ '*.rar',
+        \ '*.tar',
+        \ '*.xz',
+        \ '*.zip',
         \ ]
 
-  " Bytecode
+  " Java
   let l:ignores += [
-        \ '*.class'
-        \,'*.pyc'
+        \ '*.class',
         \ ]
+
+  " Python
+  let l:ignores += [
+          \ '*.pyc',
+          \ '__pycache__',
+          \ ]
 
   " Databases
   let l:ignores += [
-        \ '*.db'
-        \,'*.dbm'
-        \,'*.sdbm'
-        \,'*.sqlite'
+        \ '*.db',
+        \ '*.dbm',
+        \ '*.sdbm',
+        \ '*.sqlite',
         \ ]
 
   " Disk
   let l:ignores += [
-        \ '*.adf'
-        \,'*.bin'
-        \,'*.hdf'
-        \,'*.iso'
+        \ '*.adf',
+        \ '*.bin',
+        \ '*.hdf',
+        \ '*.iso',
         \ ]
 
   " Documents
   let l:ignores += [
-        \ '*.docx'
-        \,'*.djvu'
-        \,'*.odp'
-        \,'*.ods'
-        \,'*.odt'
-        \,'*.pdf'
-        \,'*.ppt'
-        \,'*.xls'
-        \,'*.xlsx'
+        \ '*.docx',
+        \ '*.djvu',
+        \ '*.odp',
+        \ '*.ods',
+        \ '*.odt',
+        \ '*.pdf',
+        \ '*.ppt',
+        \ '*.xls',
+        \ '*.xlsx',
         \ ]
 
   " Encrypted
   let l:ignores += [
-        \ '*.asc'
-        \,'*.gpg'
+        \ '*.asc',
+        \ '*.gpg',
         \ ]
 
   " Executables
   let l:ignores += [
-        \ '*.exe'
+        \ '*.exe',
         \ ]
 
   " Fonts
   let l:ignores += [
-        \ '*.ttf'
+        \ '*.ttf',
         \ ]
 
   " Images
   let l:ignores += [
-        \ '*.bmp'
-        \,'*.gd2'
-        \,'*.gif'
-        \,'*.ico'
-        \,'*.jpeg'
-        \,'*.jpg'
-        \,'*.pbm'
-        \,'*.png'
-        \,'*.psd'
-        \,'*.tga'
-        \,'*.xbm'
-        \,'*.xcf'
-        \,'*.xpm'
+        \ '*.bmp',
+        \ '*.gd2',
+        \ '*.gif',
+        \ '*.ico',
+        \ '*.jpeg',
+        \ '*.jpg',
+        \ '*.pbm',
+        \ '*.png',
+        \ '*.psd',
+        \ '*.tga',
+        \ '*.xbm',
+        \ '*.xcf',
+        \ '*.xpm',
         \ ]
 
   " Incomplete
   let l:ignores += [
-        \ '*.filepart'
+        \ '*.filepart',
         \ ]
 
   " Objects
   let l:ignores += [
-        \ '*.a'
-        \,'*.o'
+        \ '*.a',
+        \ '*.o',
         \ ]
 
   " Sound
   let l:ignores += [
-        \ '*.au'
-        \,'*.aup'
-        \,'*.flac'
-        \,'*.mid'
-        \,'*.m4a'
-        \,'*.mp3'
-        \,'*.ogg'
-        \,'*.opus'
-        \,'*.s3m'
-        \,'*.wav'
+        \ '*.au',
+        \ '*.aup',
+        \ '*.flac',
+        \ '*.mid',
+        \ '*.m4a',
+        \ '*.mp3',
+        \ '*.ogg',
+        \ '*.opus',
+        \ '*.s3m',
+        \ '*.wav',
         \ ]
 
   " System-specific
   let l:ignores += [
-        \ '.DS_Store'
+        \ '.DS_Store',
         \ ]
 
   " Translation
   let l:ignores += [
-        \ '*.gmo'
+        \ '*.gmo',
         \ ]
 
   " Version control
   let l:ignores += [
-        \ '.git'
-        \,'.hg'
-        \,'.svn'
+        \ '.git',
+        \ '.hg',
+        \ '.svn',
         \ ]
 
   " Video
   let l:ignores += [
-        \ '*.avi'
-        \,'*.gifv'
-        \,'*.mp4'
-        \,'*.ogv'
-        \,'*.rm'
-        \,'*.swf'
-        \,'*.webm'
+        \ '*.avi',
+        \ '*.gifv',
+        \ '*.mp4',
+        \ '*.ogv',
+        \ '*.rm',
+        \ '*.swf',
+        \ '*.webm',
         \ ]
 
   " Vim
   let l:ignores += [
-        \ '*~'
-        \,'*.swp'
+        \ '*~',
+        \ '*.swp',
         \ ]
 
-  " If on a system where case matters for filenames, for any that had
-  " lowercase letters, add their uppercase analogues
+  " If on a system where case matters for filenames  for any that had
+  " lowercase letters  add their uppercase analogues
   if has('fname_case')
     for l:ignore in l:ignores
       if l:ignore =~# '\l'
