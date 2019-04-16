@@ -17,18 +17,9 @@ endfunction
 
 function! s:callback(...)
   if has('nvim')
-    let id = a:1
     let data = a:2
-    let event = a:3
-    if event ==# 'stdout'
-      let g:python_include_path = data[0]
-    elseif event ==# 'stderr'
-      echohl errormsg
-      echom join(data)
-      echohl none
-    endif
+    let g:python_include_path = data[0]
   elseif has('job')
-    let channel = a:1
     let msg = a:2
     let g:python_include_path = msg
   else
@@ -46,16 +37,11 @@ function! s:jobstart(cmd, ...)
   " for the jobstart/job_start functions, the command string should not be
   " wrapped in quotes but for the system() call, it should
   if has('nvim')
-    let opts = {
-          \ 'on_stdout': function('s:callback'),
-          \ 'on_stderr': function('s:callback'),
-          \ 'stdout_buffered': 1,
-          \ 'stderr_buffered': 1,
-          \ }
+    let opts = {'on_stdout': function('s:callback'), 'stdout_buffered': 1}
     call jobstart(a:cmd, opts)
   elseif has('job')
     let sid = matchstr(expand('<sfile>'), '<snr>\zs\d\+\ze_')
-    let opts = {'callback': '<snr>' . sid . '_callback', 'in_io': 'null'}
+    let opts = {'out_cb': '<snr>' . sid . '_callback', 'in_io': 'null'}
     call job_start(a:cmd, opts)
   else
     " wrap the python command string in quotes and escape quotes in the string
