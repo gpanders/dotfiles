@@ -1,5 +1,8 @@
 " Wrapper function to strip both horizontal and vertical trailing whitespace,
 " return the cursor to its previous position, and report changes
+" Author: Tom Ryder <tom@sanctum.geek.nz>
+" License: Same as Vim itself
+
 function! strip_trailing_whitespace#strip(start, end) abort
 
   " Save cursor position
