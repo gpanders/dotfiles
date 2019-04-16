@@ -13,8 +13,12 @@ endif
 
 augroup plugin.autoformat
   autocmd!
-  autocmd BufWritePre *
+  autocmd BufRead *
         \ if !empty(&l:formatprg) && index(g:autoformat_filetypes, &ft) > -1 |
+        \   let b:autoformat = 1 |
+        \ endif
+  autocmd BufWritePre *
+        \ if get(b:, 'autoformat') |
         \   let view = winsaveview() |
         \   execute '%!' . &l:formatprg |
         \   call winrestview(view) |
