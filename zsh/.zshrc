@@ -154,3 +154,6 @@ fi
 if [[ -f "${ZDOTDIR:-$HOME}/.zfunctions" ]]; then
   source "${ZDOTDIR:-$HOME}/.zfunctions"
 fi
+
+# Remove duplicates in path variables
+typeset -gU path fpath cdpath manpath
