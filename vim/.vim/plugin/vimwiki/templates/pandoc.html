@@ -15,7 +15,11 @@ $if(keywords)$
 $endif$
   <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
   <style>
-      html{font-family: sans-serif;}
+      html{font-family: sans-serif; height: 100%; width: 100%;}
+      body{padding: 2% 5%; margin: auto;}
+      @media screen and (min-width: 48em) {
+        body{max-width: 60%;}
+      }
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
       span.underline{text-decoration: underline;}

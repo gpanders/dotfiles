@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-from os import path
 import re
 import shutil
 import subprocess
 import sys
 import tempfile
+from os import path
+from urllib.parse import urlparse
 
 
 def convert(
@@ -67,7 +68,14 @@ def convert(
 
 
 def repl(match):
-    link = path.splitext(match.group(2))[0] + ".html"
+    link = match.group(2)
+    url = urlparse(link)
+    if not url.scheme and not url.netloc:
+        # Link is not a URL
+        basename, ext = path.splitext(match.group(2))
+        if not ext or ext.lower() == "md":
+            # Link is (probably) a path to another Vimwiki file
+            link = basename + path.extsep + "html"
     return "[{}]({})".format(match.group(1), link)
 
 
