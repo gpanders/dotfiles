@@ -50,7 +50,7 @@ function! s:PackInit()
     call minpac#add('jpalardy/vim-slime')
 
     " Note taking and knowledge tracking
-    call minpac#add('vimwiki/vimwiki')
+    call minpac#add('vimwiki/vimwiki', {'rev': 'dev'})
 
     " Quickfix window improvements
     call minpac#add('romainl/vim-qf')
