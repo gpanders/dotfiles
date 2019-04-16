@@ -7,11 +7,7 @@ if !get(g:, 'loaded_oldfiles', 0)
 endif
 
 let g:oldfiles_blacklist = [
-      \ 'vim/.*doc/.\+\.txt$',
+      \ 'vim/.*/doc/.\+\.txt$',
       \ '^fugitive://',
-      \ '/\.git/.\+'
+      \ '/\.git/.*'
       \ ]
-
-if exists(':Oldfiles') == 2
-  nnoremap <silent> go :Oldfiles<CR>
-endif
