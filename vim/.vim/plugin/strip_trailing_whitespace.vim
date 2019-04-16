@@ -1,4 +1,3 @@
-"
 " strip_trailing_whitespace.vim: User command to strip both horizontal and
 " vertical whitespace in a buffer, with optional range, reporting both
 " accurately and restoring the cursor afterwards.
