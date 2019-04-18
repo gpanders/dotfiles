@@ -11,10 +11,18 @@ let s:SID = matchstr(expand('<sfile>'), '<SNR>\d\+_')
 function! async#run(cmd, cb)
   let s:cb = a:cb
   if has('nvim')
-    let opts = {'on_stdout': {_, d, e -> s:callback(e, d[0])}, 'stdout_buffered': 1}
-    call jobstart(a:cmd, opts)
+    let opts = {
+          \ 'on_stdout': {_, d, e -> s:callback(e, d[0])},
+          \ 'on_stderr': {_, d, e -> s:error(e, d[0])},
+          \ 'stdout_buffered': 1, 'stderr_buffered': 1,
+          \ }
+    let job = jobstart(a:cmd, opts)
   elseif has('job')
-    let opts = {'out_cb': s:SID . 'callback', 'in_io': 'null'}
+    let opts = {
+          \ 'out_cb': s:SID . 'callback',
+          \ 'err_cb': s:SID . 'error',
+          \ 'in_io': 'null',
+          \ }
     call job_start(a:cmd, opts)
   else
     echohl ErrorMsg
@@ -37,4 +45,10 @@ function! s:callback(channel, msg)
     endif
     unlet s:cb
   endif
+endfunction
+
+function! s:error(channel, msg)
+  echohl ErrorMsg
+  echom a:msg
+  echohl None
 endfunction
