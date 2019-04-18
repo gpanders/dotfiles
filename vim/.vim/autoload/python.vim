@@ -15,13 +15,13 @@ function! python#set_path()
         \ 'print(",".join(list(filter(lambda d: path.isdir(d) and glob(path.join(d, "*.py")), sys.path))))'],
         \ ';')
 
-  if !has('nvim') && !has('job')
+  if has('nvim') || has('job')
+    call async#run(['python', '-c', cmd], "let &l:path = &path . ',' . v:val")
+  else
     let cwd = getcwd()
     if !has_key(s:python_paths, cwd)
       let s:python_paths[cwd] = systemlist('python -c "' . escape(cmd, '"') . '"')[0]
     endif
     let &l:path = &path . ',' . s:python_paths[cwd]
-  else
-    call async#run(['python', '-c', cmd], "let &l:path = &path . ',' . v:val")
   endif
 endfunction
