@@ -6,14 +6,15 @@
 " different. This function aims to provide a consistent interface for both to
 " be used by other plugins throughout (n)vim.
 
+let s:SID = matchstr(expand('<sfile>'), '<SNR>\d\+_')
+
 function! async#run(cmd, cb)
   let s:cb = a:cb
   if has('nvim')
     let opts = {'on_stdout': {_, d, e -> s:callback(e, d[0])}, 'stdout_buffered': 1}
     call jobstart(a:cmd, opts)
   elseif has('job')
-    let sid = matchstr(expand('<sfile>'), '<snr>\zs\d\+\ze_')
-    let opts = {'out_cb': '<snr>' . sid . '_callback', 'in_io': 'null'}
+    let opts = {'out_cb': s:SID . 'callback', 'in_io': 'null'}
     call job_start(a:cmd, opts)
   else
     echohl ErrorMsg
