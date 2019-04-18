@@ -30,13 +30,48 @@ call extend(g:projectionist_heuristics, {
 
 let s:paths = {}
 
+let s:async = (has('nvim') || has('job')) && executable('jq')
+
 function! s:parse_compile_commands(root)
-  let compile_commands = join(readfile(a:root . '/compile_commands.json'))
-  " Add every match of -I<dir> or -isystem <dir> to paths
-  let paths = []
-  call substitute(compile_commands,
-        \ '\C\-\%(I\|isystem \)\(\f\+\)', '\=add(paths, submatch(1))', 'g')
-  let s:paths[a:root] = filter(uniq(sort(paths)), 'isdirectory(v:val)')
+  if s:async
+    call async#run([
+          \ 'jq',
+          \ '-c',
+          \ '[[.[].command?, .[].arguments[]?] | join(" ") | match("-(?:I|isystem )(\\S+)"; "g") | .captures[0].string]',
+          \ a:root . '/compile_commands.json'
+          \ ], { paths -> s:set_paths(a:root, eval(paths)) })
+  else
+    let compile_commands = projectionist#json_parse(readfile(a:root . '/compile_commands.json'))
+    let cmds = []
+    for item in compile_commands
+      if has_key(item, 'arguments')
+        let cmd = join(item.arguments)
+      elseif has_key(item, 'command')
+        let cmd = item.command
+      else
+        continue
+      endif
+      let cmds += [cmd]
+    endfor
+    " Add every match of -I<dir> or -isystem <dir> to paths
+    let paths = []
+    call substitute(join(cmds),
+          \ '\C\-\%(I\|isystem \)\(\f\+\)', '\=add(paths, submatch(1))', 'g')
+
+    call s:set_paths(root, paths)
+  endif
+endfunction
+
+function! s:set_paths(root, ...)
+  if a:0
+    let paths = a:1
+    let s:paths[a:root] = filter(map(uniq(sort(paths)), 'fnamemodify(v:val, ":p")'), 'isdirectory(v:val)')
+  endif
+  for dir in s:paths[a:root]
+    if stridx(',' . &l:path . ',', ',' . escape(dir, ', ') . ',') < 0
+      let &l:path = escape(dir, ', ') . ',' . &path
+    endif
+  endfor
 endfunction
 
 function! s:activate() abort
@@ -44,16 +79,9 @@ function! s:activate() abort
   if ProjectionistHas('compile_commands.json', root)
     if !has_key(s:paths, root)
       call s:parse_compile_commands(root)
+    else
+      call s:set_paths(root)
     endif
-    for dir in s:paths[root]
-      if stridx(',' . &l:path . ',', ',' . escape(dir, ', ') . ',') < 0
-        if dir[0] ==# '/'
-          let &l:path = &path . ',' . escape(dir, ', ')
-        else
-          let &l:path = escape(dir, ', ') . ',' . &path
-        endif
-      endif
-    endfor
   endif
 endfunction
 
