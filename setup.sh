@@ -155,6 +155,9 @@ EOF
         git config --global alias.st status
         git config --global alias.snapshot "!git stash && git stash apply -q"
         git config --global alias.t tag
+
+        # Alias for just the dotfiles repo
+        git config alias.update "!git stash && git fetch origin master:master && git rebase master && git stash pop"
     elif [[ "$mod" == "zsh" ]]; then
         if ! hash antibody 2>/dev/null; then
             echo "Downloading antibody. This may require your password."
