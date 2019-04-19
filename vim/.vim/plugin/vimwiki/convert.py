@@ -91,18 +91,28 @@ def extract_title(text):
 
     % title
 
-    at the beginning. The title can also span multiple lines as long as each
-    newline is preceded with a space.  All of these caveats are why the
-    following regex is so complicated.
+    or
+
+    % Multi-line
+      title
+
+    or
+
+    # title
+
+    at the beginning. All of these caveats are why the following regex is so
+    complicated.
     """
     match = re.match(
-        r"(?:^% (.+?)\n^[^ ]|(?:.*^\s*\n|)^-{3}\ntitle: ([^\n]+)\n.*^(?:-{3}|\.{3})$)",
+        r"(?:^% (.+?)\n^[^ ]|"
+        r"\n*^# ([^\n]+)$|"
+        r"(?:.*^\s*\n|)^-{3}\ntitle: ([^\n]+)\n.*^(?:-{3}|\.{3})$)",
         text,
         re.MULTILINE | re.DOTALL,
     )
 
     if match:
-        return match.group(1) or match.group(2)
+        return match.group(1) or match.group(2) or match.group(3)
 
 
 if __name__ == "__main__":
