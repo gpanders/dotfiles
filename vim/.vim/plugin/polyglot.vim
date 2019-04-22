@@ -6,4 +6,5 @@
 " Disable things
 let g:polyglot_disabled = [
       \ 'python-compiler',
+      \ 'markdown'
       \ ]
