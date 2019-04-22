@@ -13,3 +13,13 @@ endif
 function! g:projectionist_transformations.date(input, o) abort
   return strftime('%Y-%m-%d')
 endfunction
+
+function! s:activate()
+  for opt in ['textwidth', 'shiftwidth', 'softtabstop', 'expandtab']
+    for [root, value] in projectionist#query(opt)
+      execute 'setlocal ' . opt . '=' . value
+    endfor
+  endfor
+endfunction
+
+autocmd User ProjectionistActivate call s:activate()
