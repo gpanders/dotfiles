@@ -12,11 +12,13 @@ let g:ale_python_pylint_change_directory = 0
 
 " C/C++
 let g:ale_c_parse_compile_commands = 1
+let g:ale_c_clangtidy_checks = ['cppcoreguidelines-*']
 let g:ale_c_ccls_init_options = {
       \ 'cache': {
       \   'directory': $HOME . '/.cache/ccls',
       \ }}
 let g:ale_cpp_ccls_init_options = g:ale_c_ccls_init_options
+let g:ale_cpp_clangtidy_checks = g:ale_c_clangtidy_checks
 
 let g:ale_fixers = {
       \ 'python': ['isort'],
