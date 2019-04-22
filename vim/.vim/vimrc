@@ -508,6 +508,7 @@ nnoremap <silent> ,c :lcd %:p:h<Bar>echo 'Changed directory to ' . getcwd() . ' 
 
 " Format whole buffer with formatprg without changing cursor position
 nnoremap <Space>gq mzHmygggqG`yzt`z
+nnoremap gq<CR> mzHmygggqG`yzt`z
 
 " Show tag stack
 nnoremap <Space>t :tags<CR>
