@@ -3,6 +3,9 @@
 " Author: Greg Anders <greg@gpanders.com>
 " Date: 2019-03-12
 
+let s:cpo_save = &cpo
+set cpo&vim
+
 " Machine specific wiki paths
 " This file should be located at ~/.vim/wikis.vim (or ~/vimfiles/wikis.vim on
 " Windows)
@@ -47,3 +50,6 @@ if !empty(get(g:, 'vimwiki_list', []))
 
   call map(filter(g:vimwiki_list, '!empty(v:val.path)'), function('s:extend'))
 endif
+
+let &cpo = s:cpo_save
+unlet s:cpo_save

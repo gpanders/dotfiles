@@ -2,6 +2,9 @@
 " Author: Greg Anders <greg@gpanders.com>
 " Date: 2019-04-03
 
+let s:cpo_save = &cpo
+set cpo&vim
+
 if exists('g:loaded_autoformat')
   finish
 endif
@@ -25,3 +28,6 @@ augroup plugin.autoformat
         \   unlet view |
         \ endif
 augroup END
+
+let &cpo = s:cpo_save
+unlet s:cpo_save
