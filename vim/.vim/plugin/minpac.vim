@@ -6,7 +6,6 @@ function! s:PackInit()
 
     call minpac#add('gpanders/vim-man', {'type': 'opt'})
     call minpac#add('gpanders/vim-oldfiles')
-    call minpac#add('gpanders/vim-xdc')
 
     " Tim Pope plugin suite
     call minpac#add('tpope/vim-unimpaired')
