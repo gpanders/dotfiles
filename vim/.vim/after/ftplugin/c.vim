@@ -33,7 +33,7 @@ if exists(':Man') == 2
 endif
 
 if executable('clang-format')
-  setlocal formatprg=clang-format\ -style=file\ -fallback-style=Google
+  setlocal formatprg=clang-format\ -style=file\ -fallback-style=LLVM
   let b:undo_ftplugin .= ' fp<'
 endif
 
