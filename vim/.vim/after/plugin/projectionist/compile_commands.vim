@@ -37,9 +37,9 @@ function! s:parse_compile_commands(root)
     call async#run([
           \ 'jq',
           \ '-c',
-          \ '[[.[].command?, .[].arguments[]?] | join(" ") | match("-(?:I|isystem )(\\S+)"; "g") | .captures[0].string]',
+          \ '[[.[].command?, .[].arguments[]?] | join(" ") | match("-(?:I|isystem )(\\S+)"; "g") | .captures[0].string] | unique',
           \ a:root . '/compile_commands.json'
-          \ ], { paths -> s:set_paths(a:root, eval(paths)) })
+          \ ], { paths -> s:set_path(a:root, eval(paths)) })
   else
     let compile_commands = projectionist#json_parse(readfile(a:root . '/compile_commands.json'))
     let cmds = []
@@ -58,14 +58,15 @@ function! s:parse_compile_commands(root)
     call substitute(join(cmds),
           \ '\C\-\%(I\|isystem \)\(\f\+\)', '\=add(paths, submatch(1))', 'g')
 
-    call s:set_paths(root, paths)
+    let paths = uniq(sort(paths))
+    call s:set_path(a:root, paths)
   endif
 endfunction
 
-function! s:set_paths(root, ...)
+function! s:set_path(root, ...)
   if a:0
     let paths = a:1
-    let s:paths[a:root] = filter(map(uniq(sort(paths)), 'fnamemodify(v:val, ":p")'), 'isdirectory(v:val)')
+    let s:paths[a:root] = filter(map(paths, "fnamemodify(v:val, ':p')"), 'isdirectory(v:val)')
   endif
   for dir in s:paths[a:root]
     if stridx(',' . &l:path . ',', ',' . escape(dir, ', ') . ',') < 0
@@ -80,7 +81,7 @@ function! s:activate() abort
     if !has_key(s:paths, root)
       call s:parse_compile_commands(root)
     else
-      call s:set_paths(root)
+      call s:set_path(root)
     endif
   endif
 endfunction
