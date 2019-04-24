@@ -6,7 +6,9 @@
 " different. This function aims to provide a consistent interface for both to
 " be used by other plugins throughout (n)vim.
 
-let s:SID = matchstr(expand('<sfile>'), '<SNR>\d\+_')
+function! s:SID()
+  return matchstr(expand('<sfile>'), '<SNR>\d\+_')
+endfunc
 
 function! async#run(cmd, cb)
   let s:cb = a:cb
@@ -19,8 +21,8 @@ function! async#run(cmd, cb)
     let job = jobstart(a:cmd, opts)
   elseif has('job')
     let opts = {
-          \ 'out_cb': s:SID . 'callback',
-          \ 'err_cb': s:SID . 'error',
+          \ 'out_cb': s:SID() . 'callback',
+          \ 'err_cb': s:SID(). 'error',
           \ 'in_io': 'null',
           \ }
     call job_start(a:cmd, opts)
