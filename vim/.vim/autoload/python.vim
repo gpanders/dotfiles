@@ -7,7 +7,12 @@
 
 let s:python_paths = {}
 
-function! python#set_path()
+function! python#set_path(...)
+  let python = 'python'
+  if a:0 && !empty(a:1)
+    let python = a:1
+  endif
+
   let cmd = join([
         \ 'import sys',
         \ 'from glob import glob',
@@ -16,11 +21,11 @@ function! python#set_path()
         \ ';')
 
   if has('nvim') || has('job')
-    call async#run(['python', '-c', cmd], "let &l:path = &path . ',' . v:val")
+    call async#run([python, '-c', cmd], "let &l:path = &path . ',' . v:val")
   else
     let cwd = getcwd()
     if !has_key(s:python_paths, cwd)
-      let s:python_paths[cwd] = systemlist('python -c "' . escape(cmd, '"') . '"')[0]
+      let s:python_paths[cwd] = systemlist(python . ' -c "' . escape(cmd, '"') . '"')[0]
     endif
     let &l:path = &path . ',' . s:python_paths[cwd]
   endif
