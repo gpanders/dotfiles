@@ -47,7 +47,7 @@ if [ $# -eq 0 ]; then
         fi
     fi
 
-    if hash mutt 2>/dev/null || hash neomutt > /dev/null; then
+    if hash mutt 2>/dev/null || hash neomutt 2>/dev/null; then
         ARGS="$ARGS mutt"
     else
         read -r -p "Install email tools? [y/N] " ans
