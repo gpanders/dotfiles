@@ -83,6 +83,11 @@
   :config
   (delight '((eldoc-mode nil "eldoc")
              (undo-tree-mode nil "undo-tree"))))
+(use-package eyebrowse
+  :ensure t
+  :config
+  (eyebrowse-mode t)
+  (eyebrowse-setup-opinionated-keys))
 (use-package flx
   :ensure t)
 (use-package flycheck
@@ -185,34 +190,6 @@
 (use-package matlab-mode
   :ensure t
   :mode ("\\.m\\'" . matlab-mode))
-(use-package persp-mode
-  :ensure t
-  :demand
-  :bind (:map evil-normal-state-map
-         ("g t" . persp-next)
-         ("g T" . persp-prev)
-         ("g s" . persp-frame-switch))
-  :init
-  (setq persp-keymap-prefix (kbd "C-x p"))
-  :config
-  (setq persp-autokill-buffer-on-remove 'kill-weak
-        persp-auto-save-opt 1
-        persp-nil-hidden t
-        persp-nil-name "nil")
-  (defun persp-uncontained-buffer-p (buffer)
-    (not (persp-contain-buffer-p buffer)))
-  (add-to-list 'ivy-ignore-buffers #'persp-uncontained-buffer-p)
-  (use-package persp-mode-projectile-bridge
-    :ensure t
-    :after (persp-mode projectile)
-    :config
-    (add-hook 'persp-mode-projectile-bridge-mode-hook
-              (lambda ()
-                  (if persp-mode-projectile-bridge-mode
-                      (persp-mode-projectile-bridge-find-perspectives-for-all-buffers)
-                    (persp-mode-projectile-bridge-kill-perspectives))))
-    (add-hook 'projectile-mode-hook #'persp-mode-projectile-bridge-mode))
-  (persp-mode 1))
 (use-package org
   :ensure t
   :mode ("\\.org\\'" . org-mode)
@@ -256,8 +233,6 @@
   :ensure t
   :bind-keymap (("s-p" . projectile-command-map)
                 ("C-c p" . projectile-command-map))
-  :bind (([remap evil-jump-to-tag] . projectile-find-tag)
-         ([remap find-tag] . projectile-find-tag))
   :init
   (setq projectile-enable-caching t
         projectile-completion-system 'ivy
@@ -296,6 +271,8 @@
   :mode "\\.rs\\'"
   :config
   (setq rust-format-on-save t))
+(use-package s
+  :ensure t)
 (use-package sane-term
   :ensure t
   :bind (("C-x t" . sane-term)

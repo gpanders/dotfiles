@@ -92,7 +92,7 @@
     (kbd ", w") 'save-buffer
     (kbd ", b") 'switch-to-buffer
     (kbd ", e") 'find-file
-    (kbd ", f") 'find-file-in-path
+    (kbd "C-p") 'find-file-in-path
     (kbd "\\ g") 'magit-status
     ;; Map & to :&& in normal mode (repeat last substitution with flags)
     (kbd "&") 'evil-ex-repeat-substitute-with-flags
