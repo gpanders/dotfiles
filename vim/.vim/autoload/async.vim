@@ -34,7 +34,7 @@ function! async#run(cmd, cb)
 endfunction
 
 function! s:callback(channel, msg)
-  if !empty(s:cb) && !empty(a:msg)
+  if exists('s:cb') && !empty(s:cb) && !empty(a:msg)
     if type(s:cb) == type({-> 1})
       call s:cb(a:msg)
     elseif type(s:cb) == type('')
