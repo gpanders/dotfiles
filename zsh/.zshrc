@@ -104,7 +104,11 @@ fi
 
 # Enable dircolors
 if (( $+commands[dircolors] )); then
-  eval "$(dircolors --sh)"
+  if [[ -f "$HOME/.dircolors" ]]; then
+    eval "$(dircolors $HOME/.dircolors)"
+  else
+    eval "$(dircolors --sh)"
+  fi
 fi
 
 # Setup pyenv
