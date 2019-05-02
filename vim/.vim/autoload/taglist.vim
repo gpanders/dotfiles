@@ -4,7 +4,7 @@ function! s:tagjump()
   let pattern = matchstr(l, '^.\{-}\t/\zs.\{-}\ze/$')
   wincmd w
   call cursor(1, 1)
-  call search(pattern, 'c')
+  call search('\M' . pattern, 'c')
   wincmd w
   call winrestview(view)
 endfunction
