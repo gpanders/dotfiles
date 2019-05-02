@@ -20,6 +20,9 @@ let g:ale_c_ccls_init_options = {
 let g:ale_cpp_ccls_init_options = g:ale_c_ccls_init_options
 let g:ale_cpp_clangtidy_checks = g:ale_c_clangtidy_checks
 
+" VHDL
+let g:ale_vhdl_xvhdl_options = '--2008 --nolog'
+
 let g:ale_fixers = {
       \ 'python': ['isort'],
       \ 'cpp': ['clang-format'],
