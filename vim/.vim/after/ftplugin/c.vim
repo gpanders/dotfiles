@@ -13,6 +13,10 @@ setlocal include=^\\s*#\\s*include
 " Keep lines at 80 characters or fewer
 setlocal textwidth=79
 
+" Support /// as a comment leader, used for writing Doxygen comments
+setlocal comments-=://
+setlocal comments+=:///,://
+
 " Include headers on Unix
 if has('unix')
   setlocal path=.,/usr/local/include,/usr/include,,
