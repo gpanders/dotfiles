@@ -268,7 +268,7 @@ set path-=/usr/include
 " Use ripgrep or ag as grepprg if available
 if executable('rg')
   " Use rg over grep
-  set grepprg=rg\ --vimgrep\ --smart-case\ --hidden\ --glob\ '!.git'
+  set grepprg=rg\ --vimgrep\ --smart-case
   set grepformat^=%f:%l:%c:%m
 elseif executable('ag')
   " Use ag over grep
@@ -562,10 +562,6 @@ cnoreabbrev w!! w !sudo tee > /dev/null %
 " }}}
 
 " Commands {{{
-
-" Define a custom command to wrap :grep with :silent, :copen, and :redraw
-command! -nargs=+ -bang Grep silent botright grep<bang> <args> | copen | redraw!
-nnoremap <Bslash><Bslash> :Grep!<space>
 
 " This comes from vimrc_example.vim. See :h :DiffOrig
 command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
