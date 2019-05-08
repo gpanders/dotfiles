@@ -130,6 +130,10 @@ EOF
         fi
     elif [[ "$mod" == "git" ]]; then
         # Configure git
+        if [ ! -f "$HOME/.gitconfig" ] && [ ! -f "${XDG_CONFIG_HOME:-$HOME/.config}/git/config" ]; then
+            touch "${XDG_CONFIG_DIR:-$HOME/.config}/git/config"
+        fi
+
         if ! git config --global --get user.name 1>/dev/null ; then
             git config --global user.name "Greg Anders"
         fi
