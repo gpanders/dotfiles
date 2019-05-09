@@ -1,7 +1,7 @@
 syntax keyword vhdlFunction  falling_edge rising_edge
 syntax keyword vhdlFunction  to_unsigned to_signed to_integer
 
-syntax keyword vhdlStatement function nextgroup=vhdlFunction skipwhite
+syntax keyword vhdlStatement function procedure nextgroup=vhdlFunction skipwhite
 syntax match   vhdlFunction  "\a\w*\ze(" display contained
 
 syntax match   vhdlLabel     "^\s*\zs\I\i*\ze\s*:[A-Za-z ]" display

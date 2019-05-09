@@ -1,15 +1,15 @@
-highlight default link sdcOperatingConditions    Statement
-highlight default link sdcSystemInterface        Statement
-highlight default link sdcTimingConstraints      Statement
-highlight default link sdcTimingExceptions       Statement
-highlight default link sdcLogicAssignments       Statement
-highlight default link sdcObjectAccessCommands   Statement
-highlight default link sdcGeneralPurposeCommands Statement
-highlight default link xdcOperatingConditions    Statement
-highlight default link xdcTimingConstraints      Statement
-highlight default link xdcLogicAssignments       Statement
-highlight default link xdcObjectAccessCommands   Statement
-highlight default link xdcGeneralPurposeCommands Statement
-highlight default link xdcFloorplanCommands      Statement
-highlight default link xdcPowerCommands          Statement
-highlight default link xdcPinPlanningCommands    Statement
+highlight link sdcOperatingConditions    Statement
+highlight link sdcSystemInterface        Statement
+highlight link sdcTimingConstraints      Statement
+highlight link sdcTimingExceptions       Statement
+highlight link sdcLogicAssignments       Statement
+highlight link sdcObjectAccessCommands   Statement
+highlight link sdcGeneralPurposeCommands Statement
+highlight link xdcOperatingConditions    Statement
+highlight link xdcTimingConstraints      Statement
+highlight link xdcLogicAssignments       Statement
+highlight link xdcObjectAccessCommands   Statement
+highlight link xdcGeneralPurposeCommands Statement
+highlight link xdcFloorplanCommands      Statement
+highlight link xdcPowerCommands          Statement
+highlight link xdcPinPlanningCommands    Statement
