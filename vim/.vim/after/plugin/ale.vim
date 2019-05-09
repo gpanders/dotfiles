@@ -11,6 +11,7 @@ endif
 let g:ale_python_pylint_change_directory = 0
 
 " C/C++
+let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
 let g:ale_c_clangtidy_checks = ['cppcoreguidelines-*']
 let g:ale_c_ccls_init_options = {
