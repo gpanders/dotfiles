@@ -7,3 +7,4 @@ if !get(g:, 'loaded_abolish', 0)
 endif
 
 Abolish aglo algo
+Abolish emualtor emulator
