@@ -1,0 +1,36 @@
+global !p
+import re
+
+def create_options_case_body(t, snip):
+	snip.rv = ""
+	snip >> 2
+	opts = re.findall(r"[A-Za-z]:{0,2}", t[1])
+	for opt in opts:
+		snip.rv += snip.mkline("-" + opt[0] + ")")
+		snip >> 1
+		if len(opt) > 1:
+			snip += "PARAM_" + str.upper(opt[0]) + "=\"$2\""
+			snip += "shift 2"
+		else:
+			snip += "shift"
+		snip += ";;"
+		snip << 1
+		snip.rv += "\n"
+
+endglobal
+
+snippet opts "Command line option parser" b
+OPTS="$(getopt -- "${1:a:bc}" "$@")"
+
+eval set -- "$OPTS"
+
+while true; do
+	case \$1 in
+`!p create_options_case_body(t, snip)`
+		--)
+			shift
+			break
+			;;
+	esac
+done
+endsnippet
