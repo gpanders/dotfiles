@@ -37,20 +37,12 @@ if [ ! -z "$FZF_DEFAULT_COMMAND" ]; then
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
 
-export FZF_CTRL_T_OPTS="--preview '! grep -qI . {} && echo {} is a binary file || (highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2>/dev/null | head -200'"
+if (( $+commands[highlight] )); then
+    export FZF_CTRL_T_OPTS="--preview '! grep -qI . {} && echo {} is a binary file || highlight -O ansi -l {} 2>/dev/null | head -200'"
+fi
 
 if (( $+commands[tree] )); then
     export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 fi
-
-if [ -n "$TMUX_PANE" ]; then
-    export FZF_TMUX=1
-    alias fzf="fzf-tmux -d40%"
-else
-    export FZF_TMUX=0
-    FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --height 40%"
-fi
-
-FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --inline-info --reverse"
 
 export FZF_DEFAULT_OPTS
