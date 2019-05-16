@@ -43,9 +43,6 @@ function! s:PackInit()
     " Auto generate tags files
     call minpac#add('ludovicchabant/vim-gutentags')
 
-    " Start page for vim
-    call minpac#add('mhinz/vim-startify')
-
     " Make working with REPLs so much better
     call minpac#add('jpalardy/vim-slime')
 
