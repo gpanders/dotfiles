@@ -39,7 +39,7 @@ function! s:parse_compile_commands(root)
           \ '-c',
           \ '[[.[].command?, .[].arguments[]?] | join(" ") | match("-(?:I|isystem )(\\S+)"; "g") | .captures[0].string] | unique',
           \ a:root . '/compile_commands.json'
-          \ ], { paths -> s:set_path(a:root, eval(paths)) })
+          \ ], {paths -> s:set_path(a:root, eval(paths))})
   else
     let compile_commands = projectionist#json_parse(readfile(a:root . '/compile_commands.json'))
     let cmds = []

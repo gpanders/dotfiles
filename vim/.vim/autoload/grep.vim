@@ -1,19 +1,19 @@
-function! s:grep(l, args)
-  let l:cmd = &grepprg . ' ' . a:args
+" Asynchronous grep
+" Author: Greg Anders
+" Date: 2019-05-18
+
+function! s:callback(l, title, result)
   if a:l
-    lgetexpr system(l:cmd)
+    lgetexpr a:result
     lopen
   else
-    cgetexpr system(l:cmd)
+    cgetexpr a:result
     copen
   endif
-  let w:quickfix_title = l:cmd
+  let w:quickfix_title = a:title
 endfunction
 
-function! grep#grep(args)
-  call s:grep(0, a:args)
-endfunction
-
-function! grep#lgrep(args)
-  call s:grep(1, a:args)
+function! grep#grep(l, args)
+  let cmd = split(&grepprg) + split(a:args)
+  call async#run(cmd, {data -> s:callback(a:l, join(cmd), data)})
 endfunction
