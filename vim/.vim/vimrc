@@ -411,7 +411,7 @@ set statusline+=%3*                         | " Reset color
 set statusline+=%{StatuslineGitBranch()}    | " Git branch (with icon)
 set statusline+=%{StatuslineLineEnding()}   | " Line ending
 set statusline+=%{StatuslineFileType()}\    | " Filetype
-set statusline+=%4*\                      | " Color boundary
+set statusline+=%4*\                        | " Color boundary
 set statusline+=%(%l:%c%V%)                 | " Line and column number
 set statusline+=\ %5*                       | " Color boundary 5
 set statusline+=%P\                         | " Percent through file
@@ -437,8 +437,12 @@ inoremap <silent> <C-\>d <C-R>=strftime('%Y-%m-%d')<CR>
 " Insert current filename with <C-\>f
 inoremap <silent> <C-\>f <C-R>=expand('%:t')<CR>
 
-" Insert full path to file with <C-\>p
-inoremap <silent> <C-\>p <C-R>=expand('%:p')<CR>
+" Insert full path to file with <C-\>F
+inoremap <silent> <C-\>F <C-R>=expand('%:p')<CR>
+
+" Copy line above/below (similar to <C-Y>/<C-E> but works on the whole line)
+inoremap <expr> <C-G><C-Y> repeat('<C-Y>', len(getline(line('.')-1))-col('.')+1)
+inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
 
 " }}}
 
@@ -472,9 +476,6 @@ noremap ,b :buffers<CR>:b<Space>
 " Remap & to preserve substitution flags
 nnoremap <silent> & :&&<CR>
 
-" <Space><Tab> goes back to previous buffer
-nnoremap <silent> <Space><Tab> <C-^>
-
 " Map ,, to ,
 nnoremap ,, ,
 
@@ -484,8 +485,8 @@ nnoremap ,vf :vert sf *
 nnoremap ,sf :sf *
 
 " Search for a tag by regex
-nnoremap ,t :tag /
-nnoremap ,T :ptag /
+nnoremap ,t :tjump /
+nnoremap ,T :ptjump /
 
 " Find files in current buffer's directory
 nnoremap ,e :e <C-R>=expand('%:p:h') . '/'<CR>
