@@ -21,7 +21,7 @@ let s:line1 = getline(1)
 let s:python = matchstr(s:line1, 'python\([23]\)\?')
 
 " Populate path from python's sys.path
-call python#set_path(s:python)
+call ft#python#set_path(s:python)
 
 let b:undo_ftplugin .= '|setl path< cpt< tw< fo<'
 

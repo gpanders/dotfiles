@@ -14,7 +14,7 @@ let s:cmd = join([
       \ 'print(",".join(list(filter(lambda d: path.isdir(d) and glob(path.join(d, "*.py")), sys.path))))'],
       \ ';')
 
-function! python#set_path(...)
+function! ft#python#set_path(...)
   let python = 'python'
   if a:0 && !empty(a:1)
     let python = a:1
