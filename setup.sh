@@ -133,6 +133,9 @@ for mod in $ARGS; do
             git config --global user.email "${ans:-greg@gpanders.com}"
         fi
 
+        # This repository should always use my personal email
+        git config user.email greg@gpanders.com
+
         git config --global commit.verbose true
         git config --global init.templatedir "$HOME/.config/git/template"
         git config --global alias.a add
