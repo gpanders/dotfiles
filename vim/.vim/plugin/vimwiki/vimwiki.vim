@@ -42,6 +42,7 @@ if !empty(get(g:, 'vimwiki_list', []))
           \ 'path_html': simplify(a:wiki.path . '/html'),
           \ 'template_path': $VIMHOME . '/plugin/vimwiki/templates/',
           \ 'template_ext': 'html',
+          \ 'links_space_char': '_',
           \ }, 'keep')
 
     return a:wiki
