@@ -14,6 +14,6 @@ function! s:callback(l, title, result)
 endfunction
 
 function! grep#grep(l, args)
-  let cmd = split(&grepprg) + split(a:args)
+  let cmd = split(&grepprg) + util#shellsplit(a:args)
   call async#run(cmd, {data -> s:callback(a:l, join(cmd), data)})
 endfunction
