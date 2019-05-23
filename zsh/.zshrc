@@ -3,6 +3,9 @@
 # Enable emacs/readline style keybindings
 bindkey -e
 
+# Enable completion (this needs to be done before sourcing plugins)
+autoload -Uz compinit && compinit
+
 # Install zsh plugins with antibody
 if [[ ! -f "${ZDOTDIR:-$HOME}/.zplugins" ]]; then
   echo "Installing zsh plugins. We only need to do this once."
@@ -18,9 +21,6 @@ if [[ ! -f "${ZDOTDIR:-$HOME}/.zplugins" ]]; then
   " > ${ZDOTDIR:-$HOME}/.zplugins
 fi
 source "${ZDOTDIR:-$HOME}/.zplugins"
-
-# Enable completion
-autoload -Uz compinit && compinit
 
 # zsh-autosuggestions
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
