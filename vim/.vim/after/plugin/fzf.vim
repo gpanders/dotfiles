@@ -19,5 +19,4 @@ command! -bang Helptags call fzf#helptags(<bang>0)
 nnoremap <silent> <C-H> :<C-U>Helptags<CR>
 
 " Hide statusline in FZF buffers
-autocmd! FileType fzf set laststatus=0 noruler
-      \ | autocmd BufLeave <buffer> set laststatus=2 ruler
+autocmd! FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
