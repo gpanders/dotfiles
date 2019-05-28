@@ -11,6 +11,6 @@ let g:cursorline_blacklist = ['tex']
 
 augroup plugin.cursorline
   autocmd!
-  autocmd InsertEnter,WinLeave * call cursorline#toggle(v:false)
-  autocmd InsertLeave,WinEnter * call cursorline#toggle(v:true)
+  autocmd InsertEnter,WinLeave * call cursorline#toggle(0)
+  autocmd InsertLeave,WinEnter * call cursorline#toggle(1)
 augroup END

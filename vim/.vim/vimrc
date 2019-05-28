@@ -1,7 +1,7 @@
 " Greg Anders (gpanders)'s vimrc <https://github.com/gpanders/dotfiles.git>
 
 " Clear all vimrc autocmds at the beginning
-augroup vimrc | autocmd! | augroup END
+augroup vimrc | execute 'autocmd!' | augroup END
 
 " Setup {{{
 
@@ -173,7 +173,6 @@ set completeopt^=menuone
 set confirm
 set cursorline
 set expandtab
-set foldmarker=\ {{{,\ }}}
 set hidden
 set ignorecase
 set include=
@@ -181,7 +180,6 @@ set lazyredraw
 set linebreak
 set matchpairs+=<:>
 set matchtime=2
-set mouse=a
 set number
 set pumheight=10
 set scrolloff=2
@@ -196,15 +194,23 @@ set splitbelow
 set splitright
 set nostartofline
 set noswapfile
-set tagcase=smart
+silent! set tagcase=smart
 set virtualedit+=block
+
+if has('folding')
+  set foldmarker=\ {{{,\ }}}
+endif
+
+if has('mouse')
+  set mouse=a
+endif
 
 " Set options which are defaults in nvim
 if !has('nvim')
   set autoindent
   set autoread
   set backspace=indent,eol,start  " Allow vim to delete whitespace
-  set belloff=all
+  silent! set belloff=all
   set complete-=i
   set display=lastline
   set nofsync
@@ -213,12 +219,12 @@ if !has('nvim')
   set hlsearch
   set incsearch
   set langnoremap
-  set nolangremap
+  silent! set nolangremap
   set laststatus=2
   set nrformats-=octal  " Don't interpret numbers starting with 0 as octal
   set ruler
   set sessionoptions-=options  " Don't save options in session files
-  set shortmess+=F
+  silent! set shortmess+=F
   set showcmd
   set sidescroll=1
   set smarttab
