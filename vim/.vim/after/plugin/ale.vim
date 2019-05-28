@@ -3,6 +3,9 @@
 " Author: Greg Anders <greg@gpanders.com>
 " Date: 2019-01-23
 
+let s:save_cpo = &cpo
+set cpo&vim
+
 if !get(g:, 'loaded_ale', 0)
   finish
 endif
@@ -39,3 +42,6 @@ nmap <Space><C-F> <Plug>(ale_fix)
 nmap <Bslash>d <Plug>(ale_go_to_definition)
 nmap <C-W><Bslash>d <Plug>(ale_go_to_definition_in_split)
 nmap <Bslash>r <Plug>(ale_find_references)
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
