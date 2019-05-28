@@ -36,6 +36,7 @@
 (require 'init-ui)
 (require 'init-evil)
 (require 'init-os)
+(require 'init-dired)
 
 (use-package ccls
   :ensure t
@@ -88,8 +89,6 @@
   :config
   (eyebrowse-mode t)
   (eyebrowse-setup-opinionated-keys))
-(use-package flx
-  :ensure t)
 (use-package flycheck
   :ensure t
   :hook (prog-mode . flycheck-mode)
@@ -127,7 +126,6 @@
     :ensure t
     :delight
     :config
-    (global-set-key "\M-f" 'swiper)
     (global-set-key (kbd "C-c k") (cond ((executable-find "rg") 'counsel-rg)
                                         ((executable-find "ag") 'counsel-ag)
                                         ((executable-find "grep") 'counsel-grep)))
@@ -146,12 +144,6 @@
          (rust-mode . lsp))
   :config
   (setq lsp-prefer-flymake nil)
-  ;; lsp-mode doesn't have a keymap so bind the keys locally when mode is
-  ;; activated
-  (add-hook 'lsp-mode-hook
-            (lambda ()
-              (progn
-                (local-set-key (kbd "C-c C-f") 'lsp-format-buffer))))
   (use-package lsp-ui
     :ensure t
     :commands lsp-ui-mode
@@ -172,7 +164,6 @@
     ;;   (yas-global-mode))))
 (use-package magit
   :ensure t
-  :hook (with-editor-mode . evil-insert-state)
   :config
   (setq magit-completing-read-function #'ivy-completing-read))
 (use-package markdown-mode
@@ -192,41 +183,12 @@
   :mode ("\\.m\\'" . matlab-mode))
 (use-package org
   :ensure t
+  :demand
   :mode ("\\.org\\'" . org-mode)
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture)
          ("C-c b" . org-switchb))
-  :init
-  (defvar org-gtd-directory nil "Location of GTD org mode files.")
-
-  (setq org-gtd-directory
-        (cond ((eq system-type 'darwin) "~/Documents/Notes/gtd/")
-              ((eq system-type 'gnu/linux) "~/notes/gtd/")))
-  (defun open-gtd-inbox ()
-    "Open GTD inbox."
-    (interactive)
-    (find-file (expand-file-name "inbox.org" org-gtd-directory)))
-
-  (defun open-gtd-actions ()
-    "Open GTD next actions list."
-    (interactive)
-    (find-file (expand-file-name "actions.org" org-gtd-directory)))
-
-  (defun open-gtd-projects ()
-    "Open GTD projects list."
-    (interactive)
-    (find-file (expand-file-name "projects.org" org-gtd-directory)))
-
-  (defun open-gtd-tickler ()
-    "Open GTD tickler."
-    (interactive)
-    (find-file (expand-file-name "tickler.org" org-gtd-directory)))
-
-  (defun open-gtd-someday-maybe ()
-    "Open GTD someday/maybe list."
-    (interactive)
-    (find-file (expand-file-name "someday.org" org-gtd-directory)))
   :config
   (require 'init-org))
 (use-package projectile
@@ -244,7 +206,8 @@
         projectile-globally-ignored-file-suffixes '(".elc" ".pyc" ".o"))
   :config
   (setq projectile-generic-command
-        (cond ((executable-find "rg") "rg --files --hidden --glob '!.git' -0")
+        (cond ((executable-find "fd") "fd --type f --hidden --follow --exclude .git -0")
+              ((executable-find "rg") "rg --files --hidden --glob '!.git' -0")
               ((executable-find "ag") "ag -g '' --hidden --ignore '.git' -0")
               (t projectile-generic-command)))
   (add-hook 'projectile-after-switch-project-hook
@@ -252,11 +215,6 @@
               (when (eq (projectile-project-vcs) 'git)
                 (setq projectile-tags-file-name ".git/etags"
                       projectile-tags-command "git ls-files | ctags -e -L - -f \"%s\" %s"))))
-  (use-package counsel-projectile
-    :ensure t
-    :after counsel
-    :config
-    (counsel-projectile-mode))
   (projectile-mode 1))
 (use-package python
   :mode (("\\.py\\'" . python-mode)
@@ -271,15 +229,10 @@
   :mode "\\.rs\\'"
   :config
   (setq rust-format-on-save t))
-(use-package s
-  :ensure t)
-(use-package sane-term
-  :ensure t
-  :bind (("C-x t" . sane-term)
-         ("C-x T" . sane-term-create)))
 (use-package smartparens
   :ensure t
   :delight
+  :hook (prog-mode . smartparens-mode)
   :config
   (require 'smartparens-config)
   (sp-local-pair 'python-mode "'" nil
@@ -311,9 +264,7 @@
 (when (memq system-type '(darwin gnu/linux))
     (setq shell-file-name "/bin/sh"))
 
-;; Enable dired-x
-;; (load "dired-x")
-(add-hook 'dired-mode-hook #'dired-hide-details-mode)
+
 
 ;; Disable some emacs prompts
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -325,7 +276,6 @@
 ;; Enable line numbers in programming modes
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'prog-mode-hook #'hl-line-mode)
-(add-hook 'prog-mode-hook #'smartparens-mode)
 
 ;; Enable auto-fill mode in text modes
 (add-hook 'text-mode-hook #'turn-on-auto-fill)
