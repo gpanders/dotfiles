@@ -17,4 +17,4 @@ augroup plugin.binary
 augroup END
 
 " Delete the augroup if not in binary mode
-au VimEnter * if !&binary | au! plugin.binary | endif
+au VimEnter * if !&binary | exe 'au! plugin.binary' | endif

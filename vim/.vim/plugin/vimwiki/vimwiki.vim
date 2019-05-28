@@ -18,7 +18,7 @@ let g:vimwiki_conceal_pre = 1
 
 " Extend wikis with default values
 if !empty(get(g:, 'vimwiki_list', []))
-  function! s:extend(index, wiki)
+  function! s:extend(wiki)
     if get(a:wiki, 'syntax') ==# 'markdown'
       " Settings for markdown wikis
       call extend(a:wiki, {
@@ -48,7 +48,7 @@ if !empty(get(g:, 'vimwiki_list', []))
     return a:wiki
   endfunction
 
-  call map(filter(g:vimwiki_list, '!empty(v:val.path)'), function('s:extend'))
+  call map(filter(g:vimwiki_list, '!empty(v:val.path)'), 's:extend(v:val)')
 endif
 
 let &cpo = s:cpo_save
