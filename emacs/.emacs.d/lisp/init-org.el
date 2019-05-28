@@ -1,8 +1,14 @@
 (defvar org-gtd-directory nil "Location of GTD org mode files.")
+(defvar org-wiki-directory nil "Location of wiki files.")
 
 (setq org-gtd-directory
       (cond ((eq system-type 'darwin) "~/Documents/ownCloud/GTD/")
-            ((eq system-type 'gnu/linux) "~/notes/gtd/")))
+            ((eq system-type 'gnu/linux) "~/Documents/GTD/")))
+
+(setq org-wiki-directory
+      (cond ((eq system-type 'darwin) "~/Documents/ownCloud/Notes/")
+            ((eq system-type 'gnu/linux) "~/Documents/Notes/")))
+
 (defun open-gtd-inbox ()
   "Open GTD inbox."
   (interactive)
@@ -27,6 +33,11 @@
   "Open GTD someday/maybe list."
   (interactive)
   (find-file (expand-file-name "someday.org" org-gtd-directory)))
+
+(defun open-wiki-index ()
+  "Open wiki index."
+  (interactive)
+  (find-file (expand-file-name "index.org" org-wiki-directory)))
 
 (setq org-agenda-files `(,(expand-file-name "inbox.org" org-gtd-directory)
                          ,(expand-file-name "projects.org" org-gtd-directory)
