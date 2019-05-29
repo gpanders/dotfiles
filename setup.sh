@@ -24,7 +24,7 @@ fi
 
 ARGS="$@"
 if [ $# -eq 0 ]; then
-    ARGS="vim neovim emacs git X alacritty bash zsh pylint flake8"
+    ARGS="vim neovim emacs git X alacritty bash zsh pylint flake8 pandoc"
     if hash tmux 2>/dev/null; then
         ARGS="$ARGS tmux"
     else
