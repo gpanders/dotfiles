@@ -46,13 +46,13 @@
   (defun find-file-in-path ()
     "Find files recursively from current directory."
     (interactive)
-    (let* ((find-program (cond ((executable-find "fd") "fd")
+    (let ((find-program (cond ((executable-find "fd") "fd")
                                ((executable-find "rg") "rg")
                                ((executable-find "ag") "ag")
                                (t find-program)))
-           (counsel-file-jump-args (cond ((eq find-program "fd") "--type f --hidden --exclude .git")
-                                         ((eq find-program "rg") "--files --hidden --glob '!.git'")
-                                         ((eq find-program "ag") "-g '' --hidden --ignore '.git'")
+          (counsel-file-jump-args (cond ((executable-find "fd") "--type f --hidden --exclude .git .")
+                                         ((executable-find "rg") "--files --hidden --glob '!.git'")
+                                         ((executable-find "ag") "-g '' --hidden --ignore '.git'")
                                          (t counsel-file-jump-args))))
       (counsel-file-jump)))
 
