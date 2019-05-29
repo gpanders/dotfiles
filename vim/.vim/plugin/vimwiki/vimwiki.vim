@@ -26,7 +26,7 @@ if !empty(get(g:, 'vimwiki_list', []))
             \ 'custom_wiki2html': $VIMHOME . '/plugin/vimwiki/convert.py',
             \ 'custom_wiki2html_args':
             \   get(g:, 'vimwiki_html_header_numbering') ? '-N' : '',
-            \ 'template_default': 'pandoc',
+            \ 'template_default': 'vimwiki',
             \ 'list_margin': 0,
             \ }, 'keep')
     else
@@ -40,7 +40,7 @@ if !empty(get(g:, 'vimwiki_list', []))
     " Settings for all wikis
     call extend(a:wiki, {
           \ 'path_html': simplify(a:wiki.path . '/html'),
-          \ 'template_path': $VIMHOME . '/plugin/vimwiki/templates/',
+          \ 'template_path': $HOME . '/.config/pandoc/templates/',
           \ 'template_ext': 'html',
           \ 'links_space_char': '_',
           \ }, 'keep')
