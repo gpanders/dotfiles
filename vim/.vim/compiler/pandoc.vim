@@ -15,7 +15,13 @@ if exists(':CompilerSet') != 2
   command -nargs=* CompilerSet setlocal <args>
 endif
 
-CompilerSet makeprg=pandoc\ -s\ --katex\ -o\ %:t:r.html\ %:S
+if filereadable($HOME . '/.config/pandoc/templates/github.html')
+  CompilerSet makeprg=pandoc\ -s\ --katex\ --template\ \"$HOME/.config/pandoc/templates/github.html\"\ -o\ %:t:r.html\ %:S
+elseif filereadable($HOME . '/.config/pandoc/templates/default.html')
+  CompilerSet makeprg=pandoc\ -s\ --katex\ --template\ \"$HOME/.config/pandoc/templates/default.html\"\ -o\ %:t:r.html\ %:S
+else
+  CompilerSet makeprg=pandoc\ -s\ --katex\ -o\ %:t:r.html\ %:S
+endif
 CompilerSet errorformat=
 
 let &cpo = s:save_cpo
