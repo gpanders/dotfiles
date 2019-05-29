@@ -59,6 +59,9 @@
 (setq org-capture-templates `(("i" "Inbox" entry
                                (file+headline ,(expand-file-name "inbox.org" org-gtd-directory) "Inbox")
                                "* %i%?")
+                              ("a" "Action" entry
+                               (file+headline ,(expand-file-name "actions.org" org-gtd-directory) "Next Actions")
+                               "* TODO %i%?")
                               ("T" "Tickler" entry
                                (file+headline ,(expand-file-name "tickler.org" org-gtd-directory) "Tickler")
                                "* %i%?\n %U")
