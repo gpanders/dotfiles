@@ -111,26 +111,6 @@ if (( $+commands[dircolors] )); then
   fi
 fi
 
-# Setup pyenv
-if [[ -s "$HOME/.pyenv/bin/pyenv" ]]; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  path=("$PYENV_ROOT/bin" $path)
-fi
-
-if (( $+commands[pyenv] )); then
-  eval "$(pyenv init - --no-rehash zsh)"
-fi
-
-# Setup cargo
-if [[ -s "$HOME/.cargo/env" ]]; then
-  source "$HOME/.cargo/env"
-fi
-
-# Setup rbenv
-if (( $+commands[rbenv] )); then
-  eval "$(rbenv init - --no-rehash zsh)"
-fi
-
 # Setup nvm
 if [[ -s "$HOME/.nvm" ]]; then
   export NVM_DIR="$HOME/.nvm"
