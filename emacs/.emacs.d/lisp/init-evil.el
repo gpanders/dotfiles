@@ -2,7 +2,8 @@
 
 (use-package evil
   :ensure t
-  :hook (prog-mode . evil-local-mode)
+  :hook ((prog-mode . evil-local-mode)
+         (org-mode . evil-local-mode))
   :custom
   (evil-search-module 'evil-search)
   :init
