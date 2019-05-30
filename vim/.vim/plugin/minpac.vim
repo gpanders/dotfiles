@@ -38,7 +38,7 @@ function! s:PackInit()
     call minpac#add('junegunn/goyo.vim')
 
     " Show change signs in the gutter for git files
-    call minpac#add('airblade/vim-gitgutter')
+    call minpac#add('mhinz/vim-signify')
 
     " Auto generate tags files
     call minpac#add('ludovicchabant/vim-gutentags')
@@ -49,9 +49,6 @@ function! s:PackInit()
     " Note taking and knowledge tracking
     call minpac#add('vimwiki/vimwiki', {'rev': 'dev'})
 
-    " Quickfix window improvements
-    call minpac#add('romainl/vim-qf')
-
     " Populate results of :ilist and :dlist in quickfix window
     call minpac#add('romainl/vim-qlist')
 
@@ -60,14 +57,13 @@ function! s:PackInit()
 
     " Language specific
     " Python
-    call minpac#add('davidhalter/jedi-vim')
     call minpac#add('drgarcia1986/python-compilers.vim')
 
     " LaTeX
     call minpac#add('lervag/vimtex')
 
     " Language Server Client
-    " call minpac#add('neoclide/coc.nvim', {'branch': 'v0.0.64', 'type': 'opt', 'do': 'call coc#util#install()'})
+    " call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'do': 'call coc#util#install()'})
     " Asynchronous linting
     call minpac#add('w0rp/ale', {'type': 'opt'})
 
