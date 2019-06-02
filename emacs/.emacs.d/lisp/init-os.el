@@ -10,6 +10,9 @@
 				     (if (display-graphic-p frame)
 					 1 0))))
 
+    (let ((default-directory "/usr/local/share/emacs/site-lisp"))
+      (normal-top-level-add-subdirs-to-load-path))
+
     ;; Hide Emacs instead of killing it when last frame is closed
     (defun handle-delete-frame-without-kill-emacs (event)
       "Handle delete-frame events from the X server."

@@ -66,7 +66,6 @@
         (evil-delete (+ (line-beginning-position) (current-indentation)) (point)))))
 
   (evil-define-key 'motion 'global
-    (kbd "SPC") nil
     ;; Make window commands easier
     (kbd "C-w C-k") (kbd "C-w k")
     (kbd "C-w C-j") (kbd "C-w j")
