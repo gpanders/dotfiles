@@ -181,6 +181,9 @@
 (use-package matlab-mode
   :ensure t
   :mode ("\\.m\\'" . matlab-mode))
+(use-package mu4e
+  :init
+  (setq mu4e-maildir "~/.mail"))
 (use-package org
   :ensure t
   :demand
@@ -263,8 +266,6 @@
 ;; Use simple shell for inferior shells
 (when (memq system-type '(darwin gnu/linux))
     (setq shell-file-name "/bin/sh"))
-
-
 
 ;; Disable some emacs prompts
 (fset 'yes-or-no-p 'y-or-n-p)
