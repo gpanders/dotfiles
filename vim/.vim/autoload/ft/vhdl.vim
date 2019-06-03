@@ -50,3 +50,10 @@ function! ft#vhdl#toggle_debug()
   " Restore the old value of the mark
   call setpos("'z", oldz)
 endfunction
+
+function! ft#vhdl#find_package(fname)
+  let path = glob(expand('%:h:.') . '/*' . a:fname . '*', 0, 1)
+  if !empty(path)
+    return path[0]
+  endif
+endfunction
