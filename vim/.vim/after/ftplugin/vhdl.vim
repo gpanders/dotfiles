@@ -16,6 +16,9 @@ setlocal nosmartcase
 setlocal formatoptions-=t
 setlocal textwidth=79
 
+setlocal include=\\c^\\s*use\\s\\+work\\.\\zs\\w\\+\\ze\\.
+setlocal includeexpr=ft#vhdl#find_package(v:fname)
+
 inoreabbrev <buffer> slv std_logic_vector
 inoreabbrev <buffer> sl std_logic
 
@@ -26,7 +29,7 @@ if executable('ghdl')
 endif
 
 let b:undo_ftplugin =
-      \ 'setl com< cms< sts< sw< tc< ic< scs< fo< tw<' .
+      \ 'setl com< cms< sts< sw< tc< ic< scs< fo< tw< inc< inex<' .
       \ '|iuna <buffer> slv' .
       \ '|iuna <buffer> sl' .
       \ '|nun <buffer> <Bslash>d'
