@@ -184,7 +184,6 @@ set number
 set pumheight=10
 set scrolloff=2
 set shiftwidth=4
-set shortmess+=c
 set showmatch
 set noshowmode
 set sidescrolloff=5
