@@ -15,11 +15,14 @@ if exists(':CompilerSet') != 2
   command -nargs=* CompilerSet setlocal <args>
 endif
 
-if filereadable($HOME . '/.config/pandoc/templates/github.html')
+if expand('%:t') ==# 'README.md' && filereadable($HOME . '/.config/pandoc/templates/github.html')
+  " Use GFM for README files
   CompilerSet makeprg=pandoc\ -s\ --katex\ --template\ \"$HOME/.config/pandoc/templates/github.html\"\ -o\ %:t:r.html\ %:S
 elseif filereadable($HOME . '/.config/pandoc/templates/default.html')
+  " Use custom pandoc template for everything else
   CompilerSet makeprg=pandoc\ -s\ --katex\ --template\ \"$HOME/.config/pandoc/templates/default.html\"\ -o\ %:t:r.html\ %:S
 else
+  " If all else fails, don't use a template at all
   CompilerSet makeprg=pandoc\ -s\ --katex\ -o\ %:t:r.html\ %:S
 endif
 CompilerSet errorformat=
