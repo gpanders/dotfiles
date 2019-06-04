@@ -23,7 +23,7 @@
     $endif$
     <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
     <style>
-            html{font-family: sans-serif; height: 100%; width: 100%; background-color: #efefef;}
+            html{font-family: sans-serif; height: 100%; width: 100%;}
             body{padding: 2% 5%; margin: auto; background-color: #fefefe; min-height: 100%;}
             @media screen and (min-width: 48em) {
               body{max-width: 60%;}
@@ -34,6 +34,10 @@
             span.smallcaps{font-variant: small-caps;}
             span.underline{text-decoration: underline;}
             div.column{display: inline-block; vertical-align: top; width: 50%;}
+            table{empty-cells: show; border: 1px solid #cbcbcb; border-collapse: collapse; border-spacing:0;}
+            thead{background-color: #e0e0e0; color: #000; text-align: left; vertical-align: bottom;}
+            td:first-child,th:first-child{border-left-width: 0;}
+            td,th{padding: 0.5em 1em; border-left: 1px solid #cbcbcb; border-width: 0 0 0 1px; margin: 0; overflow: visible;}
       $if(quotes)$
             q { quotes: "“" "”" "‘" "’"; }
       $endif$
