@@ -11,7 +11,7 @@ endif
 " proper autocmds
 let g:ale_lint_on_text_changed = 'normal'
 
-let g:ale_completion_enabled = 1
+let g:ale_completion_enabled = 0
 
 if get(g:, 'ale_completion_enabled')
   " See :h ale-completion-completeopt-bug
