@@ -23,6 +23,11 @@
   (interactive)
   (find-file (expand-file-name "actions.org" org-gtd-directory)))
 
+(defun open-gtd-waiting ()
+  "Open GTD waiting list."
+  (interactive)
+  (find-file (expand-file-name "waiting.org" org-gtd-directory)))
+
 (defun open-gtd-projects ()
   "Open GTD projects list."
   (interactive)
