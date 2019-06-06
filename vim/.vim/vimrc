@@ -579,7 +579,7 @@ command! EditFtplugin
       \ if empty(&ft) |
       \   echohl Error | echo 'Error: This buffer has no filetype' |
       \ else |
-      \   execute 'e ' . $VIMHOME . '/after/ftplugin/' . &ft . '.vim' |
+      \   execute 'tabe ' . $VIMHOME . '/after/ftplugin/' . &ft . '.vim' |
       \ endif
 
 " }}}
