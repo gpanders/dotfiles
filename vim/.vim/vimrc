@@ -180,7 +180,6 @@ set lazyredraw
 set linebreak
 set matchpairs+=<:>
 set matchtime=2
-set number
 set pumheight=10
 set scrolloff=2
 set shiftwidth=4
