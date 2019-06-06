@@ -448,17 +448,6 @@ inoremap <silent> <C-\>F <C-R>=expand('%:p')<CR>
 inoremap <expr> <C-G><C-Y> repeat('<C-Y>', len(getline(line('.')-1))-col('.')+1)
 inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
 
-" Use <Tab>/<S-Tab> like <C-N>/<C-P>
-function! s:clevertab(shift)
-  if strpart(getline('.'), 0, col('.')-1) =~ '^\s*$'
-    return a:shift ? "\<S-Tab>" : "\<Tab>"
-  else
-    return a:shift ? "\<C-P>" : "\<C-N>"
-  endif
-endfunction
-inoremap <expr> <Tab> <SID>clevertab(0)
-inoremap <expr> <S-Tab> <SID>clevertab(1)
-
 " }}}
 
 " Normal {{{
