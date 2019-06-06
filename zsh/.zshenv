@@ -9,20 +9,19 @@ path=(/usr/local/bin /usr/bin /bin /usr/local/sbin /usr/sbin /sbin)
 # macOS specific setup
 if [[ "$OSTYPE" == darwin* ]]; then
     # Launch path_helper. This will add paths found in /etc/paths and
-    # /etc/paths.d to the path, removing any duplicates. By default, this is
-    # done in /etc/zprofile, but doing it in zprofile messes things up so do it
-    # here instead
+    # /etc/paths.d to the path, removing any duplicates.
+    # By default, this is done in /etc/zprofile, but proper zsh-fu is to
+    # set PATH in zshenv, not zprofile, so do it here instead
     if [ -x /usr/libexec/path_helper ]; then
         eval `/usr/libexec/path_helper -s`
     fi
 
-    # Add homebrew utils to path
-    path=(
-        /usr/local/opt/coreutils/bin
-        /usr/local/opt/findutils/bin
-        /usr/local/opt/mailutils/bin
-        $path
-    )
+    # Add GNU versions of tools to path
+    for item in coreutils findutils gnu-tar gnu-indent gnu-sed gawk grep make; do
+        if [[ -d /usr/local/opt/${item}/libexec/gnubin ]]; then
+            path=(/usr/local/opt/${item}/libexec/gnubin $path)
+        fi
+    done
 fi
 
 # Add pip binary directory to path
