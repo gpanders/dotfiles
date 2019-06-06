@@ -102,7 +102,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Set environment variables
-export TERMBG="light"
 export EDITOR="vim"
 export PAGER="less"
 
