@@ -1,3 +1,4 @@
+.vim/autoload/pathogen.vim
 .vim/.netrwhist
 .vim/wikis.vim
 .vim/session
