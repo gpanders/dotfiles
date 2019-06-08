@@ -56,15 +56,43 @@ function! s:error(channel, msg)
   echohl None
 endfunction
 
+
+function! s:shellsplit(str)
+  return map(split(a:str, '\%(^\%("[^"]*"\|[^"]\)*\)\@<= '), {_, v -> substitute(v, '^"\|"$', '', 'g')})
+endfunction
+
 " Vim's jobs API requires a function name for the callback, so get the name of
 " our script-local functions using `function`
 let s:Callback = function('s:callback')
 let s:Stdout = function('s:stdout')
 let s:Error = function('s:error')
 
-function! async#run(cmd, cb)
+function! async#run(cmd, cb, ...)
   let s:cb = a:cb
   let s:chunks = []
+  let cmd = a:cmd
+
+  " If the first optional argument is present and true, then run the command
+  " in a 'shell'
+  if a:0 && a:1
+    " Convert command into a string
+    if type(cmd) == type([])
+      let cmd = join(cmd)
+    endif
+
+    if !has('nvim')
+      " Neovim's jobstart() uses 'shell' by default when the command argument
+      " is a string. For Vim, we have to explicitly add the &shell -c part
+      let cmd = [&shell, '-c', cmd]
+    endif
+  elseif type(cmd) == type('')
+    " If the optional argument is omitted, then don't run the command in a
+    " 'shell'
+    " For Vim, this just means not adding the '&shell -c' part of the comand.
+    " For Neovim, this means the command needs to be a list
+    let cmd = s:shellsplit(cmd)
+  endif
+
   if has('nvim')
     let opts = {
           \ 'on_stdout': {_, d, e -> s:stdout(e, d[:-2])},
@@ -73,7 +101,7 @@ function! async#run(cmd, cb)
           \ 'stdout_buffered': 1,
           \ 'stderr_buffered': 1,
           \ }
-    let s:job = jobstart(a:cmd, opts)
+    let s:job = jobstart(cmd, opts)
   elseif has('job')
     let opts = {
           \ 'out_cb': s:Stdout,
@@ -81,7 +109,7 @@ function! async#run(cmd, cb)
           \ 'exit_cb': s:Callback,
           \ 'in_io': 'null',
           \ }
-    let s:job = job_start(a:cmd, opts)
+    let s:job = job_start(cmd, opts)
   else
     echohl ErrorMsg
     echom 'Jobs API not supported'
@@ -89,4 +117,8 @@ function! async#run(cmd, cb)
     return
   endif
   return s:job
+endfunction
+
+function! async#runshell(cmd, cb)
+  return async#run(a:cmd, a:cb, 1)
 endfunction
