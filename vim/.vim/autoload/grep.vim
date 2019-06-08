@@ -14,6 +14,11 @@ function! s:callback(l, title, result)
 endfunction
 
 function! grep#grep(l, args)
-  let cmd = split(&grepprg) + util#shellsplit(a:args)
-  call async#run(cmd, {data -> s:callback(a:l, join(cmd), data)})
+  if stridx(&grepprg, '$*') != -1
+    let cmd = substitute(&grepprg, '$\*', a:args, 'g')
+  else
+    let cmd = &grepprg . ' ' . a:args
+  endif
+  " Run the grep command in a shell to enable shell expansion
+  call async#runshell(cmd, {data -> s:callback(a:l, cmd, data)})
 endfunction
