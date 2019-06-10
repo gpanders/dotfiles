@@ -70,7 +70,7 @@ function! s:PackInit()
     " Colorschemes
     call minpac#add('romainl/flattened', {'type': 'opt'})
     call minpac#add('romainl/Apprentice', {'type': 'opt'})
-    call minpac#add('danielwe/base16-vim', {'type': 'opt'})
+    call minpac#add('chriskempson/base16-vim', {'type': 'opt'})
   endif
 endfunction
 
