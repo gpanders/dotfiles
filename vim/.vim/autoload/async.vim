@@ -6,119 +6,142 @@
 " different. This function aims to provide a consistent interface for both to
 " be used by other plugins throughout (n)vim.
 
-function! s:callback(...)
-  if exists('s:cb') && !empty(s:cb)
-    let msg = s:chunks
-    if len(msg) == 1
-      " If output is a single line return the result as a string instead of a
-      " list
-      let msg = msg[0]
-    endif
+let s:jobs = {}
 
-    if type(s:cb) == type({-> 1})
-      call s:cb(msg)
-    elseif type(s:cb) == type('')
-      if exists('*' . s:cb)
-        let F = function(s:cb)
-        call F(msg)
-      else
-        if type(msg) == type([])
-          let msg = join(msg, "\n")
-        endif
-        " Apparently the substitute() function removes escaped characters, so
-        " for example \" becomes ", so we have to escape the escaped
-        " characters, hence the `escape(..., '\')` in the line below
-        let command = substitute(s:cb, '\C\<v:val\>', '"' . escape(fnameescape(msg), '\') . '"', 'g')
-        " After double escaping (explained above) the newline characters are
-        " represented as \\n (a backslash followed by an actual newline). The
-        " following replaces these with the literal '\n' character
-        execute join(split(command, '\\\n'), '\n')
+function! s:callback(id, msg)
+  let msg = a:msg
+  let job = s:jobs[a:id]
+  if type(job.cb) == type({-> 1})
+    call job.cb(msg)
+  elseif type(job.cb) == type('')
+    if exists('*' . job.cb)
+      let F = function(job.cb)
+      call F(msg)
+    else
+      if type(msg) == type([])
+        let msg = join(msg, "\n")
       endif
+      " Apparently the substitute() function removes escaped characters, so
+      " for example \" becomes ", so we have to escape the escaped
+      " characters, hence the `escape(..., '\')` in the line below
+      let command = substitute(job.cb, '\C\<v:val\>', '"' . escape(fnameescape(msg), '\') . '"', 'g')
+      " After double escaping (explained above) the newline characters are
+      " represented as \\n (a backslash followed by an actual newline). The
+      " following replaces these with the literal '\n' character
+      execute join(split(command, '\\\n'), '\n')
     endif
   endif
 endfunction
 
-function! s:stdout(channel, msg)
-  if type(a:msg) == type([])
-    call extend(s:chunks, a:msg)
+function! s:stdout(channel, msg, ...)
+  if a:0
+    let id = a:1
   else
-    call add(s:chunks, a:msg)
+    let id = ch_info(a:channel).id
   endif
+
+  let job = s:jobs[id]
+  let msg = a:msg
+  if type(msg) == type('')
+    let msg = split(msg, "\n", 1)
+  endif
+  let job.chunks[-1] .= msg[0]
+  call extend(job.chunks, msg[1:])
+  if !job.buffered && len(job.chunks) > 1
+    call s:callback(id, remove(job.chunks, 0, -2))
+  end
 endfunction
 
-function! s:error(channel, msg)
+function! s:error(channel, msg, ...)
   echohl ErrorMsg
   let msg = a:msg
   if type(msg) == type([])
-    let msg = join(msg)
+    let msg = join(msg[:-2])
   endif
   echom msg
   echohl None
 endfunction
 
+function! s:exit(channel, msg, ...)
+  if a:0
+    let id = a:1
+  else
+    let id = ch_info(a:channel).id
+  endif
+
+  let job = s:jobs[id]
+  if job.buffered
+    if job.chunks[-1] == ''
+      call remove(job.chunks, -1)
+    endif
+    call s:callback(id, job.chunks)
+  endif
+  call job.completed(a:msg)
+  call remove(s:jobs, id)
+endfunction
 
 function! s:shellsplit(str)
   return map(split(a:str, '\%(^\%("[^"]*"\|[^"]\)*\)\@<= '), {_, v -> substitute(v, '^"\|"$', '', 'g')})
 endfunction
 
-" Vim's jobs API requires a function name for the callback, so get the name of
-" our script-local functions using `function`
-let s:Callback = function('s:callback')
-let s:Stdout = function('s:stdout')
-let s:Error = function('s:error')
+if has('nvim')
+  let s:opts = {
+        \ 'on_stdout': {i, d, e -> s:stdout(e, d, i)},
+        \ 'on_stderr': {i, d, e -> s:error(e, d, i)},
+        \ 'on_exit': {i, d, e -> s:exit(e, d, i)},
+        \ 'stderr_buffered': 1,
+        \ }
+else
+  let s:opts = {
+        \ 'out_cb': function('s:stdout'),
+        \ 'err_cb': function('s:error'),
+        \ 'exit_cb': function('s:exit'),
+        \ 'in_io': 'null',
+        \ 'out_mode': 'raw'
+        \ }
+endif
 
 function! async#run(cmd, cb, ...)
-  let s:cb = a:cb
-  let s:chunks = []
   let cmd = a:cmd
 
-  " If the first optional argument is present and true, then run the command
-  " in a 'shell'
-  if a:0 && a:1
-    " Convert command into a string
+  let opts = {}
+  if a:0
+    let opts = a:1
+  endif
+
+  if get(opts, 'shell', 0) " Run command in a subshell
+    " Convert command into a string if it is in list form
     if type(cmd) == type([])
       let cmd = join(cmd)
     endif
 
     if !has('nvim')
       " Neovim's jobstart() uses 'shell' by default when the command argument
-      " is a string. For Vim, we have to explicitly add the &shell -c part
-      let cmd = [&shell, '-c', cmd]
+      " is a string. For Vim, we have to explicitly add the shell command part
+      let cmd = split(&shell) + split(&shellcmdflag) + [cmd]
     endif
   elseif type(cmd) == type('')
-    " If the optional argument is omitted, then don't run the command in a
-    " 'shell'
-    " For Vim, this just means not adding the '&shell -c' part of the comand.
-    " For Neovim, this means the command needs to be a list
+    " If the 'shell' option is not specified and the cmd argument is a string,
+    " convert it into a list
     let cmd = s:shellsplit(cmd)
   endif
 
   if has('nvim')
-    let opts = {
-          \ 'on_stdout': {_, d, e -> s:stdout(e, d[:-2])},
-          \ 'on_stderr': {_, d, e -> s:error(e, d[:-2])},
-          \ 'on_exit': function('s:callback'),
-          \ 'stdout_buffered': 1,
-          \ 'stderr_buffered': 1,
-          \ }
-    let s:job = jobstart(cmd, opts)
+    let jobid = jobstart(cmd, s:opts)
   elseif has('job')
-    let opts = {
-          \ 'out_cb': s:Stdout,
-          \ 'err_cb': s:Error,
-          \ 'exit_cb': s:Callback,
-          \ 'in_io': 'null',
-          \ }
-    let s:job = job_start(cmd, opts)
+    let jobid = job_start(cmd, s:opts)
   else
     echohl ErrorMsg
     echom 'Jobs API not supported'
     echohl None
     return
   endif
-  return s:job
-endfunction
 
-function! async#runshell(cmd, cb)
-  return async#run(a:cmd, a:cb, 1)
+  let s:jobs[jobid] = {
+        \ 'cb': a:cb,
+        \ 'chunks': [''],
+        \ 'buffered': get(opts, 'buffered', 1),
+        \ 'completed': get(opts, 'completed', {_ -> 0}),
+        \ }
+  return jobid
 endfunction
