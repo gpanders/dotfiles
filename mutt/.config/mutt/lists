@@ -1,4 +1,5 @@
 subscribe ^kernelnewbies@kernelnewbies\\.org$
 subscribe ^neomutt-users@neomutt\\.org$
+subscribe ^hackers@suckless\\.org$
 
 # vim: ft=neomuttrc

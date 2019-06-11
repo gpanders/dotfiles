@@ -55,6 +55,9 @@ source $alias_file
 # Mailing Lists
 source ~/.config/mutt/lists
 
+# Colorized diffs and patches
+source ~/.config/mutt/diffs
+
 # Store message headers locally to speed things up.  If hcache is a folder,
 # Mutt will create sub cache folders for each account which may speeds things
 # up even more.
