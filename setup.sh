@@ -155,6 +155,12 @@ for mod in $ARGS; do
 
         # Alias for just the dotfiles repo
         git config alias.update "!git stash && git fetch origin master:master && git rebase master && git stash pop"
+
+        # Set sendmail settings for git
+        git config --global sendmail.smtpEncryption tls
+        git config --global sendmail.smtpServer mail.gandi.net
+        git config --global sendmail.smtpUser greg@gpanders.com
+        git config --global sendmail.smtpServerPort 587
     elif [[ "$mod" == "zsh" ]]; then
         if ! hash antibody 2>/dev/null; then
             echo "Downloading antibody. This may require your password."
