@@ -171,7 +171,6 @@ highlight link TrailingWhitespace Error
 set backup
 set completeopt^=menuone
 set confirm
-set cursorline
 set expandtab
 set hidden
 set ignorecase
