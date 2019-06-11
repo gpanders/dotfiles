@@ -129,7 +129,8 @@ function! async#run(cmd, cb, ...)
   if has('nvim')
     let jobid = jobstart(cmd, s:opts)
   elseif has('job')
-    let jobid = job_start(cmd, s:opts)
+    let job = job_start(cmd, s:opts)
+    let jobid = ch_info(job_info(job).channel).id
   else
     echohl ErrorMsg
     echom 'Jobs API not supported'
