@@ -12,6 +12,7 @@ endif
 
 " Python
 let g:ale_python_pylint_change_directory = 0
+let g:ale_python_flake8_change_directory = 0
 
 " C/C++
 let g:ale_linters = {'c': ['ccls', 'cquery', 'clangtidy']}
