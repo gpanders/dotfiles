@@ -212,16 +212,17 @@ bar {
     status_command $HOME/.config/i3/conky-i3bar
     position top
     tray_output primary
+    separator_symbol " "
 
     colors {
-        background $base00
+        background $base01
         separator  $base01
-        statusline $base04
+        statusline $base05
 
         # State             Border  BG      Text
-        focused_workspace   $base0D $base0D $base07
-        active_workspace    $base03 $base03 $base00
-        inactive_workspace  $base01 $base01 $base05
+        focused_workspace   $base02 $base02 $base05
+        active_workspace    $base03 $base03 $base07
+        inactive_workspace  $base01 $base01 $base04
         urgent_workspace    $base08 $base08 $base00
         binding_mode        $base0A $base0A $base00
     }
@@ -242,7 +243,7 @@ hide_edge_borders smart_no_gaps
 # gaps
 for_window [tiling] border pixel 0
 smart_borders no_gaps
-gaps inner 15
+gaps inner 10
 
 # Start desktop notification daemon
 exec --no-startup-id dunst -config "$HOME/.config/dunst/dunstrc"
