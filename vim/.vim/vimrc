@@ -545,8 +545,12 @@ execute 'nnoremap <Space>M :marks ' . s:alphabet . '<CR>'
 " }}}
 
 " Visual {{{
-vnoremap * y/\V<C-R>"<CR>
-vnoremap # y?\V<C-R>"<CR>
+xnoremap * y/\V<C-R>"<CR>
+xnoremap # y?\V<C-R>"<CR>
+
+" Maintain selection after shifting
+xnoremap < <gv
+xnoremap > >gv
 " }}}
 
 " Terminal {{{
