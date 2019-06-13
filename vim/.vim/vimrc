@@ -473,6 +473,9 @@ nnoremap <silent> ,8 :b8<CR>
 nnoremap <silent> ,9 :b9<CR>
 nnoremap <silent> ,0 :b10<CR>
 
+nnoremap <Left> :bprevious<CR>
+nnoremap <Right> :bnext<CR>
+
 " List buffers and put :b on the command line
 noremap ,b :buffers<CR>:b<Space>
 
@@ -513,7 +516,6 @@ nnoremap <silent> \c :cd %:p:h<Bar>echo 'Changed directory to ' . getcwd()<CR>
 nnoremap <silent> ,c :lcd %:p:h<Bar>echo 'Changed directory to ' . getcwd() . ' for current window'<CR>
 
 " Format whole buffer with formatprg without changing cursor position
-nnoremap <Space>gq mzHmygggqG`yzt`z
 nnoremap gq<CR> mzHmygggqG`yzt`z
 
 " Show tag stack
@@ -532,6 +534,9 @@ nnoremap <silent> <expr> >l ":\<C-U>lnewer " . v:count1 . "\<CR>"
 
 " Show registers
 nnoremap <Space>r :registers<CR>
+
+" Modify contents of a register
+nnoremap yr :<C-\>e'let @' . v:register . ' = ' . string(getreg(v:register))<CR><C-F>
 
 " Show marks
 nnoremap <Space>m :marks<CR>:norm! `
@@ -594,9 +599,8 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
       \ | exe "normal! g`\"" | endif
 
 " Set marks by filetype for quick navigation
-autocmd BufLeave *.h normal! mH
-autocmd BufLeave *.c,*.cc,*.cpp normal! mC
-autocmd BufLeave *.py normal! mP
+autocmd BufLeave *.h mark H
+autocmd BufLeave *.{c,cc,cpp} mark C
 
 " Start insert immediately when terminal opens
 if exists('##TermOpen')
