@@ -14,6 +14,9 @@ source ~/.config/mutt/mailboxes
 set mailcap_path = ~/.config/mutt/mailcap
 alternative_order text/plain text/enriched text/html
 auto_view text/html
+auto_view text/x-diff
+auto_view text/x-patch
+set allow_ansi
 
 set realname = "Greg Anders"
 set editor = `echo \$EDITOR`
