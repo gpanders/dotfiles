@@ -52,7 +52,7 @@ color markers     color1      color0
 color attachment  color8      color0
 color search      color2      color0
 color status      color8      color10
-color indicator   color7      color11
+color indicator   brightcolor15     color0
 color tree        color11     color0                  # arrow in threads
 
 color index       color12     color0       "~A"       # all messages
@@ -93,6 +93,19 @@ color body        color4      color0       "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*
 # body email
 color body        color4      color0       "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
 
+## Sidebar
 
-# vim: filetype=muttrc
+# Color of the highlighted, but not open, mailbox.
+color sidebar_highlight color7 color11
+
+# Color of the divider separating the Sidebar from Mutt panels
+color sidebar_divider color10 color0
+
+# Color to give mailboxes containing flagged mail
+color sidebar_flagged color1 color0
+
+# Color to give mailboxes containing new mail
+color sidebar_new color2 color0
+
+# vim: ft=muttrc
 
