@@ -565,6 +565,9 @@ if exists(':tmap') == 2
 endif
 " }}}
 
+" Command {{{
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
 " }}}
 
 " Abbreviations {{{
