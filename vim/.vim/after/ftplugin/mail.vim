@@ -8,4 +8,6 @@ setlocal nonumber
 setlocal digraph
 setlocal nolist
 
+syntax clear TrailingWhitespace
+
 let b:undo_ftplugin .= '|setl fo< wm< nu< dg< list<'
