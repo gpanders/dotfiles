@@ -2,3 +2,19 @@ text/html; firefox %s &; test=test -n "$DISPLAY"; needsterminal;
 text/html; w3m -I %{charset} -T text/html; copiousoutput;
 text/x-diff; cat %s | colordiff; copiousoutput;
 text/x-patch; cat %s | colordiff; copiousoutput;
+
+# Images
+image/jpg; ~/.config/mutt/scripts/view_attachment.sh %s jpg
+image/jpeg; ~/.config/mutt/scripts/view_attachment.sh %s jpg
+image/pjpeg; ~/.config/mutt/scripts/view_attachment.sh %s jpg
+image/png; ~/.config/mutt/scripts/view_attachment.sh %s png
+image/gif; ~/.config/mutt/scripts/view_attachment.sh %s gif
+
+# PDFs
+application/pdf; ~/.config/mutt/scripts/view_attachment.sh %s pdf
+
+# HTML
+text/html; ~/.config/mutt/scripts/view_attachment.sh %s html
+
+# Unidentified files
+application/octet-stream; ~/.config/mutt/scripts/view_attachment.sh %s "-"

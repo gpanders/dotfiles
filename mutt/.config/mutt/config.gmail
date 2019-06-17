@@ -1,8 +1,18 @@
+set folder = imaps://imap.gmail.com
+
 set from = "greg.p.anders@gmail.com"
-set folder = ~/.mail/gmail
 set spoolfile = +INBOX
-set postponed = +Drafts
-set record = "+Sent Mail"
-set trash = +Trash
+set postponed = "+[Gmail]/Drafts"
+unset record  # Gmail does this by default
+set mbox = "+[Gmail]/All Mail"
+set trash = "+[Gmail]/Trash"
+
+set imap_user = "greg.p.anders@gmail.com"
+set imap_pass = `pass google/apps/mutt`
+set smtp_url = "smtp://greg.p.anders@gmail.com@smtp.gmail.com:587"
+set smtp_pass = `pass google/apps/mutt`
+
+# Change account
+macro index,pager gt "<sync-mailbox><enter-command>source ~/.config/mutt/config.gpanders<enter><change-folder>!<enter>" "change account"
 
 # vim: ft=neomuttrc

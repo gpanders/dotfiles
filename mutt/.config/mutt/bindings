@@ -1,10 +1,9 @@
 # g is group-reply by default, we'll map that to R instead
 bind  index,pager g   noop
 bind  index       gg  first-entry
-
-# G is fetch-mail by default, since I use offlineimap I don't ever fetch mail
-# from a pop server
 bind  index       G   last-entry
+bind  index        ^   imap-fetch-mail
+bind  index        <space> collapse-thread
 
 bind  index,pager ]   next-undeleted
 bind  index,pager [   previous-undeleted
@@ -20,6 +19,9 @@ macro pager       G   <bottom><refresh>
 # Bind R to group-reply
 bind  index,pager R   group-reply
 
+# View attachments properly
+bind attach <return> view-mailcap
+
 # Show mailbox listing by default
 macro index,pager c  <change-folder>?<tab> "open a different folder"
 
@@ -31,7 +33,8 @@ macro pager       q   <exit><refresh>
 macro index,pager A "<clear-flag>N<save-message>\><enter><sync-mailbox><refresh>" "archive message"
 
 # Return to the inbox from anywhere
-macro index,pager I "<change-folder>!<enter>" "return to inbox"
+macro index,pager gi "<change-folder>!<enter>" "go to inbox"
+macro index,pager ga "<change-folder>\><enter>" "go to archive"
 
 ifdef notmuch "bind index S vfolder-from-query"
 

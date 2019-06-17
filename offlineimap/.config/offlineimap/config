@@ -2,27 +2,11 @@
 ui = ttyui
 metadata = ~/.config/offlineimap
 pythonfile = ~/.config/offlineimap/helpers.py
-accounts = gpanders, gmail
-
-[mbnames]
-enabled = yes
-filename = ~/.config/mutt/mailboxes
-header = "mailboxes "
-peritem = "+%(accountname)s/%(foldername)s"
-sep = " "
-footer = "\n"
+accounts = gpanders
 
 [Account gpanders]
 localrepository = gpanders-local
 remoterepository = gpanders-remote
-postsynchook = notmuch new
-autorefresh = 0.5
-quick = 10
-
-[Account gmail]
-localrepository = gmail-local
-remoterepository = gmail-remote
-synclabels = yes
 postsynchook = notmuch new
 autorefresh = 0.5
 quick = 10
@@ -42,19 +26,28 @@ folderfilter = lambda f: f not in ["Junk", "Spam"]
 keepalive = 60
 holdconnectionopen = yes
 
-[Repository gmail-local]
-type = GmailMaildir
-localfolders = ~/.mail/gmail
-nametrans = lambda f: "[Gmail]/" + f if f in ["Drafts", "Starred", "Important", "Spam", "Trash", "All Mail", "Sent Mail"] else f
-
-[Repository gmail-remote]
-type = Gmail
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-remoteuser = greg.p.anders@gmail.com
-remotepasseval = get_pass("google/apps/offlineimap")
-nametrans = lambda f: f.replace("[Gmail]/", "") if f.startswith("[Gmail]/") else f
-folderfilter = lambda f: f in ["INBOX", "Drafts", "Sent Mail", "Snoozed", "Trash"]
-keepalive = 60
-holdconnectionopen = yes
+## Uncomment the lines below to synchronize gmail
+# [Account gmail]
+# localrepository = gmail-local
+# remoterepository = gmail-remote
+# synclabels = yes
+# postsynchook = notmuch new
+# autorefresh = 0.5
+# quick = 10
+#
+# [Repository gmail-local]
+# type = GmailMaildir
+# localfolders = ~/.mail/gmail
+# nametrans = lambda f: "[Gmail]/" + f if f in ["Drafts", "Starred", "Important", "Spam", "Trash", "All Mail", "Sent Mail"] else f
+#
+# [Repository gmail-remote]
+# type = Gmail
+# sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+# remoteuser = greg.p.anders@gmail.com
+# remotepasseval = get_pass("google/apps/offlineimap")
+# nametrans = lambda f: f.replace("[Gmail]/", "") if f.startswith("[Gmail]/") else f
+# folderfilter = lambda f: f in ["INBOX", "Drafts", "Sent Mail", "Snoozed", "Trash"]
+# keepalive = 60
+# holdconnectionopen = yes
 
 # vim: ft=conf

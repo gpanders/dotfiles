@@ -1,9 +1,17 @@
-set from = "greg@gpanders.com"
 set folder = ~/.mail/gpanders
+set mbox_type = Maildir
+
+set from = "greg@gpanders.com"
 set spoolfile = +INBOX
 set postponed = +Drafts
 set record = +Sent
 set mbox = +Archive
 set trash = +Trash
+
+set smtp_url = "smtp://greg@gpanders.com@mail.gandi.net:587"
+set smtp_pass = `pass mail/greg@gpanders.com`
+
+# Change to next account
+macro index,pager gt "<sync-mailbox><enter-command>source ~/.config/mutt/config.gmail<enter><change-folder>!<enter>" "change account"
 
 # vim: ft=neomuttrc
