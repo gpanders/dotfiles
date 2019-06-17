@@ -36,6 +36,10 @@ macro index,pager A "<clear-flag>N<save-message>\><enter><sync-mailbox><refresh>
 macro index,pager gi "<change-folder>!<enter>" "go to inbox"
 macro index,pager ga "<change-folder>\><enter>" "go to archive"
 
+# View urls within a message with urlscan
+macro index,pager \Cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+macro attach,compose \Cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+
 ifdef notmuch "bind index S vfolder-from-query"
 
 # vim: ft=neomuttrc

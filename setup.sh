@@ -49,32 +49,41 @@ if [ $# -eq 0 ]; then
 
     if hash mutt 2>/dev/null || hash neomutt 2>/dev/null; then
         ARGS="$ARGS mutt"
-    else
+    fi
+
+    if hash offlineimap 2>/dev/null; then
+        ARGS="$ARGS offlineimap"
+    fi
+
+    if ! (hash mutt 2>/dev/null || hash neomutt 2>/dev/null) || ! hash offlineimap 2>/dev/null; then
         read -r -p "Install email tools? [y/N] " ans
         if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-            install neomutt
-            if ! hash urlview 2>/dev/null; then
-                install urlview
+
+            if ! hash mutt 2>/dev/null && ! hash neomutt 2>/dev/null; then
+                install neomutt
+
+                # Symlink `mutt` to `neomutt`
+                if [ ! -s "$(dirname $(which neomutt))/mutt" ]; then
+                    pushd "$(dirname $(which neomutt))"
+                    sudo ln -s neomutt mutt
+                    sudo chown --reference=neomutt mutt
+                    popd
+                fi
+                ARGS="$ARGS mutt"
             fi
 
-            if ! hash msmtp 2>/dev/null; then
-                install msmtp
+            if ! hash offlineimap 2>/dev/null; then
+                install offlineimap
+                ARGS="$ARGS offlineimap"
+            fi
+
+            if ! hash urlscan 2>/dev/null; then
+                install urlscan
             fi
 
             if ! hash w3m 2>/dev/null; then
                 install w3m
             fi
-            ARGS="$ARGS mutt msmtp"
-        fi
-    fi
-
-    if hash offlineimap 2>/dev/null; then
-        ARGS="$ARGS offlineimap"
-    else
-        read -r -p "Install offlineimap? [y/N] " ans
-        if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-            install offlineimap
-            ARGS="$ARGS offlineimap"
         fi
     fi
 
