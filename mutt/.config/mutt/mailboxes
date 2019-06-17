@@ -1,0 +1,14 @@
+unmailboxes *
+
+mailboxes "+gpanders/INBOX" 
+mailboxes "+gpanders/Archive" 
+mailboxes "+gpanders/Drafts" 
+mailboxes "+gpanders/Sent" 
+mailboxes "+gpanders/Snoozed" 
+mailboxes "+gpanders/Trash"
+
+mailboxes "imaps://imap.gmail.com/INBOX"
+mailboxes "imaps://imap.gmail.com/[Gmail]/Drafts"
+mailboxes "imaps://imap.gmail.com/[Gmail]/All Mail"
+mailboxes "imaps://imap.gmail.com/[Gmail]/Sent Mail"
+mailboxes "imaps://imap.gmail.com/[Gmail]/Trash"
