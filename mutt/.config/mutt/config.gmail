@@ -1,0 +1,8 @@
+set from = "greg.p.anders@gmail.com"
+set folder = ~/.mail/gmail
+set spoolfile = +INBOX
+set postponed = +Drafts
+set record = "+Sent Mail"
+set trash = +Trash
+
+# vim: ft=neomuttrc

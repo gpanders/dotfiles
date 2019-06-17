@@ -1,0 +1,9 @@
+set from = "greg@gpanders.com"
+set folder = ~/.mail/gpanders
+set spoolfile = +INBOX
+set postponed = +Drafts
+set record = +Sent
+set mbox = +Archive
+set trash = +Trash
+
+# vim: ft=neomuttrc

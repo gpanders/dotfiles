@@ -1,13 +1,7 @@
 # Greg Anders (gpanders)'s muttrc <https://github.com/gpanders/dotfiles.git>
 
-set from = "greg@gpanders.com"
 set mbox_type = Maildir
 set folder = ~/.mail
-set spoolfile = +INBOX
-set postponed = +Drafts
-set record = +Sent
-set mbox = +Archive
-set trash = +Trash
 source ~/.config/mutt/mailboxes
 
 # Settings for handling MIME types
@@ -77,7 +71,12 @@ source ~/.config/mutt/colors/base16.muttrc
 # Bindings
 source ~/.config/mutt/bindings
 
+folder-hook "gpanders" source ~/.config/mutt/config.gpanders
+folder-hook "gmail"    source ~/.config/mutt/config.gmail
+
 # Set up notmuch virtual mailboxes
 # ifdef notmuch 'source ~/.config/mutt/notmuch'
+
+source ~/.config/mutt/config.gpanders
 
 # vim: ft=neomuttrc
