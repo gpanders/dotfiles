@@ -47,7 +47,7 @@ set sidebar_divider_char = ' │'
 set mail_check_stats
 
 # Display the Sidebar mailboxes using this format string.
-set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
+set sidebar_format = '%B%?F? [%F]?%* %?N?%N?'
 
 # Sort the mailboxes in the Sidebar using this method:
 #       count    - total number of messages
@@ -55,7 +55,7 @@ set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
 #       new      - number of new messages
 #       path     - mailbox path
 #       unsorted - do not sort the mailboxes
-set sidebar_sort_method = 'path'
+set sidebar_sort_method = 'unsorted'
 
 # --------------------------------------------------------------------------
 # FUNCTIONS - shown with an example mapping
