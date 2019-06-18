@@ -26,7 +26,7 @@ set forward_format = "Fwd: %s"
 set forward_decode
 
 # Format of quoting header
-set attribution = "On %d, %n wrote:"
+set attribution = "On %{!%a, %d %b %Y at %r %Z}, %n wrote:"
 
 # Reply to Reply to: field
 set reply_to
@@ -68,6 +68,9 @@ set delete = yes
 # email clients work anyway
 set auto_tag = yes
 
+# Format of directory listings when using <change-folder>
+set folder_format = "%t %N %-20.20f %?n?%8n?"
+
 # Ignore all headers except the ones listed
 ignore *
 unignore from: to: cc: date: subject:
@@ -77,7 +80,7 @@ unhdr_order *
 hdr_order from: to: cc: date: subject:
 
 # Index view options
-set date_format = "%m/%d"
+set date_format = "%b %d %I:%M %p"
 set index_format = "[%Z]  %D  %-20.20L  %s"
 set sort = threads
 set sort_aux = reverse-last-date-received
