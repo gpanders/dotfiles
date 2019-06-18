@@ -42,6 +42,11 @@ if [[ -s "$HOME/.cargo/env" ]]; then
   source "$HOME/.cargo/env"
 fi
 
+# Setup poetry
+if [[ -s "$HOME/.poetry/env" ]]; then
+    source "$HOME/.poetry/env"
+fi
+
 # Setup rbenv
 if (( $+commands[rbenv] )); then
   eval "$(rbenv init - --no-rehash zsh)"
