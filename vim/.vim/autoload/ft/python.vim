@@ -30,3 +30,10 @@ function! ft#python#set_path(...)
     let &l:path = &path . ',' . s:python_paths[cwd]
   endif
 endfunction
+
+function! ft#python#pydoc(...)
+  let keyword = a:0 ? a:1 : expand('<cword>')
+  let tmpfile = tempname()
+  call writefile(systemlist('pydoc ' . keyword), tmpfile, '')
+  pedit +set\ ro\ nobl\ bt=nofile `=tmpfile`
+endfunction
