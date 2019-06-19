@@ -552,10 +552,6 @@ execute 'nnoremap <Space>M :marks ' . s:alphabet . '<CR>'
 " Visual {{{
 xnoremap * y/\V<C-R>"<CR>
 xnoremap # y?\V<C-R>"<CR>
-
-" Maintain selection after shifting
-xnoremap < <gv
-xnoremap > >gv
 " }}}
 
 " Terminal {{{
@@ -568,6 +564,8 @@ endif
 " Command {{{
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
+" }}}
+
 " }}}
 
 " Abbreviations {{{
