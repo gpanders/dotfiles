@@ -23,6 +23,10 @@ let s:python = matchstr(s:line1, 'python\([23]\)\?')
 " Populate path from python's sys.path
 call ft#python#set_path(s:python)
 
+command! -buffer -nargs=? Pydoc call ft#python#pydoc(<q-args>)
+setlocal keywordprg=:Pydoc
+let b:undo_ftplugin .= '|delc Pydoc|setl kp<'
+
 let b:undo_ftplugin .= '|setl path< cpt< tw< fo<'
 
 if executable('black')
