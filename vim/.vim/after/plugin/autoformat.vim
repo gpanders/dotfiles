@@ -9,11 +9,7 @@ if !exists('g:loaded_autoformat')
   finish
 endif
 
-let g:autoformat_filetypes = [
-      \ 'liquid',
-      \ 'html',
-      \ 'css',
-      \ ]
+let g:autoformat_filetypes = ['css', 'json']
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

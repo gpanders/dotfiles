@@ -21,13 +21,26 @@ augroup plugin.autoformat
         \   let b:autoformat = 1 |
         \ endif
   autocmd BufWritePre *
-        \ if get(b:, 'autoformat') |
+        \ if get(g:, 'autoformat', 1) && get(b:, 'autoformat') |
         \   let view = winsaveview() |
         \   execute '%!' . &l:formatprg |
         \   call winrestview(view) |
         \   unlet view |
         \ endif
 augroup END
+
+function! s:toggle(bang)
+  let enabled = !get(a:bang ? g: : b:, 'autoformat')
+  if a:bang
+    let g:autoformat = enabled
+    echo 'Automatic formatting ' . (enabled ? 'enabled' : 'disabled') . ' globally'
+  else
+    let b:autoformat = enabled
+    echo 'Automatic formatting ' . (enabled ? 'enabled' : 'disabled') . ' in the current buffer'
+  endif
+endfunction
+
+command! -nargs=0 -bang Autofmt call <SID>toggle(<bang>0)
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
