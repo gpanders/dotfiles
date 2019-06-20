@@ -8,7 +8,7 @@ function! s:callback(l, lines)
   else
     call setqflist([], 'a', {'lines': a:lines})
   endif
-  exe a:l ? 'lwindow' : 'cwindow'
+  exe 'botright' a:l ? 'lwindow' : 'cwindow'
   exe 'silent doautocmd QuickFixCmdPost' a:l ? 'lgrep' : 'grep'
 endfunction
 
