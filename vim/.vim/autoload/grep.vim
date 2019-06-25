@@ -3,11 +3,8 @@
 " Date: 2019-05-18
 
 function! s:callback(l, lines)
-  if a:l
-    call setloclist(0, [], 'a', {'lines': a:lines})
-  else
-    call setqflist([], 'a', {'lines': a:lines})
-  endif
+  let F = a:l ? function('setloclist', [0]) : function('setqflist')
+  call F([], 'a', {'lines': a:lines})
   exe 'botright' a:l ? 'lwindow' : 'cwindow'
   exe 'silent doautocmd QuickFixCmdPost' a:l ? 'lgrep' : 'grep'
 endfunction
@@ -23,9 +20,6 @@ function! grep#grep(l, args)
   call async#run(cmd, {lines -> s:callback(a:l, lines)}, {'shell': 1, 'buffered': 0})
 
   exe 'silent doautocmd QuickFixCmdPre' a:l ? 'lgrep' : 'grep'
-  if a:l
-    call setloclist(0, [], 'r', {'title': cmd, 'items': []})
-  else
-    call setqflist([], 'r', {'title': cmd, 'items': []})
-  endif
+  let F = a:l ? function('setloclist', [0]) : function('setqflist')
+  call F([], 'r', {'title': cmd, 'items': []})
 endfunction
