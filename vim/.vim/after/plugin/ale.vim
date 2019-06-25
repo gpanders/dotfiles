@@ -44,14 +44,18 @@ nmap <Bslash>d <Plug>(ale_go_to_definition)
 nmap <C-W><Bslash>d <Plug>(ale_go_to_definition_in_split)
 nmap <Bslash>r <Plug>(ale_find_references)
 
+function! s:toggle()
+  if !&modifiable || &readonly
+    silent ALEDisableBuffer
+  else
+    silent ALEEnableBuffer
+  endif
+endfunction
+
 augroup plugin.ale
   autocmd!
-  autocmd OptionSet modifiable,readonly
-        \ if !&ma || &ro |
-        \   silent ALEDisableBuffer |
-        \ else |
-        \   silent ALEEnableBuffer |
-        \ endif
+  autocmd OptionSet modifiable,readonly call <SID>toggle()
+  autocmd BufReadPost * call <SID>toggle()
 augroup END
 
 let &cpo = s:save_cpo
