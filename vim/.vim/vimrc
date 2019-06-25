@@ -510,7 +510,7 @@ nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR><C-L>
 vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
 
 " \c changes directory to current buffer's directory
-nnoremap <silent> \c :cd %:p:h<Bar>echo 'Changed directory to ' . getcwd()<CR>
+nnoremap <silent> <Bslash>c :cd %:p:h<Bar>echo 'Changed directory to ' . getcwd()<CR>
 
 " ,c changes local working directory to buffer's directory
 nnoremap <silent> ,c :lcd %:p:h<Bar>echo 'Changed directory to ' . getcwd() . ' for current window'<CR>
@@ -519,7 +519,7 @@ nnoremap <silent> ,c :lcd %:p:h<Bar>echo 'Changed directory to ' . getcwd() . ' 
 nnoremap gq<CR> mzHmygggqG`yzt`z
 
 " Show tag stack
-nnoremap <Space>t :tags<CR>
+nnoremap t<CR> :tags<CR>
 
 " Navigate through tag stack. <t is the same as CTRL-T, but it's nice to have
 " symmetry
@@ -532,20 +532,17 @@ nnoremap <silent> <expr> >q ":\<C-U>cnewer " . v:count1 . "\<CR>"
 nnoremap <silent> <expr> <l ":\<C-U>lolder " . v:count1 . "\<CR>"
 nnoremap <silent> <expr> >l ":\<C-U>lnewer " . v:count1 . "\<CR>"
 
-" Show registers
-nnoremap <Space>r :registers<CR>
-
 " Modify contents of a register
 nnoremap yr :<C-\>e'let @' . v:register . ' = ' . string(getreg(v:register))<CR><C-F>
 
 " Show marks
-nnoremap <Space>m :marks<CR>:norm! `
+nnoremap <Bslash>m :marks<CR>:norm! `
 
 " Show only user placed marks (A-Z and a-z)
 let s:alphabet = join(map(
       \ range(char2nr('A'), char2nr('Z')) + range(char2nr('a'), char2nr('z')),
       \ 'nr2char(v:val)'), '')
-execute 'nnoremap <Space>M :marks ' . s:alphabet . '<CR>'
+execute 'nnoremap <Bslash>M :marks ' . s:alphabet . '<CR>'
 
 " }}}
 
