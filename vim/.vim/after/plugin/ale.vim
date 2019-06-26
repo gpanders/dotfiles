@@ -10,12 +10,18 @@ if !get(g:, 'loaded_ale', 0)
   finish
 endif
 
+if !exists('g:ale_linters')
+  let g:ale_linters = {}
+endif
+
 " Python
+let g:ale_linters.python = ['pylint', 'flake8', 'pyls']
 let g:ale_python_pylint_change_directory = 0
 let g:ale_python_flake8_change_directory = 0
+let g:ale_python_pyls_config = {'pyls': {'configurationSources': ['flake8', 'pylint']}}
 
 " C/C++
-let g:ale_linters = {'c': ['ccls', 'cquery', 'clangtidy']}
+let g:ale_linters.c = ['ccls', 'cquery', 'clangtidy']
 let g:ale_linters.cpp = g:ale_linters.c
 
 let g:ale_c_parse_makefile = 1
