@@ -1,3 +1,4 @@
+set my_account = gpanders
 set folder = ~/.mail/gpanders
 set mbox_type = Maildir
 
@@ -7,6 +8,14 @@ set postponed = +Drafts
 set record = +Sent
 set mbox = +Archive
 set trash = +Trash
+
+mailboxes +Drafts
+mailboxes +Trash
+mailboxes +Lists
+mailboxes +Lists.kernelnewbies
+mailboxes +Lists.hackers
+mailboxes +Lists.neomutt-users
+mailboxes +Trash
 
 set smtp_url = "smtp://greg@gpanders.com@mail.gandi.net:587"
 set smtp_pass = `pass mail/greg@gpanders.com`
