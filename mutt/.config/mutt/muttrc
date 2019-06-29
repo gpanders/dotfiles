@@ -1,8 +1,5 @@
 # Greg Anders (gpanders)'s muttrc <https://github.com/gpanders/dotfiles.git>
 
-set folder = ~/.mail
-source ~/.config/mutt/mailboxes
-
 # Settings for handling MIME types
 set mailcap_path = ~/.config/mutt/mailcap
 alternative_order text/plain text/enriched text/html
@@ -111,22 +108,19 @@ source ~/.config/mutt/lists
 # Colorized diffs and patches
 source ~/.config/mutt/diffs
 
-# Store message headers locally to speed things up.  If hcache is a folder,
-# Mutt will create sub cache folders for each account which may speeds things
-# up even more.
-set header_cache = ~/.cache/mutt/headers
-
-# Store messages locally to speed things up, like searching message bodies.
-# Can be the same folder as header_cache.
-# This will cost important disk usage according to your e-mail amount.
-set message_cachedir = ~/.cache/mutt/messages
+# Cache message headers and bodies
+set message_cachedir = ~/.cache/mutt/cache
+set header_cache = ~/.cache/mutt/cache
 
 # Where to store certificates
 set certificate_file = ~/.config/mutt/certificates
 
-# Set status bar
+# Set status bar. The $my_account variable should be set in each of the account
+# configuration files (e.g. config.{account}). The status_format is also set in
+# the default folder-hook so that the account name is updated when changing
+# accounts
 set status_chars = " *%A"
-set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+set status_format = "───[ Account: $my_account ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
 
 # Allow Mutt to open a new IMAP connection automatically
 unset imap_passive
@@ -149,10 +143,16 @@ source ~/.config/mutt/sidebar
 # Set up notmuch virtual mailboxes
 # ifdef notmuch 'source ~/.config/mutt/notmuch'
 
+folder-hook . source ~/.config/mutt/config.default
+
 source ~/.config/mutt/config.gmail
 folder-hook $folder source ~/.config/mutt/config.gmail
 
 source ~/.config/mutt/config.gpanders
 folder-hook $folder source ~/.config/mutt/config.gpanders
+
+macro index,pager <F1> "<sync-mailbox><enter-command>source ~/.config/mutt/config.gpanders<enter><change-folder>!<enter>"
+
+macro index,pager <F2> "<sync-mailbox><enter-command>source ~/.config/mutt/config.gmail<enter><change-folder>!<enter>"
 
 # vim: ft=neomuttrc
