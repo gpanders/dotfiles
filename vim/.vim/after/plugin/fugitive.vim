@@ -7,4 +7,3 @@ if !get(g:, 'loaded_fugitive', 0)
 endif
 
 autocmd BufReadPost fugitive://* setlocal bufhidden=delete
-autocmd User Fugitive nnoremap <Bslash>g :Gstatus<CR>
