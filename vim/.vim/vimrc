@@ -76,10 +76,6 @@ set noswapfile
 silent! set tagcase=smart
 set virtualedit+=block
 
-if has('folding')
-  set foldmarker=\ {{{,\ }}}
-endif
-
 if has('mouse')
   set mouse=a
 endif
