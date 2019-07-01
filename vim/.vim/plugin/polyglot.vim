@@ -4,4 +4,4 @@
 " Date: 2019-03-06
 
 " Disable things
-let g:polyglot_disabled = ['python-compiler', 'markdown', 'latex']
+let g:polyglot_disabled = ['markdown', 'latex']
