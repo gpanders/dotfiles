@@ -15,10 +15,8 @@ if !exists('g:ale_linters')
 endif
 
 " Python
-let g:ale_linters.python = ['pylint', 'flake8', 'pyls']
 let g:ale_python_pylint_change_directory = 0
 let g:ale_python_flake8_change_directory = 0
-let g:ale_python_pyls_config = {'pyls': {'configurationSources': ['flake8', 'pylint']}}
 
 " C/C++
 let g:ale_linters.c = ['ccls', 'cquery', 'clangtidy']
@@ -50,10 +48,10 @@ nmap <Bslash>d <Plug>(ale_go_to_definition)
 nmap <C-W><Bslash>d <Plug>(ale_go_to_definition_in_split)
 nmap <Bslash>r <Plug>(ale_find_references)
 
-function! s:toggle()
+function! s:toggle(...)
   if !&modifiable || &readonly
     silent ALEDisableBuffer
-  else
+  elseif get(a:, '1', 1)
     silent ALEEnableBuffer
   endif
 endfunction
@@ -61,7 +59,7 @@ endfunction
 augroup plugin.ale
   autocmd!
   autocmd OptionSet modifiable,readonly call <SID>toggle()
-  autocmd BufReadPost * call <SID>toggle()
+  autocmd BufWinEnter * call <SID>toggle(0)
 augroup END
 
 let &cpo = s:save_cpo
