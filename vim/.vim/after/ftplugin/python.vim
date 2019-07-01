@@ -13,9 +13,6 @@ setlocal textwidth=88
 " Set format options
 setlocal formatoptions-=t " Don't auto-wrap lines unless they're comments
 
-" Use flake8 as makeprg for linting
-compiler flake8
-
 " Try to infer python version from shebang
 let s:line1 = getline(1)
 let s:python = matchstr(s:line1, 'python\([23]\)\?')
