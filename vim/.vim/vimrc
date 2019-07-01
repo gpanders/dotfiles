@@ -190,16 +190,16 @@ if !has('nvim')
   let &backupdir = s:cachedir . '/backup//' . ',' . &backupdir
   let &undodir = s:cachedir . '/undo//' . ',' . &undodir
   let &directory = s:cachedir . '/swap//' . ',' . &directory
-endif
 
-" Create directories if they don't exist
-if exists('*mkdir')
-  for opt in [&backupdir, &undodir, &directory]
-    let dir = simplify(split(opt, ',')[0])
-    if !isdirectory(dir)
-      call mkdir(dir, 'p')
-    endif
-  endfor
+  " Create directories if they don't exist
+  if exists('*mkdir')
+    for opt in [&backupdir, &undodir, &directory]
+      let dir = simplify(split(opt, ',')[0])
+      if !isdirectory(dir)
+        call mkdir(dir, 'p')
+      endif
+    endfor
+  endif
 endif
 
 " Set dictionary if it exists
@@ -239,7 +239,7 @@ inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
 
 " Normal {{{
 
-" Save by pressing <leader>w
+" Write file with ,w
 nnoremap <silent> ,w :w<CR>
 
 " Navigate through wrapped lines individually
@@ -261,76 +261,53 @@ nnoremap <silent> ,8 :b8<CR>
 nnoremap <silent> ,9 :b9<CR>
 nnoremap <silent> ,0 :b10<CR>
 
-nnoremap <Left> :bprevious<CR>
-nnoremap <Right> :bnext<CR>
-
 " List buffers and put :b on the command line
 noremap ,b :buffers<CR>:b<Space>
-
-" Remap & to preserve substitution flags
-nnoremap <silent> & :&&<CR>
 
 " Map ,, to ,
 nnoremap ,, ,
 
-" ,f prefixes find files in path
+" Find files in path
 nnoremap ,f :find *
-nnoremap ,vf :vert sf *
-nnoremap ,sf :sf *
 
 " Search for a tag by regex
 nnoremap ,t :tjump /
 nnoremap ,T :ptjump /
 
+" Show tag stack
+nnoremap t<CR> :tags<CR>
+
 " Find files in current buffer's directory
 nnoremap ,e :e <C-R>=expand('%:p:h') . '/'<CR>
-nnoremap ,ve :vs <C-R>=expand('%:p:h') . '/'<CR>
-nnoremap ,se :sp <C-R>=expand('%:p:h') . '/'<CR>
 
-" <Bslash>e opens .vimrc in new window
+" Budget fuzzy file finder
+nnoremap <C-P> :e **/*
+
+" <Bslash>ev opens .vimrc in new window
 nnoremap <Bslash>ev :<C-U>tabe $MYVIMRC<CR>
 
-" <Bslash>s sources .vimrc
+" <Bslash>sv sources .vimrc
 nnoremap <Bslash>sv :<C-U>source $MYVIMRC<CR>
 
 " Clear search buffer with <C-L>
 nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR><C-L>
 vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
 
-" \c changes directory to current buffer's directory
-nnoremap <silent> <Bslash>c :cd %:p:h<Bar>echo 'Changed directory to ' . getcwd()<CR>
-
-" ,c changes local working directory to buffer's directory
-nnoremap <silent> ,c :lcd %:p:h<Bar>echo 'Changed directory to ' . getcwd() . ' for current window'<CR>
-
 " Format whole buffer with formatprg without changing cursor position
-nnoremap gq<CR> mzHmygggqG`yzt`z
-
-" Show tag stack
-nnoremap t<CR> :tags<CR>
-
-" Navigate through tag stack. <t is the same as CTRL-T, but it's nice to have
-" symmetry
-nnoremap <silent> <expr> >t ":\<C-U>" . v:count1 . "tag\<CR>"
-nnoremap <silent> <expr> <t ":\<C-U>" . v:count1 . "pop\<CR>"
-
-" Navigate through quickfix/location lists
-nnoremap <silent> <expr> <q ":\<C-U>colder " . v:count1 . "\<CR>"
-nnoremap <silent> <expr> >q ":\<C-U>cnewer " . v:count1 . "\<CR>"
-nnoremap <silent> <expr> <l ":\<C-U>lolder " . v:count1 . "\<CR>"
-nnoremap <silent> <expr> >l ":\<C-U>lnewer " . v:count1 . "\<CR>"
+nnoremap ,gq mzHmygggqG`yzt`z
 
 " Modify contents of a register
 nnoremap yr :<C-\>e'let @' . v:register . ' = ' . string(getreg(v:register))<CR><C-F>
 
 " Show marks
-nnoremap <Bslash>m :marks<CR>:norm! `
+nnoremap ,m :marks<CR>:norm! `
 
 " Show only user placed marks (A-Z and a-z)
 let s:alphabet = join(map(
       \ range(char2nr('A'), char2nr('Z')) + range(char2nr('a'), char2nr('z')),
       \ 'nr2char(v:val)'), '')
-execute 'nnoremap <Bslash>M :marks ' . s:alphabet . '<CR>'
+execute 'nnoremap ,M :marks ' . s:alphabet . '<CR>'
+unlet s:alphabet
 
 " }}}
 
