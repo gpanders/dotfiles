@@ -146,7 +146,7 @@ for mod in $ARGS; do
         git config user.email greg@gpanders.com
 
         git config --global commit.verbose true
-        git config --global init.templatedir "$HOME/.config/git/template"
+        git config --global init.templateDir "$HOME/.config/git/template"
         git config --global alias.a add
         git config --global alias.b branch
         git config --global alias.cm commit
