@@ -63,7 +63,7 @@ function! s:PackInit()
     call minpac#add('lervag/vimtex')
 
     " Language Server Client
-    " call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'do': 'call coc#util#install()'})
+    " call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'rev': 'release'})
     " Asynchronous linting
     call minpac#add('w0rp/ale', {'type': 'opt'})
 
