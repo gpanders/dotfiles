@@ -8,22 +8,22 @@ let g:did_user_colors = 1
 " basically the same thing
 runtime! ALL colors/base16-onedark.vim
 
-highlight User1 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#565c64 guibg=#3e4451
-highlight User2 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#545862 guibg=#282c34
-highlight User3 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#545862 guibg=#282c34
-highlight User4 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#565c64 guibg=#3e4451
-highlight User5 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#565c64 guibg=#3e4451
+exe printf('hi User1 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#%s guibg=#%s', g:base16_gui0C, g:base16_gui0B)
+exe printf('hi User2 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#%s guibg=#%s', g:base16_gui0C, g:base16_gui0B)
+exe printf('hi User3 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#%s guibg=#%s', g:base16_gui0C, g:base16_gui0B)
+exe printf('hi User4 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#%s guibg=#%s', g:base16_gui0C, g:base16_gui0B)
+exe printf('hi User5 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#%s guibg=#%s', g:base16_gui0C, g:base16_gui0B)
 
-highlight link StatuslineModeNormal Normal
-highlight StatuslineModeInsert ctermfg=4 guifg=#61afef
-highlight StatuslineModeReplace ctermfg=1 guifg=#e06c75
-highlight StatuslineModeVisual ctermfg=5 guifg=#c678dd
+hi link StatuslineModeNormal Normal
 
-highlight SpellBad ctermbg=NONE ctermfg=1 guifg=#e06c75
-highlight SpellCap ctermbg=NONE ctermfg=4 guifg=#61afef
-highlight SpellRare ctermbg=NONE ctermfg=5 guifg=#c678dd
-highlight SpellLocal ctermbg=NONE ctermfg=6 guifg=#56b6c2
-highlight WildMenu ctermfg=15 ctermbg=11 guifg=#c8ccd4 guibg=#3e4451
-highlight Underlined ctermfg=NONE guifg=NONE
+exe printf('hi StatuslineModeInsert ctermfg=4 guifg=#%s', g:base16_gui04)
+exe printf('hi StatuslineModeReplace ctermfg=1 guifg=#%s', g:base16_gui01)
+exe printf('hi StatuslineModeVisual ctermfg=5 guifg=#%s', g:base16_gui05)
 
-unlet g:did_user_colors
+exe printf('hi SpellBad ctermbg=NONE ctermfg=1 guifg=#%s', g:base16_gui01)
+exe printf('hi SpellCap ctermbg=NONE ctermfg=4 guifg=#%s', g:base16_gui04)
+exe printf('hi SpellRare ctermbg=NONE ctermfg=5 guifg=#%s', g:base16_gui05)
+exe printf('hi SpellLocal ctermbg=NONE ctermfg=6 guifg=#%s', g:base16_gui06)
+exe printf('hi WildMenu ctermfg=15 ctermbg=11 guifg=#%s guibg=#%s', g:base16_gui0F, g:base16_gui0B)
+
+hi Underlined ctermfg=NONE guifg=NONE
