@@ -35,26 +35,21 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-
-if [ -f /usr/local/share/git-core/contrib/completion/git-prompt.sh ]; then
-    source /usr/local/share/git-core/contrib/completion/git-prompt.sh
+if [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
+    . /usr/share/git-core/contrib/completion/git-prompt.sh
+elif [ -f /usr/local/share/git-core/contrib/completion/git-prompt.sh ]; then
+    . /usr/local/share/git-core/contrib/completion/git-prompt.sh
 fi
 
-# If __git_ps1 is not defined create a dummy function
-if ! type __git_ps1 2>&1 >/dev/null; then
-    __git_ps1() { echo ""; }
-fi
-
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[34m\]\w\[\033[90m\]$(__git_ps1 " %s")\n$([ ! -z "$SSH_TTY" ] && echo "\h " )\[\033[$([ $? -eq 0 ] && echo 35 || echo 31)m\]\$ \[\033[00m\]'
-else
-    PS1='${debian_chroot:+($debian_chroot)}\w$(__git_ps1 " %s")\n\$ '
-fi
-unset color_prompt
+prompt_command() {
+    [[ $? -eq 0 ]] && color="35" || color="31"
+    PS1="${debian_chroot:+($debian_chroot)}\[\033[34m\]\w\[\033[90m\]"
+    if type __git_ps1 2>&1 >/dev/null; then
+        PS1="$PS1$(__git_ps1 " %s")\n"
+    fi
+    PS1="$PS1${SSH_TTY:+\h }\[\033[${color}m\]\$ \[\033[00m\]"
+}
+PROMPT_COMMAND=prompt_command
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
