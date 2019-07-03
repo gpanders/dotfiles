@@ -15,13 +15,6 @@ if [[ "$OSTYPE" == darwin* ]]; then
     if [ -x /usr/libexec/path_helper ]; then
         eval `/usr/libexec/path_helper -s`
     fi
-
-    # Add GNU versions of tools to path
-    for item in coreutils findutils gnu-tar gnu-indent gnu-sed gawk grep make; do
-        if [[ -d /usr/local/opt/${item}/libexec/gnubin ]]; then
-            path=(/usr/local/opt/${item}/libexec/gnubin $path)
-        fi
-    done
 fi
 
 # Add pip binary directory to path
