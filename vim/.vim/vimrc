@@ -271,14 +271,20 @@ nnoremap ,, ,
 nnoremap ,f :find *
 
 " Search for a tag by regex
-nnoremap ,t :tjump /
-nnoremap ,T :ptjump /
+nnoremap ,] :tjump /
+nnoremap ,} :ptjump /
 
 " Show tag stack
-nnoremap t<CR> :tags<CR>
+nnoremap ,t :tags<CR>
+
+" Open quickfix list
+nnoremap ,q :copen<CR>
+
+" Open location list
+nnoremap ,l :lopen<CR>
 
 " Find files in current buffer's directory
-nnoremap ,e :e <C-R>=expand('%:p:h') . '/'<CR>
+nnoremap ,e :e %:p:h/<C-Z>
 
 " Budget fuzzy file finder
 nnoremap <C-P> :e **/*
@@ -294,6 +300,7 @@ nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR><C-L>
 vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
 
 " Format whole buffer with formatprg without changing cursor position
+" See :h restore-position
 nnoremap ,gq mzHmygggqG`yzt`z
 
 " Modify contents of a register
@@ -376,6 +383,9 @@ endif
 
 " Create syntax group for trailing whitespace in each new buffer
 autocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
+
+" Close preview window
+autocmd CompleteDone * if !pumvisible() | pclose | endif
 
 " Enable omnicompletion from syntax if no other option available
 " See :h ft-syntax-omni
