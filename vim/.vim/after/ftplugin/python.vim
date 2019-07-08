@@ -27,7 +27,7 @@ let b:undo_ftplugin .= '|delc Pydoc|setl kp<'
 let b:undo_ftplugin .= '|setl path< cpt< tw< fo<'
 
 if executable('black')
-  setlocal formatprg=black\ -q\ -
+  setlocal formatprg=black\ -q\ -\ 2>/dev/null
 elseif executable('yapf')
   setlocal formatprg=yapf
 endif
