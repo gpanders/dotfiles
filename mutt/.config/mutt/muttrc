@@ -78,7 +78,7 @@ hdr_order from: to: cc: date: subject:
 
 # Index view options
 set date_format = "%b %d %I:%M %p"
-set index_format = "[%Z]  %D  %-20.20L  %s"
+set index_format = "[%Z]  %D  %-20.20F  %s"
 set sort = threads
 set sort_aux = reverse-last-date-received
 set sort_re
