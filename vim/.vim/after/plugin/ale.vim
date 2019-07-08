@@ -15,8 +15,18 @@ if !exists('g:ale_linters')
 endif
 
 " Python
+let g:ale_linters.python = ['pylint', 'flake8', 'pyls']
 let g:ale_python_pylint_change_directory = 0
 let g:ale_python_flake8_change_directory = 0
+let g:ale_python_pyls_config = {
+      \ 'pyls': {
+      \   'configurationSources': ['flake8', 'pylint'],
+      \   'plugins': {
+      \     'pycodestyle': {
+      \       'enabled': v:false,
+      \     },
+      \   },
+      \ }}
 
 " C/C++
 let g:ale_linters.c = ['ccls', 'cquery', 'clangtidy']
@@ -44,9 +54,9 @@ let g:ale_fixers = {
 
 imap <C-Space> <Plug>(ale_complete)
 nmap <Space><C-F> <Plug>(ale_fix)
-nmap <Bslash>d <Plug>(ale_go_to_definition)
+nmap <Bslash>gd <Plug>(ale_go_to_definition)
 nmap <C-W><Bslash>d <Plug>(ale_go_to_definition_in_split)
-nmap <Bslash>r <Plug>(ale_find_references)
+nmap <Bslash>gr <Plug>(ale_find_references)
 
 function! s:toggle(...)
   if !&modifiable || &readonly
