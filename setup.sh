@@ -24,7 +24,7 @@ fi
 
 ARGS="$@"
 if [ $# -eq 0 ]; then
-    ARGS="vim neovim emacs git X alacritty bash zsh pylint flake8 pandoc ranger"
+    ARGS="vim neovim emacs git X alacritty bash pylint flake8 pandoc ranger"
     if hash tmux 2>/dev/null; then
         ARGS="$ARGS tmux"
     else
@@ -32,6 +32,16 @@ if [ $# -eq 0 ]; then
         if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
             install tmux
             ARGS="$ARGS tmux"
+        fi
+    fi
+
+    if hash zsh 2>/dev/null; then
+        ARGS="$ARGS zsh"
+    else
+        read -r -p "Install zsh? [y/N] " ans
+        if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+            install zsh
+            ARGS="$ARGS zsh"
         fi
     fi
 
