@@ -2,8 +2,6 @@
 
 shopt -s extglob
 
-curr_dir=$(pwd)
-
 install() {
     if [[ "$OSTYPE" == darwin* ]]; then
         brew install "$@"
@@ -22,7 +20,8 @@ if ! hash stow 2>/dev/null; then
     install stow
 fi
 
-ARGS="$@"
+ARGS="$*"
+
 if [ $# -eq 0 ]; then
     ARGS="vim neovim emacs git X alacritty bash pylint flake8 pandoc ranger"
     if hash tmux 2>/dev/null; then
@@ -73,8 +72,8 @@ if [ $# -eq 0 ]; then
                 install neomutt
 
                 # Symlink `mutt` to `neomutt`
-                if [ ! -s "$(dirname $(which neomutt))/mutt" ]; then
-                    pushd "$(dirname $(which neomutt))"
+                if [ ! -s "$(dirname "$(command -v neomutt)")/mutt" ]; then
+                    pushd "$(dirname "$(command -v neomutt)")"
                     sudo ln -s neomutt mutt
                     sudo chown --reference=neomutt mutt
                     popd
@@ -182,8 +181,12 @@ for mod in $ARGS; do
         git config --global sendemail.smtpServerPort 587
     elif [[ "$mod" == "zsh" ]]; then
         if ! hash antibody 2>/dev/null; then
-            echo "Downloading antibody. This may require your password."
-            curl -L git.io/antibody | sh -s
+            if [[ "$OSTYPE" == darwin* ]]; then
+                brew install getantibody/tap/antibody
+            else
+                mkdir -p "$HOME"/.local
+                curl -sfL git.io/antibody | sh -s - -b "$HOME"/.local/bin
+            fi
         fi
     fi
 done
