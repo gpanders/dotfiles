@@ -66,20 +66,18 @@ function! StatuslineFlags()
 endfunction
 
 set laststatus=2
-set statusline=                             | " Reset the statusline
-set statusline+=%#StatuslineMode#           |
-set statusline+=\ %{StatuslineMode()}\      | " Mode indicator
-set statusline+=%*                          |
-set statusline+=%1*\ %<%f\                  | " Filename
-set statusline+=%{StatuslineFlags()}        | " Help/modified/RO markers
-set statusline+=%2*                         | " Filetype
-set statusline+=%=                          | " Break point for right justify
+let &statusline = ''                            " Reset the statusline
+let &statusline .= '%#StatuslineMode#'          " Set color to StatuslineMode
+let &statusline .= ' %{StatuslineMode()} '      " Mode indicator
+let &statusline .= '%*'                         " Reset color
+let &statusline .= '%1*'                        " Set color to User1
+let &statusline .= ' %<%f %{StatuslineFlags()}' " Filename and flags
+let &statusline .= '%2*'                        " Set color to User2
+let &statusline .= '%='                         " Break point for right justify
 
-set statusline+=%3*                         | " Reset color
-set statusline+=%{StatuslineGitBranch()}    | " Git branch (with icon)
-set statusline+=%{StatuslineLineEnding()}   | " Line ending
-set statusline+=%{StatuslineFileType()}\    | " Filetype
-set statusline+=%4*\                        | " Color boundary
-set statusline+=%(%l:%c%V%)                 | " Line and column number
-set statusline+=\ %5*                       | " Color boundary 5
-set statusline+=%P\                         | " Percent through file
+let &statusline .= '%3*'                        " Set color to User3
+let &statusline .= '%{StatuslineGitBranch()}'   " Git branch
+let &statusline .= '%{StatuslineLineEnding()}'  " Line ending
+let &statusline .= '%{StatuslineFileType()}  '  " Filetype
+let &statusline .= '%4*'                        " Set color to User4
+let &statusline .= ' %(%l:%c%V%) %P '           " Position in file
