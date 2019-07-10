@@ -1,15 +1,12 @@
 # Greg Anders (gpanders)'s ZSH configuration <https://github.com/gpanders/dotfiles.git>
 
-# Enable emacs/readline style keybindings
-bindkey -e
-
 # Enable completion (this needs to be done before sourcing plugins)
 autoload -Uz compinit && compinit
 
 # Install zsh plugins with antibody
-if [[ ! -f "${ZDOTDIR:-$HOME}/.zplugins" ]]; then
+if [ ! -f "${ZDOTDIR:-$HOME}"/.zplugins ]; then
   echo "Installing zsh plugins. We only need to do this once."
-  antibody bundle "
+  antibody bundle > "${ZDOTDIR:-$HOME}"/.zplugins << EOF
     zsh-users/zsh-syntax-highlighting
     zsh-users/zsh-completions
     zsh-users/zsh-autosuggestions
@@ -18,84 +15,76 @@ if [[ ! -f "${ZDOTDIR:-$HOME}/.zplugins" ]]; then
     sorin-ionescu/prezto path:modules/gnu-utility
     mafredri/zsh-async
     sindresorhus/pure
-  " > ${ZDOTDIR:-$HOME}/.zplugins
+EOF
 fi
-source "${ZDOTDIR:-$HOME}/.zplugins"
+source "${ZDOTDIR:-$HOME}"/.zplugins
+
+# Enable edit-command-line
+autoload -U edit-command-line
+zle -N edit-command-line
+
+# Load some awesome zsh functions
+autoload -U zmv zargs zed
+
+# Enable menu completion
+zstyle ':completion:*' menu select
 
 # zsh-autosuggestions
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
 # History settings
-HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
+HISTFILE="${ZDOTDIR:-$HOME}"/.zhistory
 HISTSIZE=10000
 SAVEHIST=10000
 
-# Perform textual history expansion, csh-style, treating the character `!`
-# specially.
-setopt BANG_HIST
+# Make cd push the old directory onto the directory stack
+setopt AUTO_PUSHD
 
-# Don't allow duplicates in history
-setopt HIST_IGNORE_DUPS
+# Do not print the directory stack after pushd or popd
+setopt PUSHD_SILENT
 
-# Remove command lines from history list when the first character is a space
-setopt HIST_IGNORE_SPACE
+# Have pushd with no arguments act like `pushd $HOME'
+setopt PUSHD_TO_HOME
 
-# Verify an expanded command before executing
-setopt HIST_VERIFY
-
-# Treat single word simple commands without redirection as candidates for
-# resumption of an existing job
-setopt AUTO_RESUME
-
-# Allow comments starting with `#` even in interactive shells
-setopt INTERACTIVE_COMMENTS
-
-# List jobs in the long format by default
-setopt LONG_LIST_JOBS
-
-# Report the status of background jobs immediately, rather than waiting until
-# just before printing a prompt
-setopt NOTIFY
-
-# Prevent running all background jobs at a lower priority
-setopt NO_BG_NICE
-
-# cd adds directories to dirstack
-setopt AUTO_PUSHD PUSHD_SILENT PUSHD_TO_HOME
-
-# Remove duplicate entries
+# Don't push multiple copies of the same directory onto the directory stack
 setopt PUSHD_IGNORE_DUPS
 
-# This reverses the +/- operators
-setopt PUSHD_MINUS
-
-# Append to history file instead of overwriting
-setopt APPENDHISTORY
-
 # Allow for extended glob patterns
-setopt EXTENDEDGLOB
-
-# Write to multiple descriptors.
-setopt MULTIOS
+setopt EXTENDED_GLOB
 
 # Disable flow control
-unsetopt FLOW_CONTROL
+setopt NO_FLOW_CONTROL
 
-# Don't throw an error if there is no match
-unsetopt NOMATCH
+# Try to correct the spelling of commands
+setopt CORRECT
+
+# Don't beep on errors in ZLE
+setopt NO_BEEP
 
 # Split words on slashes (useful for paths)
 WORDCHARS=${WORDCHARS/\/}
 
-bindkey '^ ' autosuggest-accept
-bindkey '^P' history-substring-search-up
-bindkey '^N' history-substring-search-down
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-bindkey '^Q' push-line-or-edit
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
+# Use standard readline keys in vi mode
+bindkey -M viins "^A" vi-beginning-of-line
+bindkey -M viins "^B" vi-backward-char
+bindkey -M viins "^D" vi-delete-char
+bindkey -M viins "^E" vi-end-of-line
+bindkey -M viins "^F" vi-forward-char
+bindkey -M viins "^K" vi-kill-eol
+bindkey -M viins "^U" kill-whole-line
+
+# Set up other keybindings
+bindkey "^ " autosuggest-accept
+bindkey "^[p" history-substring-search-up
+bindkey "^[n" history-substring-search-down
+bindkey "^[[A" history-substring-search-up
+bindkey "^[[B" history-substring-search-down
+bindkey -M vicmd "k" history-substring-search-up
+bindkey -M vicmd "j" history-substring-search-down
+bindkey "^Q" push-line
+bindkey "^XE" edit-command-line
+bindkey "^X^E" edit-command-line
 
 # Disable flow control
 if (( $+commands[stty] )); then
@@ -104,7 +93,7 @@ fi
 
 # Enable dircolors
 if (( $+commands[dircolors] )); then
-  if [[ -f "$HOME/.dircolors" ]]; then
+  if [ -f "$HOME"/.dircolors ]; then
     eval "$(dircolors $HOME/.dircolors)"
   else
     eval "$(dircolors --sh)"
@@ -112,11 +101,11 @@ if (( $+commands[dircolors] )); then
 fi
 
 # Setup nvm
-if [[ -s "$HOME/.nvm" ]]; then
-  export NVM_DIR="$HOME/.nvm"
+if [ -s "$HOME"/.nvm ]; then
+  export NVM_DIR="$HOME"/.nvm
   function nvm {
-    if [[ -s "$NVM_DIR/nvm.sh" ]]; then
-      source "$NVM_DIR/nvm.sh"
+    if [ -s "$NVM_DIR"/nvm.sh ]; then
+      source "$NVM_DIR"/nvm.sh
       nvm use system
       nvm $@
     fi
@@ -127,18 +116,18 @@ fi
 export GPG_TTY=$(tty)
 
 # Configure fzf
-if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf ]]; then
+if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf ]; then
   source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf
 fi
 
 # Source aliases
-if [[ -f "${ZDOTDIR:-$HOME}/.zaliases" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zaliases"
+if [ -f "${ZDOTDIR:-$HOME}"/.zaliases ]; then
+  source "${ZDOTDIR:-$HOME}"/.zaliases
 fi
 
 # Source custom functions
-if [[ -f "${ZDOTDIR:-$HOME}/.zfunctions" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zfunctions"
+if [ -f "${ZDOTDIR:-$HOME}"/.zfunctions ]; then
+  source "${ZDOTDIR:-$HOME}"/.zfunctions
 fi
 
 # Remove duplicates in path variables
