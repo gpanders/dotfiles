@@ -44,7 +44,7 @@ fi
 prompt_command() {
     [[ $? -eq 0 ]] && color="35" || color="31"
     PS1="${debian_chroot:+($debian_chroot)}\[\033[34m\]\w\[\033[90m\]"
-    if type __git_ps1 2>&1 >/dev/null; then
+    if type __git_ps1 >/dev/null 2>&1; then
         PS1="$PS1$(__git_ps1 " %s")\n"
     fi
     PS1="$PS1${SSH_TTY:+\h }\[\033[${color}m\]\$ \[\033[00m\]"
