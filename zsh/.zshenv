@@ -17,7 +17,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
     fi
 fi
 
-# Add pip binary directory to path
+# Add local binary directory to path
 path=($HOME/.local/bin $path)
 
 # Setup pyenv
@@ -30,17 +30,17 @@ if (( $+commands[pyenv] )); then
   eval "$(pyenv init - --no-rehash zsh)"
 fi
 
-# Setup cargo
+# Setup rust installation if it exists
 if [[ -s "$HOME/.cargo/env" ]]; then
   source "$HOME/.cargo/env"
 fi
 
-# Setup poetry
+# Setup poetry if it exists
 if [[ -s "$HOME/.poetry/env" ]]; then
     source "$HOME/.poetry/env"
 fi
 
-# Setup rbenv
+# Setup rbenv if it exists
 if (( $+commands[rbenv] )); then
   eval "$(rbenv init - --no-rehash zsh)"
 fi
