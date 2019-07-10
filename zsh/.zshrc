@@ -125,9 +125,9 @@ if [ -f "${ZDOTDIR:-$HOME}"/.zaliases ]; then
   source "${ZDOTDIR:-$HOME}"/.zaliases
 fi
 
-# Source custom functions
-if [ -f "${ZDOTDIR:-$HOME}"/.zfunctions ]; then
-  source "${ZDOTDIR:-$HOME}"/.zfunctions
+# Autoload custom functions
+if [ -d "${ZDOTDIR:-$HOME}"/.zfunctions ]; then
+  autoload -U "${ZDOTDIR:-$HOME}"/.zfunctions/**/*
 fi
 
 # Remove duplicates in path variables
