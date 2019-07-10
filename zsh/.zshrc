@@ -76,8 +76,8 @@ bindkey -M viins "^U" kill-whole-line
 
 # Set up other keybindings
 bindkey "^ " autosuggest-accept
-bindkey "^[p" history-substring-search-up
-bindkey "^[n" history-substring-search-down
+bindkey "^P" history-substring-search-up
+bindkey "^N" history-substring-search-down
 bindkey "^[[A" history-substring-search-up
 bindkey "^[[B" history-substring-search-down
 bindkey -M vicmd "k" history-substring-search-up
