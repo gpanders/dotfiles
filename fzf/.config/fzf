@@ -1,0 +1,66 @@
+FZF_DEFAULT_OPTS=""
+
+# Color
+# Solarized Dark
+# FZF_COLORS="dark,fg:-1,bg:-1,hl:#268bd2,fg+:#93a1a1,bg+:#073642,hl+:#268bd2,info:#b58900,prompt:#b58900,pointer:#2aa198,marker:#2aa198,spinner:#b58900"
+
+# Solarized Light
+# FZF_COLORS="light,fg:-1,bg:-1,hl:#268bd2,fg+:#586e75,bg+:#eee8d5,hl+:#268bd2,info:#b58900,prompt:#b58900,pointer:#2aa198,marker:#2aa198,spinner:#b58900"
+
+# Base 16
+FZF_COLORS="bg+:10,bg:0,spinner:6,hl:4,fg:12,header:4,info:3,pointer:6,marker:6,fg+:13,prompt:3,hl+:4"
+
+FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color $FZF_COLORS"
+
+# Set default command
+if command -v fd >/dev/null 2>&1; then
+    export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
+    export FZF_ALT_C_COMMAND="fd -t d"
+    _fzf_compgen_path() {
+        fd --hidden --follow --exclude ".git" . "$1"
+    }
+    _fzf_compgen_dir() {
+        fd --type d --hidden --follow --exclude ".git" . "$1"
+    }
+elif command -v rg >/dev/null 2>&1; then
+    export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
+    _fzf_compgen_path() {
+        rg --files --hidden --glob '!.git' "$1"
+    }
+elif command -v ag >/dev/null 2>&1; then
+    export FZF_DEFAULT_COMMAND="ag -g ''"
+    _fzf_compgen_path() {
+        ag -g '' "$1"
+    }
+fi
+
+if [ -n "$FZF_DEFAULT_COMMAND" ]; then
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+fi
+
+if command -v highlight >/dev/null 2>&1; then
+    export FZF_CTRL_T_OPTS="--preview '! grep -qI . {} && echo {} is a binary file || highlight -O ansi -l {} 2>/dev/null | head -200'"
+fi
+
+if command -v tree >/dev/null 2>&1; then
+    export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+fi
+
+export FZF_DEFAULT_OPTS
+
+# Set up fzf for home directory installation
+if [ -d "$HOME"/.fzf ]; then
+    if [[ ! "$PATH" == *$HOME/.fzf/bin* ]]; then
+        export PATH="$PATH:$HOME/.fzf/bin"
+    fi
+
+    if [[ $- =~ i ]]; then
+        if [ -n "$BASH_VERSION" ]; then
+            source "$HOME"/.fzf/shell/completion.bash 2>/dev/null
+            source "$HOME"/.fzf/shell/key-bindings.bash 2>/dev/null
+        elif [ -n "$ZSH_VERSION" ]; then
+            source "$HOME"/.fzf/shell/completion.zsh 2>/dev/null
+            source "$HOME"/.fzf/shell/key-bindings.zsh 2>/dev/null
+        fi
+    fi
+fi

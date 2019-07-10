@@ -76,7 +76,9 @@ if ! shopt -oq posix; then
 fi
 
 # enable fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf ]; then
+    source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf
+fi
 
 # configure pyenv
 if [ -d "$HOME/.pyenv" ]; then
