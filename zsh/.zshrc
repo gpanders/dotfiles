@@ -127,7 +127,9 @@ fi
 export GPG_TTY=$(tty)
 
 # Configure fzf
-[[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
+if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf ]]; then
+  source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf
+fi
 
 # Source aliases
 if [[ -f "${ZDOTDIR:-$HOME}/.zaliases" ]]; then
