@@ -4,7 +4,7 @@ alias chown="chown --preserve-root -v"
 alias ec="emacsclient -a '' -nc"
 
 alias d="dirs -v"
-for index ({1..9}) alias "$index"="cd -${index}"; unset index
+for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
 alias g="git"
 
@@ -27,7 +27,7 @@ mkdcd() {
         echo "$0: Too many arguments"
         return 1
     fi
-    mkdir "$1"
+    mkdir -p "$1"
     cd "$1"
 }
 
@@ -40,18 +40,16 @@ alias pipu="pip install -U \$(pip list -o | awk 'NR > 2 {print \$1}' | paste -sd
 # Attach to existing session if it exists
 alias tmuxa="tmux attach -t local || tmux new-session -s local"
 
-if [ ! -z $EDITOR ]; then
+if [ -n $EDITOR ]; then
     alias e="$EDITOR"
 fi
 
-if [ ! -z $BROWSER ]; then
+if [ -n $BROWSER ]; then
     alias b="$BROWSER"
 fi
 
-if [ ! -z $PAGER ]; then
+if [ -n $PAGER ]; then
     alias p="$PAGER"
 fi
-
-alias which="which -a"
 
 # vim:ft=zsh
