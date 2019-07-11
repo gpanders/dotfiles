@@ -15,6 +15,7 @@ mailboxes +Lists
 mailboxes +Lists.kernelnewbies
 mailboxes +Lists.hackers
 mailboxes +Lists.neomutt-users
+mailboxes +Lists.zsh-users
 mailboxes +Trash
 
 set smtp_url = "smtp://greg@gpanders.com@mail.gandi.net:587"
