@@ -141,7 +141,8 @@ source ~/.config/mutt/bindings
 source ~/.config/mutt/sidebar
 
 # Set up notmuch virtual mailboxes
-# ifdef notmuch 'source ~/.config/mutt/notmuch'
+ifdef notmuch "set nm_default_uri = notmuch://`notmuch config get database.path`"
+# ifdef notmuch "source ~/.config/mutt/notmuch"
 
 folder-hook . source ~/.config/mutt/config.default
 

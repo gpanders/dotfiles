@@ -40,6 +40,6 @@ macro index,pager ga "<change-folder>\><enter>" "go to archive"
 macro index,pager \Cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 macro attach,compose \Cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 
-ifdef notmuch "bind index S vfolder-from-query"
+ifdef notmuch "bind index \Cs vfolder-from-query"
 
 # vim: ft=neomuttrc
