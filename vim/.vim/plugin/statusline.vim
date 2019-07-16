@@ -68,16 +68,23 @@ endfunction
 set laststatus=2
 let &statusline = ''                            " Reset the statusline
 let &statusline .= '%#StatuslineMode#'          " Set color to StatuslineMode
-let &statusline .= ' %{StatuslineMode()} '      " Mode indicator
+let &statusline .= ' '
+let &statusline .= '%{StatuslineMode()}'        " Mode indicator
+let &statusline .= ' '
 let &statusline .= '%*'                         " Reset color
 let &statusline .= '%1*'                        " Set color to User1
-let &statusline .= ' %<%f %{StatuslineFlags()}' " Filename and flags
+let &statusline .= ' '
+let &statusline .= '%<%f %{StatuslineFlags()}'  " Filename and flags
 let &statusline .= '%2*'                        " Set color to User2
 let &statusline .= '%='                         " Break point for right justify
 
 let &statusline .= '%3*'                        " Set color to User3
+let &statusline .= ' '
 let &statusline .= '%{StatuslineGitBranch()}'   " Git branch
 let &statusline .= '%{StatuslineLineEnding()}'  " Line ending
-let &statusline .= '%{StatuslineFileType()}  '  " Filetype
+let &statusline .= '%{StatuslineFileType()}'    " Filetype
+let &statusline .= ' '
 let &statusline .= '%4*'                        " Set color to User4
-let &statusline .= ' %(%l:%c%V%) %P '           " Position in file
+let &statusline .= ' '
+let &statusline .= '%(%l:%c%V%) %P'             " Position in file
+let &statusline .= ' '

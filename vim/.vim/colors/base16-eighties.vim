@@ -8,22 +8,25 @@ let g:did_user_colors = 1
 " basically the same thing
 runtime! ALL colors/base16-eighties.vim
 
-exe printf('hi User1 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#%s guibg=#%s', g:base16_gui0C, g:base16_gui0B)
-exe printf('hi User2 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#%s guibg=#%s', g:base16_gui0C, g:base16_gui0B)
-exe printf('hi User3 term=bold,reverse ctermfg=8 ctermbg=0 guifg=#%s guibg=#%s', g:base16_gui0C, g:base16_gui0B)
-exe printf('hi User4 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#%s guibg=#%s', g:base16_gui0C, g:base16_gui0B)
-exe printf('hi User5 term=bold,reverse ctermfg=12 ctermbg=11 guifg=#%s guibg=#%s', g:base16_gui0C, g:base16_gui0B)
-
 hi link StatuslineModeNormal Normal
-
-exe printf('hi StatuslineModeInsert ctermfg=4 guifg=#%s', g:base16_gui04)
-exe printf('hi StatuslineModeReplace ctermfg=1 guifg=#%s', g:base16_gui01)
-exe printf('hi StatuslineModeVisual ctermfg=5 guifg=#%s', g:base16_gui05)
-
-exe printf('hi SpellBad ctermbg=NONE ctermfg=1 guifg=#%s', g:base16_gui01)
-exe printf('hi SpellCap ctermbg=NONE ctermfg=4 guifg=#%s', g:base16_gui04)
-exe printf('hi SpellRare ctermbg=NONE ctermfg=5 guifg=#%s', g:base16_gui05)
-exe printf('hi SpellLocal ctermbg=NONE ctermfg=6 guifg=#%s', g:base16_gui06)
-exe printf('hi WildMenu ctermfg=15 ctermbg=11 guifg=#%s guibg=#%s', g:base16_gui0F, g:base16_gui0B)
-
 hi Underlined ctermfg=NONE guifg=NONE
+
+if exists('*g:Base16hi')
+  call g:Base16hi('User1', g:base16_gui04, g:base16_gui02, g:base16_cterm04, g:base16_cterm02)
+  call g:Base16hi('User2', g:base16_gui03, g:base16_gui00, g:base16_cterm03, g:base16_cterm00)
+  call g:Base16hi('User3', g:base16_gui03, g:base16_gui00, g:base16_cterm03, g:base16_cterm00)
+  call g:Base16hi('User4', g:base16_gui04, g:base16_gui02, g:base16_cterm04, g:base16_cterm02)
+  call g:Base16hi('User5', g:base16_gui04, g:base16_gui02, g:base16_cterm04, g:base16_cterm02)
+
+  call g:Base16hi('StatuslineModeInsert', g:base16_gui0D, '', g:base16_cterm0D, '')
+  call g:Base16hi('StatuslineModeReplace', g:base16_gui08, '', g:base16_cterm08, '')
+  call g:Base16hi('StatuslineModeVisual', g:base16_gui0E, '', g:base16_cterm0E, '')
+
+  call g:Base16hi('SpellBad', '', '', g:base16_cterm08, 'NONE')
+  call g:Base16hi('SpellCap', '', '', g:base16_cterm0D, 'NONE')
+  call g:Base16hi('SpellRare', '', '', g:base16_cterm0E, 'NONE')
+  call g:Base16hi('SpellLocal', '', '', g:base16_cterm0C, 'NONE')
+  call g:Base16hi('WildMenu', g:base16_gui07, g:base16_gui02, g:base16_cterm07, g:base16_cterm02)
+endif
+
+unlet g:did_user_colors
