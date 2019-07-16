@@ -1,0 +1,21 @@
+IMAPAccount gpanders
+Host mail.gandi.net
+User greg@gpanders.com
+PassCmd "pass mail/greg@gpanders.com"
+SSLType IMAPS
+CertificateFile /etc/ssl/cert.pem
+
+IMAPStore gpanders-remote
+Account gpanders
+
+MaildirStore gpanders-local
+Subfolders Verbatim
+Path ~/.mail/gpanders/
+Inbox ~/.mail/gpanders/Inbox
+
+Channel gpanders
+Master :gpanders-remote:
+Slave :gpanders-local:
+Patterns * !Junk !Spam
+Create Both
+SyncState *
