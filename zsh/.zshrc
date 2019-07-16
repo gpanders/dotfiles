@@ -8,9 +8,7 @@ if [ ! -f "${ZDOTDIR:-$HOME}"/.zplugins ]; then
   echo "Installing zsh plugins. We only need to do this once."
   antibody bundle > "${ZDOTDIR:-$HOME}"/.zplugins << EOF
     zsh-users/zsh-syntax-highlighting
-    zsh-users/zsh-completions
     zsh-users/zsh-autosuggestions
-    zsh-users/zsh-history-substring-search
     robbyrussell/oh-my-zsh path:plugins/fzf
     sorin-ionescu/prezto path:modules/gnu-utility
     mafredri/zsh-async
@@ -71,18 +69,25 @@ bindkey -M viins "^F" vi-forward-char
 bindkey -M viins "^K" vi-kill-eol
 bindkey -M viins "^U" kill-whole-line
 
-# Set up other keybindings
+# Accept the current autosuggestion
 bindkey "^ " autosuggest-accept
+
+# Perform history expansion and insert a space
 bindkey " " magic-space
-bindkey "^P" history-substring-search-up
-bindkey "^N" history-substring-search-down
-bindkey "^[[A" history-substring-search-up
-bindkey "^[[B" history-substring-search-down
-bindkey -M vicmd "k" history-substring-search-up
-bindkey -M vicmd "j" history-substring-search-down
+
+# Add the current line to the stack and start a new command line
 bindkey "^Q" push-line
+
+# Edit the current command line in $EDITOR
 bindkey "^XE" edit-command-line
 bindkey "^X^E" edit-command-line
+
+bindkey "^P" up-line-or-search
+bindkey "^N" down-line-or-search
+bindkey "^[[A" up-line-or-search
+bindkey "^[[B" down-line-or-search
+bindkey -M vicmd "k" up-line-or-search
+bindkey -M vicmd "j" down-line-or-search
 
 # Disable flow control
 if (( $+commands[stty] )); then
