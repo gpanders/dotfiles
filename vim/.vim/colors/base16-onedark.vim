@@ -16,7 +16,6 @@ if exists('*g:Base16hi')
   call g:Base16hi('User2', g:base16_gui04, g:base16_gui00, g:base16_cterm03, g:base16_cterm00)
   call g:Base16hi('User3', g:base16_gui04, g:base16_gui00, g:base16_cterm03, g:base16_cterm00)
   call g:Base16hi('User4', g:base16_gui05, g:base16_gui02, g:base16_cterm04, g:base16_cterm02)
-  call g:Base16hi('User5', g:base16_gui05, g:base16_gui02, g:base16_cterm04, g:base16_cterm02)
 
   call g:Base16hi('StatusLine', g:base16_gui05, '', '', '')
   call g:Base16hi('StatusLineNC', g:base16_gui04, '', '', '')
