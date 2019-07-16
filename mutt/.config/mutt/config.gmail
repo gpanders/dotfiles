@@ -2,7 +2,7 @@ set my_account = gmail
 set folder = imaps://imap.gmail.com
 
 set from = "greg.p.anders@gmail.com"
-set spoolfile = +INBOX
+set spoolfile = +Inbox
 set postponed = "+[Gmail]/Drafts"
 unset record  # Gmail does this by default
 set mbox = "+[Gmail]/All Mail"
