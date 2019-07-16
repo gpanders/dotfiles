@@ -1,90 +1,91 @@
 " Set the statusline
-
-let s:statusline_separator = ' / '
-
-function! StatuslineLineEnding()
-  if &ff ==# 'unix'
-    return 'LF' . s:statusline_separator
-  elseif &ff ==# 'dos'
-    return 'CRLF' . s:statusline_separator
-  elseif &ff ==# 'mac'
-    return 'CR' . s:statusline_separator
-  endif
-  return ''
-endfunction
-
-function! StatuslineFileType()
-  if &ft ==# ''
-    return 'none'
-  else
-    return &ft
-  endif
-endfunction
-
-function! StatuslineGitBranch()
-  if exists('*FugitiveHead')
-    let branch = FugitiveHead()
-    if branch != ''
-      return branch . s:statusline_separator
-    endif
-  endif
-  return ''
-endfunction
-
-function! StatuslineMode()
-  let m = mode()
-  if m ==# 'n'
-    highlight! link StatuslineMode StatuslineModeNormal
-    return 'N'
-  elseif m ==# 'i'
-    highlight! link StatuslineMode StatuslineModeInsert
-    return 'I'
-  elseif m ==# 'R'
-    highlight! link StatuslineMode StatuslineModeReplace
-    return 'R'
-  elseif m ==? 'v' || m ==# ''
-    highlight! link StatuslineMode StatuslineModeVisual
-    return 'V'
-  else
-    highlight! link StatuslineMode StatuslineModeNormal
-    return toupper(m)
-  endif
-endfunction
+" Author: Greg Anders <greg@gpanders.com>
+" Date: 2019-07-10
 
 " Initialize StatuslineMode highlight group
 highlight! link StatuslineMode StatuslineModeNormal
 
-function! StatuslineFlags()
-  let str = ''
+function! StatusLine(sep)
+  " Reset the statusline
+  let s = ''
+
+  " Set highlight to StatuslineMode
+  let s .= '%#StatuslineMode# '
+
+  " Show mode
+  let m = mode()
+  if m ==# 'n'
+    highlight! link StatuslineMode StatuslineModeNormal
+    let s .= 'N'
+  elseif m ==# 'i'
+    highlight! link StatuslineMode StatuslineModeInsert
+    let s .= 'I'
+  elseif m ==# 'R'
+    highlight! link StatuslineMode StatuslineModeReplace
+    let s .= 'R'
+  elseif m ==? 'v' || m ==# ''
+    highlight! link StatuslineMode StatuslineModeVisual
+    let s .= 'V'
+  else
+    highlight! link StatuslineMode StatuslineModeNormal
+    let s .= toupper(m)
+  endif
+
+  " Set highlight to User1
+  let s .= ' %1* '
+
+  " Filename (truncated if necessary)
+  let s .= '%<%f'
+
+  " File flags (modified and read-only)
   if &mod
-    let str .= '+ '
+    let s .= ' +'
   endif
   if &ro
-    let str .= '[RO] '
+    let s .= ' [RO]'
   endif
-  return str
+
+  " Set highlight to User2
+  let s .= ' %2* '
+
+  " Right justify
+  let s .= '%='
+
+  " Set highlight to User3
+  let s .= ' %3* '
+
+  " Show git branch, if available
+  if exists('*FugitiveHead')
+    let branch = FugitiveHead()
+    if branch != ''
+      let s .= branch . a:sep
+    endif
+  endif
+
+  " Show line break style
+  if &ff ==# 'unix'
+    let s .= 'LF' . a:sep
+  elseif &ff ==# 'dos'
+    let s .= 'CRLF' . a:sep
+  elseif &ff ==# 'mac'
+    let s .= 'CR' . a:sep
+  endif
+
+  " Show file type
+  if &ft ==# ''
+    let s .= 'none'
+  else
+    let s .= &ft
+  endif
+
+  " Set highlight to User4
+  let s .= ' %4* '
+
+  " Position in file
+  let s .= '%(%l:%c%V%) %P '
+
+  return s
 endfunction
 
 set laststatus=2
-let &statusline = ''                            " Reset the statusline
-let &statusline .= '%#StatuslineMode#'          " Set color to StatuslineMode
-let &statusline .= ' '
-let &statusline .= '%{StatuslineMode()}'        " Mode indicator
-let &statusline .= ' '
-let &statusline .= '%*'                         " Reset color
-let &statusline .= '%1*'                        " Set color to User1
-let &statusline .= ' '
-let &statusline .= '%<%f %{StatuslineFlags()}'  " Filename and flags
-let &statusline .= '%2*'                        " Set color to User2
-let &statusline .= '%='                         " Break point for right justify
-
-let &statusline .= '%3*'                        " Set color to User3
-let &statusline .= ' '
-let &statusline .= '%{StatuslineGitBranch()}'   " Git branch
-let &statusline .= '%{StatuslineLineEnding()}'  " Line ending
-let &statusline .= '%{StatuslineFileType()}'    " Filetype
-let &statusline .= ' '
-let &statusline .= '%4*'                        " Set color to User4
-let &statusline .= ' '
-let &statusline .= '%(%l:%c%V%) %P'             " Position in file
-let &statusline .= ' '
+set statusline=%!StatusLine('\ /\ ')
