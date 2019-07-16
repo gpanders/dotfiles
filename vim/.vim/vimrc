@@ -240,7 +240,7 @@ inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
 " Normal {{{
 
 " Write file with ,w
-nnoremap <silent> ,w :w<CR>
+nnoremap <Space>w :w<CR>
 
 " Navigate through wrapped lines individually
 nnoremap <silent> j gj
@@ -250,47 +250,40 @@ nnoremap <silent> k gk
 noremap Q gq
 
 " Buffer shortcuts
-nnoremap <silent> ,1 :b1<CR>
-nnoremap <silent> ,2 :b2<CR>
-nnoremap <silent> ,3 :b3<CR>
-nnoremap <silent> ,4 :b4<CR>
-nnoremap <silent> ,5 :b5<CR>
-nnoremap <silent> ,6 :b6<CR>
-nnoremap <silent> ,7 :b7<CR>
-nnoremap <silent> ,8 :b8<CR>
-nnoremap <silent> ,9 :b9<CR>
-nnoremap <silent> ,0 :b10<CR>
+for i in range(1, 10)
+  exe 'nnoremap <Space>' . (i % 10) ':b' . i . '<CR>'
+endfor
 
 " List buffers and put :b on the command line
-noremap ,b :buffers<CR>:b<Space>
+noremap <Space>b :buffers<CR>:b<Space>
 
 " Map ,, to ,
-nnoremap ,, ,
+" nnoremap ,, ,
 
 " Find files in path
-nnoremap ,f :find *
+nnoremap <Space>f :find *
 
 " Search for a tag by regex
-nnoremap ,] :tjump /
-nnoremap ,} :ptjump /
+nnoremap <Space>] :tjump /
+nnoremap <Space>} :ptjump /
 
 " Show tag stack
-nnoremap ,t :tags<CR>
+nnoremap <Space>t :tags<CR>
 
 " Open quickfix list
-nnoremap ,q :copen<CR>
+nnoremap <Space>q :copen<CR>
 
 " Open location list
-nnoremap ,l :lopen<CR>
+nnoremap <Space>l :lopen<CR>
 
 " Find files in current buffer's directory
-nnoremap ,e :e %:p:h/<C-Z>
+nnoremap <Space>e :e %:p:h/<C-Z>
 
 " Budget fuzzy file finder
 nnoremap <C-P> :e **/*
 
 " <Bslash>ev opens .vimrc in new window
-nnoremap <Bslash>ev :<C-U>tabe $MYVIMRC<CR>
+nnoremap <Bslash>ev :<C-U>tabe $MYVIMRC<CR>:tcd %:h<CR>
 
 " <Bslash>sv sources .vimrc
 nnoremap <Bslash>sv :<C-U>source $MYVIMRC<CR>
@@ -301,19 +294,19 @@ vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
 
 " Format whole buffer with formatprg without changing cursor position
 " See :h restore-position
-nnoremap ,gq mzHmygggqG`yzt`z
+nnoremap <Space>gq mzHmygggqG`yzt`z
 
 " Modify contents of a register
 nnoremap yr :<C-\>e'let @' . v:register . ' = ' . string(getreg(v:register))<CR><C-F>
 
 " Show marks
-nnoremap ,m :marks<CR>:norm! `
+nnoremap <Space>m :marks<CR>:norm! `
 
 " Show only user placed marks (A-Z and a-z)
 let s:alphabet = join(map(
       \ range(char2nr('A'), char2nr('Z')) + range(char2nr('a'), char2nr('z')),
       \ 'nr2char(v:val)'), '')
-execute 'nnoremap ,M :marks ' . s:alphabet . '<CR>'
+execute 'nnoremap <Space>M :marks ' . s:alphabet . '<CR>'
 unlet s:alphabet
 
 " }}}
