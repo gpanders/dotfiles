@@ -64,6 +64,10 @@ if [ $# -eq 0 ]; then
         ARGS="$ARGS offlineimap"
     fi
 
+    if hash isync 2>/dev/null || hash mbsync 2>/dev/null; then
+        ARGS="$ARGS isync"
+    fi
+
     if ! (hash mutt 2>/dev/null || hash neomutt 2>/dev/null) || ! hash offlineimap 2>/dev/null; then
         read -r -p "Install email tools? [y/N] " ans
         if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
@@ -81,9 +85,9 @@ if [ $# -eq 0 ]; then
                 ARGS="$ARGS mutt"
             fi
 
-            if ! hash offlineimap 2>/dev/null; then
-                install offlineimap
-                ARGS="$ARGS offlineimap"
+            if ! hash mbsync 2>/dev/null; then
+                install isync
+                ARGS="$ARGS isync"
             fi
 
             if ! hash urlscan 2>/dev/null; then
