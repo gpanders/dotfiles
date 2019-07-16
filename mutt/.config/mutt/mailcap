@@ -1,20 +1,16 @@
-text/html; firefox %s &; test=test -n "$DISPLAY"; needsterminal;
-text/html; w3m -I %{charset} -T text/html; copiousoutput;
-text/x-diff; cat %s | colordiff; copiousoutput;
-text/x-patch; cat %s | colordiff; copiousoutput;
+text/html; w3m -I %{charset} -T text/html
+text/html; w3m -I %{charset} -T text/html; copiousoutput
+text/x-diff; cat %s | colordiff; copiousoutput
+text/x-patch; cat %s | colordiff; copiousoutput
 
 # Images
-image/jpg; ~/.config/mutt/scripts/view_attachment.sh %s jpg
-image/jpeg; ~/.config/mutt/scripts/view_attachment.sh %s jpg
-image/pjpeg; ~/.config/mutt/scripts/view_attachment.sh %s jpg
-image/png; ~/.config/mutt/scripts/view_attachment.sh %s png
-image/gif; ~/.config/mutt/scripts/view_attachment.sh %s gif
+image/*; feh %s
+image/*; anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | pgmtopbm | pbmtoascii; test=command -v anytopnm; copiousoutput
+image/*; catimg %s; test=command -v catimg; copiousoutput
 
 # PDFs
-application/pdf; ~/.config/mutt/scripts/view_attachment.sh %s pdf
+application/pdf; pdftotext "%s" -; copiousoutput; description=PDF Document; nametemplate=%s.pdf
 
-# HTML
-text/html; ~/.config/mutt/scripts/view_attachment.sh %s html
-
-# Unidentified files
-application/octet-stream; ~/.config/mutt/scripts/view_attachment.sh %s "-"
+# Word files
+application/msword; antiword "%s"; copiousoutput; description=Word Document; nametemplate=%s.doc
+application/msword; docx2text.pl "%s" -; copiousoutput; description=Word Document; nametemplate=%s.docx
