@@ -130,7 +130,7 @@ fpath=(~/.zfunc $fpath)
 # symlinks) that have the executable bit on (the executable bit is not
 # necessary, but gives you an easy way to stop the autoloading of a particular
 # shell function). $fpath should not be empty for this to work.
-for func in $^fpath/*(N-.x:t); autoload $func
+for func in $^fpath/*(N-.x:t); autoload -U $func
 
 # Remove duplicates in path variables
 typeset -gU path fpath cdpath manpath
