@@ -5,5 +5,3 @@
 if !get(g:, 'loaded_sneak_plugin', 0)
   finish
 endif
-
-map ,, <Plug>Sneak_,
