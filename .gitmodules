@@ -1,4 +1,4 @@
-[submodule "tmux/.tmux/plugins/tpm"]
+[submodule "tpm"]
 	path = tmux/.local/share/tmux/plugins/tpm
 	url = https://github.com/gpanders/tpm
 	branch = master
