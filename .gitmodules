@@ -1,6 +1,6 @@
 [submodule "tmux/.tmux/plugins/tpm"]
 	path = tmux/.local/share/tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm
+	url = https://github.com/gpanders/tpm
 	branch = master
 [submodule "minpac"]
 	path = vim/.vim/pack/minpac/opt/minpac
