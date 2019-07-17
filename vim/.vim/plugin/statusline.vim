@@ -58,17 +58,17 @@ function! StatusLine(sep)
   if exists('*FugitiveHead')
     let branch = FugitiveHead()
     if branch != ''
-      let s .= branch . a:sep
+      let s .= branch . ' ' . a:sep . ' '
     endif
   endif
 
   " Show line break style
   if &ff ==# 'unix'
-    let s .= 'LF' . a:sep
+    let s .= 'LF ' . a:sep . ' '
   elseif &ff ==# 'dos'
-    let s .= 'CRLF' . a:sep
+    let s .= 'CRLF ' . a:sep . ' '
   elseif &ff ==# 'mac'
-    let s .= 'CR' . a:sep
+    let s .= 'CR ' . a:sep . ' '
   endif
 
   " Show file type
@@ -88,4 +88,4 @@ function! StatusLine(sep)
 endfunction
 
 set laststatus=2
-set statusline=%!StatusLine('\ /\ ')
+set statusline=%!StatusLine('/')
