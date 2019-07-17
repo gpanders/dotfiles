@@ -1,5 +1,5 @@
 [submodule "tmux/.tmux/plugins/tpm"]
-	path = tmux/.tmux/plugins/tpm
+	path = tmux/.local/share/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
 	branch = master
 [submodule "minpac"]

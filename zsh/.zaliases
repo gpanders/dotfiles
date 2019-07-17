@@ -38,7 +38,7 @@ alias py3="python3"
 alias pipu="pip install -U \$(pip list -o | awk 'NR > 2 {print \$1}' | paste -sd ' ' -)"
 
 # Attach to existing session if it exists
-alias tmuxa="tmux attach -t local || tmux new-session -s local"
+alias tmux="tmux -f ${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf"
 
 if [ -n $EDITOR ]; then
     alias e="$EDITOR"

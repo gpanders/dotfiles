@@ -3,20 +3,19 @@ alias ll="ls -Alh"
 
 alias g="git"
 
-if hash nvim 2>/dev/null; then
+if command -v nvim >/dev/null; then
     alias vi="nvim"
     alias vim="nvim"
 fi
 
-if [ ! -z "$EDITOR" ]; then
+if [ -n "$EDITOR" ]; then
     alias e="$EDITOR"
 fi
 
-if [ ! -z "$BROWSER" ]; then
+if [ -n "$BROWSER" ]; then
     alias b="$BROWSER"
 fi
 
-alias open="xdg-open"
 alias d="dirs -v"
 
 mkdcd() {
@@ -36,4 +35,4 @@ do
     alias "$i"="builtin cd ~$i"
 done
 
-alias tmux="tmux -2"
+alias tmux="tmux -f ${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf"
