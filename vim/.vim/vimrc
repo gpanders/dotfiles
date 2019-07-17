@@ -179,8 +179,6 @@ set wildignore+=tags
 if !has('nvim')
   if exists('$XDG_CACHE_HOME')
     let s:cachedir = $XDG_CACHE_HOME . '/vim'
-  elseif isdirectory($HOME . '/Library/Caches/')
-    let s:cachedir = $HOME . '/Library/Caches/vim'
   elseif has('unix')
     let s:cachedir = $HOME . '/.cache/vim'
   else
