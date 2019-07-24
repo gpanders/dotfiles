@@ -287,8 +287,8 @@ nnoremap <Bslash>ev :<C-U>tabe $MYVIMRC<CR>:tcd %:h<CR>
 nnoremap <Bslash>sv :<C-U>source $MYVIMRC<CR>
 
 " Clear search buffer with <C-L>
-nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR><C-L>
-vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<CR>gv<C-L>
+nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync fromstart<CR><C-L>
+vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync fromstart<CR>gv<C-L>
 
 " Format whole buffer with formatprg without changing cursor position
 " See :h restore-position
