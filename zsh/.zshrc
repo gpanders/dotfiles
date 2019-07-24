@@ -1,5 +1,8 @@
 # Greg Anders (gpanders)'s ZSH configuration <https://github.com/gpanders/dotfiles.git>
 
+# Add user functions to $fpath
+fpath=(~/.local/share/zsh/functions $fpath)
+
 # Enable completion (this needs to be done before sourcing plugins)
 autoload -Uz compinit && compinit
 
@@ -16,6 +19,12 @@ if [ ! -f "${ZDOTDIR:-$HOME}"/.zplugins ]; then
 EOF
 fi
 source "${ZDOTDIR:-$HOME}"/.zplugins
+
+# Autoload all shell functions from all directories in $fpath (following
+# symlinks) that have the executable bit on (the executable bit is not
+# necessary, but gives you an easy way to stop the autoloading of a particular
+# shell function). $fpath should not be empty for this to work.
+for func in $^fpath/*(N-.x:t); autoload -U $func
 
 # Enable edit-command-line
 autoload -U edit-command-line
@@ -127,15 +136,6 @@ fi
 if [ -f "${ZDOTDIR:-$HOME}"/.zaliases ]; then
   source "${ZDOTDIR:-$HOME}"/.zaliases
 fi
-
-# Add custom functions to $fpath
-fpath=(~/.zfunc $fpath)
-
-# Autoload all shell functions from all directories in $fpath (following
-# symlinks) that have the executable bit on (the executable bit is not
-# necessary, but gives you an easy way to stop the autoloading of a particular
-# shell function). $fpath should not be empty for this to work.
-for func in $^fpath/*(N-.x:t); autoload -U $func
 
 # Remove duplicates in path variables
 typeset -gU path fpath cdpath manpath
