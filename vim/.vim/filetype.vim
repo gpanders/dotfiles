@@ -3,7 +3,7 @@ if exists("did_load_filetypes")
 endif
 
 augroup filetypedetect
-  autocmd! BufRead,BufNewFile *.bd          setfiletype json
-  autocmd! BufRead,BufNewFile *.vho         setfiletype vhdl
-  autocmd! BufRead,BufNewFile ~/.zfunc/*    setfiletype zsh
+  autocmd! BufRead,BufNewFile *.bd                            setf json
+  autocmd! BufRead,BufNewFile *.vho                           setf vhdl
+  autocmd! BufRead,BufNewFile ~/.local/share/zsh/functions/*  setf zsh
 augroup END
