@@ -3,16 +3,54 @@ if [ $# -lt 1 ]; then
     return
 fi
 
-NOTE="${NOTES_PATH:-$HOME/.notes}"/$1.md
+case "$1" in
+    edit)
+        if [ $# -lt 2 ]; then
+            echo "Which ual page do you want to edit?"
+            return
+        fi
+        NOTE="${NOTES_PATH:-$HOME/.notes}"/$2.md
+        mkdir -p $(dirname $NOTE)
+        ${EDITOR:-vi} "$NOTE"
+        ;;
+    rm)
+        if [ $# -lt 2 ]; then
+            echo "Which ual page do you want to remove?"
+                return
+            fi
+            NOTE="${NOTES_PATH:-$HOME/.notes}"/$2.md
+            if [ ! -f "$NOTE" ]; then
+                echo "No ual entry for $1" >&2
+                return 1
+            fi
+            rm "$NOTE"
+            ;;
+    sync)
+        echo -n "Syncing notes... "
+        (cd "${NOTES_DIR:-$HOME/.notes}" && git pull &>/dev/null && git add . && git commit &>/dev/null && git push &>/dev/null)
+        echo "Done."
+        ;;
+    *)
+        NOTE="${NOTES_PATH:-$HOME/.notes}"/$1.md
 
-if [ ! -f "$NOTE" ]; then
-    echo "No ual entry for $1" >&2
-    return 1
-fi
+        if [ ! -f "$NOTE" ]; then
+            echo "No ual entry for $1" >&2
+            return 1
+        fi
 
-TITLE="$(echo $1 | tr '[:lower:]' '[:upper:]')"
-SECTION="ual"
-AUTHOR="Greg Anders"
-DATE="$(date +%Y-%m-%d -r "$NOTE")"
+        TITLE="$(echo $1 | tr '[:lower:]' '[:upper:]')"
+        SECTION="ual"
+        AUTHOR="Greg Anders"
+        DATE="$(date +'%B %d, %Y' -r "$NOTE")"
 
-pandoc -s -f markdown -t man -M title="$TITLE" -M author="$AUTHOR" -M section="$SECTION" -M date="$DATE" "$NOTE" | groff -T utf8 -man | less -R
+        pandoc \
+            -s \
+            -f markdown \
+            -t man \
+            -M title="$TITLE" \
+            -M author="$AUTHOR" \
+            -M section="$SECTION" \
+            -M date="$DATE" \
+            "$NOTE" | groff -T utf8 -man | less -R
+        ;;
+esac

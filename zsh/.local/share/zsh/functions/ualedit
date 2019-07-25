@@ -1,5 +1,0 @@
-NOTE="${NOTES_PATH:-$HOME/.notes}"/$1.md
-
-mkdir -p $(dirname $NOTE)
-
-${EDITOR:-vi} "$NOTE"
