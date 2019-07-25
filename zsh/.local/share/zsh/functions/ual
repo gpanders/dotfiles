@@ -27,7 +27,7 @@ case "$1" in
             ;;
     sync)
         echo -n "Syncing notes... "
-        (cd "${NOTES_DIR:-$HOME/.notes}" && git pull &>/dev/null && git add . && git commit &>/dev/null && git push &>/dev/null)
+        (cd "${NOTES_DIR:-$HOME/.notes}" && git pull &>/dev/null && git add . && git commit -qv 2>/dev/null && git push &>/dev/null)
         echo "Done."
         ;;
     *)
