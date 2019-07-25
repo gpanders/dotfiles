@@ -1,3 +1,0 @@
-notes_path=$HOME/.local/share/man/$1.md
-
-pandoc -s -f markdown -t man "$notes_path" | groff -T utf8 -man | less
