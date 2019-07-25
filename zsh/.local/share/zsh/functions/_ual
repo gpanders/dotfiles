@@ -1,9 +1,33 @@
-#compdef ual ualedit
+#compdef ual
 
 _ual () {
     local state
 
-    _arguments '1:pages:("${NOTES_DIR:-$HOME/.notes}"/*(:t:r))'
+    _arguments \
+        '1: :->subcmd' \
+        '2: :->arg'
+
+    local -a pages
+    pages=("${NOTES_DIR:-$HOME/.notes}"/*(:t:r))
+
+    case $state in
+        subcmd)
+            local -a subcmds
+            subcmds=(
+                'edit:Create or edit the given page'
+                'rm:Remove the given page'
+                'sync:Synchronize notes'
+            )
+            _describe 'command' subcmds
+
+            compadd $pages
+            ;;
+        arg)
+            case $line[1] in
+                rm|edit) compadd $pages ;;
+            esac
+            ;;
+    esac
 }
 
-_ual "$1"
+_ual "$@"
