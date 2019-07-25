@@ -2,8 +2,4 @@ NOTE="${NOTES_PATH:-$HOME/.notes}"/$1.md
 
 mkdir -p $(dirname $NOTE)
 
-if [ ! -f "$NOTE" ]; then
-    echo "% $(echo $1 | tr '[:lower:]' '[:upper:]')(ual)\n\n" >> "$NOTE"
-fi
-
 ${EDITOR:-vi} "$NOTE"
