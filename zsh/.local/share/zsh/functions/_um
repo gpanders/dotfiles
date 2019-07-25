@@ -1,9 +1,0 @@
-#compdef um umedit
-
-_um () {
-    local state
-
-    _arguments '1:pages:("${NOTES_DIR:-$HOME/.local/share/man}"/*(:t:r))'
-}
-
-_um "$1"

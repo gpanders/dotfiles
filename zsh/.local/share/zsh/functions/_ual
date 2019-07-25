@@ -1,0 +1,9 @@
+#compdef ual ualedit
+
+_ual () {
+    local state
+
+    _arguments '1:pages:("${NOTES_DIR:-$HOME/.notes}"/*(:t:r))'
+}
+
+_ual "$1"

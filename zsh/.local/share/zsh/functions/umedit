@@ -1,8 +1,0 @@
-NOTE="${NOTES_PATH:-$HOME/.local/share/man}"/$1.md
-
-mkdir -p $(dirname $NOTE)
-
-if [ ! -f "$NOTE" ]; then
-    echo "% $(echo $1 | tr '[:lower:]' '[:upper:]')(um)\n\n" >> "$NOTE"
-fi
-${EDITOR:-vi} "$NOTE"

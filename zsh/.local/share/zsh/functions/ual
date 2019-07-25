@@ -1,0 +1,8 @@
+NOTE="${NOTES_PATH:-$HOME/.notes}"/$1.md
+
+if [ ! -f "$NOTE" ]; then
+    echo "No ual entry for $1" >&2
+    exit 1
+fi
+
+pandoc -s -f markdown -t man "$NOTE" | groff -T utf8 -man | less
