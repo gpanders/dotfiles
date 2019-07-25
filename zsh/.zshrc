@@ -13,6 +13,7 @@ if [ ! -f "${ZDOTDIR:-$HOME}"/.zplugins ]; then
     zsh-users/zsh-syntax-highlighting
     zsh-users/zsh-autosuggestions
     robbyrussell/oh-my-zsh path:plugins/fzf
+    robbyrussell/oh-my-zsh path:plugins/colored-man-pages
     sorin-ionescu/prezto path:modules/gnu-utility
     mafredri/zsh-async
     sindresorhus/pure
