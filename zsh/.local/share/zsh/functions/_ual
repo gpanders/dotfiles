@@ -7,24 +7,25 @@ _ual () {
         '1: :->subcmd' \
         '2: :->arg'
 
-    local -a pages
-    pages=("${NOTES_DIR:-$HOME/.notes}"/*(:t:r))
+    local -a notes
+    notes=("${NOTES_PATH:-$HOME/.notes}"/*(:t:r))
 
     case $state in
         subcmd)
             local -a subcmds
             subcmds=(
-                'edit:Create or edit the given page'
-                'rm:Remove the given page'
+                'edit:Create or edit the given note'
+                'rm:Remove the given note'
+                'ls:List all notes'
                 'sync:Synchronize notes'
             )
             _describe 'command' subcmds
 
-            compadd $pages
+            compadd $notes
             ;;
         arg)
             case $line[1] in
-                rm|edit) compadd $pages ;;
+                rm|edit) compadd $notes ;;
             esac
             ;;
     esac

@@ -3,13 +3,15 @@ if [ $# -lt 1 ]; then
     return
 fi
 
+NOTES="${NOTES_PATH:-$HOME/.notes}"
+
 case "$1" in
     edit)
         if [ $# -lt 2 ]; then
             echo "Which ual page do you want to edit?"
             return
         fi
-        NOTE="${NOTES_PATH:-$HOME/.notes}"/$2.md
+        NOTE="$NOTES"/$2.md
         mkdir -p $(dirname $NOTE)
         ${EDITOR:-vi} "$NOTE"
         ;;
@@ -18,20 +20,23 @@ case "$1" in
             echo "Which ual page do you want to remove?"
                 return
             fi
-            NOTE="${NOTES_PATH:-$HOME/.notes}"/$2.md
+            NOTE="$NOTES"/$2.md
             if [ ! -f "$NOTE" ]; then
                 echo "No ual entry for $1" >&2
                 return 1
             fi
             rm "$NOTE"
             ;;
+    ls)
+        print -rl -- "$NOTES"/*(:t:r)
+        ;;
     sync)
         echo -n "Syncing notes... "
-        (cd "${NOTES_DIR:-$HOME/.notes}" && git pull &>/dev/null && git add . && git commit -qv 2>/dev/null && git push &>/dev/null)
+        (cd "$NOTES" && git pull &>/dev/null && git add . && git commit -qv 2>/dev/null && git push &>/dev/null)
         echo "Done."
         ;;
     *)
-        NOTE="${NOTES_PATH:-$HOME/.notes}"/$1.md
+        NOTE="$NOTES"/$1.md
 
         if [ ! -f "$NOTE" ]; then
             echo "No ual entry for $1" >&2
