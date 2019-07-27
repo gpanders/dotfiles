@@ -45,6 +45,10 @@ let g:ale_cpp_clangtidy_checks = ['cppcoreguidelines-*']
 " VHDL
 let g:ale_vhdl_xvhdl_options = '--2008 --nolog'
 
+" Rust
+let g:ale_linters.rust = ['cargo', 'rls']
+let g:ale_rust_rls_toolchain = 'stable'
+
 let g:ale_fixers = {
       \ 'python': ['isort'],
       \ 'cpp': ['clang-format'],
