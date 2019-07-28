@@ -21,15 +21,15 @@ case "$1" in
     rm)
         if [ $# -lt 2 ]; then
             echo "Which ual page do you want to remove?"
-                return
-            fi
-            NOTE="$NOTES"/$2.md
-            if [ ! -f "$NOTE" ]; then
-                echo "No ual entry for $1" >&2
-                return 1
-            fi
-            rm "$NOTE"
-            ;;
+            return
+        fi
+        NOTE="$NOTES"/$2.md
+        if [ ! -f "$NOTE" ]; then
+            echo "No ual entry for $1" >&2
+            return 1
+        fi
+        rm "$NOTE"
+        ;;
     ls)
         for note in "$NOTES"/*; do echo "${${note##*/}%.*}"; done
         ;;
