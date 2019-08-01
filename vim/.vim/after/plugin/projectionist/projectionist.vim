@@ -16,9 +16,16 @@ endfunction
 
 function! s:activate()
   " Binary (on/off) settings
-  for opt in ['textwidth', 'shiftwidth', 'softtabstop', 'expandtab']
+  for opt in ['expandtab']
     for [root, value] in projectionist#query(opt)
-      execute 'setlocal ' . opt . '=' . value
+      execute 'setlocal' (!value ? 'no' : '') . opt
+    endfor
+  endfor
+
+  " Single value settings
+  for opt in ['textwidth', 'shiftwidth', 'softtabstop', 'tabstop']
+    for [root, value] in projectionist#query(opt)
+      execute 'setlocal' opt . '=' . value
     endfor
   endfor
 
@@ -28,7 +35,7 @@ function! s:activate()
       if type(value) ==# type([])
         let value = join(value, ',')
       endif
-      execute 'setlocal ' . opt . '^=' . value
+      execute 'setlocal' opt . '^=' . value
     endfor
   endfor
 endfunction
