@@ -1,12 +1,15 @@
 function! s:tagjump()
-  let view = winsaveview()
   let l = getline('.')
-  let pattern = matchstr(l, '^.\{-}\t/\zs.\{-}\ze/$')
+  let cmd = matchstr(l, '^[^\t]\+\t\zs[^\t]\+\ze;\?')
   wincmd w
-  call cursor(1, 1)
-  call search('\M' . pattern, 'c')
-  wincmd w
-  call winrestview(view)
+  let magic = &magic
+  set nomagic
+  call execute(cmd)
+  let &magic = magic
+endfunction
+
+function! s:unescape(cmd)
+  return substitute(a:cmd, '[^\\]\zs\\/', '/', 'g')
 endfunction
 
 function! taglist#open(...)
@@ -23,7 +26,7 @@ function! taglist#open(...)
 
   let maxtaglen = max(map(copy(tags), { _, val -> len(val.name) }))
   let text = map(tags, { _, val ->
-        \ '[' . val.kind . '] ' . val.name . "\t" . val.cmd })
+        \ '[' . val.kind . '] ' . val.name . "\t" . s:unescape(val.cmd) })
 
   " Syntax of current buffer
   let syn = &syntax
@@ -66,4 +69,5 @@ function! taglist#open(...)
   setlocal conceallevel=2
   setlocal concealcursor=nc
   setlocal nonumber
+  setlocal nowrap
 endfunction
