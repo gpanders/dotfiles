@@ -58,6 +58,6 @@ case "$1" in
             -M author="$AUTHOR" \
             -M section="$SECTION" \
             -M date="$DATE" \
-            "$NOTE" | groff -T utf8 -man | less -R
+            "$NOTE" | groff -T utf8 -man | less -is -+F -+X
         ;;
 esac
