@@ -12,8 +12,6 @@ if [ ! -f "${ZDOTDIR:-$HOME}"/.zplugins ]; then
   antibody bundle > "${ZDOTDIR:-$HOME}"/.zplugins << EOF
     zsh-users/zsh-syntax-highlighting
     zsh-users/zsh-autosuggestions
-    robbyrussell/oh-my-zsh path:plugins/fzf
-    robbyrussell/oh-my-zsh path:plugins/colored-man-pages
     sorin-ionescu/prezto path:modules/gnu-utility
     mafredri/zsh-async
     sindresorhus/pure
@@ -114,6 +112,7 @@ if (( $+commands[dircolors] )); then
 fi
 
 # Setup nvm
+# Use lazy loading since nvm takes so dang long to load
 if [ -s "$HOME"/.nvm ]; then
   export NVM_DIR="$HOME"/.nvm
   function nvm {
@@ -127,11 +126,6 @@ fi
 
 # Export GPG TTY
 export GPG_TTY=$(tty)
-
-# Configure fzf
-if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf ]; then
-  source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf
-fi
 
 # Source aliases
 if [ -f "${ZDOTDIR:-$HOME}"/.zaliases ]; then
@@ -155,3 +149,12 @@ export LESS="-F -g -i -M -R -S -w -X -z-4"
 if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
+
+# Colorize man page output
+export LESS_TERMCAP_mb=$(printf "\e[1;31m")
+export LESS_TERMCAP_md=$(printf "\e[1;31m")
+export LESS_TERMCAP_me=$(printf "\e[0m")
+export LESS_TERMCAP_se=$(printf "\e[0m")
+export LESS_TERMCAP_so=$(printf "\e[1;44;33m")
+export LESS_TERMCAP_ue=$(printf "\e[0m")
+export LESS_TERMCAP_us=$(printf "\e[1;32m")
