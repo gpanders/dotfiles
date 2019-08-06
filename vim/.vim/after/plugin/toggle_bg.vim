@@ -7,6 +7,6 @@ if !exists('g:loaded_toggle_bg')
 endif
 
 let g:toggle_bg_dark = 'base16-eighties'
-let g:toggle_bg_light = 'base16-tomorrow'
+let g:toggle_bg_light = 'base16-solarized-light'
 
 nnoremap <silent> <F5> :ToggleBg<CR>
