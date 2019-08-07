@@ -3,7 +3,6 @@
 
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
-setlocal tabstop=99
 setlocal nomodifiable
 
 " Jump to tag on current line
@@ -12,4 +11,4 @@ nnoremap <buffer> <CR> 0:tag <C-R><C-W><CR>
 " Open tag on current line in preview window
 nnoremap <buffer> p 0<C-W>}
 
-let b:undo_ftplugin .= '|setl ts< ma<|unm <buffer> <CR>'
+let b:undo_ftplugin .= '|setl ma<|nun <buffer> <CR>|nun <buffer> p'
