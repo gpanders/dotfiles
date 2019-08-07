@@ -1,10 +1,6 @@
 " html indent plugin
 " Author: Greg Anders <greg@gpanders.com>
 
-if &filetype !=# 'html'
-  finish
-endif
-
 let b:undo_indent = get(b:, 'undo_indent', '')
 
 setlocal shiftwidth=2
