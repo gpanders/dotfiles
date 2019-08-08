@@ -30,7 +30,7 @@ function! s:activate()
   endfor
 
   " List settings
-  for opt in ['suffixes', 'wildignore']
+  for opt in ['suffixes', 'wildignore', 'tags']
     for [root, value] in projectionist#query(opt)
       if type(value) ==# type([])
         let value = join(value, ',')
