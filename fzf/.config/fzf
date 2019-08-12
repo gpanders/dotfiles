@@ -23,14 +23,20 @@ if [ -n "$FZF_BASE" ]; then
         export PATH="$FZF_BASE/bin:$PATH"
     fi
 
+    if [ ! -d "${FZF_BASE}/shell" ]; then
+        FZF_SHELL="$FZF_BASE"
+    else
+        FZF_SHELL="$FZF_BASE"/shell
+    fi
+
     # Set up completion and key bindings
     if [[ $- =~ i ]]; then
         if [ -n "$BASH_VERSION" ]; then
-            source "$FZF_BASE"/shell/completion.bash 2>/dev/null
-            source "$FZF_BASE"/shell/key-bindings.bash 2>/dev/null
+            source "$FZF_SHELL"/completion.bash 2>/dev/null
+            source "$FZF_SHELL"/key-bindings.bash 2>/dev/null
         elif [ -n "$ZSH_VERSION" ]; then
-            source "$FZF_BASE"/shell/completion.zsh 2>/dev/null
-            source "$FZF_BASE"/shell/key-bindings.zsh 2>/dev/null
+            source "$FZF_SHELL"/completion.zsh 2>/dev/null
+            source "$FZF_SHELL"/key-bindings.zsh 2>/dev/null
         fi
     fi
 
