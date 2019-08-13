@@ -88,4 +88,5 @@ function! StatusLine(sep)
 endfunction
 
 set laststatus=2
+set noshowmode
 set statusline=%!StatusLine('/')

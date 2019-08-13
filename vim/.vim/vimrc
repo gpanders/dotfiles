@@ -65,7 +65,6 @@ set pumheight=10
 set scrolloff=2
 set shiftwidth=4
 set showmatch
-set noshowmode
 set sidescrolloff=5
 set smartcase
 set softtabstop=4
