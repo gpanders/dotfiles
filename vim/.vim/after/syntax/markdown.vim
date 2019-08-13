@@ -5,3 +5,7 @@ syn region markdownCodeBlock start="\n\(    \|\t\)" end="\v^((\t|\s{4})@!|$)" co
 syn region markdownLinkText matchgroup=markdownLinkTextDelimiter start="!\=\[\%(\_[^]]*]\%( \=[[(]\)\)\@=" end="\]\%( \=[[(]\)\@=" nextgroup=markdownLink,markdownId skipwhite contains=@markdownInline,markdownLineStart concealends
 syn region markdownLink matchgroup=markdownLinkDelimiter start="(" end=")" contains=markdownUrl keepend contained conceal
 syn region markdownId matchgroup=markdownIdDelimiter start="\[" end="\]" keepend contained conceal
+
+" https://github.com/tpope/vim-markdown/pull/141/
+hi def link markdownLinkDelimiter     Delimiter
+hi def link markdownLinkTextDelimiter Delimiter
