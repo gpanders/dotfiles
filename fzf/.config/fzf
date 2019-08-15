@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Find fzf installation
 if [ -z "$FZF_BASE" ]; then
@@ -8,7 +8,7 @@ if [ -z "$FZF_BASE" ]; then
         /usr/local/opt/fzf
         /usr/share/fzf
     )
-    for dir in $fzf_dirs; do
+    for dir in "${fzf_dirs[@]}"; do
         if [ -d "$dir" ]; then
             FZF_BASE="$dir"
             break
@@ -17,7 +17,6 @@ if [ -z "$FZF_BASE" ]; then
 fi
 
 if [ -n "$FZF_BASE" ]; then
-
     # Add fzf to path if it's not already there
     if ! command -v fzf >/dev/null 2>&1; then
         export PATH="$FZF_BASE/bin:$PATH"
