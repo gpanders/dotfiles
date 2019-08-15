@@ -21,18 +21,6 @@ endif
 
 let b:undo_ftplugin .= '|setl cms< inc< path< tw< com<'
 
-" Make [[, ]], etc. work even when {'s are not in the first column
-noremap <buffer> [[ ?{<CR>w99[{
-noremap <buffer> ][ /}<CR>b99]}
-noremap <buffer> ]] j0[[%/{<CR>
-noremap <buffer> [] k$][%?}<CR>
-
-let b:undo_ftplugin = b:undo_ftplugin
-      \ . '|nun <buffer> [['
-      \ . '|nun <buffer> ]['
-      \ . '|nun <buffer> ]]'
-      \ . '|nun <buffer> []'
-
 " Use improved :Man command as keywordprg
 if exists(':Man') == 2
   setlocal keywordprg=:Man

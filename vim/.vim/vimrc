@@ -311,6 +311,12 @@ let s:alphabet = join(map(
 execute 'nnoremap <Space>M :marks ' . s:alphabet . '<CR>'
 unlet s:alphabet
 
+" Allow [[ and friends to work when opening brace is not in the first column
+noremap <silent> [[ ?{<CR>w99[{:let @/ = ''<CR>
+noremap <silent> ][ /}<CR>b99]}:let @/ = ''<CR>
+noremap <silent> ]] j0?{<CR>w99[{%/{<CR>:let @/ = ''<CR>
+noremap <silent> [] k$/}<CR>b99]}%?}<CR>:let @/ = ''<CR>
+
 " }}}
 
 " Visual {{{
