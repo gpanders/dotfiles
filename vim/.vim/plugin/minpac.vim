@@ -3,6 +3,7 @@ function! s:PackInit()
 
   if exists('*minpac#init')
     call minpac#init()
+    call minpac#add('k-takata/minpac', {'type': 'opt'})
 
     call minpac#add('gpanders/vim-man', {'type': 'opt'})
     call minpac#add('gpanders/vim-oldfiles')
