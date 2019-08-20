@@ -79,6 +79,10 @@ if has('mouse')
   set mouse=a
 endif
 
+if has('folding')
+  set foldlevelstart=99
+endif
+
 " Set options which are defaults in nvim
 if !has('nvim')
   set autoindent
