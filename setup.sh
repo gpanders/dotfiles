@@ -176,7 +176,7 @@ for mod in $ARGS; do
         git config --global alias.t tag
 
         # Alias for just the dotfiles repo
-        git config alias.update "!git stash && git fetch origin master:master && git rebase master && git stash pop"
+        git config alias.update "!git fetch origin master:master && git rebase --autostash master"
 
         # Set sendmail settings for git
         git config --global sendemail.smtpEncryption tls
