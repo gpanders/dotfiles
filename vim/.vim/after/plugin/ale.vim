@@ -14,7 +14,7 @@ if !exists('g:ale_linters')
   let g:ale_linters = {}
 endif
 
-" Python
+" Python {{{
 let g:ale_linters.python = ['pylint', 'flake8', 'pyls']
 let g:ale_python_pylint_change_directory = 0
 let g:ale_python_flake8_change_directory = 0
@@ -27,8 +27,9 @@ let g:ale_python_pyls_config = {
       \     },
       \   },
       \ }}
+" }}}
 
-" C/C++
+" C/C++ {{{
 let g:ale_linters.c = ['ccls', 'cquery', 'clangtidy']
 let g:ale_linters.cpp = g:ale_linters.c
 
@@ -41,11 +42,13 @@ let g:ale_c_ccls_init_options = {
 
 let g:ale_cpp_ccls_init_options = g:ale_c_ccls_init_options
 let g:ale_cpp_clangtidy_checks = ['cppcoreguidelines-*']
+" }}}
 
-" VHDL
+" VHDL {{{
 let g:ale_vhdl_xvhdl_options = '--2008 --nolog'
+" }}}
 
-" Rust
+" Rust {{{
 let g:ale_linters.rust = ['cargo', 'rls']
 let g:ale_rust_rls_toolchain = 'stable'
 
@@ -55,12 +58,19 @@ let g:ale_fixers = {
       \ 'c': ['clang-format'],
       \ '*': ['remove_trailing_lines', 'trim_whitespace']
       \}
+" }}}
 
-imap <C-Space> <Plug>(ale_complete)
 nmap <Space><C-F> <Plug>(ale_fix)
 nmap <Bslash>gd <Plug>(ale_go_to_definition)
 nmap <C-W><Bslash>d <Plug>(ale_go_to_definition_in_split)
 nmap <Bslash>gr <Plug>(ale_find_references)
+
+if get(g:, 'ale_completion_enabled')
+  " See :h ale-completion-completeopt-bug
+  set completeopt=menu,menuone,preview,noselect,noinsert
+  set omnifunc=ale#completion#OmniFunc
+  imap <C-Space> <Plug>(ale_complete)
+endif
 
 function! s:toggle(...)
   if !&modifiable || &readonly
