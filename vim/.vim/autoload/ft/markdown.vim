@@ -1,15 +1,14 @@
 function! ft#markdown#eval()
   let view = winsaveview()
-  let [line, col] = [line('.'), col('.')]
-  let start = search('^\s*`\{3,}\%(\S\+\)\=\s*$', 'bnW')
+  let line = line('.')
+  let start = search('^\s*[`~]\{3,}\S*\s*$', 'bnW')
   if !start
     return
   endif
 
   call cursor(start, 1)
-  let ticks = matchstr(getline(start), '`\{3,}')
-  let lang = matchstr(getline(start), '`\{3,}\zs\S\+')
-  let end = search('^\s*' . ticks . '\s*$', 'nW')
+  let [fence, lang] = matchlist(getline(start), '\([`~]\{3,}\)\(\S\+\)\?')[1:2]
+  let end = search('^\s*' . fence . '\s*$', 'nW')
   let langidx = index(map(copy(g:markdown_interp_languages), 'split(v:val, "=")[0]'), lang)
 
   if end < line || langidx < 0
