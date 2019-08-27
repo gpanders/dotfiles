@@ -1,5 +1,3 @@
-set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
-
 if not functions -q fisher
     curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
     fish -c fisher
