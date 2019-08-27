@@ -5,6 +5,6 @@ if status is-login
     end
 
     if command -sq pyenv
-        source (pyenv init - fish | psub)
+        source (pyenv init - --no-rehash fish | psub)
     end
 end
