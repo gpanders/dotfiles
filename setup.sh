@@ -44,6 +44,16 @@ if [ $# -eq 0 ]; then
         fi
     fi
 
+    if hash fish 2>/dev/null; then
+        ARGS="$ARGS fish"
+    else
+        read -r -p "Install fish? [y/N] " ans
+        if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+            install fish
+            ARGS="$ARGS fish"
+        fi
+    fi
+
     if hash i3 2>/dev/null; then
         ARGS="$ARGS i3 conky"
     else
