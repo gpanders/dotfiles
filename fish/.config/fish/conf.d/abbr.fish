@@ -1,5 +1,5 @@
 # Define abbreviations
-if status is-login
-    abbr -a -U g git
-    abbr -a -U vi vim
+if status is-interactive
+    abbr --add --global g git
+    abbr --add --global vi vim
 end
