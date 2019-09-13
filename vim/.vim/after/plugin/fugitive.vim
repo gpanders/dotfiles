@@ -7,3 +7,5 @@ if !get(g:, 'loaded_fugitive', 0)
 endif
 
 autocmd BufReadPost fugitive://* setlocal bufhidden=delete
+
+autocmd User Fugitive setlocal grepprg=git\ grep\ --line-number\ --column\ -I
