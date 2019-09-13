@@ -65,6 +65,10 @@ setopt CORRECT
 # Don't beep on errors in ZLE
 setopt NO_BEEP
 
+setopt NO_COMPLETE_ALIASES
+
+setopt SHARE_HISTORY
+
 # Split words on slashes (useful for paths)
 WORDCHARS=${WORDCHARS/\/}
 
