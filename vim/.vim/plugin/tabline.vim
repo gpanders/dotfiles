@@ -16,7 +16,7 @@ function! TabLine()
     let s .= '%' . (i + 1) . 'T'
 
     " Set the tab label
-    let s .= ' ' . pathshorten(fnamemodify(getcwd(-1, i + 1), ':~:.')) . ' '
+    let s .= ' ' . pathshorten(fnamemodify(getcwd(1, i + 1), ':~:.')) . ' '
   endfor
 
   " After the last tab fill with TabLineFill and reset tab page nr
