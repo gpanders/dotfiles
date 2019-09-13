@@ -26,9 +26,6 @@ function! s:PackInit()
     " Better directory browser
     call minpac#add('justinmk/vim-dirvish')
 
-    " Like f or t but uses 2 characters, e.g. ssn to jump to 'sneak'
-    call minpac#add('justinmk/vim-sneak')
-
     " More, better, and up-to-date language packs (ftplugins, syntax files, etc)
     call minpac#add('sheerun/vim-polyglot')
 
@@ -40,9 +37,6 @@ function! s:PackInit()
 
     " Show change signs in the gutter for git files
     call minpac#add('mhinz/vim-signify')
-
-    " Auto generate tags files
-    call minpac#add('ludovicchabant/vim-gutentags')
 
     " Make working with REPLs so much better
     call minpac#add('jpalardy/vim-slime')
