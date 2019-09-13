@@ -4,7 +4,8 @@
 " Set comment string
 setlocal commentstring=//%s
 
-" Set include pattern
+" Set include and define patterns
+setlocal define=^\\s*#\\s*define
 setlocal include=^\\s*#\\s*include
 
 " Keep lines at 80 characters or fewer
@@ -16,10 +17,14 @@ setlocal comments+=:///,://
 
 " Include headers on Unix
 if has('unix')
-  setlocal path=.,/usr/local/include,/usr/include,,
+  setlocal path^=/usr/local/include,/usr/include
 endif
 
-let b:undo_ftplugin .= '|setl cms< inc< path< tw< com<'
+" Ensure directory of current file is always first on the path
+setlocal path-=.
+setlocal path^=.
+
+let b:undo_ftplugin .= '|setl cms< def< inc< path< tw< com<'
 
 " Use improved :Man command as keywordprg
 if exists(':Man') == 2

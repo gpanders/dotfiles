@@ -30,7 +30,7 @@ let g:ale_python_pyls_config = {
 " }}}
 
 " C/C++ {{{
-let g:ale_linters.c = ['ccls', 'cquery', 'clangtidy']
+let g:ale_linters.c = ['gcc', 'clang', 'ccls', 'cquery', 'clangtidy']
 let g:ale_linters.cpp = g:ale_linters.c
 
 let g:ale_c_parse_makefile = 1
@@ -42,6 +42,7 @@ let g:ale_c_ccls_init_options = {
 
 let g:ale_cpp_ccls_init_options = g:ale_c_ccls_init_options
 let g:ale_cpp_clangtidy_checks = ['cppcoreguidelines-*']
+
 " }}}
 
 " VHDL {{{

@@ -49,41 +49,6 @@ highlight link TrailingWhitespace Error
 " }}}
 
 " Settings {{{
-" Press K to open help docs for option under the cursor
-set backup
-set completeopt^=menuone
-set confirm
-set expandtab
-set hidden
-set ignorecase
-set include=
-set lazyredraw
-set linebreak
-set matchpairs+=<:>
-set matchtime=2
-set pumheight=10
-set scrolloff=2
-set shell=/bin/sh
-set shiftwidth=4
-set showmatch
-set sidescrolloff=5
-set smartcase
-set softtabstop=4
-set splitbelow
-set splitright
-set nostartofline
-set noswapfile
-silent! set tagcase=smart
-set virtualedit+=block
-
-if has('mouse')
-  set mouse=a
-endif
-
-if has('folding')
-  set foldlevelstart=99
-endif
-
 " Set options which are defaults in nvim
 if !has('nvim')
   set autoindent
@@ -129,6 +94,47 @@ if !has('nvim')
   let &t_EI = "\e[2 q"
 endif
 
+set backup
+set completeopt^=menuone
+set confirm
+set define=
+set expandtab
+set hidden
+set ignorecase
+set include=
+set lazyredraw
+set linebreak
+set matchpairs+=<:>
+set matchtime=2
+set pumheight=10
+set scrolloff=2
+set shell=/bin/sh
+set shiftwidth=4
+set showmatch
+set sidescrolloff=5
+set smartcase
+set softtabstop=4
+set splitbelow
+set splitright
+set nostartofline
+set noswapfile
+silent! set tagcase=match
+set tags^=./.git/tags;
+set virtualedit+=block
+set wildcharm=<C-Z>
+set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
+set wildignore+=tags
+set wildignorecase
+set wildmode=longest:full,full
+
+if has('mouse')
+  set mouse=a
+endif
+
+if has('folding')
+  set foldlevelstart=99
+endif
+
 " Neovim specific settings
 if has('nvim')
   set inccommand=nosplit
@@ -149,18 +155,21 @@ silent! set breakindent
 " Specify whitespace chars
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 
-" Let C/C++ filetypes set this
-set path-=/usr/include
+" Set default path to a simple value
+set path=.,,
 
 " Use ripgrep or ag as grepprg if available
+set grepformat^=%f:%l:%c:%m
 if executable('rg')
   " Use rg over grep
   set grepprg=rg\ --vimgrep\ --smart-case
-  set grepformat^=%f:%l:%c:%m
 elseif executable('ag')
   " Use ag over grep
   set grepprg=ag\ --vimgrep\ --smart-case
-  set grepformat^=%f:%l:%c:%m
+elseif executable('grep')
+  set grepprg=grep\ --line-number\ --recursive\ -I\ $*\ *
+else
+  set grepprg=internal
 endif
 
 " GUI settings
@@ -172,26 +181,19 @@ if has('gui_running')
   endif
 endif
 
-" Wild menu
-set wildcharm=<C-Z>
-set wildmode=longest:full,full
-set wildignorecase
-set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
-set wildignore+=tags
-
-" Keep temporary files in a single location (vim only)
+" Keep temporary files in a single location (nvim does this by default)
 if !has('nvim')
-  if exists('$XDG_CACHE_HOME')
-    let s:cachedir = $XDG_CACHE_HOME . '/vim'
+  if exists('$XDG_DATA_HOME')
+    let s:datadir = $XDG_DATA_HOME . '/vim'
   elseif has('unix')
-    let s:cachedir = $HOME . '/.cache/vim'
+    let s:datadir = $HOME . '/.local/share/vim'
   else
-    let s:cachedir = $HOME . '/vimfiles/cache'
+    let s:datadir = $HOME . '/vimfiles/cache'
   endif
 
-  let &backupdir = s:cachedir . '/backup//' . ',' . &backupdir
-  let &undodir = s:cachedir . '/undo//' . ',' . &undodir
-  let &directory = s:cachedir . '/swap//' . ',' . &directory
+  let &backupdir = s:datadir . '/backup//' . ',' . &backupdir
+  let &undodir = s:datadir . '/undo//' . ',' . &undodir
+  let &directory = s:datadir . '/swap//' . ',' . &directory
 
   " Create directories if they don't exist
   if exists('*mkdir')
@@ -202,6 +204,10 @@ if !has('nvim')
       endif
     endfor
   endif
+endif
+
+if filereadable($VIMHOME . '/tags')
+  let &tags .= ',' . $VIMHOME . '/tags'
 endif
 
 " Set dictionary if it exists
@@ -246,7 +252,7 @@ inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
 
 " Normal {{{
 
-" Write file with ,w
+" Write file with <Space>w
 nnoremap <Space>w :w<CR>
 
 " Navigate through wrapped lines individually
@@ -263,9 +269,6 @@ endfor
 
 " List buffers and put :b on the command line
 noremap <Space>b :buffers<CR>:b<Space>
-
-" Map ,, to ,
-" nnoremap ,, ,
 
 " Find files in path
 nnoremap <Space>f :find *
@@ -289,8 +292,8 @@ nnoremap <Space>e :e %:p:h/<C-Z>
 " Budget fuzzy file finder
 nnoremap <C-P> :e **/*
 
-" <Bslash>ev opens .vimrc in new window
-nnoremap <Bslash>ev :<C-U>tabe $MYVIMRC<CR>:tcd %:h<CR>
+" <Bslash>ev opens .vimrc in new tab
+nnoremap <Bslash>ev :<C-U>tabe $MYVIMRC<CR>:lcd %:h<CR>
 
 " <Bslash>sv sources .vimrc
 nnoremap <Bslash>sv :<C-U>source $MYVIMRC<CR>
