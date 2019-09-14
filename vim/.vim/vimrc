@@ -281,10 +281,8 @@ nnoremap <Space>} :ptjump /
 nnoremap <Space>t :tags<CR>
 
 " Open quickfix list
-nnoremap <Space>q :copen<CR>
-
-" Open location list
-nnoremap <Space>l :lopen<CR>
+nnoremap <silent> <Space>q :<C-U>call qf#toggle(0)<CR>
+nnoremap <silent> <Space>l :<C-U>call qf#toggle(1)<CR>
 
 " Find files in current buffer's directory
 nnoremap <Space>e :e %:p:h/<C-Z>
