@@ -270,9 +270,10 @@ noremap Q gqap
 nnoremap <Space>w :w<CR>
 
 " Buffer shortcuts
-for i in range(1, 10)
-  exe 'nnoremap <Space>' . (i % 10) ':b' . i . '<CR>'
+for s:i in range(1, 10)
+  exe 'nnoremap <Space>' . (s:i % 10) ':<C-U>b' . s:i . '<CR>'
 endfor
+unlet s:i
 
 " List buffers and put :b on the command line
 noremap <Space>b :buffers<CR>:b<Space>
@@ -386,7 +387,7 @@ cnoremap <C-X><C-E> <C-F>
 
 " Command {{{
 " Sudo save
-cnoreabbrev w!! w !sudo tee > /dev/null %
+cnoreabbrev w!! w !sudo tee % >/dev/null
 " }}}
 
 " }}}
@@ -400,7 +401,9 @@ command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
 " Edit ftplugin file for current filetype
 command! EditFtplugin
       \ if empty(&ft) |
-      \   echohl Error | echo 'Error: This buffer has no filetype' |
+      \   echohl Error |
+      \     echo 'Error: This buffer has no filetype' |
+      \   echohl None |
       \ else |
       \   execute 'tabe ' . $VIMHOME . '/after/ftplugin/' . &ft . '.vim' |
       \ endif
@@ -416,6 +419,7 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
 " Set marks by filetype for quick navigation
 autocmd BufLeave *.h mark H
 autocmd BufLeave *.{c,cc,cpp} mark C
+autocmd BufLeave *.py mark P
 
 " Start insert immediately when terminal opens
 if exists('##TermOpen')
