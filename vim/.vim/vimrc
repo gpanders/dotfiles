@@ -38,19 +38,17 @@ autocmd vimrc ColorScheme * highlight Comment gui=italic cterm=italic
 " Load colorscheme
 silent! colorscheme base16-eighties
 
-" If no other colorscheme, use vim default
-if !exists('g:colors_name')
-  set background=dark
-endif
-
 " Highlight trailing whitespace
 highlight link TrailingWhitespace Error
 
 " }}}
 
 " Settings {{{
-" Set options which are defaults in nvim
+
+" Defaults {{{
 if !has('nvim')
+  " The following settings are the defaults in nvim. Set them also in vim for
+  " a consistent experience between the two
   set autoindent
   set autoread
   set backspace=indent,eol,start  " Allow vim to delete whitespace
@@ -93,6 +91,7 @@ if !has('nvim')
   " Block in normal mode
   let &t_EI = "\e[2 q"
 endif
+" }}}
 
 set backup
 set completeopt^=menuone
@@ -158,7 +157,7 @@ set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 " Set default path to a simple value
 set path=.,,
 
-" Use ripgrep or ag as grepprg if available
+" Use a better grepprg if available
 set grepformat^=%f:%l:%c:%m
 if executable('rg')
   " Use rg over grep
@@ -231,6 +230,7 @@ inoremap jk <Esc>l
 
 " Set a new 'undo point' before undoing entire line
 inoremap <C-U> <C-G>u<C-U>
+inoremap <CR> <C-]><C-G>u<CR>
 
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
@@ -252,15 +252,21 @@ inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
 
 " Normal {{{
 
-" Write file with <Space>w
-nnoremap <Space>w :w<CR>
+" Make Y work like D and C
+nnoremap Y y$
+
+" Switch to previous buffer
+nnoremap <BS> <C-^>
 
 " Navigate through wrapped lines individually
-nnoremap <silent> j gj
-nnoremap <silent> k gk
+nnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
 
 " Map Q to gq
-noremap Q gq
+noremap Q gqap
+
+" Write file with <Space>w
+nnoremap <Space>w :w<CR>
 
 " Buffer shortcuts
 for i in range(1, 10)
@@ -331,15 +337,24 @@ xnoremap # y?\V<C-R>"<CR>
 " }}}
 
 " Terminal {{{
-if exists(':tmap') == 2
-  tnoremap <silent> <C-W> <C-\><C-N><C-W>
-  tnoremap <C-W><C-W> <C-W>
+
+" Make neovim terminal behave like the vim terminal
+if has('nvim')
+  tnoremap <C-W><C-W> <C-\><C-N><C-W><C-W>
+  tnoremap <C-W>: <C-\><C-N>:
+  tnoremap <C-W>. <C-W>
+  tnoremap <C-W><C-\> <C-\>
+  tnoremap <C-W>N <C-\><C-N>
+  tnoremap <expr> <C-W>" '<C-\><C-N>"' . nr2char(getchar()) . 'pi'
+  tnoremap <C-W><C-C> <C-D>
 endif
 " }}}
 
 " Command {{{
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
+
+cnoremap <C-X><C-E> <C-F>
 " }}}
 
 " }}}
