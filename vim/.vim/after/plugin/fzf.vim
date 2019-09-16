@@ -2,12 +2,12 @@
 " Author: Greg Anders <greg@gpanders.com>
 
 " Check for local installation if not already loaded
-if !get(g:, 'loaded_fzf', 0) && isdirectory($HOME . '/.fzf')
+if !get(g:, 'loaded_fzf') && isdirectory($HOME . '/.fzf')
   silent! source ~/.fzf/plugin/fzf.vim
 endif
 
 " If fzf is still not found, give up
-if !get(g:, 'loaded_fzf', 0)
+if !get(g:, 'loaded_fzf')
   finish
 endif
 

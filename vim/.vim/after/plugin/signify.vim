@@ -2,7 +2,7 @@
 " Author: Greg Anders <greg@gpanders.com>
 " Date: 2019-05-30
 
-if !get(g:, 'loaded_signify', 0)
+if !get(g:, 'loaded_signify')
   finish
 endif
 

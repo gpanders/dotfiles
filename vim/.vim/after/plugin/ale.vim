@@ -6,7 +6,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-if !get(g:, 'loaded_ale', 0)
+if !get(g:, 'loaded_ale')
   finish
 endif
 

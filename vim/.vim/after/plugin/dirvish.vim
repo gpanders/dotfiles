@@ -2,7 +2,7 @@
 " Author: Greg Anders <greg@gpanders.com>
 " Date: 2018-12-06
 
-if !get(g:, 'loaded_dirvish', 0)
+if !get(g:, 'loaded_dirvish')
   unlet g:loaded_netrwPlugin
   runtime plugin/netrwPlugin.vim
   finish
