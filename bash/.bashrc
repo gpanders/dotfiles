@@ -62,23 +62,20 @@ if command -v dircolors >/dev/null 2>&1; then
     else
         eval "$(dircolors -b)"
     fi
-
-    if [[ "$OSTYPE" == linux-gnu ]]; then
-        alias ls="ls --color=auto"
-        alias grep="grep --color=auto"
-        alias egrep="egrep --color=auto"
-        alias fgrep="fgrep --color=auto"
-    fi
-
 fi
 
 if [[ "$OSTYPE" == darwin* ]]; then
     export LSCOLORS="ExGxcxdxCxegedabagacad"
-    export CLICOLOR=1
+    alias ls="ls -G"
+elif [[ "$OSTYPE" == linux-gnu ]]; then
+    alias ls="ls --color=auto"
 fi
+alias grep="grep --color=auto"
+alias egrep="egrep --color=auto"
+alias fgrep="fgrep --color=auto"
 
 # colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -100,19 +97,6 @@ fi
 # enable fzf
 if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf ]; then
     source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf
-fi
-
-# configure pyenv
-if [ -d "$HOME/.pyenv" ]; then
-    export PYENV_ROOT="$HOME/.pyenv"
-fi
-
-if [ -n "$PYENV_ROOT" ]; then
-    export PATH="$PYENV_ROOT/bin:$PATH"
-
-    if command -v pyenv 1>/dev/null 2>&1; then
-        eval "$(pyenv init -)"
-    fi
 fi
 
 export LESS="-g -M -R -W -X -z-4"
