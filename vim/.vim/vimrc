@@ -407,9 +407,6 @@ endif
 " Create syntax group for trailing whitespace in each new buffer
 autocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
 
-" Close preview window
-autocmd CompleteDone * if !pumvisible() | pclose | endif
-
 " Enable omnicompletion from syntax if no other option available
 " See :h ft-syntax-omni
 if exists('+omnifunc')
