@@ -1,4 +1,4 @@
-if not set -q fish_user_colors
+if not set -q _fish_user_colors
     set -U fish_color_command green
     set -U fish_color_comment yellow
     set -U fish_color_error red --bold
@@ -15,5 +15,5 @@ if not set -q fish_user_colors
     set -U fish_pager_color_completion normal
     set -U fish_pager_color_description yellow
 
-    set -U fish_user_colors 1
+    set -U _fish_user_colors 1
 end
