@@ -2,7 +2,20 @@
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
 " gz opens a split window with a python shell
-nmap <buffer> gz <Plug>(PytermOpen)
+if !exists('g:pyterm_cmd')
+  for s:cmd in ['ipython', 'python3', 'python']
+    if executable(s:cmd)
+      let g:pyterm_cmd = s:cmd
+      break
+    endif
+  endfor
+  unlet s:cmd
+endif
+
+if exists('g:pyterm_cmd')
+  nnoremap <silent> <buffer> gz :<C-U>call easyterm#open(g:pyterm_cmd)<CR>
+  let b:undo_ftplugin .= '|nun <buffer> gz'
+endif
 
 " Set textwidth to 88 to mimic black
 setlocal textwidth=88
@@ -17,8 +30,7 @@ setlocal foldnestmax=2
 let b:undo_ftplugin .= '|setl tw< fo< fdm< fdn<'
 
 " Try to infer python version from shebang
-let s:line1 = getline(1)
-let s:python = matchstr(s:line1, 'python\([23]\)\?')
+let s:python = matchstr(getline(1), '^#!.*\zspython\([23]\)\?')
 
 " Populate path from python's sys.path
 call ft#python#set_path(s:python)

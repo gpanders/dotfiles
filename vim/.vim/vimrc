@@ -96,6 +96,7 @@ endif
 set backup
 set completeopt^=menuone
 set confirm
+set cursorline
 set define=
 set expandtab
 set hidden
@@ -340,7 +341,7 @@ xnoremap # y?\V<C-R>"<CR>
 
 " Make neovim terminal behave like the vim terminal
 if has('nvim')
-  tnoremap <C-W><C-W> <C-\><C-N><C-W><C-W>
+  tnoremap <C-W> <C-\><C-N><C-W>
   tnoremap <C-W>: <C-\><C-N>:
   tnoremap <C-W>. <C-W>
   tnoremap <C-W><C-\> <C-\>

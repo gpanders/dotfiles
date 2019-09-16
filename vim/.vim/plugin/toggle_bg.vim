@@ -7,25 +7,4 @@ if exists('g:loaded_toggle_bg') || !(has('termguicolors') || has('gui'))
 endif
 let g:loaded_toggle_bg = 1
 
-function! s:toggle_bg()
-  if exists('g:toggle_bg_dark') && exists('g:toggle_bg_light')
-    if !&termguicolors
-      set termguicolors
-    endif
-
-    if g:colors_name ==# g:toggle_bg_dark
-      execute 'colorscheme' g:toggle_bg_light
-    else
-      execute 'colorscheme' g:toggle_bg_dark
-    endif
-  else
-    " If no colorschemes are defined then just toggle the bg setting
-    if &bg ==# 'dark'
-      set bg=light
-    else
-      set bg=dark
-    endif
-  endif
-endfunction
-
-command! -nargs=0 ToggleBg call s:toggle_bg()
+command! -nargs=0 ToggleBg call toggle_bg#toggle()

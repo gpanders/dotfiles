@@ -2,7 +2,7 @@
 " Author: Greg Anders <greg@gpanders.com>
 " Date: 2018-12-03
 
-if !get(g:, 'loaded_gutentags', 0)
+if !get(g:, 'loaded_gutentags')
   finish
 endif
 

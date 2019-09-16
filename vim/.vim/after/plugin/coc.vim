@@ -2,7 +2,7 @@
 " Author: Greg Anders <greg@gpanders.com>
 " Date: 2019-01-04
 
-if !get(g:, 'did_coc_loaded', 0) || !has('nvim')
+if !get(g:, 'did_coc_loaded') || !has('nvim')
   finish
 endif
 
