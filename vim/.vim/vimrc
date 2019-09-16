@@ -330,6 +330,28 @@ noremap <silent> ][ /}<CR>b99]}:let @/ = ''<CR>
 noremap <silent> ]] j0?{<CR>w99[{%/{<CR>:let @/ = ''<CR>
 noremap <silent> [] k$/}<CR>b99]}%?}<CR>:let @/ = ''<CR>
 
+for s:ch in ['a', 'b', 'l', 'q', 't']
+  exe 'nnoremap <expr> [' . s:ch . ' bracket#left(''' . s:ch . ''')'
+  exe 'nnoremap <expr> [' . toupper(s:ch) . ' bracket#left(''' . toupper(s:ch) . ''')'
+  exe 'nnoremap <expr> ]' . s:ch . ' bracket#right(''' . s:ch . ''')'
+  exe 'nnoremap <expr> ]' . toupper(s:ch) . ' bracket#right(''' . toupper(s:ch) . ''')'
+endfor
+unlet s:ch
+
+nnoremap [e :.move --<CR>
+nnoremap ]e :.move +<CR>
+
+nnoremap [<Space> :<C-U>put! =repeat(nr2char(10), v:count1)<CR><CR>:']+1<CR>
+nnoremap ]<Space> :<C-U>put =repeat(nr2char(10), v:count1)<CR><CR>:'[-1<CR>
+
+nnoremap yon :<C-U>setlocal number!<CR>
+nnoremap yor :<C-U>setlocal relativenumber!<CR>
+nnoremap yol :<C-U>setlocal list!<CR>
+nnoremap yox :<C-U>setlocal cursorline! cursorcolumn!<CR>
+nnoremap yo- :<C-U>setlocal cursorline!<CR>
+nnoremap yo<Bar> :<C-U>setlocal cursorcolumn!<CR>
+nnoremap yod :<C-U>if &diff<Bar>diffoff<Bar>else<Bar>diffthis<Bar>endif<CR>
+
 " }}}
 
 " Visual {{{
