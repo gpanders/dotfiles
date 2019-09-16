@@ -29,6 +29,9 @@ setlocal foldnestmax=2
 
 let b:undo_ftplugin .= '|setl tw< fo< fdm< fdn<'
 
+" Make [d, [i, etc. find variables defined at the top-level (no indent)
+setlocal define=^\\ze\\i\\+\\s*=
+
 " Try to infer python version from shebang
 let s:python = matchstr(getline(1), '^#!.*\zspython\([23]\)\?')
 

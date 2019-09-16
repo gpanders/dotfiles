@@ -1,5 +1,8 @@
+let s:save_cpo = &cpo
+set cpo&vim
+
 function! s:PackInit()
-  packadd minpac
+  silent! packadd minpac
 
   if exists('*minpac#init')
     call minpac#init()
@@ -67,5 +70,19 @@ function! s:PackInit()
 endfunction
 
 let s:file = expand('<sfile>:p')
-command! PackUpdate execute 'source ' . s:file | call <SID>PackInit() | call minpac#update('', {'do': 'call minpac#status()'})
-command! PackClean  execute 'source ' . s:file | call <SID>PackInit() | call minpac#clean()
+command! PackUpdate execute 'source ' . s:file |
+      \ call <SID>PackInit() |
+      \ try |
+      \   call minpac#update('', {'do': 'call minpac#status()'}) |
+      \ catch |
+      \ endtry
+
+command! PackClean  execute 'source ' . s:file |
+      \ call <SID>PackInit() |
+      \ try |
+      \   call minpac#clean() |
+      \ catch |
+      \ endtry
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
