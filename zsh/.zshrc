@@ -143,6 +143,9 @@ typeset -gU path fpath cdpath manpath
 export GREP_COLOR="37;45"
 export GREP_COLORS="mt=${GREP_COLOR}"
 
+export LSCOLORS="ExGxcxdxCxegedabagacad"
+export CLICOLOR=1
+
 # Set the default Less options.
 # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
 # Remove -X and -F (exit if the content fits on one screen) to enable it.
