@@ -8,7 +8,8 @@ nnoremap <buffer> Z! ^"zyg_:!<C-R>z<CR>
 let b:undo_ftplugin .= '|nun <buffer> Z!'
 
 setlocal textwidth=79
-let b:undo_ftplugin .= '|setl tw<'
+setlocal fo-=t
+let b:undo_ftplugin .= '|setl tw< fo<'
 
 if executable('shellcheck')
   compiler shellcheck
