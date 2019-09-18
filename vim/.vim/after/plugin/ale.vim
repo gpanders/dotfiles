@@ -30,7 +30,17 @@ let g:ale_python_pyls_config = {
 " }}}
 
 " C/C++ {{{
-let g:ale_linters.c = ['gcc', 'clang', 'ccls', 'cquery', 'clangtidy']
+let g:ale_linters.c = ['ccls', 'cquery', 'clangtidy']
+
+" Use only one of either gcc or clang, not both
+for s:i in ['gcc', 'clang']
+  if executable(s:i)
+    call add(g:ale_linters.c, s:i)
+    break
+  endif
+endfor
+unlet s:i
+
 let g:ale_linters.cpp = g:ale_linters.c
 
 let g:ale_c_parse_makefile = 1
