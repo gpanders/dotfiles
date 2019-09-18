@@ -97,11 +97,9 @@ set backup
 set completeopt^=menuone
 set confirm
 set cursorline
-set define=
 set expandtab
 set hidden
 set ignorecase
-set include=
 set lazyredraw
 set linebreak
 set matchpairs+=<:>
@@ -155,8 +153,12 @@ silent! set breakindent
 " Specify whitespace chars
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 
-" Set default path to a simple value
-set path=.,,
+" Set default path variables to blank defaults
+setglobal path=.,,
+setglobal include=
+setglobal includeexpr=
+setglobal define=
+setglobal isfname+=@-@
 
 " Use a better grepprg if available
 set grepformat^=%f:%l:%c:%m
