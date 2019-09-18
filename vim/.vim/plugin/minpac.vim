@@ -49,9 +49,6 @@ function! s:PackInit()
     " Populate results of :ilist and :dlist in quickfix window
     call minpac#add('romainl/vim-qlist')
 
-    " Code snippets
-    call minpac#add('SirVer/ultisnips')
-
     " Language specific
     " Python
     call minpac#add('drgarcia1986/python-compilers.vim')
