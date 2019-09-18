@@ -10,6 +10,10 @@ augroup qf
 augroup END
 let b:undo_ftplugin .= '|au! qf * <buffer>'
 
-if exists(':Cfilter') != 2
-  silent packadd cfilter
+if !exists('loaded_cfilter')
+  silent! packadd cfilter
+
+  " Set this variable regardless of whether or not the plugin was successfully
+  " loaded so that we don't try to load it again
+  let loaded_cfilter = get(g:, 'loaded_cfilter')
 endif

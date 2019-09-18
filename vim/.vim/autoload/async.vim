@@ -71,7 +71,7 @@ function! s:exit(channel, msg, ...)
 
   let job = s:jobs[id]
   if job.buffered
-    if job.chunks[-1] == ''
+    if job.chunks[-1] ==# ''
       call remove(job.chunks, -1)
     endif
     call s:callback(id, job.chunks)
