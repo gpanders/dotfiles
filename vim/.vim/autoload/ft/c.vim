@@ -20,6 +20,12 @@ function! s:path(ft)
   let path = g:{a:ft}_path . ',' . &path
   let &l:path = join(uniq(split(path, ',')), ',')
 
+  " If a directory called 'include' exists in the current working directory,
+  " add it to the path
+  if isdirectory('include')
+    setlocal path^=include
+  endif
+
   " Ensure directory of current file is always first on the path
   setlocal path-=.
   setlocal path^=.
