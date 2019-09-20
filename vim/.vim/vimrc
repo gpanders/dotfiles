@@ -119,7 +119,7 @@ set noswapfile
 silent! set tagcase=match
 set tags^=./.git/tags;
 set virtualedit+=block
-set wildcharm=<C-Z>
+set wildcharm=<Tab>
 set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
 set wildignore+=tags
 set wildignorecase
@@ -291,7 +291,7 @@ nnoremap <silent> <Space>q :<C-U>call qf#toggle(0)<CR>
 nnoremap <silent> <Space>l :<C-U>call qf#toggle(1)<CR>
 
 " Find files in current buffer's directory
-nnoremap <Space>e :e %:p:h/<C-Z>
+nnoremap <Space>e :e %:p:h/<Tab>
 
 " Budget fuzzy file finder
 nnoremap <C-P> :e **/*
@@ -377,6 +377,14 @@ cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
 
 cnoremap <C-X><C-E> <C-F>
+
+if has('nvim') && index(split(&wildoptions, ','), 'pum') >= 0
+  cnoremap <expr> <C-J> pumvisible() ? "\<Down>\<Tab>" : "\<C-J>"
+  cnoremap <expr> <C-K> pumvisible() ? "\<Up>\<Tab>" : "\<C-K>"
+else
+  cnoremap <expr> <C-J> wildmenumode() ? "\<Down>\<Tab>" : "\<C-J>"
+  cnoremap <expr> <C-K> wildmenumode() ? "\<Up>\<Tab>" : "\<C-K>"
+endif
 " }}}
 
 " }}}
