@@ -40,16 +40,19 @@ function! s:stdout(channel, msg, ...)
     let id = ch_info(a:channel).id
   endif
 
-  let job = s:jobs[id]
-  let msg = a:msg
-  if type(msg) == type('')
-    let msg = split(msg, "\n", 1)
+  " Make sure job is still available
+  if has_key(s:jobs, id)
+    let job = s:jobs[id]
+    let msg = a:msg
+    if type(msg) == type('')
+      let msg = split(msg, "\n", 1)
+    endif
+    let job.chunks[-1] .= msg[0]
+    call extend(job.chunks, msg[1:])
+    if !job.buffered && len(job.chunks) > 1
+      call s:callback(id, remove(job.chunks, 0, -2))
+    end
   endif
-  let job.chunks[-1] .= msg[0]
-  call extend(job.chunks, msg[1:])
-  if !job.buffered && len(job.chunks) > 1
-    call s:callback(id, remove(job.chunks, 0, -2))
-  end
 endfunction
 
 function! s:error(channel, msg, ...)
