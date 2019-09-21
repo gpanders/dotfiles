@@ -23,7 +23,7 @@ fi
 ARGS="$*"
 
 if [ $# -eq 0 ]; then
-    ARGS="vim neovim emacs fzf git X alacritty bash pylint flake8 pandoc ranger"
+    ARGS="vim neovim emacs fzf git X alacritty bash pylint flake8 pandoc ranger ctags"
     if hash tmux 2>/dev/null; then
         ARGS="$ARGS tmux"
     else
