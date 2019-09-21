@@ -12,7 +12,7 @@ function! s:callback(ft, lines) abort
       call add(paths, matchstr(line, '\S\+'))
     endif
   endfor
-  let g:{a:ft}_path = join(paths, ',')
+  let g:{a:ft}_path = join(map(paths, 'simplify(v:val)'), ',')
   call s:path(a:ft)
 endfunction
 
