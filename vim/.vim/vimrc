@@ -148,7 +148,10 @@ endif
 let &colorcolumn = '+' . join(range(1, 256), ',+')
 
 " Indent wrapped lines
-silent! set breakindent
+if has('linebreak')
+  set breakindent
+  set showbreak=↪\ 
+endif
 
 " Specify whitespace chars
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
@@ -426,7 +429,7 @@ if has('nvim')
 endif
 
 " Create syntax group for trailing whitespace in each new buffer
-autocmd Syntax * if &ma | syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL | endif
+autocmd Syntax * if &ma | syn match TrailingWhitespace /\\\@<!\s\+\%#\@<!$/ containedin=ALL | endif
 
 " Enable omnicompletion from syntax if no other option available
 " See :h ft-syntax-omni
