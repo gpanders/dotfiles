@@ -183,16 +183,9 @@ if has('gui_running')
   endif
 endif
 
-" Keep temporary files in a single location (nvim does this by default)
+" Keep data files in a single location (nvim does this by default)
 if !has('nvim')
-  if exists('$XDG_DATA_HOME')
-    let s:datadir = $XDG_DATA_HOME . '/vim'
-  elseif has('unix')
-    let s:datadir = $HOME . '/.local/share/vim'
-  else
-    let s:datadir = $HOME . '/vimfiles/cache'
-  endif
-
+  let s:datadir = vim#datadir()
   let &backupdir = s:datadir . '/backup//' . ',' . &backupdir
   let &undodir = s:datadir . '/undo//' . ',' . &undodir
   let &directory = s:datadir . '/swap//' . ',' . &directory
@@ -208,8 +201,8 @@ if !has('nvim')
   endif
 endif
 
-if filereadable($VIMHOME . '/tags')
-  let &tags .= ',' . $VIMHOME . '/tags'
+if filereadable(vim#cachedir() . '/tags')
+  let &tags .= ',' . vim#cachedir() . '/tags'
 endif
 
 " Set dictionary if it exists
