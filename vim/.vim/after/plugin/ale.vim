@@ -83,6 +83,14 @@ if get(g:, 'ale_completion_enabled')
   imap <C-Space> <Plug>(ale_complete)
 endif
 
+function! s:lsp()
+  return !empty(filter(ale#linter#Get(&filetype), {_, v -> !empty(v.lsp)}))
+endfunction
+
+nnoremap <expr> <C-]> <SID>lsp() ? ":\<C-U>ALEGoToDefinition\<CR>" : "\<C-]>"
+nnoremap <expr> <C-W>] <SID>lsp() ? ":\<C-U>ALEGoToDefinitionInSplit\<CR>" : "\<C-W>]"
+nnoremap <expr> <C-W><C-]> <SID>lsp() ? ":\<C-U>ALEGoToDefinitionInSplit\<CR>" : "\<C-W><C-]>"
+
 function! s:toggle(...)
   if !&modifiable || &readonly
     silent ALEDisableBuffer
