@@ -426,7 +426,7 @@ if has('nvim')
 endif
 
 " Create syntax group for trailing whitespace in each new buffer
-autocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
+autocmd Syntax * if &ma | syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL | endif
 
 " Enable omnicompletion from syntax if no other option available
 " See :h ft-syntax-omni
