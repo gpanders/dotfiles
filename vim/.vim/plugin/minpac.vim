@@ -40,6 +40,9 @@ function! s:PackInit()
     " Show change signs in the gutter for git files
     call minpac#add('mhinz/vim-signify')
 
+    " Auto generate tags files
+    call minpac#add('ludovicchabant/vim-gutentags')
+
     " Make working with REPLs so much better
     call minpac#add('jpalardy/vim-slime')
 
