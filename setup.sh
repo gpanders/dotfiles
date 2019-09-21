@@ -169,12 +169,11 @@ for mod in $ARGS; do
         git config user.email greg@gpanders.com
 
         git config --global commit.verbose true
-        git config --global init.templateDir "$HOME/.config/git/template"
+        git config --global rebase.autoSquash true
         git config --global alias.a add
         git config --global alias.b branch
         git config --global alias.cm commit
         git config --global alias.co checkout
-        git config --global alias.ctags "!.git/hooks/ctags"
         git config --global alias.d diff
         git config --global alias.f fetch
         git config --global alias.l log
