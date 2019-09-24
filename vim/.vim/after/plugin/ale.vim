@@ -33,13 +33,7 @@ let g:ale_python_pyls_config = {
 let g:ale_linters.c = ['ccls', 'cquery', 'clangtidy']
 
 " Use only one of either gcc or clang, not both
-for s:i in ['gcc', 'clang']
-  if executable(s:i)
-    call add(g:ale_linters.c, s:i)
-    break
-  endif
-endfor
-unlet s:i
+call add(g:ale_linters.c, executable('clang') ? 'clang' : 'gcc')
 
 let g:ale_linters.cpp = g:ale_linters.c
 
