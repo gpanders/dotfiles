@@ -1,5 +1,12 @@
+.DS_Store
+*~
+.projections.json
+*.swp
+\#*\#
+.vscode/
 tags
 tags.lock
-*~
-\#*\#
-.DS_Store
+compile_commands.json
+.cquery_cached_index
+.ccls-cache
+.cquery
