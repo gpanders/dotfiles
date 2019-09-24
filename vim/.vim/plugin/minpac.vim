@@ -43,9 +43,6 @@ function! s:PackInit()
     " Auto generate tags files
     call minpac#add('ludovicchabant/vim-gutentags')
 
-    " Make working with REPLs so much better
-    call minpac#add('jpalardy/vim-slime')
-
     " Note taking and knowledge tracking
     call minpac#add('vimwiki/vimwiki', {'rev': 'dev'})
 
