@@ -8,3 +8,4 @@ complete -x -c venv -n '__fish_use_subcommand' -a 'rm' -d 'Delete a virtual envi
 complete -x -c venv -n '__fish_use_subcommand' -a 'ls' -d 'List all virtual environments'
 complete -x -c venv -n '__fish_use_subcommand' -a '(__fish_complete_venvs)'
 complete -x -c venv -n '__fish_seen_subcommand_from rm' -a '(__fish_complete_venvs)'
+complete -x -c venv
