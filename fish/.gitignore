@@ -1,4 +1,3 @@
 .config/fish/fish_variables
-.config/fish/functions/fisher.fish
 .config/fish/fisher/*
 !.config/fish/fisher/fishfile
