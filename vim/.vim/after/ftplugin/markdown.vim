@@ -7,9 +7,11 @@ let g:markdown_interp_languages = ['python', 'sh=bash', 'bash', 'ruby', 'console
 
 if executable('pandoc')
   compiler pandoc
+  setlocal formatprg=pandoc\ -f\ markdown\ -t\ markdown\ --reference-links
+  let b:undo_ftplugin .= '|setl fp<'
 endif
 
-setlocal textwidth=80
+setlocal textwidth=72
 setlocal spell
 " https://github.com/tpope/vim-markdown/issues/134
 setlocal comments=n:>
