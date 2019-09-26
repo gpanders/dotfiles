@@ -5,13 +5,7 @@ let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
 let g:markdown_interp_languages = ['python', 'sh=bash', 'bash', 'ruby', 'console=bash']
 
-if executable('pandoc')
-  compiler pandoc
-  setlocal formatprg=pandoc\ -f\ markdown\ -t\ markdown\ --reference-links
-  let b:undo_ftplugin .= '|setl fp<'
-endif
-
-setlocal textwidth=72
+setlocal textwidth=79
 setlocal spell
 " https://github.com/tpope/vim-markdown/issues/134
 setlocal comments=n:>
@@ -23,9 +17,16 @@ if has('conceal')
   let b:undo_ftplugin .= '|setl cole<'
 endif
 
+if executable('pandoc')
+  compiler pandoc
+  let &l:formatprg = 'pandoc -f gfm -t gfm --standalone --columns=' . &textwidth
+  command! -buffer Toc exe '%!' . &l:formatprg . ' --toc'
+  let b:undo_ftplugin .= '|setl fp<|delc Toc'
+endif
+
 " Use [[ and ]] to navigate between sections
-nnoremap <buffer> <silent> [[ :<C-U>for _ in range(v:count1)<Bar>call search('^#', 'bsW')<Bar>endfor<CR>
-nnoremap <buffer> <silent> ]] :<C-U>for _ in range(v:count1)<Bar>call search('^#', 'sW')<Bar>endfor<CR>
+nnoremap <buffer> <silent> [[ :<C-U>call ft#markdown#section(1)<CR>
+nnoremap <buffer> <silent> ]] :<C-U>call ft#markdown#section(0)<CR>
 let b:undo_ftplugin .= '|nun <buffer> [[|nun <buffer> ]]'
 
 nnoremap <buffer> <silent> Z! :<C-U>call ft#markdown#eval()<CR>
