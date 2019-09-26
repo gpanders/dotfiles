@@ -18,5 +18,11 @@ nnoremap <silent> <C-P> :FZF<CR>
 command! -bang Helptags call fzf#helptags(<bang>0)
 nnoremap <silent> <C-H> :<C-U>Helptags<CR>
 
+command! -bang -nargs=? Tags call fzf#tags(<bang>0, '<args>', '')
+nnoremap <Space>] :<C-U>Tags<CR>
+
+command! -bang -nargs=? Ptags call fzf#tags(<bang>0, '<args>', 'p')
+nnoremap <Space>} :<C-U>Ptags<CR>
+
 " Hide statusline in FZF buffers
 autocmd! FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
