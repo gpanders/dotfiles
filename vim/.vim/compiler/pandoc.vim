@@ -19,17 +19,12 @@ let s:pandoc_data_dir = $HOME . '/.local/share/pandoc'
 
 CompilerSet makeprg=pandoc\ -s\ --katex\ --metadata\ pagetitle='%:t:r'
 
-if filereadable($HOME . '/.local/share/pandoc/filters/links-to-html.lua')
-  " Add links-to-html.lua filter
-  CompilerSet makeprg+=\ --lua-filter=\"$HOME/.local/share/pandoc/filters/links-to-html.lua\"
-endif
-
-if expand('%:t') ==? 'README.md' && filereadable($HOME . '/.local/share/pandoc/templates/github.html')
+if expand('%:t') ==? 'README.md' && filereadable(s:pandoc_data_dir . '/templates/github.html')
   " Use GFM for README files
-  CompilerSet makeprg+=\ --template=\"$HOME/.local/share/pandoc/templates/github.html\"
-elseif filereadable($HOME . '/.local/share/pandoc/templates/default.html')
+  exe 'CompilerSet makeprg+=\ --from\ gfm\ --template=\"' . s:pandoc_data_dir . '/templates/github.html\"'
+elseif filereadable(s:pandoc_data_dir . '/templates/default.html')
   " Use custom pandoc template for everything else
-  CompilerSet makeprg+=\ --template=\"$HOME/.local/share/pandoc/templates/default.html\"
+  exe 'CompilerSet makeprg+=\ --template=\"' . s:pandoc_data_dir . '/templates/default.html\"'
 endif
 
 CompilerSet makeprg+=\ -o\ %:r.html\ %:S
