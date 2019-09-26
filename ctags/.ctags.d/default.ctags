@@ -1,1 +1,3 @@
---python-kinds=-i
+--fields=-k+K
+--languages=-markdown,html
+--tag-relative=yes
