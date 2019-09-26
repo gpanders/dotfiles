@@ -9,3 +9,8 @@ syn region markdownId matchgroup=markdownIdDelimiter start="\[" end="\]" keepend
 " https://github.com/tpope/vim-markdown/pull/141/
 hi def link markdownLinkDelimiter     Delimiter
 hi def link markdownLinkTextDelimiter Delimiter
+
+" Don't highlight pure whitespace lines, as these are sometimes useful in
+" Markdown
+let b:highlight_trailing_whitespace = 0
+syn match TrailingWhitespace /\S\+\zs\\\@<!\s\+\%#\@<!$/ containedin=ALL
