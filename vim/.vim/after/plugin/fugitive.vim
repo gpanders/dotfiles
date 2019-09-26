@@ -6,6 +6,7 @@ if !get(g:, 'loaded_fugitive')
   finish
 endif
 
-autocmd BufReadPost fugitive://* setlocal bufhidden=delete
-
-autocmd User Fugitive setlocal grepprg=git\ grep\ --line-number\ --column\ -I
+augroup plugin.fugitive
+    autocmd!
+    autocmd BufReadPost fugitive://* setlocal bufhidden=delete
+augroup END
