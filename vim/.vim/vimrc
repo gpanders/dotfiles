@@ -247,6 +247,9 @@ inoremap <silent> <C-\>F <C-R>=expand('%:p')<CR>
 inoremap <expr> <C-G><C-Y> repeat('<C-Y>', len(getline(line('.')-1))-col('.')+1)
 inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
 
+inoremap <expr> <Tab> pumvisible() ? "\<C-N>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
+
 " }}}
 
 " Normal {{{
@@ -258,6 +261,8 @@ nnoremap Y y$
 nnoremap <BS> <C-^>
 
 " Navigate through wrapped lines individually
+nnoremap gj j
+nnoremap gk k
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 
@@ -378,7 +383,7 @@ cnoremap <C-N> <Down>
 
 cnoremap <C-X><C-E> <C-F>
 
-if has('nvim') && index(split(&wildoptions, ','), 'pum') >= 0
+if has('nvim') && &wildoptions =~# 'pum'
   cnoremap <expr> <C-J> pumvisible() ? "\<Down>\<Tab>" : "\<C-J>"
   cnoremap <expr> <C-K> pumvisible() ? "\<Up>\<Tab>" : "\<C-K>"
 else
