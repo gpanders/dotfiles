@@ -23,7 +23,7 @@ if executable('pandoc')
   setlocal formatexpr=ft#markdown#format()
   command! -buffer Toc call ft#markdown#toc()
   command! -bang -buffer Reflinks call ft#markdown#reflinks(<bang>0)
-  let b:undo_ftplugin .= '|setl fp< fex<|delc Toc'
+  let b:undo_ftplugin .= '|setl fp< fex<|delc Toc|delc Reflinks'
 endif
 
 " Use [[ and ]] to navigate between sections
