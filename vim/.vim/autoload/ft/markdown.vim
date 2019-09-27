@@ -1,3 +1,36 @@
+function! ft#markdown#format()
+    " Escape whitespace characters in link text in lists and then run
+    " 'formatprg' as usual
+    let start = v:lnum
+    let end = start + v:count - 1
+    exe start . ',' . end . 's/\%(^\s*\%([-*]\|[0-9]\+\.\)\s\+\[.*\)\@<=\s\ze.*]/\\&/g'
+    exe start . ',' . end . '!' . &l:formatprg
+endfunction
+
+function! ft#markdown#toc()
+    let fp = &l:formatprg
+    let &l:formatprg = fp . ' --toc'
+    let view = winsaveview()
+    normal! gggqG
+    call winrestview(view)
+    let &l:formatprg = fp
+endfunction
+
+function! ft#markdown#reflinks(bang)
+    if a:bang
+        if &l:formatprg =~# '--reference-links'
+            let &l:formatprg = substitute(&l:formatprg, ' --reference-links', '', '')
+        endif
+    else
+        if &l:formatprg !~# '--reference-links'
+            let &l:formatprg .= ' --reference-links'
+        endif
+    endif
+    let view = winsaveview()
+    normal! gggqG
+    call winrestview(view)
+endfunction
+
 function! ft#markdown#section(back)
     for _ in range(v:count1)
         call search('\%(^#\+ \|^\S.*\n^-\+$\|^\S.*\n^=\+$\)',
