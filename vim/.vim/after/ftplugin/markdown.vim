@@ -19,9 +19,11 @@ endif
 
 if executable('pandoc')
   compiler pandoc
-  let &l:formatprg = 'pandoc -f gfm -t gfm --standalone --columns=' . &textwidth
-  command! -buffer Toc exe '%!' . &l:formatprg . ' --toc'
-  let b:undo_ftplugin .= '|setl fp<|delc Toc'
+  let &l:formatprg = 'pandoc -f markdown -t markdown --atx-headers --standalone --columns=' . &textwidth
+  setlocal formatexpr=ft#markdown#format()
+  command! -buffer Toc call ft#markdown#toc()
+  command! -bang -buffer Reflinks call ft#markdown#reflinks(<bang>0)
+  let b:undo_ftplugin .= '|setl fp< fex<|delc Toc'
 endif
 
 " Use [[ and ]] to navigate between sections
