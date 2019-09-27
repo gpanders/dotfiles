@@ -1,17 +1,18 @@
-#!/bin/bash
+#!/bin/sh
+
+uname="$(uname)"
 
 install() {
-    uname="$(uname)"
     case $uname in
         Darwin)
             brew install "$@"
             ;;
         Linux)
-            if hash apt-get 2>/dev/null; then
+            if command -v apt-get >/dev/null; then
                 sudo apt-get install -y "$@"
-            elif hash yum 2>/dev/null; then
+            elif command -v yum >/dev/null; then
                 sudo yum install "$@"
-            elif hash pacman 2>/dev/null; then
+            elif command -v pacman >/dev/null; then
                 sudo pacman -S "$@"
             fi
             ;;
@@ -22,7 +23,18 @@ install() {
     esac
 }
 
-if ! hash stow 2>/dev/null; then
+ask() {
+    printf "%s [y/N] " "$1"
+    read -r ans
+    printf "\n"
+    if echo "$ans" | grep -qE '^([Yy]|[Yy][Ee][Ss])+$'; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+if ! command -v stow >/dev/null; then
     install stow
 fi
 
@@ -30,108 +42,100 @@ ARGS="$*"
 
 if [ $# -eq 0 ]; then
     ARGS="vim neovim emacs fzf git X alacritty bash pylint flake8 pandoc ranger ctags"
-    if hash tmux 2>/dev/null; then
+    if command -v tmux >/dev/null; then
         ARGS="$ARGS tmux"
     else
-        read -r -p "Install tmux? [y/N] " ans
-        if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+        if ask "Install tmux?"; then
             install tmux
             ARGS="$ARGS tmux"
         fi
     fi
 
-    if hash zsh 2>/dev/null; then
+    if command -v zsh >/dev/null; then
         ARGS="$ARGS zsh"
     else
-        read -r -p "Install zsh? [y/N] " ans
-        if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+        if ask "Install zsh?"; then
             install zsh
             ARGS="$ARGS zsh"
         fi
     fi
 
-    if hash fish 2>/dev/null; then
+    if command -v fish >/dev/null; then
         ARGS="$ARGS fish"
     else
-        read -r -p "Install fish? [y/N] " ans
-        if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+        if ask "Install fish?"; then
             install fish
             ARGS="$ARGS fish"
         fi
     fi
 
-    if hash i3 2>/dev/null; then
+    if command -v i3 >/dev/null; then
         ARGS="$ARGS i3 conky"
     else
-        if [[ "$OSTYPE" == linux-gnu ]]; then
-            read -r -p "Install i3? [y/N] " ans
-            if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+        if [ "$uname" = Linux ]; then
+            if ask "Install i3?"; then
                 install i3wm conky
                 ARGS="$ARGS i3 conky"
             fi
         fi
     fi
 
-    if hash mutt 2>/dev/null || hash neomutt 2>/dev/null; then
+    if command -v mutt >/dev/null || command -v neomutt >/dev/null; then
         ARGS="$ARGS mutt"
     fi
 
-    if hash offlineimap 2>/dev/null; then
+    if command -v offlineimap >/dev/null; then
         ARGS="$ARGS offlineimap"
     fi
 
-    if hash isync 2>/dev/null || hash mbsync 2>/dev/null; then
+    if command -v isync >/dev/null || command -v mbsync >/dev/null; then
         ARGS="$ARGS isync"
     fi
 
-    if ! (hash mutt 2>/dev/null || hash neomutt 2>/dev/null) || ! hash offlineimap 2>/dev/null; then
-        read -r -p "Install email tools? [y/N] " ans
-        if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-
-            if ! hash mutt 2>/dev/null && ! hash neomutt 2>/dev/null; then
+    if ! (command -v mutt >/dev/null || command -v neomutt >/dev/null) || ! command -v offlineimap >/dev/null; then
+        if ask "Install email tools?"; then
+            if ! command -v mutt >/dev/null && ! command -v neomutt >/dev/null; then
                 install neomutt
 
                 # Symlink `mutt` to `neomutt`
                 if [ ! -s "$(dirname "$(command -v neomutt)")/mutt" ]; then
-                    pushd "$(dirname "$(command -v neomutt)")" || exit 1
+                    cd "$(dirname "$(command -v neomutt)")" || exit 1
                     sudo ln -s neomutt mutt
                     sudo chown --reference=neomutt mutt
-                    popd || exit 1
+                    cd "$OLDPWD" || exit 1
                 fi
                 ARGS="$ARGS mutt"
             fi
 
-            if ! hash mbsync 2>/dev/null; then
+            if ! command -v mbsync >/dev/null; then
                 install isync
                 ARGS="$ARGS isync"
             fi
 
-            if ! hash urlscan 2>/dev/null; then
+            if ! command -v urlscan >/dev/null; then
                 install urlscan
             fi
 
-            if ! hash w3m 2>/dev/null; then
+            if ! command -v w3m >/dev/null; then
                 install w3m
             fi
         fi
     fi
 
-    if hash weechat 2>/dev/null; then
+    if command -v weechat >/dev/null; then
         ARGS="$ARGS weechat"
     else
-        read -r -p "Install weechat? [y/N] " ans
-        if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
+        if ask "Install weechat?"; then
             install weechat
             ARGS="$ARGS weechat"
         fi
     fi
 
     if [ ! -d "$HOME/.pyenv" ]; then
-        read -r -p "Install pyenv? [y/N] " ans
-        if [[ "$ans" =~ ^([Yy]|[Yy][Ee][Ss])+$ ]]; then
-            if [[ "$OSTYPE" == darwin* ]]; then
+        if ask "Install pyenv?"; then
+            if [ "$uname" = Darwin ]; then
                 brew install pyenv pyenv-virtualenv
-            elif [[ "$OSTYPE" == linux-gnu ]]; then
+            elif [ "$uname" = Linux ]; then
                 git clone https://github.com/pyenv/pyenv.git "$HOME/.pyenv"
                 git clone https://github.com/pyenv/pyenv-virtualenv.git "$HOME/.pyenv/plugins/pyenv-virtualenv"
             fi
@@ -148,13 +152,13 @@ for mod in $ARGS; do
     # Handle special cases
     case $mod in
         tmux)
-            if hash tmux 2>/dev/null; then
+            if command -v tmux >/dev/null; then
                 # Install tmux plugins in a background session
                 git submodule update --init
                 tmux new-session -s install_plugins -d "tmux run-shell $HOME/.tmux/plugins/tpm/bindings/install_plugins"
             fi
 
-            if ! infocmp tmux-256color &>/dev/null; then
+            if ! infocmp tmux-256color >/dev/null 2>&1; then
                 tic -x terminfo/tmux-256color.txt
             fi
             ;;
@@ -169,7 +173,9 @@ for mod in $ARGS; do
             fi
 
             if ! git config --global --get user.email 1>/dev/null ; then
-                read -r -p "Git email address [greg@gpanders.com]: " ans
+                printf "Git email address [greg@gpanders.com]: "
+                read -r ans
+                printf "\n"
                 git config --global user.email "${ans:-greg@gpanders.com}"
             fi
 
@@ -202,8 +208,8 @@ for mod in $ARGS; do
             git config --global sendemail.smtpServerPort 587
             ;;
         zsh)
-            if ! hash antibody 2>/dev/null; then
-                if [ "$(uname)" = Darwin ]; then
+            if ! command -v antibody >/dev/null; then
+                if [ "$uname" = Darwin ]; then
                     brew install getantibody/tap/antibody
                 else
                     mkdir -p "$HOME"/.local
