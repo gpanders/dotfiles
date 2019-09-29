@@ -30,22 +30,15 @@ let g:ale_python_pyls_config = {
 " }}}
 
 " C/C++ {{{
-let g:ale_linters.c = ['ccls', 'cquery', 'clangtidy']
-
-" Use only one of either gcc or clang, not both
-call add(g:ale_linters.c, executable('clang') ? 'clang' : 'gcc')
-
+let g:ale_linters.c = ['clangd']
 let g:ale_linters.cpp = g:ale_linters.c
+
+
+let g:ale_c_clangd_options = '--clang-tidy --fallback-style=LLVM --background-index --suggest-missing-includes --header-insertion=iwyu'
+let g:ale_cpp_clangd_options = g:ale_c_clangd_options . ' --clang-tidy-checks=cppcoreguidelines-*'
 
 let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
-let g:ale_c_ccls_init_options = {
-      \ 'cache': {
-      \   'directory': $HOME . '/.cache/ccls',
-      \ }}
-
-let g:ale_cpp_ccls_init_options = g:ale_c_ccls_init_options
-let g:ale_cpp_clangtidy_checks = ['cppcoreguidelines-*']
 
 " }}}
 
@@ -81,10 +74,6 @@ function! s:lsp()
   return !empty(filter(ale#linter#Get(&filetype), {_, v -> !empty(v.lsp)}))
 endfunction
 
-nnoremap <expr> <C-]> <SID>lsp() ? ":\<C-U>ALEGoToDefinition\<CR>" : "\<C-]>"
-nnoremap <expr> <C-W>] <SID>lsp() ? ":\<C-U>ALEGoToDefinitionInSplit\<CR>" : "\<C-W>]"
-nnoremap <expr> <C-W><C-]> <SID>lsp() ? ":\<C-U>ALEGoToDefinitionInSplit\<CR>" : "\<C-W><C-]>"
-
 function! s:toggle(...)
   if !&modifiable || &readonly
     silent ALEDisableBuffer
@@ -97,6 +86,12 @@ augroup plugin.ale
   autocmd!
   autocmd OptionSet modifiable,readonly call <SID>toggle()
   autocmd BufWinEnter * call <SID>toggle(0)
+  autocmd BufReadPost *
+              \ if <SID>lsp() |
+              \     exe 'nnoremap <buffer> <C-]> :<C-U>ALEGoToDefinition<CR>' |
+              \     exe 'nnoremap <buffer> <C-W>] :<C-U>ALEGoToDefinitionInSplit<CR>' |
+              \     exe 'nnoremap <buffer> <C-W><C-]> :<C-U>ALEGoToDefinitionInSplit<CR>' |
+              \ endif
 augroup END
 
 let &cpo = s:save_cpo
