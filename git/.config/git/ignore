@@ -7,6 +7,7 @@
 tags
 tags.lock
 compile_commands.json
-.cquery_cached_index
-.ccls-cache
+.cquery_cached_index/
+.ccls-cache/
 .cquery
+.clangd/
