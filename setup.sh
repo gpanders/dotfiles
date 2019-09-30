@@ -41,7 +41,7 @@ fi
 ARGS="$*"
 
 if [ $# -eq 0 ]; then
-    ARGS="vim neovim emacs fzf git X alacritty bash pylint flake8 pandoc ranger ctags"
+    ARGS="vim neovim emacs fzf git X alacritty bash pylint flake8 pandoc ranger ctags khard vdirsyncer"
     if command -v tmux >/dev/null; then
         ARGS="$ARGS tmux"
     else
