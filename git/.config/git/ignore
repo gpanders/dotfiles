@@ -6,6 +6,7 @@
 .vscode/
 tags
 tags.lock
+.notags
 compile_commands.json
 .cquery_cached_index/
 .ccls-cache/
