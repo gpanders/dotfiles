@@ -1,0 +1,20 @@
+[general]
+status_path = "~/.local/share/vdirsyncer/status/"
+
+[pair contacts]
+a = "local"
+b = "nextcloud"
+collections = ["from a", "from b"]
+
+[storage local]
+type = "filesystem"
+path = "~/.contacts/"
+fileext = ".vcf"
+
+[storage nextcloud]
+type = "carddav"
+url = "https://cloud.gpanders.com/"
+username = "gpanders"
+password.fetch = ["command", "pass", "apps/cloud.gpanders.com/vdirsyncer"]
+
+# vim: ft=toml
