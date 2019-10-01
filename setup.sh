@@ -184,6 +184,8 @@ for mod in $ARGS; do
 
             git config --global commit.verbose true
             git config --global rebase.autoSquash true
+            git config --global grep.lineNumber true
+            git config --global grep.patternType extended
             git config --global alias.a add
             git config --global alias.b branch
             git config --global alias.cm commit
