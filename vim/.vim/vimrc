@@ -167,10 +167,10 @@ setglobal isfname+=@-@
 set grepformat^=%f:%l:%c:%m
 if executable('rg')
   " Use rg over grep
-  set grepprg=rg\ --vimgrep\ --smart-case
+  set grepprg=rg\ --vimgrep\ --smart-case\ --hidden\ --glob\ '!.git'
 elseif executable('ag')
   " Use ag over grep
-  set grepprg=ag\ --vimgrep\ --smart-case
+  set grepprg=ag\ --vimgrep\ --smart-case\ --hidden\ --ignore\ '.git'
 elseif executable('grep')
   set grepprg=grep\ --line-number\ --recursive\ -I\ $*\ *
 else
