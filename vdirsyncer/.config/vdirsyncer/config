@@ -5,6 +5,7 @@ status_path = "~/.local/share/vdirsyncer/status/"
 a = "local"
 b = "nextcloud"
 collections = ["from a", "from b"]
+conflict_resolution = ["command", "vimdiff"]
 
 [storage local]
 type = "filesystem"
