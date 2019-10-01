@@ -1,4 +1,5 @@
 " Greg Anders (gpanders)'s vimrc <https://github.com/gpanders/dotfiles.git>
+scriptencoding utf8
 
 " Clear all vimrc autocmds at the beginning
 augroup vimrc | execute 'autocmd!' | augroup END
@@ -250,6 +251,8 @@ inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
 inoremap <expr> <Tab> pumvisible() ? "\<C-N>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
 
+inoremap <C-R>! <C-R>=system(input(':!'))<CR>
+
 " }}}
 
 " Normal {{{
@@ -273,10 +276,16 @@ noremap Q gqap
 nnoremap <Space>w :w<CR>
 
 " Buffer shortcuts
-for s:i in range(1, 10)
-  exe 'nnoremap <Space>' . (s:i % 10) ':<C-U>b' . s:i . '<CR>'
-endfor
-unlet s:i
+nnoremap <Space>1 1<C-^>
+nnoremap <Space>2 2<C-^>
+nnoremap <Space>3 3<C-^>
+nnoremap <Space>4 4<C-^>
+nnoremap <Space>5 5<C-^>
+nnoremap <Space>6 6<C-^>
+nnoremap <Space>7 7<C-^>
+nnoremap <Space>8 8<C-^>
+nnoremap <Space>9 9<C-^>
+nnoremap <Space>0 10<C-^>
 
 " List buffers and put :b on the command line
 noremap <Space>b :buffers<CR>:b<Space>
@@ -322,9 +331,7 @@ nnoremap yr :<C-\>e'let @' . v:register . ' = ' . string(getreg(v:register))<CR>
 nnoremap <Space>m :marks<CR>:norm! `
 
 " Show only user placed marks (A-Z and a-z)
-let s:alphabet = join(map(
-      \ range(char2nr('A'), char2nr('Z')) + range(char2nr('a'), char2nr('z')),
-      \ 'nr2char(v:val)'), '')
+let s:alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 execute 'nnoremap <Space>M :marks ' . s:alphabet . '<CR>'
 unlet s:alphabet
 
@@ -335,12 +342,13 @@ noremap <silent> ]] j0?{<CR>w99[{%/{<CR>:let @/ = ''<CR>
 noremap <silent> [] k$/}<CR>b99]}%?}<CR>:let @/ = ''<CR>
 
 for s:ch in ['a', 'b', 'l', 'q', 't']
-  exe 'nnoremap <expr> [' . s:ch . ' bracket#left(''' . s:ch . ''')'
-  exe 'nnoremap <expr> [' . toupper(s:ch) . ' bracket#left(''' . toupper(s:ch) . ''')'
-  exe 'nnoremap <expr> ]' . s:ch . ' bracket#right(''' . s:ch . ''')'
-  exe 'nnoremap <expr> ]' . toupper(s:ch) . ' bracket#right(''' . toupper(s:ch) . ''')'
+    let s:up = toupper(s:ch)
+    exe 'nnoremap <expr> [' . s:ch . ' bracket#left(''' . s:ch . ''')'
+    exe 'nnoremap <expr> [' . s:up . ' bracket#left(''' . s:up . ''')'
+    exe 'nnoremap <expr> ]' . s:ch . ' bracket#right(''' . s:ch . ''')'
+    exe 'nnoremap <expr> ]' . s:up . ' bracket#right(''' . s:up . ''')'
 endfor
-unlet s:ch
+unlet s:ch s:up
 
 nnoremap [e :.move --<CR>
 nnoremap ]e :.move +<CR>
