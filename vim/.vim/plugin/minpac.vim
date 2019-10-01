@@ -47,6 +47,9 @@ function! s:PackInit()
         " Populate results of :ilist and :dlist in quickfix window
         call minpac#add('romainl/vim-qlist')
 
+        " Snippets
+        call minpac#add('gpanders/snipmate.vim')
+
         " Python {{{
         " Provides compilers for flake8 and pylint
         call minpac#add('drgarcia1986/python-compilers.vim')
