@@ -59,7 +59,7 @@ function! s:PackInit()
     " Language Server Client
     " call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'rev': 'release'})
     " Asynchronous linting
-    call minpac#add('w0rp/ale', {'type': 'opt'})
+    call minpac#add('dense-analysis/ale', {'type': 'opt'})
 
     " Colorschemes
     call minpac#add('chriskempson/base16-vim', {'type': 'opt'})
