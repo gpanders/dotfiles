@@ -2,8 +2,8 @@
 bind  index,pager g   noop
 bind  index       gg  first-entry
 bind  index       G   last-entry
-bind  index        ^   imap-fetch-mail
-bind  index        <space> collapse-thread
+bind  index       ^   imap-fetch-mail
+bind  index       <space> collapse-thread
 
 bind  index,pager ]   next-undeleted
 bind  index,pager [   previous-undeleted
@@ -22,6 +22,13 @@ bind  index,pager R   group-reply
 # View attachments properly
 bind attach <return> view-mailcap
 
+# Complete aliases from `query_command`
+bind editor <tab> complete-query
+bind editor ^T    complete
+
+# Save new addresses to address book
+macro index,pager a "<pipe-message>khard add-email<enter>" "add the sender email address to khard"
+
 # Show mailbox listing by default
 macro index,pager c  <change-folder>?<tab> "open a different folder"
 
@@ -37,8 +44,8 @@ macro index,pager gi "<change-folder>!<enter>" "go to inbox"
 macro index,pager ga "<change-folder>\><enter>" "go to archive"
 
 # View urls within a message with urlscan
-macro index,pager \Cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
-macro attach,compose \Cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+macro index,pager \Cb "<pipe-message> urlscan<enter>" "call urlscan to extract URLs out of a message"
+macro attach,compose \Cb "<pipe-entry> urlscan<enter>" "call urlscan to extract URLs out of a message"
 
 ifdef notmuch "bind index \Cs vfolder-from-query"
 
