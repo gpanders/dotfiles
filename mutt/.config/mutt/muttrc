@@ -68,6 +68,9 @@ set auto_tag = yes
 # Format of directory listings when using <change-folder>
 set folder_format = "%t %N %-20.20f %?n?%8n?"
 
+# Remove delay between switching folders
+set sleep_time = 0
+
 # Ignore all headers except the ones listed
 ignore *
 unignore from: to: cc: date: subject:

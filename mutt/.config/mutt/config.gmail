@@ -18,5 +18,7 @@ mailboxes "+[Gmail]/Drafts"
 mailboxes "+[Gmail]/Sent Mail"
 mailboxes "+[Gmail]/Trash"
 
+# Change to next account
+macro index,pager gt "<sync-mailbox><enter-command>source ~/.config/mutt/config.gpanders<enter><change-folder>!<enter>" "change account"
 
 # vim: ft=neomuttrc
