@@ -7,11 +7,11 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 if !get(g:, 'loaded_ale')
-  finish
+    finish
 endif
 
 if !exists('g:ale_linters')
-  let g:ale_linters = {}
+    let g:ale_linters = {}
 endif
 
 " Python {{{
@@ -19,14 +19,14 @@ let g:ale_linters.python = ['pylint', 'flake8', 'pyls']
 let g:ale_python_pylint_change_directory = 0
 let g:ale_python_flake8_change_directory = 0
 let g:ale_python_pyls_config = {
-      \ 'pyls': {
-      \   'configurationSources': ['flake8', 'pylint'],
-      \   'plugins': {
-      \     'pycodestyle': {
-      \       'enabled': v:false,
-      \     },
-      \   },
-      \ }}
+            \ 'pyls': {
+            \   'configurationSources': ['flake8', 'pylint'],
+            \   'plugins': {
+            \     'pycodestyle': {
+            \       'enabled': v:false,
+            \     },
+            \   },
+            \ }}
 " }}}
 
 " C/C++ {{{
@@ -51,11 +51,11 @@ let g:ale_linters.rust = ['cargo', 'rls']
 let g:ale_rust_rls_toolchain = 'stable'
 
 let g:ale_fixers = {
-      \ 'python': ['isort'],
-      \ 'cpp': ['clang-format'],
-      \ 'c': ['clang-format'],
-      \ '*': ['remove_trailing_lines', 'trim_whitespace']
-      \}
+            \ 'python': ['isort'],
+            \ 'cpp': ['clang-format'],
+            \ 'c': ['clang-format'],
+            \ '*': ['remove_trailing_lines', 'trim_whitespace']
+            \}
 " }}}
 
 nmap <Space><C-F> <Plug>(ale_fix)
@@ -64,34 +64,35 @@ nmap <C-W><Bslash>d <Plug>(ale_go_to_definition_in_split)
 nmap <Bslash>gr <Plug>(ale_find_references)
 
 if get(g:, 'ale_completion_enabled')
-  " See :h ale-completion-completeopt-bug
-  set completeopt=menu,menuone,preview,noselect,noinsert
-  set omnifunc=ale#completion#OmniFunc
-  imap <C-Space> <Plug>(ale_complete)
+    " See :h ale-completion-completeopt-bug
+    set completeopt=menu,menuone,preview,noselect,noinsert
+    set omnifunc=ale#completion#OmniFunc
+    imap <C-Space> <Plug>(ale_complete)
 endif
 
-function! s:lsp()
-  return !empty(filter(ale#linter#Get(&filetype), {_, v -> !empty(v.lsp)}))
+function! s:lsp_setup()
+    if empty(filter(ale#linter#Get(&filetype), {_, v -> !empty(v.lsp)}))
+        return
+    endif
+    nnoremap <buffer> <C-]> :<C-U>ALEGoToDefinition<CR>
+    nnoremap <buffer> <C-W>] :<C-U>ALEGoToDefinitionInSplit<CR>
+    nnoremap <buffer> <C-W><C-]> :<C-U>ALEGoToDefinitionInSplit<CR>
+    nnoremap <buffer> <Bslash>r :<C-U>ALEFindReferences<CR>
 endfunction
 
 function! s:toggle(...)
-  if !&modifiable || &readonly
-    silent ALEDisableBuffer
-  elseif get(a:, '1', 1)
-    silent ALEEnableBuffer
-  endif
+    if !&modifiable || &readonly
+        silent ALEDisableBuffer
+    elseif get(a:, '1', 1)
+        silent ALEEnableBuffer
+    endif
 endfunction
 
 augroup plugin.ale
-  autocmd!
-  autocmd OptionSet modifiable,readonly call <SID>toggle()
-  autocmd BufWinEnter * call <SID>toggle(0)
-  autocmd BufReadPost *
-              \ if <SID>lsp() |
-              \     exe 'nnoremap <buffer> <C-]> :<C-U>ALEGoToDefinition<CR>' |
-              \     exe 'nnoremap <buffer> <C-W>] :<C-U>ALEGoToDefinitionInSplit<CR>' |
-              \     exe 'nnoremap <buffer> <C-W><C-]> :<C-U>ALEGoToDefinitionInSplit<CR>' |
-              \ endif
+    autocmd!
+    autocmd OptionSet modifiable,readonly call <SID>toggle()
+    autocmd BufWinEnter * call <SID>toggle(0)
+    autocmd BufReadPost * call <SID>lsp_setup()
 augroup END
 
 let &cpo = s:save_cpo
