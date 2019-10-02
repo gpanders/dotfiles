@@ -67,6 +67,10 @@ if [ $# -eq 0 ]; then
         install fzy
     fi
 
+    if ! command -v nnn >/dev/null && ask "Install nnn?"; then
+        install nnn
+    fi
+
     if command -v i3 >/dev/null; then
         ARGS="$ARGS i3 conky"
     elif [ "$uname" = Linux ] && ask "Install i3?"; then
