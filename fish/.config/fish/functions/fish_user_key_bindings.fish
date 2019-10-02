@@ -10,4 +10,7 @@ function fish_user_key_bindings
 
     bind \es __fish_prepend_sudo
     bind -M insert \es __fish_prepend_sudo
+
+    bind \ct __fzy
+    bind -M insert \ct __fzy
 end
