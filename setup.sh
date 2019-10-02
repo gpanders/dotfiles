@@ -44,29 +44,23 @@ if [ $# -eq 0 ]; then
     ARGS="vim neovim emacs git X alacritty bash pylint flake8 pandoc ranger ctags khard vdirsyncer"
     if command -v tmux >/dev/null; then
         ARGS="$ARGS tmux"
-    else
-        if ask "Install tmux?"; then
-            install tmux
-            ARGS="$ARGS tmux"
-        fi
+    elif ask "Install tmux?"; then
+        install tmux
+        ARGS="$ARGS tmux"
     fi
 
     if command -v zsh >/dev/null; then
         ARGS="$ARGS zsh"
-    else
-        if ask "Install zsh?"; then
-            install zsh
-            ARGS="$ARGS zsh"
-        fi
+    elif ask "Install zsh?"; then
+        install zsh
+        ARGS="$ARGS zsh"
     fi
 
     if command -v fish >/dev/null; then
         ARGS="$ARGS fish"
-    else
-        if ask "Install fish?"; then
-            install fish
-            ARGS="$ARGS fish"
-        fi
+    elif ask "Install fish?"; then
+        install fish
+        ARGS="$ARGS fish"
     fi
 
     if ! command -v fzy >/dev/null && ask "Install fzy?"; then
@@ -75,13 +69,9 @@ if [ $# -eq 0 ]; then
 
     if command -v i3 >/dev/null; then
         ARGS="$ARGS i3 conky"
-    else
-        if [ "$uname" = Linux ]; then
-            if ask "Install i3?"; then
-                install i3wm conky
-                ARGS="$ARGS i3 conky"
-            fi
-        fi
+    elif [ "$uname" = Linux ] && ask "Install i3?"; then
+        install i3wm conky
+        ARGS="$ARGS i3 conky"
     fi
 
     if command -v mutt >/dev/null || command -v neomutt >/dev/null; then
@@ -96,7 +86,7 @@ if [ $# -eq 0 ]; then
         ARGS="$ARGS isync"
     fi
 
-    if ! (command -v mutt >/dev/null || command -v neomutt >/dev/null) || ! command -v offlineimap >/dev/null; then
+    if ! (command -v mutt >/dev/null || command -v neomutt >/dev/null) || ! command -v mbsync >/dev/null; then
         if ask "Install email tools?"; then
             if ! command -v mutt >/dev/null && ! command -v neomutt >/dev/null; then
                 install neomutt
@@ -128,22 +118,9 @@ if [ $# -eq 0 ]; then
 
     if command -v weechat >/dev/null; then
         ARGS="$ARGS weechat"
-    else
-        if ask "Install weechat?"; then
-            install weechat
-            ARGS="$ARGS weechat"
-        fi
-    fi
-
-    if [ ! -d "$HOME/.pyenv" ]; then
-        if ask "Install pyenv?"; then
-            if [ "$uname" = Darwin ]; then
-                brew install pyenv pyenv-virtualenv
-            elif [ "$uname" = Linux ]; then
-                git clone https://github.com/pyenv/pyenv.git "$HOME/.pyenv"
-                git clone https://github.com/pyenv/pyenv-virtualenv.git "$HOME/.pyenv/plugins/pyenv-virtualenv"
-            fi
-        fi
+    elif ask "Install weechat?"; then
+        install weechat
+        ARGS="$ARGS weechat"
     fi
 fi
 
@@ -172,11 +149,11 @@ for mod in $ARGS; do
                 touch "${XDG_CONFIG_DIR:-$HOME/.config}/git/config"
             fi
 
-            if ! git config --global --get user.name 1>/dev/null ; then
+            if ! git config --global --get user.name >/dev/null ; then
                 git config --global user.name "Greg Anders"
             fi
 
-            if ! git config --global --get user.email 1>/dev/null ; then
+            if ! git config --global --get user.email >/dev/null ; then
                 printf "Git email address [greg@gpanders.com]: "
                 read -r ans
                 printf "\n"
