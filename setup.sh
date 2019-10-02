@@ -41,7 +41,7 @@ fi
 ARGS="$*"
 
 if [ $# -eq 0 ]; then
-    ARGS="vim neovim emacs fzf git X alacritty bash pylint flake8 pandoc ranger ctags khard vdirsyncer"
+    ARGS="vim neovim emacs git X alacritty bash pylint flake8 pandoc ranger ctags khard vdirsyncer"
     if command -v tmux >/dev/null; then
         ARGS="$ARGS tmux"
     else
@@ -67,6 +67,10 @@ if [ $# -eq 0 ]; then
             install fish
             ARGS="$ARGS fish"
         fi
+    fi
+
+    if ! command -v fzy >/dev/null && ask "Install fzy?"; then
+        install fzy
     fi
 
     if command -v i3 >/dev/null; then
