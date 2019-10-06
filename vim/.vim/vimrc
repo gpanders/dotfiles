@@ -107,7 +107,7 @@ set matchpairs+=<:>
 set matchtime=2
 set pumheight=10
 set scrolloff=2
-set shell=/bin/sh
+set shell=/usr/bin/env\ bash
 set shiftwidth=4
 set showmatch
 set sidescrolloff=5
