@@ -1,29 +1,32 @@
-function! s:completed(winid, filename, action, msg) abort
+function! s:completed(winid, filename, action, ...) abort
     bdelete!
     call win_gotoid(a:winid)
     if filereadable(a:filename)
-        try
-            let selection = readfile(a:filename)[0]
-            if type(a:action) == type('')
-                exe a:action . ' ' . selection
-            elseif type(a:action) == type(function('tr'))
-                call a:action(selection)
+        let lines = readfile(a:filename)
+        if !empty(lines)
+            if type(a:action) ==# type('')
+                exe a:action . ' ' . lines[0]
+            elseif type(a:action) ==# type({->0})
+                call a:action(lines[0])
             endif
-        catch /E684/
-            " Ignore error if no selection
-        endtry
+        endif
+        call delete(a:filename)
     endif
-    call delete(a:filename)
 endfunction
 
 function! s:fzy(cmd, action, title)
     let file = tempname()
-    call async#run(a:cmd . ' | fzy > ' . file, v:null, {
-                \ 'completed': function('s:completed', [win_getid(), file, a:action]),
-                \ 'term': 1,
-                \ 'title': a:title,
-                \ 'height': 10,
-                \ })
+    let winid = win_getid()
+    let cmd = split(&shell) + split(&shellcmdflag) + [a:cmd . ' | fzy > ' . file]
+    let F = function('s:completed', [winid, file, a:action])
+    botright 10 new
+    if has('nvim')
+        call termopen(cmd, {'on_exit': F})
+    else
+        call term_start(cmd, {'exit_cb': F, 'curwin': 1, 'term_kill': 'quit'})
+    endif
+    exe 'file ' . a:title
+    startinsert
 endfunction
 
 function! fzy#files()
@@ -36,5 +39,3 @@ function! fzy#tags()
     call writefile(tags, file)
     call s:fzy('cat ' . file, {t -> execute('tag ' . split(t)[0])}, 'tags')
 endfunction
-
-
