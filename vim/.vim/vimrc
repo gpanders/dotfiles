@@ -230,6 +230,7 @@ inoremap jk <Esc>l
 
 " Set a new 'undo point' before undoing entire line
 inoremap <C-U> <C-G>u<C-U>
+inoremap <C-W> <C-G>u<C-W>
 inoremap <CR> <C-]><C-G>u<CR>
 
 " Auto close braces in insert mode
