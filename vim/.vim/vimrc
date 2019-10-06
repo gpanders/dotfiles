@@ -1,52 +1,7 @@
 " Greg Anders (gpanders)'s vimrc <https://github.com/gpanders/dotfiles.git>
 scriptencoding utf8
 
-" Clear all vimrc autocmds at the beginning
-augroup vimrc | execute 'autocmd!' | augroup END
-
-" Setup {{{
-
-" Set $VIMHOME
-if has('unix')
-  let $VIMHOME = $HOME . '/.vim'
-else
-  let $VIMHOME = $HOME . '/vimfiles'
-endif
-
-" Use vim-pathogen if native packages are not supported
-if !has('packages')
-  " Use vim-pathogen to emulate native packaging behavior
-  if empty(glob($VIMHOME . '/autoload/pathogen.vim'))
-    silent execute '!curl -LSso ' . $VIMHOME . '/autoload/pathogen.vim https://tpo.pe/pathogen.vim'
-  endif
-  silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
-endif
-
-if has('autocmd')
-  filetype plugin indent on
-endif
-
-if has('syntax') && !exists('g:syntax_on')
-  syntax enable
-endif
-" }}}
-
-" Colors {{{
-
-" Try to make comments italic
-autocmd vimrc ColorScheme * highlight Comment gui=italic cterm=italic
-
-" Load colorscheme
-silent! colorscheme base16-eighties
-
-" Highlight trailing whitespace
-highlight link TrailingWhitespace Error
-
-" }}}
-
-" Settings {{{
-
-" Defaults {{{
+" Normalization {{{
 if !has('nvim')
   " The following settings are the defaults in nvim. Set them also in vim for
   " a consistent experience between the two
@@ -79,8 +34,8 @@ if !has('nvim')
   set viminfo^=!  " Keep and store UPPERCASE global variables
   set wildmenu
 
-  " Use UTF-8 if we can and env LANG didn't tell us not to
-  if has('multi_byte') && !exists('$LANG') && &encoding ==# 'latin1'
+  " Use UTF-8
+  if has('multi_byte')
     set encoding=utf-8
   endif
 
@@ -94,6 +49,51 @@ if !has('nvim')
 endif
 " }}}
 
+" Clear all vimrc autocmds at the beginning
+augroup vimrc | execute 'autocmd!' | augroup END
+
+" Setup {{{
+
+if has('autocmd')
+  filetype plugin indent on
+endif
+
+if has('syntax') && !exists('g:syntax_on')
+  syntax enable
+endif
+
+" Set $VIMHOME
+if has('unix')
+  let $VIMHOME = $HOME . '/.vim'
+else
+  let $VIMHOME = $HOME . '/vimfiles'
+endif
+
+" Use vim-pathogen if native packages are not supported
+if !has('packages')
+  " Use vim-pathogen to emulate native packaging behavior
+  if empty(glob($VIMHOME . '/autoload/pathogen.vim'))
+    silent execute '!curl -LSso ' . $VIMHOME . '/autoload/pathogen.vim https://tpo.pe/pathogen.vim'
+  endif
+  silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
+endif
+
+" }}}
+
+" Colors {{{
+
+" Try to make comments italic
+autocmd vimrc ColorScheme * highlight Comment gui=italic cterm=italic
+
+" Load colorscheme
+silent! colorscheme base16-eighties
+
+" Highlight trailing whitespace
+highlight link TrailingWhitespace Error
+
+" }}}
+
+" Settings {{{
 set backup
 set completeopt^=menuone
 set confirm
