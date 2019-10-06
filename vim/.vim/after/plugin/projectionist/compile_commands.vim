@@ -78,7 +78,6 @@ endfunction
 function! s:activate() abort
   let root = projectionist#path()
   if ProjectionistHas('compile_commands.json', root)
-    let s:paths = {}
     if !has_key(s:paths, root)
       call s:parse_compile_commands(root)
     else
