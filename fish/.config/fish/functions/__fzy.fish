@@ -1,3 +1,14 @@
+function __fzy_find --argument-names cmd
+    set -l selection (eval $cmd | fzy)
+    if test -n "$selection"
+        # Compensate for multiline prompts by moving the cursor
+        # \033[<N>A is the control character to move the cursor up N lines
+        printf \033\["%d"A (math (count (fish_prompt)) - 1)
+        commandline -it -- (string escape $selection)
+    end
+    commandline -f repaint
+end
+
 function __fzy_files
     if not set -q FZY_FIND_FILE_COMMAND
         if command -sq fd
@@ -10,16 +21,7 @@ function __fzy_files
             set FZY_FIND_FILE_COMMAND "find -type f 2>/dev/null | sed 's:^\.git/::'"
         end
     end
-
-    set -l selection (eval $FZY_FIND_FILE_COMMAND | fzy)
-
-    if test -z "$selection"
-        commandline -f repaint
-        return
-    end
-
-    commandline -it -- (string escape $selection)
-    commandline -f repaint
+    __fzy_find $FZY_FIND_FILE_COMMAND
 end
 
 function __fzy_dir
@@ -30,16 +32,7 @@ function __fzy_dir
             set FZY_FIND_DIR_COMMAND "find -type d 2>/dev/null"
         end
     end
-
-    set -l selection (eval $FZY_FIND_DIR_COMMAND | fzy)
-
-    if test -z "$selection"
-        commandline -f repaint
-        return
-    end
-
-    commandline -it -- (string escape $selection)
-    commandline -f repaint
+    __fzy_find $FZY_FIND_DIR_COMMAND
 end
 
 function __fzy
