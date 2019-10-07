@@ -19,7 +19,7 @@ function ual
             mkdir -p "$NOTES"
             set NOTE "$NOTES"/$argv[2].md
             if not test -f $NOTE
-                echo "# NAME\n\n$argv[2]\n" > $NOTE
+                printf "# NAME\n\n%s\n" "$argv[2]" > $NOTE
             end
             $EDITOR $NOTE
         case rm
@@ -58,12 +58,12 @@ function ual
             set DATE (date -r $NOTE "+%B %d, %Y")
 
             pandoc \
-                -s \
-                -t man \
-                -M title="$TITLE" \
-                -M author="$AUTHOR" \
-                -M section="$SECTION" \
-                -M date="$DATE" \
-                $NOTE | groff -T utf8 -man | less -is -+F -+X
+                --standalone \
+                --to=man \
+                --metadata=title:"$TITLE" \
+                --metadata=author:"$AUTHOR" \
+                --metadata=section:"$SECTION" \
+                --metadata=date:"$DATE" \
+                $NOTE | groff -T utf8 -man | less --squeeze-blank-lines --quit-if-one-screen --no-init
     end
 end
