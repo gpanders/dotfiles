@@ -2,17 +2,21 @@
 
 uname="$(uname)"
 
+installed() {
+    command -v "$1" >/dev/null
+}
+
 install() {
     case $uname in
         Darwin)
             brew install "$@"
             ;;
         Linux)
-            if command -v apt-get >/dev/null; then
+            if installed apt-get; then
                 sudo apt-get install -y "$@"
-            elif command -v yum >/dev/null; then
+            elif installed yum; then
                 sudo yum install "$@"
-            elif command -v pacman >/dev/null; then
+            elif installed pacman; then
                 sudo pacman -S "$@"
             fi
             ;;
@@ -34,65 +38,62 @@ ask() {
     fi
 }
 
-if ! command -v stow >/dev/null; then
+if ! installed stow; then
     install stow
 fi
 
 ARGS="$*"
 
 if [ $# -eq 0 ]; then
-    ARGS="vim neovim emacs git X alacritty bash pylint flake8 pandoc ranger ctags khard vdirsyncer"
-    if command -v tmux >/dev/null; then
-        ARGS="$ARGS tmux"
-    elif ask "Install tmux?"; then
-        install tmux
-        ARGS="$ARGS tmux"
+    ARGS="vim neovim git bash pylint flake8"
+
+    if [ "$uname" = "Linux" ]; then
+        ARGS="$ARGS X"
     fi
 
-    if command -v zsh >/dev/null; then
-        ARGS="$ARGS zsh"
-    elif ask "Install zsh?"; then
-        install zsh
-        ARGS="$ARGS zsh"
+    if [ "$uname" = "Darwin" ]; then
+        ARGS="$ARGS alacritty"
     fi
 
-    if command -v fish >/dev/null; then
-        ARGS="$ARGS fish"
-    elif ask "Install fish?"; then
-        install fish
-        ARGS="$ARGS fish"
-    fi
+    for mod in ctags fish khard pandoc ranger tmux vdirsyncer weechat zsh; do
+        if installed $mod; then
+            ARGS="$ARGS $mod"
+        elif ask "Install $mod?"; then
+            install $mod
+            ARGS="$ARGS $mod"
+        fi
+    done
 
-    if ! command -v fzy >/dev/null && ask "Install fzy?"; then
+    if ! installed fzy && ask "Install fzy?"; then
         install fzy
     fi
 
-    if ! command -v nnn >/dev/null && ask "Install nnn?"; then
+    if ! installed nnn && ask "Install nnn?"; then
         install nnn
     fi
 
-    if command -v i3 >/dev/null; then
+    if installed i3; then
         ARGS="$ARGS i3 conky"
     elif [ "$uname" = Linux ] && ask "Install i3?"; then
         install i3wm conky
         ARGS="$ARGS i3 conky"
     fi
 
-    if command -v mutt >/dev/null || command -v neomutt >/dev/null; then
+    if installed mutt || installed neomutt; then
         ARGS="$ARGS mutt"
     fi
 
-    if command -v offlineimap >/dev/null; then
+    if installed offlineimap; then
         ARGS="$ARGS offlineimap"
     fi
 
-    if command -v isync >/dev/null || command -v mbsync >/dev/null; then
+    if installed isync || installed mbsync; then
         ARGS="$ARGS isync"
     fi
 
-    if ! (command -v mutt >/dev/null || command -v neomutt >/dev/null) || ! command -v mbsync >/dev/null; then
+    if ! (installed mutt || installed neomutt) || ! installed mbsync; then
         if ask "Install email tools?"; then
-            if ! command -v mutt >/dev/null && ! command -v neomutt >/dev/null; then
+            if ! installed mutt && ! installed neomutt; then
                 install neomutt
 
                 # Symlink `mutt` to `neomutt`
@@ -105,26 +106,19 @@ if [ $# -eq 0 ]; then
                 ARGS="$ARGS mutt"
             fi
 
-            if ! command -v mbsync >/dev/null; then
+            if ! installed mbsync; then
                 install isync
                 ARGS="$ARGS isync"
             fi
 
-            if ! command -v urlscan >/dev/null; then
+            if ! installed urlscan; then
                 install urlscan
             fi
 
-            if ! command -v w3m >/dev/null; then
+            if ! installed w3m; then
                 install w3m
             fi
         fi
-    fi
-
-    if command -v weechat >/dev/null; then
-        ARGS="$ARGS weechat"
-    elif ask "Install weechat?"; then
-        install weechat
-        ARGS="$ARGS weechat"
     fi
 fi
 
@@ -137,7 +131,7 @@ for mod in $ARGS; do
     # Handle special cases
     case $mod in
         tmux)
-            if command -v tmux >/dev/null; then
+            if installed tmux; then
                 # Install tmux plugins in a background session
                 git submodule update --init
                 tmux new-session -s install_plugins -d "tmux run-shell $HOME/.tmux/plugins/tpm/bindings/install_plugins"
@@ -165,7 +159,10 @@ for mod in $ARGS; do
             fi
 
             # This repository should always use my personal email
-            git config user.email greg@gpanders.com
+            git config --local user.email greg@gpanders.com
+
+            # Alias for just the dotfiles repo
+            git config --local alias.update "!git fetch origin master:master && git rebase --autostash master"
 
             git config --global commit.verbose true
             git config --global rebase.autoSquash true
@@ -185,9 +182,6 @@ for mod in $ARGS; do
             git config --global alias.snapshot "!git stash && git stash apply -q"
             git config --global alias.t tag
 
-            # Alias for just the dotfiles repo
-            git config alias.update "!git fetch origin master:master && git rebase --autostash master"
-
             # Set sendmail settings for git
             git config --global sendemail.smtpEncryption tls
             git config --global sendemail.smtpServer mail.gandi.net
@@ -195,7 +189,7 @@ for mod in $ARGS; do
             git config --global sendemail.smtpServerPort 587
             ;;
         zsh)
-            if ! command -v antibody >/dev/null; then
+            if ! installed antibody; then
                 if [ "$uname" = Darwin ]; then
                     brew install getantibody/tap/antibody
                 else
