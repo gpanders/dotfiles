@@ -10,4 +10,7 @@ function fish_user_key_bindings
 
     bind \ct __fzy
     bind -M insert \ct __fzy
+
+    bind \cr 'eval (history | fzy); commandline -f repaint'
+    bind -M insert \cr 'eval (history | fzy); commandline -f repaint'
 end
