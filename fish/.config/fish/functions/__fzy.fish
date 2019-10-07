@@ -1,4 +1,5 @@
 function __fzy_find --argument-names cmd
+    set -l cmd (string replace "%" (commandline -t) $cmd)
     set -l selection (eval $cmd | fzy)
     if test -n "$selection"
         # Compensate for multiline prompts by moving the cursor
@@ -12,13 +13,13 @@ end
 function __fzy_files
     if not set -q FZY_FIND_FILE_COMMAND
         if command -sq fd
-            set FZY_FIND_FILE_COMMAND "fd --type f --hidden --exclude '.git'"
+            set FZY_FIND_FILE_COMMAND "fd --type f --hidden --exclude '.git' --full-path %"
         else if command -sq rg
-            set FZY_FIND_FILE_COMMAND "rg --files --hidden --glob '!.git'"
+            set FZY_FIND_FILE_COMMAND "rg --files --hidden --glob '!.git' %"
         else if command -sq ag
-            set FZY_FIND_FILE_COMMAND "ag -g ''"
+            set FZY_FIND_FILE_COMMAND "ag -g '' %"
         else
-            set FZY_FIND_FILE_COMMAND "find -type f 2>/dev/null | sed 's:^\.git/::'"
+            set FZY_FIND_FILE_COMMAND "find % -type f 2>/dev/null | sed 's:^\.git/::'"
         end
     end
     __fzy_find $FZY_FIND_FILE_COMMAND
@@ -27,9 +28,9 @@ end
 function __fzy_dir
     if not set -q FZY_FIND_DIR_COMMAND
         if command -sq fd
-            set FZY_FIND_DIR_COMMAND "fd --type d"
+            set FZY_FIND_DIR_COMMAND "fd --type d --hidden --exclude '.git' --full-path %"
         else
-            set FZY_FIND_DIR_COMMAND "find -type d 2>/dev/null"
+            set FZY_FIND_DIR_COMMAND "find % -type d 2>/dev/null | sed 's:^\.git/::'"
         end
     end
     __fzy_find $FZY_FIND_DIR_COMMAND
