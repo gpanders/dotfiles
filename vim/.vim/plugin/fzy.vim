@@ -14,8 +14,14 @@ elseif executable('rg')
 elseif executable('ag')
     let g:fzy_find_files_cmd = 'ag -g '''''
 elseif executable('find')
-    let g:fzy_find_files_cmd = 'find -type f'
+    let g:fzy_find_files_cmd = 'find . -type f'
 endif
+
+augroup plugin.fzy
+    autocmd!
+    " If in a git repo and using vim-fugitive, use git ls-files
+    autocmd User Fugitive let b:fzy_find_files_cmd = 'git ls-files -co --exclude-standard'
+augroup END
 
 nnoremap <silent> <C-P> :call fzy#files()<CR>
 nnoremap <silent> <Space>] :call fzy#tags()<CR>

@@ -30,7 +30,7 @@ function! s:fzy(cmd, action, title)
 endfunction
 
 function! fzy#files()
-    call s:fzy(g:fzy_find_files_cmd, 'e', 'files')
+    call s:fzy(get(b:, 'fzy_find_files_cmd', g:fzy_find_files_cmd), 'e', 'files')
 endfunction
 
 function! fzy#tags()
