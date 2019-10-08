@@ -1,4 +1,10 @@
 function! ft#markdown#format()
+    " Only use this in normal mode to prevent automatic formatting being
+    " messed up in insert mode
+    if mode() !=# 'n'
+        return 1
+    endif
+
     " Escape whitespace characters in link text in lists and then run
     " 'formatprg' as usual
     let start = v:lnum
