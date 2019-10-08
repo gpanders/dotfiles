@@ -56,10 +56,7 @@ if [ $# -eq 0 ]; then
     fi
 
     for mod in ctags fish khard pandoc ranger tmux vdirsyncer weechat zsh; do
-        if installed $mod; then
-            ARGS="$ARGS $mod"
-        elif ask "Install $mod?"; then
-            install $mod
+        if installed $mod || (ask "Install $mod?" && install $mod); then
             ARGS="$ARGS $mod"
         fi
     done
@@ -72,23 +69,8 @@ if [ $# -eq 0 ]; then
         install nnn
     fi
 
-    if installed i3; then
+    if installed i3 || ([ "$uname" = Linux ] && ask "Install i3?" && install i3wm conky); then
         ARGS="$ARGS i3 conky"
-    elif [ "$uname" = Linux ] && ask "Install i3?"; then
-        install i3wm conky
-        ARGS="$ARGS i3 conky"
-    fi
-
-    if installed mutt || installed neomutt; then
-        ARGS="$ARGS mutt"
-    fi
-
-    if installed offlineimap; then
-        ARGS="$ARGS offlineimap"
-    fi
-
-    if installed isync || installed mbsync; then
-        ARGS="$ARGS isync"
     fi
 
     if ! (installed mutt || installed neomutt) || ! installed mbsync; then
@@ -103,12 +85,10 @@ if [ $# -eq 0 ]; then
                     sudo chown --reference=neomutt mutt
                     cd "$OLDPWD" || exit 1
                 fi
-                ARGS="$ARGS mutt"
             fi
 
             if ! installed mbsync; then
                 install isync
-                ARGS="$ARGS isync"
             fi
 
             if ! installed urlscan; then
@@ -119,6 +99,18 @@ if [ $# -eq 0 ]; then
                 install w3m
             fi
         fi
+    fi
+
+    if installed mutt || installed neomutt; then
+        ARGS="$ARGS mutt"
+    fi
+
+    if installed offlineimap; then
+        ARGS="$ARGS offlineimap"
+    fi
+
+    if installed isync || installed mbsync; then
+        ARGS="$ARGS isync"
     fi
 fi
 
@@ -143,8 +135,8 @@ for mod in $ARGS; do
             ;;
         git)
             # Configure git
-            if [ ! -f "$HOME/.gitconfig" ] && [ ! -f "${XDG_CONFIG_HOME:-$HOME/.config}/git/config" ]; then
-                touch "${XDG_CONFIG_DIR:-$HOME/.config}/git/config"
+            if [ ! -f "$HOME"/.gitconfig ] && [ ! -f "${XDG_CONFIG_HOME:-$HOME/.config}"/git/config ]; then
+                touch "${XDG_CONFIG_DIR:-$HOME/.config}"/git/config
             fi
 
             if ! git config --global --get user.name >/dev/null ; then
