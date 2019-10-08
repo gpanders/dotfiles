@@ -40,9 +40,10 @@ function ual
             cd "$NOTES"
             and git pull >/dev/null 2>&1
             and git add .
-            and git commit -n >/dev/null 2>&1
-            and git commit -qv 2>/dev/null
+            and git commit --dry-run >/dev/null 2>&1
+            and git commit --quiet --verbose 2>/dev/null
             and git push >/dev/null 2>&1
+            and cd -
             echo "Done."
         case '*'
             set NOTE "$NOTES"/$argv[1].md
