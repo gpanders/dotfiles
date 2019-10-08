@@ -1,10 +1,12 @@
+text/plain; view %s; test=command -v view
+text/plain; less -R %s
 text/html; w3m -I %{charset} -T text/html
 text/html; w3m -I %{charset} -T text/html; copiousoutput
 text/x-diff; cat %s | colordiff; copiousoutput
 text/x-patch; cat %s | colordiff; copiousoutput
 
 # Images
-image/*; feh %s
+image/*; feh %s; test=command -v feh
 image/*; anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | pgmtopbm | pbmtoascii; test=command -v anytopnm; copiousoutput
 image/*; catimg %s; test=command -v catimg; copiousoutput
 
