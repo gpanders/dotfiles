@@ -91,8 +91,8 @@ if [ $# -eq 0 ]; then
                 install isync
             fi
 
-            if ! installed urlscan; then
-                install urlscan
+            if ! installed urlview; then
+                install urlview
             fi
 
             if ! installed w3m; then
