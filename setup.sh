@@ -138,7 +138,7 @@ for mod in $ARGS; do
             fi
 
             if ! infocmp tmux-256color >/dev/null 2>&1; then
-                tic -x terminfo/tmux-256color.txt
+                tic -x tmux/.local/share/tmux/terminfo/tmux-256color
             fi
             ;;
         git)
