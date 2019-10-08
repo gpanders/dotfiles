@@ -17,13 +17,15 @@ endif
 
 augroup mail
     autocmd!
-    " Place cursor in writing position and start insert mode
-    if g:mail_posting_style ==# 'top'
-        autocmd BufWinEnter <buffer> exe "normal! }2o\<Esc>k" | startinsert
-    elseif g:mail_posting_style ==# 'bottom'
-        autocmd BufWinEnter <buffer> exe "normal! G2o\<Esc>" | startinsert
-    else
-        echohl Error | echom 'Unknown value for g:mail_posting_style' | echohl None
+    if !&readonly && &modifiable
+        " Place cursor in writing position and start insert mode
+        if g:mail_posting_style ==# 'top'
+            autocmd BufWinEnter <buffer> exe "normal! }2o\<Esc>k" | startinsert
+        elseif g:mail_posting_style ==# 'bottom'
+            autocmd BufWinEnter <buffer> exe "normal! G2o\<Esc>" | startinsert
+        else
+            echohl Error | echom 'Unknown value for g:mail_posting_style' | echohl None
+        endif
     endif
 augroup END
 
