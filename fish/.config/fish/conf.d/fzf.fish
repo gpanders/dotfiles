@@ -1,4 +1,4 @@
-if status is-login
+if status is-login; and command -sq fzf
     if command -sq fd
         set -gx FZF_FIND_FILE_COMMAND "fd --type f --hidden --follow --exclude .git"
         set -gx FZF_CD_COMMAND "fd -t d"
