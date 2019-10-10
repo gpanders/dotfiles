@@ -357,13 +357,12 @@ nnoremap ]e :.move +<CR>
 nnoremap [<Space> :<C-U>put! =repeat(nr2char(10), v:count1)<CR><CR>:']+1<CR>
 nnoremap ]<Space> :<C-U>put =repeat(nr2char(10), v:count1)<CR><CR>:'[-1<CR>
 
-nnoremap yon :<C-U>setlocal number!<CR>
-nnoremap yor :<C-U>setlocal relativenumber!<CR>
-nnoremap yol :<C-U>setlocal list!<CR>
-nnoremap yox :<C-U>setlocal cursorline! cursorcolumn!<CR>
-nnoremap yo- :<C-U>setlocal cursorline!<CR>
-nnoremap yo<Bar> :<C-U>setlocal cursorcolumn!<CR>
-nnoremap yod :<C-U>if &diff<Bar>diffoff<Bar>else<Bar>diffthis<Bar>endif<CR>
+nnoremap <expr> yon ':setlocal ' . (&number ? 'no' : '') . "number\<CR>"
+nnoremap <expr> yor ':setlocal ' . (&relativenumber ? 'no' : '') . "relativenumber\<CR>"
+nnoremap <expr> yol ':setlocal ' . (&list ? 'no' : '') . "list\<CR>"
+nnoremap <expr> yoc ':setlocal ' . (&cursorline ? 'no' : '') . "cursorline\<CR>"
+nnoremap <expr> yo<Bar> ':setlocal ' . (&cursorcolumn ? 'no' : '') . "cursorcolumn\<CR>"
+nnoremap <expr> yod ':' . (&diff ? 'diffoff' : 'diffthis') . "\<CR>"
 
 " }}}
 
