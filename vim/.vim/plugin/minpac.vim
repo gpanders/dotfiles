@@ -59,6 +59,10 @@ function! s:PackInit()
         call minpac#add('lervag/vimtex')
         " }}}
 
+        " Markdown {{{
+        call minpac#add('tpope/vim-markdown')
+        " }}}
+
         " Language Server Client
         " call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'rev': 'release'})
 

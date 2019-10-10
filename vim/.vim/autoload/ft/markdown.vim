@@ -47,13 +47,13 @@ endfunction
 function! ft#markdown#eval()
   let view = winsaveview()
   let line = line('.')
-  let start = search('^\s*[`~]\{3,}\S*\s*$', 'bnW')
+  let start = search('^\s*[`~]\{3,}\s*\%({\.\)\?\a\+}\?\s*$', 'bnW')
   if !start
     return
   endif
 
   call cursor(start, 1)
-  let [fence, lang] = matchlist(getline(start), '\([`~]\{3,}\)\(\S\+\)\?')[1:2]
+  let [fence, lang] = matchlist(getline(start), '\([`~]\{3,}\)\s*\%({\.\)\?\(\a\+\)\?')[1:2]
   let end = search('^\s*' . fence . '\s*$', 'nW')
   let langidx = index(map(copy(g:markdown_interp_languages), 'split(v:val, "=")[0]'), lang)
 
