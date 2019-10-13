@@ -10,7 +10,6 @@ set mbox = +Archive
 set trash = +Trash
 
 mailboxes +Drafts
-mailboxes +Trash
 mailboxes +Lists
 mailboxes +Lists/kernelnewbies
 mailboxes +Lists/hackers

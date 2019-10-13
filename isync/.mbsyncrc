@@ -1,9 +1,12 @@
+Create Both
+Expunge Both
+SyncState *
+
 IMAPAccount gpanders
 Host mail.gandi.net
 User greg@gpanders.com
 PassCmd "pass mail/greg@gpanders.com"
 SSLType IMAPS
-CertificateFile /etc/ssl/cert.pem
 
 IMAPStore gpanders-remote
 Account gpanders
@@ -17,5 +20,51 @@ Channel gpanders
 Master :gpanders-remote:
 Slave :gpanders-local:
 Patterns * !Junk !Spam
-Create Both
-SyncState *
+
+IMAPAccount gmail
+Host imap.gmail.com
+User greg.p.anders@gmail.com
+PassCmd "pass apps/gmail.com/isync"
+SSLType IMAPS
+AuthMechs PLAIN
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+Subfolders Verbatim
+Path ~/.mail/gmail/
+Inbox ~/.mail/gmail/Inbox
+
+Channel gmail-inbox
+Master :gmail-remote:
+Slave :gmail-local:
+Patterns INBOX
+
+Channel gmail-sent
+Master :gmail-remote:"[Gmail]/Sent Mail"
+Slave :gmail-local:Sent
+
+Channel gmail-trash
+Master :gmail-remote:"[Gmail]/Trash"
+Slave :gmail-local:Trash
+
+Channel gmail-archive
+Master :gmail-remote:"[Gmail]/All Mail"
+Slave :gmail-local:Archive
+
+Channel gmail-starred
+Master :gmail-remote:"[Gmail]/Starred"
+Slave :gmail-local:Starred
+
+Channel gmail-drafts
+Master :gmail-remote:"[Gmail]/Drafts"
+Slave :gmail-local:Drafts
+
+Group gmail
+Channel gmail-inbox
+Channel gmail-sent
+Channel gmail-trash
+Channel gmail-archive
+Channel gmail-starred
+Channel gmail-drafts
