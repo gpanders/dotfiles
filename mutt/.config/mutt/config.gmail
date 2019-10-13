@@ -1,22 +1,20 @@
 set my_account = gmail
-set folder = imaps://imap.gmail.com
+set folder = ~/.mail/gmail
+set mbox_type = Maildir
 
 set from = "greg.p.anders@gmail.com"
 set spoolfile = +Inbox
-set postponed = "+[Gmail]/Drafts"
+set postponed = +Drafts
 unset record  # Gmail does this by default
-set mbox = "+[Gmail]/All Mail"
-set trash = "+[Gmail]/Trash"
+set mbox = +Archive
+set trash = +Trash
 
-set imap_user = "greg.p.anders@gmail.com"
-set imap_pass = `pass google/apps/mutt`
+mailboxes +Drafts
+mailboxes +Sent
+mailboxes +Trash
+
 set smtp_url = "smtp://greg.p.anders@gmail.com@smtp.gmail.com:587"
-set smtp_pass = `pass google/apps/mutt`
-
-mailboxes "+[Gmail]/Starred"
-mailboxes "+[Gmail]/Drafts"
-mailboxes "+[Gmail]/Sent Mail"
-mailboxes "+[Gmail]/Trash"
+set smtp_pass = `pass apps/gmail.com/mutt`
 
 # Change to next account
 macro index,pager gt "<sync-mailbox><enter-command>source ~/.config/mutt/config.gpanders<enter><change-folder>!<enter>" "change account"
