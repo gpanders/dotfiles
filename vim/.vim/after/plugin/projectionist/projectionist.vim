@@ -16,7 +16,7 @@ endfunction
 
 function! s:activate()
   " Binary (on/off) settings
-  for opt in ['expandtab']
+  for opt in ['expandtab', 'readonly', 'modifiable']
     for [root, value] in projectionist#query(opt)
       execute 'setlocal' (!value ? 'no' : '') . opt
     endfor
