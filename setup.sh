@@ -55,7 +55,11 @@ if [ $# -eq 0 ]; then
         ARGS="$ARGS alacritty"
     fi
 
-    for mod in ctags fish khard pandoc ranger tmux vdirsyncer weechat zsh; do
+    if installed ranger; then
+        ARGS="$ARGS ranger"
+    fi
+
+    for mod in ctags fish khard pandoc tmux vdirsyncer weechat zsh; do
         if installed $mod || (ask "Install $mod?" && install $mod); then
             ARGS="$ARGS $mod"
         fi
