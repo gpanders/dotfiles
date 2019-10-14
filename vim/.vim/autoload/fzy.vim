@@ -38,4 +38,5 @@ function! fzy#tags()
     let file = tempname()
     call writefile(tags, file)
     call s:fzy('cat ' . file, {t -> execute('tag ' . split(t)[0])}, 'tags')
+    call delete(file)
 endfunction
