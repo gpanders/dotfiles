@@ -66,14 +66,14 @@ nmap <Bslash>gr <Plug>(ale_find_references)
 if get(g:, 'ale_completion_enabled')
     " See :h ale-completion-completeopt-bug
     set completeopt=menu,menuone,preview,noselect,noinsert
-    set omnifunc=ale#completion#OmniFunc
-    imap <C-Space> <Plug>(ale_complete)
 endif
 
 function! s:lsp_setup()
     if empty(filter(ale#linter#Get(&filetype), {_, v -> !empty(v.lsp)}))
         return
     endif
+
+    setlocal omnifunc=ale#completion#OmniFunc
     nnoremap <buffer> <C-]> :<C-U>ALEGoToDefinition<CR>
     nnoremap <buffer> <C-W>] :<C-U>ALEGoToDefinitionInSplit<CR>
     nnoremap <buffer> <C-W><C-]> :<C-U>ALEGoToDefinitionInSplit<CR>
@@ -92,7 +92,7 @@ augroup plugin.ale
     autocmd!
     autocmd OptionSet modifiable,readonly call <SID>toggle()
     autocmd BufWinEnter * call <SID>toggle(0)
-    autocmd BufReadPost * call <SID>lsp_setup()
+    autocmd FileType * call <SID>lsp_setup()
 augroup END
 
 let &cpo = s:save_cpo
