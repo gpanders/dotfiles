@@ -17,6 +17,9 @@ mailboxes +Lists/neomutt-users
 mailboxes +Lists/zsh-users
 mailboxes +Trash
 
+# Mailing Lists
+source ~/.config/mutt/lists
+
 set smtp_url = "smtp://greg@gpanders.com@mail.gandi.net:587"
 set smtp_pass = `pass mail/greg@gpanders.com`
 
