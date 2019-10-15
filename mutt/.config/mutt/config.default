@@ -6,6 +6,6 @@ mailboxes >
 unsubscribe *
 
 # Update the status bar with the new value of the $my_account variable
-set status_format = "───[ Account: $my_account ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+set status_format = "───[ Account: $my_account ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───────────[ Prev: $my_prev_account, Next: $my_next_account ]─────"
 
 # vim: ft=muttrc

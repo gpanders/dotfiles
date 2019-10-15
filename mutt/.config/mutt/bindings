@@ -5,8 +5,10 @@ bind  index       G   last-entry
 bind  index       ^   imap-fetch-mail
 bind  index       <space> collapse-thread
 
-bind  index,pager ]   next-undeleted
-bind  index,pager [   previous-undeleted
+bind  index,pager \Cj   next-undeleted
+bind  index,pager \Ck   previous-undeleted
+bind  index,pager ]]   next-undeleted
+bind  index,pager [[   previous-undeleted
 
 # Navigate like vim
 bind  index,pager \Cu previous-page
@@ -42,6 +44,10 @@ macro index,pager A ":set resolve=no<enter><clear-flag>N<save-message>\><enter>:
 # Return to the inbox from anywhere
 macro index,pager gi "<change-folder>!<enter>" "go to inbox"
 macro index,pager ga "<change-folder>\><enter>" "go to archive"
+
+# Change accounts
+macro index,pager ]a "<sync-mailbox><enter-command>source ~/.config/mutt/config.$my_next_account<enter><change-folder>!<enter>" "change account"
+macro index,pager [a "<sync-mailbox><enter-command>source ~/.config/mutt/config.$my_prev_account<enter><change-folder>!<enter>" "change account"
 
 # View urls within a message with urlview
 macro index,pager \Cb "<pipe-message> urlview<enter>" "call urlview to extract URLs out of a message"
