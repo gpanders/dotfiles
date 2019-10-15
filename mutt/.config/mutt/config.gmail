@@ -1,4 +1,6 @@
 set my_account = gmail
+set my_prev_account = gpanders
+set my_next_account = gpanders
 set folder = ~/.mail/gmail
 set mbox_type = Maildir
 
@@ -15,8 +17,5 @@ mailboxes +Trash
 
 set smtp_url = "smtp://greg.p.anders@gmail.com@smtp.gmail.com:587"
 set smtp_pass = `pass apps/gmail.com/mutt`
-
-# Change to next account
-macro index,pager gt "<sync-mailbox><enter-command>source ~/.config/mutt/config.gpanders<enter><change-folder>!<enter>" "change account"
 
 # vim: ft=neomuttrc
