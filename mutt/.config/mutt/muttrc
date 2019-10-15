@@ -102,9 +102,6 @@ alternative_order text/plain text/enriched text/html
 
 set query_command = "khard email --parsable --search-in-source-files '%s'"
 
-# Mailing Lists
-source ~/.config/mutt/lists
-
 # Colorized diffs and patches
 source ~/.config/mutt/diffs
 
