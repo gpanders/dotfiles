@@ -5,10 +5,12 @@
 setlocal formatoptions+=wa
 setlocal wrapmargin=0
 setlocal nonumber
-setlocal digraph
 setlocal nolist
+setlocal spell
+let b:undo_ftplugin .= '|setl fo< wm< nu< list< spell<'
 
-syntax clear TrailingWhitespace
+let b:highlight_trailing_whitespace = 0
+let b:undo_ftplugin .= '|unlet! b:highlight_trailing_whitespace'
 
 " See https://en.wikipedia.org/wiki/Posting_style
 if !exists('g:mail_posting_style')
@@ -28,5 +30,4 @@ augroup mail
         endif
     endif
 augroup END
-
-let b:undo_ftplugin .= '|setl fo< wm< nu< dg< list<|au! mail * <buffer>'
+let b:undo_ftplugin .= '|au! mail * <buffer>'
