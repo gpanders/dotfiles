@@ -9,7 +9,7 @@ auto_view text/x-patch
 set allow_ansi
 
 set realname = "Greg Anders"
-set editor = `echo \$EDITOR`
+set editor = "`echo \$EDITOR`"
 set use_from = yes
 set use_envelope_from = yes
 
@@ -106,8 +106,8 @@ set query_command = "khard email --parsable --search-in-source-files '%s'"
 source ~/.config/mutt/diffs
 
 # Cache message headers and bodies
-set message_cachedir = ~/.cache/mutt/cache
-set header_cache = ~/.cache/mutt/cache
+set message_cachedir = ~/.cache/mutt
+set header_cache = ~/.cache/mutt
 
 # Where to store certificates
 set certificate_file = ~/.config/mutt/certificates
@@ -135,7 +135,7 @@ source ~/.config/mutt/colors/base16.muttrc
 source ~/.config/mutt/bindings
 
 # Sidebar
-source ~/.config/mutt/sidebar
+# source ~/.config/mutt/sidebar
 
 # Set up notmuch virtual mailboxes
 ifdef notmuch "set nm_default_uri = notmuch://`notmuch config get database.path`"
