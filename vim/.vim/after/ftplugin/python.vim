@@ -1,22 +1,6 @@
 " Python specific settings
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
-" gz opens a split window with a python shell
-if !exists('g:pyterm_cmd')
-  for s:cmd in ['ipython', 'python3', 'python']
-    if executable(s:cmd)
-      let g:pyterm_cmd = s:cmd
-      break
-    endif
-  endfor
-  unlet s:cmd
-endif
-
-if exists('g:pyterm_cmd')
-  nnoremap <silent> <buffer> gz :<C-U>call easyterm#open(g:pyterm_cmd)<CR>
-  let b:undo_ftplugin .= '|nun <buffer> gz'
-endif
-
 " Set textwidth to 88 to mimic black
 setlocal textwidth=88
 

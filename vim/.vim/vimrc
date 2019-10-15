@@ -46,6 +46,21 @@ if !has('nvim')
   let &t_SR = "\e[4 q"
   " Block in normal mode
   let &t_EI = "\e[2 q"
+
+  let s:datadir = vim#datadir()
+  let &backupdir = s:datadir . '/backup//' . ',' . &backupdir
+  let &undodir = s:datadir . '/undo//' . ',' . &undodir
+  let &directory = s:datadir . '/swap//' . ',' . &directory
+
+  " Create directories if they don't exist
+  if exists('*mkdir')
+    for opt in [&backupdir, &undodir, &directory]
+      let dir = simplify(split(opt, ',')[0])
+      if !isdirectory(dir)
+        call mkdir(dir, 'p')
+      endif
+    endfor
+  endif
 endif
 " }}}
 
@@ -94,8 +109,6 @@ highlight link TrailingWhitespace Error
 " }}}
 
 " Settings {{{
-set backup
-set completeopt^=menuone
 set confirm
 set cursorline
 set expandtab
@@ -113,9 +126,6 @@ set showmatch
 set sidescrolloff=5
 set smartcase
 set softtabstop=4
-set splitbelow
-set splitright
-set nostartofline
 set noswapfile
 silent! set tagcase=match
 set tags^=./.git/tags;
@@ -168,50 +178,18 @@ setglobal isfname+=@-@
 set grepformat^=%f:%l:%c:%m
 if executable('rg')
   " Use rg over grep
-  set grepprg=rg\ --vimgrep\ --smart-case\ --hidden\ --glob\ '!.git'
+  set grepprg=rg\ --vimgrep\ --smart-case
 elseif executable('ag')
   " Use ag over grep
-  set grepprg=ag\ --vimgrep\ --smart-case\ --hidden\ --ignore\ '.git'
+  set grepprg=ag\ --vimgrep\ --smart-case
 elseif executable('grep')
   set grepprg=grep\ --line-number\ --recursive\ -I\ $*\ *
 else
   set grepprg=internal
 endif
 
-" GUI settings
-if has('gui_running')
-  set lines=60
-  set columns=180
-  if has('win32')
-    set guioptions-=t
-  endif
-endif
-
-" Keep data files in a single location (nvim does this by default)
-if !has('nvim')
-  let s:datadir = vim#datadir()
-  let &backupdir = s:datadir . '/backup//' . ',' . &backupdir
-  let &undodir = s:datadir . '/undo//' . ',' . &undodir
-  let &directory = s:datadir . '/swap//' . ',' . &directory
-
-  " Create directories if they don't exist
-  if exists('*mkdir')
-    for opt in [&backupdir, &undodir, &directory]
-      let dir = simplify(split(opt, ',')[0])
-      if !isdirectory(dir)
-        call mkdir(dir, 'p')
-      endif
-    endfor
-  endif
-endif
-
-if filereadable(vim#cachedir() . '/tags')
-  let &tags .= ',' . vim#cachedir() . '/tags'
-endif
-
-" Set dictionary if it exists
-if empty(&dictionary) && filereadable('/usr/share/dict/words')
-  set dictionary+=/usr/share/dict/words
+if filereadable($VIMHOME . '/tags')
+  let &tags .= ',' . $VIMHOME . '/tags'
 endif
 
 " Enable histogram diff
@@ -236,15 +214,6 @@ inoremap <CR> <C-]><C-G>u<CR>
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
 
-" Insert current date with <C-\>d
-inoremap <silent> <C-\>d <C-R>=strftime('%Y-%m-%d')<CR>
-
-" Insert current filename with <C-\>f
-inoremap <silent> <C-\>f <C-R>=expand('%:t')<CR>
-
-" Insert full path to file with <C-\>F
-inoremap <silent> <C-\>F <C-R>=expand('%:p')<CR>
-
 " Copy line above/below (similar to <C-Y>/<C-E> but works on the whole line)
 inoremap <expr> <C-G><C-Y> repeat('<C-Y>', len(getline(line('.')-1))-col('.')+1)
 inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
@@ -264,14 +233,8 @@ nnoremap Y y$
 " Switch to previous buffer
 nnoremap <BS> <C-^>
 
-" Navigate through wrapped lines individually
-nnoremap gj j
-nnoremap gk k
-nnoremap <expr> j v:count ? 'j' : 'gj'
-nnoremap <expr> k v:count ? 'k' : 'gk'
-
 " Map Q to gq
-noremap Q gqap
+noremap Q gq
 
 " Write file with <Space>w
 nnoremap <Space>w :w<CR>
@@ -328,20 +291,13 @@ nnoremap <Space>gq mzHmygggqG`yzt`z
 " Modify contents of a register
 nnoremap yr :<C-\>e'let @' . v:register . ' = ' . string(getreg(v:register))<CR><C-F>
 
-" Show marks
-nnoremap <Space>m :marks<CR>:norm! `
-
-" Show only user placed marks (A-Z and a-z)
-let s:alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-execute 'nnoremap <Space>M :marks ' . s:alphabet . '<CR>'
-unlet s:alphabet
-
 " Allow [[ and friends to work when opening brace is not in the first column
 noremap <silent> [[ ?{<CR>w99[{:let @/ = ''<CR>
 noremap <silent> ][ /}<CR>b99]}:let @/ = ''<CR>
 noremap <silent> ]] j0?{<CR>w99[{%/{<CR>:let @/ = ''<CR>
 noremap <silent> [] k$/}<CR>b99]}%?}<CR>:let @/ = ''<CR>
 
+" Unimpaired style mappings
 for s:ch in ['a', 'b', 'l', 'q', 't']
     let s:up = toupper(s:ch)
     exe 'nnoremap <expr> [' . s:ch . ' bracket#left(''' . s:ch . ''')'
@@ -351,8 +307,8 @@ for s:ch in ['a', 'b', 'l', 'q', 't']
 endfor
 unlet s:ch s:up
 
-nnoremap [e :.move --<CR>
-nnoremap ]e :.move +<CR>
+nnoremap <expr> [e ":\<C-U>.move --" . v:count1 . "\<CR>"
+nnoremap <expr> ]e ":\<C-U>.move +" . v:count1 . "\<CR>"
 
 nnoremap [<Space> :<C-U>put! =repeat(nr2char(10), v:count1)<CR><CR>:']+1<CR>
 nnoremap ]<Space> :<C-U>put =repeat(nr2char(10), v:count1)<CR><CR>:'[-1<CR>
@@ -388,8 +344,6 @@ endif
 " Command {{{
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
-
-cnoremap <C-X><C-E> <C-F>
 
 if has('nvim') && &wildoptions =~# 'pum'
   cnoremap <expr> <C-J> pumvisible() ? "\<Down>\<Tab>" : "\<C-J>"
@@ -465,10 +419,7 @@ autocmd Syntax * call s:highlight_trailing_whitespace()
 " Enable omnicompletion from syntax if no other option available
 " See :h ft-syntax-omni
 if exists('+omnifunc')
-  autocmd FileType *
-        \ if &omnifunc == '' |
-        \   setlocal omnifunc=syntaxcomplete#Complete |
-        \ endif
+  autocmd FileType * if &omnifunc == '' | setlocal omnifunc=syntaxcomplete#Complete | endif
 endif
 
 augroup END
