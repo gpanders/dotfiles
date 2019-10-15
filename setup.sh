@@ -173,7 +173,8 @@ for mod in $ARGS; do
             git config --global alias.l log
             git config --global alias.m merge
             git config --global alias.p push
-            git config --global alias.re reset
+            git config --global alias.rb 'rebase --autostash'
+            git config --global alias.rs reset
             git config --global alias.st status
             git config --global alias.snapshot "!git stash && git stash apply -q"
             git config --global alias.t tag
