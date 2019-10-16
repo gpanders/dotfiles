@@ -1,18 +1,18 @@
 [general]
 status_path = "~/.local/share/vdirsyncer/status/"
 
-[pair contacts]
-a = "local"
-b = "nextcloud"
+[pair nextcloud]
+a = "nextcloud_local"
+b = "nextcloud_remote"
 collections = ["from a", "from b"]
 conflict_resolution = ["command", "vimdiff"]
 
-[storage local]
+[storage nextcloud_local]
 type = "filesystem"
-path = "~/.contacts/"
+path = "~/.contacts/nextcloud/"
 fileext = ".vcf"
 
-[storage nextcloud]
+[storage nextcloud_remote]
 type = "carddav"
 url = "https://cloud.gpanders.com/"
 username = "gpanders"
