@@ -32,7 +32,7 @@ bind editor ^T    complete
 macro index,pager a "<pipe-message>khard add-email<enter>" "add the sender email address to khard"
 
 # Show mailbox listing by default
-macro index,pager c  <change-folder>? "open a different folder"
+macro index,pager c  <change-folder>?<tab> "open a different folder"
 
 # For some reason the screen gets borked after closing a message and requires
 # a redraw

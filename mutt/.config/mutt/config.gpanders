@@ -11,13 +11,11 @@ set record = +Sent
 set mbox = +Archive
 set trash = +Trash
 
-mailboxes +Drafts
 mailboxes +Lists
 mailboxes +Lists/kernelnewbies
 mailboxes +Lists/hackers
 mailboxes +Lists/neomutt-users
 mailboxes +Lists/zsh-users
-mailboxes +Trash
 
 # Mailing Lists
 source ~/.config/mutt/lists

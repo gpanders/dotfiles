@@ -11,10 +11,6 @@ unset record  # Gmail does this by default
 set mbox = +Archive
 set trash = +Trash
 
-mailboxes +Drafts
-mailboxes +Sent
-mailboxes +Trash
-
 set smtp_url = "smtp://greg.p.anders@gmail.com@smtp.gmail.com:587"
 set smtp_pass = `pass apps/gmail.com/mutt`
 
