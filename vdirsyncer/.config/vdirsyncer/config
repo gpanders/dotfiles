@@ -1,21 +1,36 @@
 [general]
 status_path = "~/.local/share/vdirsyncer/status/"
 
-[pair nextcloud]
-a = "nextcloud_local"
-b = "nextcloud_remote"
+[pair my_contacts]
+a = "my_contacts_local"
+b = "my_contacts_remote"
 collections = ["from a", "from b"]
 conflict_resolution = ["command", "vimdiff"]
 
-[storage nextcloud_local]
+[storage my_contacts_local]
 type = "filesystem"
-path = "~/.contacts/nextcloud/"
+path = "~/.local/share/khard/contacts/personal/"
 fileext = ".vcf"
 
-[storage nextcloud_remote]
+[storage my_contacts_remote]
 type = "carddav"
 url = "https://cloud.gpanders.com/"
 username = "gpanders"
 password.fetch = ["command", "pass", "apps/cloud.gpanders.com/vdirsyncer"]
 
-# vim: ft=toml
+[pair my_calendar]
+a = "my_calendar_local"
+b = "my_calendar_remote"
+collections = [["calendar", "calendar", "my-calendar"], "family"]
+conflict_resolution = ["command", "vimdiff"]
+
+[storage my_calendar_local]
+type = "filesystem"
+path = "~/.local/share/khal/calendars/personal/"
+fileext = ".ics"
+
+[storage my_calendar_remote]
+type = "caldav"
+url = "https://cloud.gpanders.com/"
+username = "gpanders"
+password.fetch = ["command", "pass", "apps/cloud.gpanders.com/vdirsyncer"]
