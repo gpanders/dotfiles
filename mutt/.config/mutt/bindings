@@ -28,6 +28,9 @@ bind attach <return> view-mailcap
 bind editor <tab> complete-query
 bind editor ^T    complete
 
+# Convert markdown emails to HTML
+macro compose     B "<enter-command>set my_wait_key=\$wait_key<enter><enter-command>unset wait_key<enter><shell-escape>rm -f ~/.cache/mutt/msg.txt<enter><copy-file>~/.cache/mutt/msg.txt<enter><filter-entry>pandoc -s -f markdown-blank_before_blockquote -t html5 2>/dev/null<enter>y<edit-type>^Utext/html; charset=utf-8<enter><attach-file>~/.cache/mutt/msg.txt<enter><previous-entry><tag-entry><tag-entry><group-alternatives><enter-command>set wait_key=\$my_wait_key<enter>" "convert Markdown email to multipart/alternative with HTML"
+
 # Save new addresses to address book
 macro index,pager a "<pipe-message>khard add-email<enter>" "add the sender email address to khard"
 
