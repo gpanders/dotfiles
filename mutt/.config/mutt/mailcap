@@ -1,6 +1,6 @@
 text/plain; view %s; test=command -v view
 text/plain; less -R %s
-text/html; w3m -I %{charset} -T text/html
+text/html; open -a firefox '%s'; test=test -n "$DISPLAY"; nametemplate=%s.html; needsterminal
 text/html; w3m -I %{charset} -T text/html; copiousoutput
 text/x-diff; cat %s | colordiff; copiousoutput
 text/x-patch; cat %s | colordiff; copiousoutput

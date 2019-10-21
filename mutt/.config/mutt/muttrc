@@ -3,6 +3,7 @@
 # Settings for handling MIME types
 set mailcap_path = ~/.config/mutt/mailcap
 alternative_order text/plain text/enriched text/html
+unauto_view *
 auto_view text/html
 auto_view text/x-diff
 auto_view text/x-patch
@@ -70,6 +71,10 @@ set folder_format = "%t %N %-20.20f %?n?%8n?"
 
 # Remove delay between switching folders
 set sleep_time = 0
+
+# Include attachments when forwarding messages
+set mime_forward
+set mime_forward_rest = yes
 
 # Ignore all headers except the ones listed
 ignore *
