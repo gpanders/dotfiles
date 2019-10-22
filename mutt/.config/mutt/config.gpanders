@@ -11,16 +11,20 @@ set record = +Sent
 set mbox = +Archive
 set trash = +Trash
 
+set query_command = "khard email --parsable --search-in-source-files '%s'"
+
+set smtp_url = "smtp://greg@gpanders.com@mail.gandi.net:587"
+set smtp_pass = `pass mail/greg@gpanders.com`
+
 mailboxes +Lists
 mailboxes +Lists/kernelnewbies
 mailboxes +Lists/hackers
 mailboxes +Lists/neomutt-users
 mailboxes +Lists/zsh-users
 
-# Mailing Lists
-source ~/.config/mutt/lists
-
-set smtp_url = "smtp://greg@gpanders.com@mail.gandi.net:587"
-set smtp_pass = `pass mail/greg@gpanders.com`
+subscribe ^kernelnewbies@kernelnewbies\\.org$
+subscribe ^neomutt-users@neomutt\\.org$
+subscribe ^hackers@suckless\\.org$
+subscribe ^zsh-users@zsh\\.org$
 
 # vim: ft=neomuttrc

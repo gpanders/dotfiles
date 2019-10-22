@@ -5,7 +5,7 @@
 # --------------------------------------------------------------------------
 
 # Should the Sidebar be shown?
-set sidebar_visible = yes
+set sidebar_visible = no
 
 # How wide should the Sidebar be in screen columns?
 # Note: Some characters, e.g. Chinese, take up two columns each.

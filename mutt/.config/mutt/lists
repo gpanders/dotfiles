@@ -1,6 +1,0 @@
-subscribe ^kernelnewbies@kernelnewbies\\.org$
-subscribe ^neomutt-users@neomutt\\.org$
-subscribe ^hackers@suckless\\.org$
-subscribe ^zsh-users@zsh\\.org$
-
-# vim: ft=neomuttrc

@@ -11,6 +11,8 @@ unset record  # Gmail does this by default
 set mbox = +Archive
 set trash = +Trash
 
+set query_command = "khard email --parsable --search-in-source-files '%s'"
+
 set smtp_url = "smtp://greg.p.anders@gmail.com@smtp.gmail.com:587"
 set smtp_pass = `pass apps/gmail.com/mutt`
 
