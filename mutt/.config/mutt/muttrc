@@ -24,7 +24,7 @@ set forward_format = "Fwd: %s"
 set forward_decode
 
 # Format of quoting header
-set attribution = "On %{!%a, %d %b %Y at %r %Z}, %n wrote:"
+set attribution = "On %{!%a, %d %b %Y at %I:%M %p}, %n wrote:"
 
 # Reply to Reply to: field
 set reply_to
@@ -46,9 +46,6 @@ set send_charset = "utf-8"
 
 # Require that all connections to remote servers be encyrpted
 set ssl_force_tls = yes
-
-# Allow headers to be editable
-set edit_headers = yes
 
 # Enable text_flowed formatting
 set text_flowed
@@ -105,8 +102,6 @@ unset markers
 set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
 alternative_order text/plain text/enriched text/html
 
-set query_command = "khard email --parsable --search-in-source-files '%s'"
-
 # Colorized diffs and patches
 source ~/.config/mutt/diffs
 
@@ -117,12 +112,8 @@ set header_cache = ~/.cache/mutt
 # Where to store certificates
 set certificate_file = ~/.config/mutt/certificates
 
-# Set status bar. The $my_account variable should be set in each of the account
-# configuration files (e.g. config.{account}). The status_format is also set in
-# the default folder-hook so that the account name is updated when changing
-# accounts
+# Don't show an indicator when mailbox is unchanged
 set status_chars = " *%A"
-set status_format = "───[ Account: $my_account ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
 
 # Allow Mutt to open a new IMAP connection automatically
 unset imap_passive
@@ -140,7 +131,7 @@ source ~/.config/mutt/colors/base16.muttrc
 source ~/.config/mutt/bindings
 
 # Sidebar
-# source ~/.config/mutt/sidebar
+source ~/.config/mutt/sidebar
 
 # Set up notmuch virtual mailboxes
 ifdef notmuch "set nm_default_uri = notmuch://`notmuch config get database.path`"
