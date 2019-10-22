@@ -67,10 +67,10 @@ function! s:PackInit()
         " call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'rev': 'release'})
 
         " Asynchronous linting
-        call minpac#add('dense-analysis/ale', {'type': 'opt'})
+        call minpac#add('dense-analysis/ale')
 
         " Colorschemes
-        call minpac#add('chriskempson/base16-vim', {'type': 'opt'})
+        call minpac#add('gpanders/base16-vim', {'type': 'opt'})
     endif
 endfunction
 
