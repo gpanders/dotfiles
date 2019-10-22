@@ -41,9 +41,6 @@ macro index,pager c  <change-folder>?<tab> "open a different folder"
 # a redraw
 macro pager       q   <exit><refresh>
 
-# Move messages to the $mbox folder
-macro index,pager A ":set resolve=no<enter><clear-flag>N<save-message>\><enter>:set resolve=yes<enter><sync-mailbox><refresh>" "archive message"
-
 # Return to the inbox from anywhere
 macro index,pager gi "<change-folder>!<enter>" "go to inbox"
 macro index,pager ga "<change-folder>\><enter>" "go to archive"

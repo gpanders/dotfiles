@@ -15,5 +15,11 @@ set query_command = "khard email --parsable --search-in-source-files '%s'"
 
 set smtp_url = "smtp://greg.p.anders@gmail.com@smtp.gmail.com:587"
 set smtp_pass = `pass apps/gmail.com/mutt`
+set smtp_authenticators = "login"
+
+# In Gmail, messages are already in the Archive ("All Mail") folder so moving
+# them there just creates a duplicate.  So instead, delete the message from the
+# Inbox, but unset `trash` first so it's not copied to the trash folder
+macro index,pager A "<enter-command>set my_trash=\$trash<enter><enter-command>unset trash<enter><delete-message><sync-mailbox><enter-command>set trash=\$my_trash<enter><refresh>" "archive message"
 
 # vim: ft=neomuttrc
