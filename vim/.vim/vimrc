@@ -1,5 +1,4 @@
 " Greg Anders (gpanders)'s vimrc <https://github.com/gpanders/dotfiles.git>
-scriptencoding utf8
 
 " Normalization {{{
 if !has('nvim')
@@ -109,6 +108,7 @@ highlight link TrailingWhitespace Error
 " }}}
 
 " Settings {{{
+set backup
 set confirm
 set cursorline
 set expandtab
@@ -161,7 +161,7 @@ let &colorcolumn = '+' . join(range(1, 256), ',+')
 " Indent wrapped lines
 if has('linebreak')
   set breakindent
-  set showbreak=↪\ 
+  set showbreak=>\ 
 endif
 
 " Specify whitespace chars

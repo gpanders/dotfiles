@@ -20,12 +20,6 @@ if exists('*g:Base16hi')
   call g:Base16hi('StatuslineModeInsert', g:base16_gui0D, '', g:base16_cterm0D, '')
   call g:Base16hi('StatuslineModeReplace', g:base16_gui08, '', g:base16_cterm08, '')
   call g:Base16hi('StatuslineModeVisual', g:base16_gui0E, '', g:base16_cterm0E, '')
-
-  call g:Base16hi('SpellBad', '', '', g:base16_cterm08, 'NONE')
-  call g:Base16hi('SpellCap', '', '', g:base16_cterm0D, 'NONE')
-  call g:Base16hi('SpellRare', '', '', g:base16_cterm0E, 'NONE')
-  call g:Base16hi('SpellLocal', '', '', g:base16_cterm0C, 'NONE')
-  call g:Base16hi('WildMenu', g:base16_gui07, g:base16_gui02, g:base16_cterm07, g:base16_cterm02)
 endif
 
 unlet g:did_user_colors
