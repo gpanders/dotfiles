@@ -1,9 +1,13 @@
-syn region mailItalic matchgroup=mailItalicDelimiter start="\S\@<=\*\|\*\S\@=" end="\S\@<=\*\|\*\S\@=" keepend contains=mailLineStart,@Spell
-syn region mailItalic matchgroup=mailItalicDelimiter start="\S\@<=_\|_\S\@=" end="\S\@<=_\|_\S\@=" keepend contains=mailLineStart,@Spell
-syn region mailBold matchgroup=mailBoldDelimiter start="\S\@<=\*\*\|\*\*\S\@=" end="\S\@<=\*\*\|\*\*\S\@=" keepend contains=mailLineStart,mailItalic,@Spell
-syn region mailBold matchgroup=mailBoldDelimiter start="\S\@<=__\|__\S\@=" end="\S\@<=__\|__\S\@=" keepend contains=mailLineStart,mailItalic,@Spell
-syn region mailBoldItalic matchgroup=mailBoldItalicDelimiter start="\S\@<=\*\*\*\|\*\*\*\S\@=" end="\S\@<=\*\*\*\|\*\*\*\S\@=" keepend contains=mailLineStart,@Spell
-syn region mailBoldItalic matchgroup=mailBoldItalicDelimiter start="\S\@<=___\|___\S\@=" end="\S\@<=___\|___\S\@=" keepend contains=mailLineStart,@Spell
+syn region mailItalic matchgroup=mailItalicDelimiter start="\S\@<=\*\|\*\S\@=" end="\S\@<=\*\|\*\S\@=" keepend contains=@Spell
+syn region mailItalic matchgroup=mailItalicDelimiter start="\S\@<=_\|_\S\@=" end="\S\@<=_\|_\S\@=" keepend contains=@Spell
+syn region mailBold matchgroup=mailBoldDelimiter start="\S\@<=\*\*\|\*\*\S\@=" end="\S\@<=\*\*\|\*\*\S\@=" keepend contains=mailItalic,@Spell
+syn region mailBold matchgroup=mailBoldDelimiter start="\S\@<=__\|__\S\@=" end="\S\@<=__\|__\S\@=" keepend contains=mailItalic,@Spell
+syn region mailBoldItalic matchgroup=mailBoldItalicDelimiter start="\S\@<=\*\*\*\|\*\*\*\S\@=" end="\S\@<=\*\*\*\|\*\*\*\S\@=" keepend contains=@Spell
+syn region mailBoldItalic matchgroup=mailBoldItalicDelimiter start="\S\@<=___\|___\S\@=" end="\S\@<=___\|___\S\@=" keepend contains=@Spell
+
+syn region mailCode matchgroup=mailCodeDelimiter start="`" end="`" keepend
+syn region mailCode matchgroup=mailCodeDelimiter start="`` \=" end=" \=``" keepend
+syn region mailCode matchgroup=mailCodeDelimiter start="^\s*````*.*$" end="^\s*````*\ze\s*$" keepend
 
 hi def mailBold                term=bold cterm=bold gui=bold
 hi def mailBoldUnderline       term=bold,underline cterm=bold,underline gui=bold,underline
@@ -16,3 +20,4 @@ hi def mailItalic              term=italic cterm=italic gui=italic
 hi def link mailItalicDelimiter       mailItalic
 hi def link mailBoldDelimiter         mailBold
 hi def link mailBoldItalicDelimiter   mailBoldItalic
+hi def link mailCodeDelimiter         Delimiter
