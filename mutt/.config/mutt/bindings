@@ -1,57 +1,61 @@
 # g is group-reply by default, we'll map that to R instead
-bind  index,pager g   noop
-bind  index       gg  first-entry
-bind  index       G   last-entry
-bind  index       ^   imap-fetch-mail
-bind  index       <space> collapse-thread
+bind  index,pager g noop
+bind  index,query gg first-entry
+bind  index,query G last-entry
+bind  index ^ imap-fetch-mail
+bind  index <space> collapse-thread
 
-bind  index,pager \Cj   next-undeleted
-bind  index,pager \Ck   previous-undeleted
-bind  index,pager ]]   next-undeleted
-bind  index,pager [[   previous-undeleted
+bind  index,pager \Cj next-undeleted
+bind  index,pager \Ck previous-undeleted
+bind  index,pager ]] next-undeleted
+bind  index,pager [[ previous-undeleted
 
 # Navigate like vim
-bind  index,pager \Cu previous-page
-bind  index,pager \Cd next-page
-bind  pager       j   next-line
-bind  pager       k   previous-line
-macro pager       gg  <top><refresh>
-macro pager       G   <bottom><refresh>
+bind  index,pager,query \Cu previous-page
+bind  index,pager,query \Cd next-page
+bind  pager j next-line
+bind  pager k previous-line
+macro pager gg <top><refresh>
+macro pager G <bottom><refresh>
 
 # Bind R to group-reply
-bind  index,pager R   group-reply
+bind  index,pager R group-reply
 
 # View attachments properly
 bind attach <return> view-mailcap
 
-# Complete aliases from `query_command`
-bind editor <tab> complete-query
-bind editor ^T    complete
-
 # Convert markdown emails to HTML
-macro compose     B "<enter-command>set my_wait_key=\$wait_key<enter><enter-command>unset wait_key<enter><shell-escape>rm -f ~/.cache/mutt/msg.txt<enter><copy-file>~/.cache/mutt/msg.txt<enter><filter-entry>pandoc -s -f markdown-blank_before_blockquote -t html5 2>/dev/null<enter>y<edit-type>^Utext/html; charset=utf-8<enter><attach-file>~/.cache/mutt/msg.txt<enter><previous-entry><tag-entry><tag-entry><group-alternatives><enter-command>set wait_key=\$my_wait_key<enter>" "convert Markdown email to multipart/alternative with HTML"
+macro compose K \
+"<enter-command>set my_wait_key=\$wait_key<enter><enter-command>unset wait_key<enter>\
+<enter-command>set my_pipe_decode=\$pipe_decode<enter>enter-command>set pipe_decode<enter>\
+<pipe-entry>pandoc -s -f markdown-blank_before_blockquote -o /tmp/mutt-msg.html 2>/dev/null<enter>\
+<attach-file>/tmp/mutt-msg.html<enter>\
+<previous-entry><tag-entry><tag-entry><group-alternatives>\
+<enter-command>set pipe_decode=\$my_pipe_decode<enter>\
+<enter-command>set wait_key=\$my_wait_key<enter>" \
+"convert Markdown email to HTML and send as multipart/alternative"
 
 # Save new addresses to address book
 macro index,pager a "<pipe-message>khard add-email<enter>" "add the sender email address to khard"
 
 # Show mailbox listing by default
-macro index,pager c  <change-folder>?<tab> "open a different folder"
+macro index,pager c <change-folder>?<tab> "open a different folder"
 
 # For some reason the screen gets borked after closing a message and requires
 # a redraw
-macro pager       q   <exit><refresh>
+macro pager q <exit><refresh>
 
 # Return to the inbox from anywhere
-macro index,pager gi "<change-folder>!<enter>" "go to inbox"
-macro index,pager ga "<change-folder>\><enter>" "go to archive"
+macro index,pager gi <change-folder>!<enter> "go to inbox"
+macro index,pager ga <change-folder>\><enter> "go to archive"
 
 # Change accounts
 macro index,pager ]a "<sync-mailbox><enter-command>source ~/.config/mutt/config.$my_next_account<enter><change-folder>!<enter>" "change account"
 macro index,pager [a "<sync-mailbox><enter-command>source ~/.config/mutt/config.$my_prev_account<enter><change-folder>!<enter>" "change account"
 
 # View urls within a message with urlview
-macro index,pager \Cb "<pipe-message> urlview<enter>" "call urlview to extract URLs out of a message"
-macro attach,compose \Cb "<pipe-entry> urlview<enter>" "call urlview to extract URLs out of a message"
+macro index,pager \Cb <pipe-message>urlview<enter> "call urlview to extract URLs out of a message"
+macro attach,compose \Cb <pipe-entry>urlview<enter> "call urlview to extract URLs out of a message"
 
 ifdef notmuch "bind index \Cs vfolder-from-query"
 

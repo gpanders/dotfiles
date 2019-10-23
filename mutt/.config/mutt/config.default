@@ -3,6 +3,9 @@ mailboxes !
 
 unsubscribe *
 
+unset alias_file
+unalias *
+
 # Update the status bar with the new value of the $my_account variable
 set status_format = "    %r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %?p?(%p postponed)? %> Account: $my_account    "
 
