@@ -1,21 +1,25 @@
-function! ft#markdown#format()
+function! ft#markdown#formatexpr()
     " Only use this in normal mode to prevent automatic formatting being
     " messed up in insert mode
     if mode() !=# 'n'
         return 1
     endif
 
-    " Escape whitespace characters in link text in lists and then run
-    " 'formatprg' as usual
-    let start = v:lnum
-    let end = start + v:count - 1
-    exe start . ',' . end . 's/\%(^\s*\%([-*]\|[0-9]\+\.\)\s\+\[.*\)\@<=\s\ze.*]/\\&/g'
-    exe start . ',' . end . '!' . &l:formatprg
+    let lastsearch = @/
+    let range = v:lnum . ',' . (v:lnum + v:count - 1)
+    exe range . '!' . &l:formatprg
+    " Join wrapped links
+    silent exe range . 'g/\[[^]]*$/.,/\%(\[.*\)\@<!]/j'
+    " Convert *italics* (used by pandoc) to _italics_ (which I prefer)
+    exe range . 's/\*\([^*]\+\)\*/_\1_/ge'
+    " Convert {.language} to just language
+    exe range . 's/[~`]\{3,}\zs\s*{\.\(\w\+\)}/\1/g'
+    let @/ = lastsearch
 endfunction
 
 function! ft#markdown#toc()
     let fp = &l:formatprg
-    let &l:formatprg = fp . ' --toc'
+    let &l:formatprg .= ' --toc'
     let view = winsaveview()
     normal! gggqG
     call winrestview(view)

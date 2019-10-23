@@ -20,7 +20,7 @@ endif
 if executable('pandoc')
   compiler pandoc
   let &l:formatprg = 'pandoc -f markdown -t markdown --atx-headers --standalone --columns=' . &textwidth
-  setlocal formatexpr=ft#markdown#format()
+  setlocal formatexpr=ft#markdown#formatexpr()
   command! -buffer Toc call ft#markdown#toc()
   command! -bang -buffer Reflinks call ft#markdown#reflinks(<bang>0)
   let b:undo_ftplugin .= '|setl fp< fex<|delc Toc|delc Reflinks'
