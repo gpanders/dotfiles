@@ -13,6 +13,8 @@ bind  index,pager [[ previous-undeleted
 # Navigate like vim
 bind  index,pager,query \Cu previous-page
 bind  index,pager,query \Cd next-page
+bind  index j next-entry
+bind  index k previous-entry
 bind  pager j next-line
 bind  pager k previous-line
 macro pager gg <top><refresh>
@@ -27,11 +29,13 @@ bind attach <return> view-mailcap
 # Convert markdown emails to HTML
 macro compose K \
 "<enter-command>set my_wait_key=\$wait_key<enter><enter-command>unset wait_key<enter>\
-<enter-command>set my_pipe_decode=\$pipe_decode<enter>enter-command>set pipe_decode<enter>\
+<enter-command>set my_resolve=\$resolve<enter><enter-command>unset resolve<enter>\
+<enter-command>set my_pipe_decode=\$pipe_decode<enter><enter-command>set pipe_decode<enter>\
 <pipe-entry>pandoc -s -f markdown-blank_before_blockquote -o /tmp/mutt-msg.html 2>/dev/null<enter>\
 <attach-file>/tmp/mutt-msg.html<enter>\
-<previous-entry><tag-entry><tag-entry><group-alternatives>\
+<tag-entry><previous-entry><tag-entry><group-alternatives>\
 <enter-command>set pipe_decode=\$my_pipe_decode<enter>\
+<enter-command>set resolve=\$my_resolve<enter>\
 <enter-command>set wait_key=\$my_wait_key<enter>" \
 "convert Markdown email to HTML and send as multipart/alternative"
 

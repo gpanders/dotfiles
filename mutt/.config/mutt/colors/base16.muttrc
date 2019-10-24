@@ -43,55 +43,55 @@
 # ~=              duplicated messages (see $duplicate_threads)
 
 # basic colors ---------------------------------------------------------
-#     name        foreground  background  pattern
-color normal      color12     color0
-color error       color1      color0
-color tilde       color12     color0
-color message     color12     color0
-color markers     color1      color0
-color attachment  color8      color0
-color search      color2      color0
-color status      color12     color10
-color indicator   brightcolor15     color0
-color tree        color11     color0                  # arrow in threads
+#     name        foreground    background  pattern
+color normal      color12       color0
+color error       color1        color0
+color tilde       color12       color0
+color message     color12       color0
+color markers     color1        color0
+color attachment  color8        color0
+color search      color2        color0
+color status      color12       color10
+color indicator   brightcolor15 color0
+color tree        color11       color0                  # arrow in threads
 
-color index       color12     color0       "~A"       # all messages
-color index       color1      color0       "~F"       # flagged messages
-color index       color12     color0       "~v~(!~N)" # collapsed thread with no unread
-color index       color4      color0       "~U"       # unread messages
-color index       color4      color0       "~v~(~N)"  # collapsed thread with some unread
-color index       color1      color0       "~v~(~F)"  # collapsed thread with some flagged
-color index       color0      color1       "~D"       # deleted messages
+color index       color12       color0       "~A"       # all messages
+color index       color1        color0       "~F"       # flagged messages
+color index       color12       color0       "~v~(!~N)" # collapsed thread with no unread
+color index       color4        color0       "~U"       # unread messages
+color index       color4        color0       "~v~(~N)"  # collapsed thread with some unread
+color index       color1        color0       "~v~(~F)"  # collapsed thread with some flagged
+color index       color11       color0       "~D"       # deleted messages
 
 # header
-color hdrdefault  color12     color10
-color header      color12     color10      "^"
-color header      color7      color10      "^(From)"
-color header      color7      color10      "^(Subject)"
+color hdrdefault  color12       color10
+color header      color12       color10      "^"
+color header      color7        color10      "^(From)"
+color header      color7        color10      "^(Subject)"
 
 # body
-color normal      color7      color0
-color underline   color7      color0
-color bold        color7      color0
-color signature   color12     color0
+color normal      color7        color0
+color underline   color7        color0
+color bold        color7        color0
+color signature   color12       color0
 
-color quoted      color3      color0
-color quoted1     color2      color0
-color quoted2     color5      color0
-color quoted3     color6      color0
-color quoted4     color4      color0
+color quoted      color3        color0
+color quoted1     color2        color0
+color quoted2     color5        color0
+color quoted3     color6        color0
+color quoted4     color4        color0
 
 # pgp
-color body        color2      color0       "(Good signature)"
-color body        color2      color0       "^gpg: Good signature .*"
-color body        color12     color0       "^gpg: "
-color body        color1      color0       "(BAD signature)"
-color body        color1      color1       "^gpg: BAD signature from.*"
+color body        color2        color0       "(Good signature)"
+color body        color2        color0       "^gpg: Good signature .*"
+color body        color12       color0       "^gpg: "
+color body        color1        color0       "(BAD signature)"
+color body        color1        color1       "^gpg: BAD signature from.*"
 
 # body url
-color body        color4      color0       "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
+color body        color4        color0       "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
 # body email
-color body        color4      color0       "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
+color body        color4        color0       "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
 
 ## Sidebar
 

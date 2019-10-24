@@ -29,6 +29,6 @@ subscribe ^hackers@suckless\\.org$
 subscribe ^zsh-users@zsh\\.org$
 
 # Move messages to the $mbox folder
-macro index,pager A "<enter-command>set resolve=no<enter><clear-flag>N<save-message>\><enter><enter-command>set resolve=yes<enter><sync-mailbox><refresh>" "archive message"
+macro index,pager A "<enter-command>set my_resolve=\$resolve<enter><enter-command>unset resolve<enter><clear-flag>N<save-message>\><enter><enter-command>set resolve=\$my_resolve<enter><sync-mailbox><refresh>" "archive message"
 
 # vim: ft=neomuttrc
