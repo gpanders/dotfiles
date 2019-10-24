@@ -59,6 +59,9 @@ set confirmappend = no
 # Don't ask to delete messages, just do it
 set delete = yes
 
+# Don't move cursor after applying an action to a message (e.g. deleting or tagging)
+set resolve = no
+
 # Automatically apply actions to all tagged messages. This is how most modern
 # email clients work anyway
 set auto_tag = yes
@@ -68,10 +71,6 @@ set folder_format = "%t %N %-20.20f %?n?%8n?"
 
 # Remove delay between switching folders
 set sleep_time = 0
-
-# Include attachments when forwarding messages
-set mime_forward
-set mime_forward_rest = yes
 
 # Ignore all headers except the ones listed
 ignore *
