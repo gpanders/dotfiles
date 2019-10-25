@@ -63,6 +63,10 @@ function! s:PackInit()
         call minpac#add('tpope/vim-markdown')
         " }}}
 
+        " scdoc {{{
+        call minpac#add('gpanders/vim-scdoc')
+        " }}}
+
         " Asynchronous linting
         call minpac#add('dense-analysis/ale')
 
