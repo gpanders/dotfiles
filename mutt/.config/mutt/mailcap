@@ -5,6 +5,10 @@ text/html; w3m -I %{charset} -T text/html -dump -o display_image=false -o displa
 text/x-diff; cat %s | colordiff; copiousoutput
 text/x-patch; cat %s | colordiff; copiousoutput
 
+# Install mutt-ics with pipx install mutt_ics
+text/calendar; mutt-ics; copiousoutput
+application/ics; mutt-ics; copiousoutput
+
 # Images
 image/*; feh %s; test=command -v feh
 image/*; anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | pgmtopbm | pbmtoascii; test=command -v anytopnm; copiousoutput
