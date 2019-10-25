@@ -2,8 +2,9 @@
 
 # Settings for handling MIME types
 set mailcap_path = ~/.config/mutt/mailcap
-alternative_order text/plain text/enriched text/html
+alternative_order text/calendar text/plain text/enriched text/html
 unauto_view *
+auto_view text/calendar
 auto_view text/html
 auto_view text/x-diff
 auto_view text/x-patch
