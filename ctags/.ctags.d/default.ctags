@@ -1,4 +1,4 @@
 --fields=-k+K
---languages=-markdown,html,iniconf,vim,yaml
+--languages=-markdown,html,iniconf,yaml
 --tag-relative=yes
 --sh-kinds=-h
