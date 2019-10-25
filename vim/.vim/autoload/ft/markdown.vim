@@ -5,16 +5,16 @@ function! ft#markdown#formatexpr()
         return 1
     endif
 
-    let lastsearch = @/
+    let view = winsaveview()
     let range = v:lnum . ',' . (v:lnum + v:count - 1)
     exe range . '!' . &l:formatprg
     " Join wrapped links
-    silent exe range . 'g/\[[^]]*$/.,/\%(\[.*\)\@<!]/j'
+    silent exe 'keepjumps keeppatterns ' . range . 'g/\[[^]]*$/.,/\%(\[.*\)\@<!]/j'
     " Convert *italics* (used by pandoc) to _italics_ (which I prefer)
-    exe range . 's/\*\([^*]\+\)\*/_\1_/ge'
+    silent exe 'keepjumps keeppatterns ' . range . 's/\*\@<!\*\([^*]\+\)\*\*\@!/_\1_/ge'
     " Convert {.language} to just language
-    exe range . 's/[~`]\{3,}\zs\s*{\.\(\w\+\)}/\1/g'
-    let @/ = lastsearch
+    silent exe 'keepjumps keeppatterns ' . range . 's/[~`]\{3,}\zs\s*{\.\(\w\+\)}/\1/ge'
+    call winrestview(view)
 endfunction
 
 function! ft#markdown#toc()
