@@ -138,52 +138,11 @@ for mod in $ARGS; do
             fi
             ;;
         git)
-            # Configure git
-            if [ ! -f "$HOME"/.gitconfig ] && [ ! -f "${XDG_CONFIG_HOME:-$HOME/.config}"/git/config ]; then
-                touch "${XDG_CONFIG_DIR:-$HOME/.config}"/git/config
-            fi
-
-            if ! git config --global --get user.name >/dev/null ; then
-                git config --global user.name "Greg Anders"
-            fi
-
-            if ! git config --global --get user.email >/dev/null ; then
-                printf "Git email address [greg@gpanders.com]: "
-                read -r ans
-                printf "\n"
-                git config --global user.email "${ans:-greg@gpanders.com}"
-            fi
-
             # This repository should always use my personal email
             git config --local user.email greg@gpanders.com
 
             # Alias for just the dotfiles repo
             git config --local alias.update "!git fetch origin master:master && git rebase --autostash master"
-
-            git config --global commit.verbose true
-            git config --global rebase.autoSquash true
-            git config --global grep.lineNumber true
-            git config --global grep.patternType extended
-            git config --global alias.a add
-            git config --global alias.b branch
-            git config --global alias.cm commit
-            git config --global alias.co checkout
-            git config --global alias.d diff
-            git config --global alias.f fetch
-            git config --global alias.l log
-            git config --global alias.m merge
-            git config --global alias.p push
-            git config --global alias.rb 'rebase --autostash'
-            git config --global alias.rs reset
-            git config --global alias.st status
-            git config --global alias.snapshot "!git stash && git stash apply -q"
-            git config --global alias.t tag
-
-            # Set sendmail settings for git
-            git config --global sendemail.smtpEncryption tls
-            git config --global sendemail.smtpServer mail.gandi.net
-            git config --global sendemail.smtpUser greg@gpanders.com
-            git config --global sendemail.smtpServerPort 587
             ;;
         zsh)
             if ! installed antibody; then

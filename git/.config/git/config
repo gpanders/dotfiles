@@ -1,0 +1,36 @@
+[user]
+	name = Greg Anders
+	email = greg@gpanders.com
+[alias]
+	co = checkout
+	st = status
+	cm = commit
+	ls = ls-files
+	rs = reset
+	rb = rebase --autostash
+	l = log
+	d = diff
+	a = add
+	b = branch
+	f = fetch
+	m = merge
+	p = push
+	snapshot = !git stash && git stash apply -q
+	t = tag
+[commit]
+	verbose = true
+[sendemail]
+	smtpEncryption = tls
+	smtpServer = mail.gandi.net
+	smtpUser = greg@gpanders.com
+	smtpServerPort = 587
+	confirm = auto
+[rebase]
+	autoSquash = true
+[grep]
+	lineNumber = true
+	patternType = extended
+[merge]
+	tool = fugitive
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gvdiffsplit!\" \"$MERGED\"
