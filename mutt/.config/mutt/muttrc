@@ -103,7 +103,7 @@ set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
 alternative_order text/plain text/enriched text/html
 
 # Colorized diffs and patches
-source ~/.config/mutt/diffs
+source ~/.config/mutt/diffs.rc
 
 # Cache message headers and bodies
 set message_cachedir = ~/.cache/mutt
@@ -128,25 +128,28 @@ set mail_check = 60
 source ~/.config/mutt/colors/base16.muttrc
 
 # Bindings
-source ~/.config/mutt/bindings
+source ~/.config/mutt/bindings.rc
 
 # Sidebar
-source ~/.config/mutt/sidebar
+source ~/.config/mutt/sidebar.rc
+
+# GPG
+source ~/.config/mutt/gpg.rc
 
 # Set up notmuch virtual mailboxes
 ifdef notmuch "set nm_default_uri = notmuch://`notmuch config get database.path`"
 # ifdef notmuch "source ~/.config/mutt/notmuch"
 
-folder-hook . source ~/.config/mutt/config.default
+folder-hook . source ~/.config/mutt/default.rc
 
-source ~/.config/mutt/config.gmail
-folder-hook $folder source ~/.config/mutt/config.gmail
+source ~/.config/mutt/gmail.rc
+folder-hook $folder source ~/.config/mutt/gmail.rc
 
-source ~/.config/mutt/config.gpanders
-folder-hook $folder source ~/.config/mutt/config.gpanders
+source ~/.config/mutt/gpanders.rc
+folder-hook $folder source ~/.config/mutt/gpanders.rc
 
-macro index,pager <F1> "<sync-mailbox><enter-command>source ~/.config/mutt/config.gpanders<enter><change-folder>!<enter>"
+macro index,pager <F1> "<sync-mailbox><enter-command>source ~/.config/mutt/gpanders.rc<enter><change-folder>!<enter>"
 
-macro index,pager <F2> "<sync-mailbox><enter-command>source ~/.config/mutt/config.gmail<enter><change-folder>!<enter>"
+macro index,pager <F2> "<sync-mailbox><enter-command>source ~/.config/mutt/gmail.rc<enter><change-folder>!<enter>"
 
 # vim: ft=neomuttrc
