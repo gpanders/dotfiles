@@ -13,6 +13,7 @@ Account gpanders
 
 MaildirStore gpanders-local
 Subfolders Verbatim
+Flatten .
 Path ~/.mail/gpanders/
 Inbox ~/.mail/gpanders/Inbox
 
