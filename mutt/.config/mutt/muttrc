@@ -138,7 +138,7 @@ source ~/.config/mutt/gpg.rc
 
 # Set up notmuch virtual mailboxes
 ifdef notmuch "set nm_default_uri = notmuch://`notmuch config get database.path`"
-# ifdef notmuch "source ~/.config/mutt/notmuch"
+# ifdef notmuch "source ~/.config/mutt/notmuch.rc"
 
 folder-hook . source ~/.config/mutt/default.rc
 

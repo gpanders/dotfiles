@@ -17,11 +17,10 @@ set smtp_url = "smtp://greg@gpanders.com@mail.gandi.net:587"
 set smtp_pass = `pass mail/greg@gpanders.com`
 unset smtp_authenticators
 
-mailboxes +Lists
-mailboxes +Lists/kernelnewbies
-mailboxes +Lists/hackers
-mailboxes +Lists/neomutt-users
-mailboxes +Lists/zsh-users
+mailboxes +Lists.kernelnewbies
+mailboxes +Lists.hackers
+mailboxes +Lists.neomutt-users
+mailboxes +Lists.zsh-users
 
 subscribe ^kernelnewbies@kernelnewbies\\.org$
 subscribe ^neomutt-users@neomutt\\.org$
