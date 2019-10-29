@@ -73,8 +73,8 @@ if [ $# -eq 0 ]; then
         install nnn
     fi
 
-    if installed i3 || ([ "$uname" = Linux ] && ask "Install i3?" && install i3wm conky); then
-        ARGS="$ARGS i3 conky"
+    if installed i3 || ([ "$uname" = Linux ] && ask "Install i3?" && install i3wm polybar rofi); then
+        ARGS="$ARGS i3 polybar rofi"
     fi
 
     if ! (installed mutt || installed neomutt) || ! installed mbsync; then
@@ -115,6 +115,10 @@ if [ $# -eq 0 ]; then
 
     if installed isync || installed mbsync; then
         ARGS="$ARGS isync"
+    fi
+
+    if installed conky; then
+        ARGS="$ARGS conky"
     fi
 fi
 
