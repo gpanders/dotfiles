@@ -106,11 +106,11 @@ alternative_order text/plain text/enriched text/html
 source ~/.config/mutt/diffs.rc
 
 # Cache message headers and bodies
-set message_cachedir = ~/.cache/mutt
-set header_cache = ~/.cache/mutt
+set message_cachedir = ~/.cache/mutt/
+set header_cache = ~/.cache/mutt/
 
 # Where to store certificates
-set certificate_file = ~/.config/mutt/certificates
+set certificate_file = ~/.cache/mutt/certificates
 
 # Don't show an indicator when mailbox is unchanged
 set status_chars = " *%A"
