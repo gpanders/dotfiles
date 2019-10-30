@@ -141,8 +141,9 @@ for mod in $ARGS; do
             # This repository should always use my personal email
             git config --local user.email greg@gpanders.com
 
-            # Alias for just the dotfiles repo
+            # Aliases for just the dotfiles repo
             git config --local alias.update "!git fetch origin master:master && git rebase --autostash master"
+            git config --local alias.update-master '!git stash && git checkout master && git cherry-pick @{-1} && git push && git checkout - && git rebase master && git stash pop'
             ;;
         zsh)
             if ! installed antibody; then
