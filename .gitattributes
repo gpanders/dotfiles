@@ -1,2 +1,2 @@
 mutt/.config/mutt/aliases filter=git-crypt diff=git-crypt
-weechat/.weechat/sec.conf filter=git-crypt diff=git-crypt
+weechat/.config/weechat/sec.conf filter=git-crypt diff=git-crypt
