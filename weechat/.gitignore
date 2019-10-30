@@ -1,2 +1,2 @@
-.weechat/*
-!.weechat/*.conf
+.config/weechat/*
+!.config/weechat/*.conf

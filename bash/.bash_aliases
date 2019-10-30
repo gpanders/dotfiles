@@ -36,3 +36,4 @@ do
 done
 
 alias tmux="tmux -f ${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf"
+alias weechat="weechat -d ${XDG_CONFIG_HOME:-$HOME/.config}/weechat"
