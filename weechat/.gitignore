@@ -1,2 +1,9 @@
 .config/weechat/*
 !.config/weechat/*.conf
+!.config/weechat/javascript/
+!.config/weechat/lua/
+!.config/weechat/perl/
+!.config/weechat/php/
+!.config/weechat/python/
+!.config/weechat/ruby/
+!.config/weechat/tcl/
