@@ -69,10 +69,14 @@ if get(g:, 'ale_completion_enabled')
 endif
 
 function! s:lsp_setup()
-    if empty(filter(ale#linter#Get(&filetype), {_, v -> !empty(v.lsp)}))
+    let buf = bufnr('')
+    let lsps = filter(ale#linter#Get(&filetype), {_, v -> 
+                \ !empty(v.lsp) && ale#engine#IsExecutable(buf, ale#linter#GetExecutable(buf, v))})
+    if empty(lsps)
         return
     endif
 
+    let b:ale_lsp_enabled = 1
     setlocal omnifunc=ale#completion#OmniFunc
     nnoremap <buffer> <C-]> :<C-U>ALEGoToDefinition<CR>
     nnoremap <buffer> <C-W>] :<C-U>ALEGoToDefinitionInSplit<CR>
