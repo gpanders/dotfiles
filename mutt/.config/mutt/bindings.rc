@@ -5,11 +5,6 @@ bind  index,query G last-entry
 bind  index ^ imap-fetch-mail
 bind  index <space> collapse-thread
 
-bind  index,pager \Cj next-undeleted
-bind  index,pager \Ck previous-undeleted
-bind  index,pager ]] next-undeleted
-bind  index,pager [[ previous-undeleted
-
 # Navigate like vim
 bind  index,pager,query \Cu previous-page
 bind  index,pager,query \Cd next-page
