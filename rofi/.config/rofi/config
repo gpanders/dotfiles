@@ -1,4 +1,2 @@
-rofi.combi-modi: window,drun,ssh
-rofi.modi: combi
 rofi.font: monospace 12
-rofi.theme: ~/.local/share/rofi/themes/Arc.rasi
+rofi.theme: /usr/local/share/rofi/themes/sidebar.rasi
