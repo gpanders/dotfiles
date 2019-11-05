@@ -18,6 +18,9 @@ macro pager G <bottom><refresh>
 # Bind R to group-reply
 bind  index,pager R group-reply
 
+# Deleting a message should also clear the 'new' flag
+macro index d <clear-flag>N<delete-message> "delete the current entry"
+
 # View attachments properly
 bind attach <return> view-mailcap
 
