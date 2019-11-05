@@ -34,3 +34,10 @@
 	tool = fugitive
 [mergetool "fugitive"]
 	cmd = vim -f -c \"Gvdiffsplit!\" \"$MERGED\"
+[color]
+	ui = auto
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
