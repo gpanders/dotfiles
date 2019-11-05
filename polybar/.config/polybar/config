@@ -68,7 +68,7 @@ height = 25
 ;offset-x = 1%
 ;offset-y = 1%
 radius = 0.0
-fixed-center = false
+fixed-center = true
 
 background = ${colors.base00}
 foreground = ${colors.base05}
@@ -95,15 +95,15 @@ font-1 = unifont:fontformat=truetype:size=8:antialias=false;2
 font-2 = siji:pixelsize=10;1
 
 modules-left = i3
-modules-center = mpd
+modules-center =
 modules-right = pulseaudio date
 
-;tray-position = right
-;tray-padding = 2
-;tray-background = #0063ff
+tray-position = right
+tray-padding = 8
+tray-background = ${root.background-1}
 
 ;wm-restack = bspwm
-;wm-restack = i3
+wm-restack = i3
 
 ;override-redirect = true
 
@@ -177,9 +177,8 @@ wrapping-scroll = false
 ; Only show workspaces on the same output as the bar
 pin-workspaces = true
 
-label-mode-padding = 1
-label-mode-foreground = #000
-label-mode-background = ${colors.base01}
+label-mode-padding = 0
+label-mode-foreground = ${colors.base0A}
 
 ; focused = Active workspace on focused monitor
 label-focused = %index%
