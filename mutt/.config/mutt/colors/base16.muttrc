@@ -50,7 +50,7 @@ color tilde       color12       color0
 color message     color12       color0
 color markers     color1        color0
 color attachment  color8        color0
-color search      color2        color0
+color search      color10       color3
 color status      color12       color10
 color indicator   brightcolor15 color0
 color tree        color11       color0                  # arrow in threads
