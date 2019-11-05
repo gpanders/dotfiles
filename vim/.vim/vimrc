@@ -164,6 +164,10 @@ if has('linebreak')
   set showbreak=>\ 
 endif
 
+if has('textprop')
+  set completeopt+=popup
+endif
+
 " Specify whitespace chars
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 
@@ -254,8 +258,11 @@ nnoremap <Space>0 10<C-^>
 " List buffers and put :b on the command line
 noremap <Space>b :buffers<CR>:b<Space>
 
+" Show args
+nnoremap <Space>a :args<CR>
+
 " Find files in path
-nnoremap <Space>f :find *
+nnoremap <Space>p :find *
 
 " Search for a tag by regex
 nnoremap <Space>] :tjump /
@@ -272,13 +279,7 @@ nnoremap <silent> <Space>l :<C-U>call qf#toggle(1)<CR>
 nnoremap <Space>e :e %:p:h/<Tab>
 
 " Budget fuzzy file finder
-nnoremap <C-P> :e **/*
-
-" <Bslash>ev opens .vimrc in new tab
-nnoremap <Bslash>ev :<C-U>tabe $MYVIMRC<CR>:lcd %:h<CR>
-
-" <Bslash>sv sources .vimrc
-nnoremap <Bslash>sv :<C-U>source $MYVIMRC<CR>
+nnoremap <Space>f :e **/*
 
 " Clear search buffer with <C-L>
 nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync fromstart<CR><C-L>
@@ -370,6 +371,9 @@ cnoreabbrev w!! w !sudo tee % >/dev/null
 " This comes from vimrc_example.vim. See :h :DiffOrig
 command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
       \ | wincmd p | diffthis
+
+" Open vimrc in new tab
+command! Vimrc tabedit $MYVIMRC | lcd %:p:h
 
 " Edit ftplugin file for current filetype
 command! EditFtplugin
