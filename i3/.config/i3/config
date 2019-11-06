@@ -52,7 +52,7 @@ font pango:monospace 11
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.config/i3/lock.sh
+exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.local/share/i3/i3lock.sh
 
 # Lock screen with ctrl+alt+L
 bindsym Control+$alt+l exec --no-startup-id ~/.config/i3/lock.sh
@@ -128,6 +128,13 @@ bindsym $sup+a focus parent
 
 # Focus the child container
 #bindsym $sup+d focus child
+
+# move the currently focused window to the scratchpad
+bindsym $alt+Shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $alt+minus scratchpad show
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
