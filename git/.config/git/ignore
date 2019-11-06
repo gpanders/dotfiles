@@ -1,6 +1,7 @@
 .DS_Store
 *~
 .projections.json
+Session.vim
 *.swp
 \#*\#
 .vscode/
