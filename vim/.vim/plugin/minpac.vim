@@ -50,6 +50,9 @@ function! s:PackInit()
         " Snippets
         call minpac#add('gpanders/snipmate.vim')
 
+        " Visualize undo tree
+        call minpac#add('simnalamburt/vim-mundo')
+
         " Python {{{
         " Provides compilers for flake8 and pylint
         call minpac#add('drgarcia1986/python-compilers.vim')
