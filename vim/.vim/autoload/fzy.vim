@@ -14,7 +14,14 @@ function! s:completed(winid, filename, action, ...) abort
     endif
 endfunction
 
-function! s:fzy(cmd, action, title)
+function! s:tags(line) abort
+    let tag = split(a:line)[0]
+    let filename = split(a:line)[2]
+    let index = index(map(taglist('^' . tag . '$'), 'v:val.filename'), filename) + 1
+    execute index . 'tag ' . tag
+endfunction
+
+function! s:fzy(cmd, action, title) abort
     let file = tempname()
     let winid = win_getid()
     let cmd = split(&shell) + split(&shellcmdflag) + [a:cmd . ' | fzy > ' . file]
@@ -37,5 +44,5 @@ function! fzy#tags()
     let tags = map(taglist('.'), {_, v -> printf('%-40s %-10s %s', v.name, v.kind, v.filename)})
     let file = tempname()
     call writefile(tags, file)
-    call s:fzy('cat ' . file, {t -> execute('tag ' . split(t)[0]) && delete(file)}, 'tags')
+    call s:fzy('cat ' . file, {t -> s:tags(t) && delete(file)}, 'tags')
 endfunction
