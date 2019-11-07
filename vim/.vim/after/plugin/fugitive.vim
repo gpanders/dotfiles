@@ -9,4 +9,6 @@ endif
 augroup plugin.fugitive
     autocmd!
     autocmd BufReadPost fugitive://* setlocal bufhidden=delete
+    autocmd User Fugitive nnoremap <buffer> g<CR> :Ggrep<Space>
+    autocmd FileType fugitive nmap <silent> <buffer> q gq
 augroup END
