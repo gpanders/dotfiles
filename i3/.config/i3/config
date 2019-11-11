@@ -55,7 +55,7 @@ font pango:monospace 11
 exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.local/share/i3/i3lock.sh
 
 # Lock screen with ctrl+alt+L
-bindsym Control+$alt+l exec --no-startup-id ~/.config/i3/lock.sh
+bindsym Control+$alt+l exec --no-startup-id loginctl lock-session
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -77,7 +77,7 @@ bindsym $sup+Return exec i3-sensible-terminal
 bindsym $sup+Shift+q kill
 
 # Start rofi (a program launcher)
-bindsym $alt+space exec "rofi -show combi"
+bindsym $alt+space exec "rofi -show drun"
 
 # Change focus
 bindsym $sup+h focus left
@@ -207,10 +207,26 @@ mode "resize" {
     bindsym Escape mode "default"
     bindsym $sup+r mode "default"
 }
-
 bindsym $sup+r mode "resize"
 
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+# Shutdown, reboot, lock screen
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id loginctl lock-session, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+
+    # Back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $alt+Control+Delete mode "$mode_system"
+
+# Assign windows to workspaces
+assign [class="Firefox"] workspace $ws2
 
 # Basic color configuration using the Base16 variables for windows and borders.
 # Property Name         Border  BG      Text    Indicator Child Border
@@ -228,8 +244,22 @@ hide_edge_borders smart_no_gaps
 for_window [class=".*"] border pixel 2
 gaps inner 30
 
+# Correct handling of floating dialogs
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+
+# Launch polybar
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
 # Set wallpaper
 exec --no-startup-id bash -c "source ~/.fehbg"
 
 # Start desktop notification daemon
 exec --no-startup-id dunst -config "$HOME/.config/dunst/dunstrc"
+
+# Start compton
+exec --no-startup-id compton --config ~/.config/compton/compton.conf -b -d :0
+
+# Autostart applications
+exec --no-startup-id xset r rate 200 40
+exec --no-startup-id firefox
