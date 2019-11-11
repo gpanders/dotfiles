@@ -95,8 +95,11 @@ color body        color4        color0       "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?
 
 ## Sidebar
 
+# Color of the open mailbox
+color sidebar_indicator brightcolor15 color10
+
 # Color of the highlighted, but not open, mailbox.
-color sidebar_highlight color7 color11
+color sidebar_highlight color7 color10
 
 # Color of the divider separating the Sidebar from Mutt panels
 color sidebar_divider color10 color0
