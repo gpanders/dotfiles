@@ -35,6 +35,15 @@ base0D = #6699cc
 base0E = #cc99cc
 base0F = #d27b53
 
+background = ${colors.base01}
+background-alt = ${colors.base02}
+foreground = ${colors.base05}
+foreground-alt = ${colors.base04}
+primary = ${colors.base0A}
+secondary = ${colors.base0C}
+alert = ${colors.base09}
+
+
 ; Base16 Tomorrow
 ; base00 = #ffffff
 ; base01 = #e0e0e0
@@ -53,14 +62,6 @@ base0F = #d27b53
 ; base0E = #8959a8
 ; base0F = #a3685a
 
-background = ${colors.base00}
-background-alt = ${colors.base01}
-foreground = ${colors.base05}
-foreground-alt = ${colors.base04}
-primary = ${colors.base0A}
-secondary = ${colors.base0C}
-alert = ${colors.base09}
-
 [bar/example]
 monitor = ${env:MONITOR:HDMI-1}
 width = 100%
@@ -70,19 +71,14 @@ height = 25
 radius = 0.0
 fixed-center = true
 
-background = ${colors.base00}
-foreground = ${colors.base05}
-
-; Base16 Eighties gradient
-background-0 = ${colors.base01}
-background-1 = #333333
-background-2 = ${colors.base00}
+background = ${colors.background}
+foreground = ${colors.foreground}
 
 line-size = 2
 line-color = ${colors.base03}
 
 border-bottom-size = 0
-border-bottom-color = ${colors.base01}
+border-bottom-color = ${colors.background}
 
 padding-left = 0
 padding-right = 2
@@ -100,7 +96,7 @@ modules-right = pulseaudio date
 
 tray-position = right
 tray-padding = 8
-tray-background = ${root.background-1}
+;tray-background = ${colors.base01}
 
 ;wm-restack = bspwm
 wm-restack = i3
@@ -198,7 +194,7 @@ label-visible-padding = ${self.label-focused-padding}
 ; urgent = Workspace with urgency hint set
 label-urgent = %index%
 label-urgent-background = ${colors.base08}
-label-urgent-padding = 1
+label-urgent-padding = ${self.label-focused-padding}
 
 ; Separator in between workspaces
 ; label-separator = |
