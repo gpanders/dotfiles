@@ -1,5 +1,7 @@
 unmailboxes *
 mailboxes !
+mailboxes <
+mailboxes >
 
 unsubscribe *
 
