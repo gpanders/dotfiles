@@ -5,7 +5,7 @@
 # --------------------------------------------------------------------------
 
 # Should the Sidebar be shown?
-set sidebar_visible = no
+set sidebar_visible = yes
 
 # How wide should the Sidebar be in screen columns?
 # Note: Some characters, e.g. Chinese, take up two columns each.
@@ -35,7 +35,7 @@ set sidebar_new_mail_only = no
 
 # When searching for mailboxes containing new mail, should the search wrap
 # around when it reaches the end of the list?
-set sidebar_next_new_wrap = no
+set sidebar_next_new_wrap = yes
 
 # The character to use as the divider between the Sidebar and the other Mutt
 # panels.
@@ -62,28 +62,28 @@ set sidebar_sort_method = 'unsorted'
 # --------------------------------------------------------------------------
 
 # Move the highlight to the previous mailbox
-bind index,pager \Cp sidebar-prev
+macro index K <sidebar-prev><sidebar-open>
 
 # Move the highlight to the next mailbox
-bind index,pager \Cn sidebar-next
+macro index J <sidebar-next><sidebar-open>
 
 # Open the highlighted mailbox
-bind index,pager \Co sidebar-open
+#bind index \Co sidebar-open
 
 # Move the highlight to the previous page
 # This is useful if you have a LOT of mailboxes.
-bind index,pager <F3> sidebar-page-up
+#bind index,pager <F3> sidebar-page-up
 
 # Move the highlight to the next page
 # This is useful if you have a LOT of mailboxes.
-bind index,pager <F4> sidebar-page-down
+#bind index,pager <F4> sidebar-page-down
 
 # Move the highlight to the previous mailbox containing new, or flagged,
 # mail.
-bind index,pager <F5> sidebar-prev-new
+#bind index,pager <F5> sidebar-prev-new
 
 # Move the highlight to the next mailbox containing new, or flagged, mail.
-bind index,pager <F6> sidebar-next-new
+#bind index,pager <F6> sidebar-next-new
 
 # Toggle the visibility of the Sidebar.
 bind index,pager B sidebar-toggle-visible
