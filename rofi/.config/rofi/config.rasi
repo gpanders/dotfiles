@@ -5,7 +5,7 @@ configuration {
 	matching: "normal";
 	sidebar-mode: true;
 	lines: 8;
-	font: "mono 16";
+	font: "mono 14";
 /*	width: 50;*/
 /*	columns: 1;*/
 /*	bw: 1;*/
