@@ -1,19 +1,19 @@
 configuration {
+	font: "mono 14";
 	combi-hide-mode-prefix: true;
 	modi: "drun,run,calc:qalc +u8";
 	show-icons: true;
 	matching: "normal";
 	sidebar-mode: true;
 	lines: 8;
-	font: "mono 14";
+	fixed-num-lines: false;
+	yoffset: -250;
 /*	width: 50;*/
 /*	columns: 1;*/
 /*	bw: 1;*/
 /*	location: 0;*/
 /*	padding: 5;*/
-/*	yoffset: 0;*/
 /*	xoffset: 0;*/
-/*	fixed-num-lines: true;*/
 /*	terminal: "rofi-sensible-terminal";*/
 /*	ssh-client: "ssh";*/
 /*	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";*/
