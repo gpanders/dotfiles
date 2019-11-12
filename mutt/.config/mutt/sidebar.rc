@@ -40,7 +40,7 @@ set sidebar_next_new_wrap = yes
 # The character to use as the divider between the Sidebar and the other Mutt
 # panels.
 # Note: Only the first character of this string is used.
-set sidebar_divider_char = ' │'
+set sidebar_divider_char = '█ '
 
 # Enable extended buffy mode to calculate total, new, and flagged
 # message counts for each mailbox.
@@ -67,25 +67,22 @@ macro index K <sidebar-prev><sidebar-open>
 # Move the highlight to the next mailbox
 macro index J <sidebar-next><sidebar-open>
 
-# Open the highlighted mailbox
-#bind index \Co sidebar-open
-
-# Move the highlight to the previous page
-# This is useful if you have a LOT of mailboxes.
-#bind index,pager <F3> sidebar-page-up
-
-# Move the highlight to the next page
-# This is useful if you have a LOT of mailboxes.
-#bind index,pager <F4> sidebar-page-down
-
-# Move the highlight to the previous mailbox containing new, or flagged,
-# mail.
-#bind index,pager <F5> sidebar-prev-new
-
-# Move the highlight to the next mailbox containing new, or flagged, mail.
-#bind index,pager <F6> sidebar-next-new
-
 # Toggle the visibility of the Sidebar.
 bind index,pager B sidebar-toggle-visible
+
+# Color of the open mailbox
+color sidebar_indicator brightcolor15 color10
+
+# Color of the highlighted, but not open, mailbox.
+color sidebar_highlight color7 color10
+
+# Color of the divider separating the Sidebar from Mutt panels
+color sidebar_divider color10 color0
+
+# Color to give mailboxes containing flagged mail
+color sidebar_flagged color1 color0
+
+# Color to give mailboxes containing new mail
+color sidebar_new color2 color0
 
 # vim: syntax=muttrc

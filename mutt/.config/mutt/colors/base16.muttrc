@@ -93,22 +93,5 @@ color body        color4        color0       "([a-z][a-z0-9+-]*://(((([a-z0-9_.!
 # body email
 color body        color4        color0       "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
 
-## Sidebar
-
-# Color of the open mailbox
-color sidebar_indicator brightcolor15 color10
-
-# Color of the highlighted, but not open, mailbox.
-color sidebar_highlight color7 color10
-
-# Color of the divider separating the Sidebar from Mutt panels
-color sidebar_divider color10 color0
-
-# Color to give mailboxes containing flagged mail
-color sidebar_flagged color1 color0
-
-# Color to give mailboxes containing new mail
-color sidebar_new color2 color0
-
 # vim: ft=muttrc
 

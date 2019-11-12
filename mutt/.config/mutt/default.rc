@@ -1,8 +1,4 @@
 unmailboxes *
-mailboxes !
-mailboxes <
-mailboxes >
-
 unsubscribe *
 
 unset alias_file

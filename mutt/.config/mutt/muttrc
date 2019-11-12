@@ -131,7 +131,7 @@ source ~/.config/mutt/colors/base16.muttrc
 source ~/.config/mutt/bindings.rc
 
 # Sidebar
-source ~/.config/mutt/sidebar.rc
+ifdef sidebar "source ~/.config/mutt/sidebar.rc"
 
 # GPG
 source ~/.config/mutt/gpg.rc
@@ -140,16 +140,10 @@ source ~/.config/mutt/gpg.rc
 ifdef notmuch "set nm_default_uri = notmuch://`notmuch config get database.path`"
 # ifdef notmuch "source ~/.config/mutt/notmuch.rc"
 
-folder-hook . source ~/.config/mutt/default.rc
-
 source ~/.config/mutt/gmail.rc
 folder-hook $folder source ~/.config/mutt/gmail.rc
 
 source ~/.config/mutt/gpanders.rc
 folder-hook $folder source ~/.config/mutt/gpanders.rc
-
-macro index,pager <F1> "<sync-mailbox><enter-command>source ~/.config/mutt/gpanders.rc<enter><change-folder>!<enter>"
-
-macro index,pager <F2> "<sync-mailbox><enter-command>source ~/.config/mutt/gmail.rc<enter><change-folder>!<enter>"
 
 # vim: ft=neomuttrc
