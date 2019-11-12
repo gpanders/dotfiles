@@ -1,3 +1,5 @@
+source ~/.config/mutt/default.rc
+
 set my_account = gpanders
 set my_prev_account = gmail
 set my_next_account = gmail
@@ -17,11 +19,17 @@ set smtp_url = "smtp://greg@gpanders.com@mail.gandi.net:587"
 set smtp_pass = `pass mail/greg@gpanders.com`
 unset smtp_authenticators
 
-mailboxes +Lists.aerc
-mailboxes +Lists.kernelnewbies
-mailboxes +Lists.hackers
-mailboxes +Lists.neomutt-users
-mailboxes +Lists.zsh-users
+mailboxes +Inbox
+mailboxes +Archive
+mailboxes +Sent
+mailboxes +Drafts
+mailboxes +Lists
+mailboxes +Lists/aerc
+mailboxes +Lists/kernelnewbies
+mailboxes +Lists/hackers
+mailboxes +Lists/neomutt-users
+mailboxes +Lists/zsh-users
+mailboxes +Trash
 
 subscribe ^aerc@lists\\.sr\\.ht$
 subscribe ^kernelnewbies@kernelnewbies\\.org$

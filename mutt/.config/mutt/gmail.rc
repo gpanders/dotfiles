@@ -1,3 +1,5 @@
+source ~/.config/mutt/default.rc
+
 set my_account = gmail
 set my_prev_account = gpanders
 set my_next_account = gpanders
@@ -16,6 +18,12 @@ set query_command = "khard email --parsable --search-in-source-files '%s'"
 set smtp_url = "smtp://greg.p.anders@gmail.com@smtp.gmail.com:587"
 set smtp_pass = `pass apps/gmail.com/mutt`
 set smtp_authenticators = "login"
+
+mailboxes +Inbox
+mailboxes +Archive
+mailboxes +Sent
+mailboxes +Drafts
+mailboxes +Trash
 
 # In Gmail, messages are already in the Archive ("All Mail") folder so moving
 # them there just creates a duplicate.  So instead, delete the message from the
