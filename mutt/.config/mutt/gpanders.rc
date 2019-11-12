@@ -17,11 +17,13 @@ set smtp_url = "smtp://greg@gpanders.com@mail.gandi.net:587"
 set smtp_pass = `pass mail/greg@gpanders.com`
 unset smtp_authenticators
 
+mailboxes +Lists.aerc
 mailboxes +Lists.kernelnewbies
 mailboxes +Lists.hackers
 mailboxes +Lists.neomutt-users
 mailboxes +Lists.zsh-users
 
+subscribe ^aerc@lists\\.sr\\.ht$
 subscribe ^kernelnewbies@kernelnewbies\\.org$
 subscribe ^neomutt-users@neomutt\\.org$
 subscribe ^hackers@suckless\\.org$
@@ -29,5 +31,8 @@ subscribe ^zsh-users@zsh\\.org$
 
 # Move messages to the $mbox folder
 macro index,pager A "<enter-command>set my_resolve=\$resolve<enter><enter-command>unset resolve<enter><clear-flag>N<save-message>\><enter><enter-command>set resolve=\$my_resolve<enter><sync-mailbox><refresh>" "archive message"
+
+# Fetch mail
+macro index <F5> "<enter-command>set my_wait_key=\$wait_key<enter><enter-command>unset wait_key<enter><shell-escape>mbsync gpanders<enter><enter-command>set wait_key=\$my_wait_key<enter>" "synchronize mailbox"
 
 # vim: ft=neomuttrc
