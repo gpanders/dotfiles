@@ -3,13 +3,7 @@
 
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
-setlocal noexpandtab
-setlocal shiftwidth=8
-setlocal softtabstop=8
-
-let b:undo_ftplugin .= '|setl et< sw< sts<'
-
 if executable('gofmt')
     setlocal formatprg=gofmt
-    let b:undo_ftplugin .= ' fp<'
+    let b:undo_ftplugin .= '|setl fp<'
 endif
