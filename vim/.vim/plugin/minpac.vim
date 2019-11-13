@@ -24,6 +24,7 @@ function! s:PackInit()
         call minpac#add('tpope/vim-abolish')
         call minpac#add('tpope/vim-speeddating')
         call minpac#add('tpope/vim-scriptease')
+        call minpac#add('tpope/vim-obsession')
 
         " Better directory browser
         call minpac#add('justinmk/vim-dirvish')
