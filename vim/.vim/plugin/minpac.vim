@@ -66,6 +66,7 @@ function! s:PackInit()
         " Python {{{
         " Provides compilers for flake8 and pylint
         call minpac#add('drgarcia1986/python-compilers.vim')
+        call minpac#add('vim-python/python-syntax')
         " }}}
 
         " LaTeX {{{
