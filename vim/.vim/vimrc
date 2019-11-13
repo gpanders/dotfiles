@@ -349,8 +349,8 @@ endif
 " }}}
 
 " Command {{{
-cnoremap <C-P> <Up>
-cnoremap <C-N> <Down>
+cnoremap <expr> <C-P> wildmenumode() ? "\<C-P>" : "\<Up>"
+cnoremap <expr> <C-N> wildmenumode() ? "\<C-N>" : "\<Down>"
 
 if has('nvim') && &wildoptions =~# 'pum'
   cnoremap <expr> <C-J> pumvisible() ? "\<Down>\<Tab>" : "\<C-J>"
