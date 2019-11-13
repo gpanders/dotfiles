@@ -48,17 +48,24 @@ if !has('nvim')
 
   let s:datadir = vim#datadir()
   let &backupdir = s:datadir . '/backup//' . ',' . &backupdir
-  let &undodir = s:datadir . '/undo//' . ',' . &undodir
   let &directory = s:datadir . '/swap//' . ',' . &directory
+  if has('persistent_undo')
+      let &undodir = s:datadir . '/undo//' . ',' . &undodir
+  endif
 
   " Create directories if they don't exist
   if exists('*mkdir')
-    for opt in [&backupdir, &undodir, &directory]
-      let dir = simplify(split(opt, ',')[0])
-      if !isdirectory(dir)
-        call mkdir(dir, 'p')
+    let s:dirs = [&backupdir, &directory]
+    if has('persistent_undo')
+        let s:dirs += [&undodir]
+    endif
+    for s:opt in s:dirs
+      let s:dir = simplify(split(s:opt, ',')[0])
+      if !isdirectory(s:dir)
+        call mkdir(s:dir, 'p')
       endif
     endfor
+    unlet s:dirs s:opt s:dir
   endif
 endif
 " }}}
@@ -116,6 +123,7 @@ set hidden
 set ignorecase
 set lazyredraw
 set linebreak
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set matchpairs+=<:>
 set matchtime=2
 set pumheight=10
@@ -163,11 +171,8 @@ if has('linebreak')
 endif
 
 if has('textprop')
-  set completeopt+=popup
+  silent! set completeopt+=popup
 endif
-
-" Specify whitespace chars
-set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 
 " Set default path variables to blank defaults
 setglobal path=.,,
