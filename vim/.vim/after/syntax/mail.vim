@@ -1,5 +1,5 @@
-syn region mailItalic matchgroup=mailItalicDelimiter start="\S\@<=\*\|\*\S\@=" end="\S\@<=\*\|\*\S\@=" keepend contains=@Spell
-syn region mailItalic matchgroup=mailItalicDelimiter start="\S\@<=_\|_\S\@=" end="\S\@<=_\|_\S\@=" keepend contains=@Spell
+syn region mailItalic matchgroup=mailItalicDelimiter start="\S\@<=\\\@<!\*\|\\\@<!\*\S\@=" end="\S\@<=\\\@<!\*\|\\\@<!\*\S\@=" keepend contains=@Spell
+syn region mailItalic matchgroup=mailItalicDelimiter start="\S\@<=\\\@<!_\|\\\@<!_\S\@=" end="\S\@<=\\\@<!_\|\\\@<!_\S\@=" keepend contains=@Spell
 syn region mailBold matchgroup=mailBoldDelimiter start="\S\@<=\*\*\|\*\*\S\@=" end="\S\@<=\*\*\|\*\*\S\@=" keepend contains=mailItalic,@Spell
 syn region mailBold matchgroup=mailBoldDelimiter start="\S\@<=__\|__\S\@=" end="\S\@<=__\|__\S\@=" keepend contains=mailItalic,@Spell
 syn region mailBoldItalic matchgroup=mailBoldItalicDelimiter start="\S\@<=\*\*\*\|\*\*\*\S\@=" end="\S\@<=\*\*\*\|\*\*\*\S\@=" keepend contains=@Spell

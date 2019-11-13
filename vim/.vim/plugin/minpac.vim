@@ -20,24 +20,15 @@ function! s:PackInit()
         call minpac#add('tpope/vim-projectionist')
         call minpac#add('tpope/vim-rsi')
         call minpac#add('tpope/vim-eunuch')
-        call minpac#add('tpope/vim-characterize')
         call minpac#add('tpope/vim-abolish')
-        call minpac#add('tpope/vim-speeddating')
         call minpac#add('tpope/vim-scriptease')
         call minpac#add('tpope/vim-obsession')
 
         " Better directory browser
         call minpac#add('justinmk/vim-dirvish')
 
-        " More, better, and up-to-date language packs (ftplugins, syntax
-        " files, etc)
-        call minpac#add('sheerun/vim-polyglot')
-
         " Align lines to a character, e.g. =, ;, :, etc.
         call minpac#add('junegunn/vim-easy-align')
-
-        " Distraction-free writing
-        call minpac#add('junegunn/goyo.vim')
 
         " Show change signs in the gutter for git files
         call minpac#add('mhinz/vim-signify')
@@ -54,6 +45,24 @@ function! s:PackInit()
         " Visualize undo tree
         call minpac#add('simnalamburt/vim-mundo')
 
+        " Language Packs {{{
+
+        " xdc {{{
+        call minpac#add('amal-khailtash/vim-xdc-syntax')
+        " }}}
+
+        " fish {{{
+        call minpac#add('georgewitteman/vim-fish')
+        " }}}
+
+        " C++ {{{
+        call minpac#add('octol/vim-cpp-enhanced-highlight')
+        " }}}
+
+        " Go {{{
+        call minpac#add('fatih/vim-go', {'rev': 'v1.21'})
+        " }}}
+
         " Python {{{
         " Provides compilers for flake8 and pylint
         call minpac#add('drgarcia1986/python-compilers.vim')
@@ -69,6 +78,8 @@ function! s:PackInit()
 
         " scdoc {{{
         call minpac#add('gpanders/vim-scdoc')
+        " }}}
+
         " }}}
 
         " Asynchronous linting
