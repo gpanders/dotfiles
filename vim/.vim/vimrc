@@ -170,8 +170,8 @@ if has('linebreak')
   set showbreak=>\ 
 endif
 
-if has('textprop')
-  silent! set completeopt+=popup
+if has('textprop') && has('patch-8.1.1880')
+  set completeopt+=popup
 endif
 
 " Set default path variables to blank defaults
