@@ -38,10 +38,10 @@ function! StatusLine(sep)
   let s .= '%<%f'
 
   " File flags (modified and read-only)
-  if &mod
+  if &modified
     let s .= ' +'
   endif
-  if &ro
+  if &readonly
     let s .= ' [RO]'
   endif
 
@@ -57,25 +57,25 @@ function! StatusLine(sep)
   " Show git branch, if available
   if exists('*FugitiveHead')
     let branch = FugitiveHead()
-    if branch != ''
+    if branch !=# ''
       let s .= branch . ' ' . a:sep . ' '
     endif
   endif
 
   " Show line break style
-  if &ff ==# 'unix'
+  if &fileformat ==# 'unix'
     let s .= 'LF ' . a:sep . ' '
-  elseif &ff ==# 'dos'
+  elseif &fileformat ==# 'dos'
     let s .= 'CRLF ' . a:sep . ' '
-  elseif &ff ==# 'mac'
+  elseif &fileformat ==# 'mac'
     let s .= 'CR ' . a:sep . ' '
   endif
 
   " Show file type
-  if &ft ==# ''
+  if &filetype ==# ''
     let s .= 'none'
   else
-    let s .= &ft
+    let s .= &filetype
   endif
 
   " Set highlight to User4

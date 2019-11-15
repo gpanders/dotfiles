@@ -122,7 +122,6 @@ set expandtab
 set hidden
 set ignorecase
 set lazyredraw
-set linebreak
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set matchpairs+=<:>
 set matchtime=2
@@ -162,10 +161,13 @@ if has('persistent_undo')
 endif
 
 " Color the whole area outside of 'textwidth'
-let &colorcolumn = '+' . join(range(1, 256), ',+')
+if has('syntax')
+  let &colorcolumn = '+' . join(range(1, 256), ',+')
+endif
 
 " Indent wrapped lines
 if has('linebreak')
+  set linebreak
   set breakindent
   set showbreak=>\ 
 endif
@@ -211,7 +213,7 @@ endif
 " Insert {{{
 
 " jk in Insert mode escapes to Normal mode
-inoremap jk <Esc>l
+inoremap jk <Esc>
 
 " Set a new 'undo point' before undoing entire line
 inoremap <C-U> <C-G>u<C-U>
@@ -264,18 +266,9 @@ nnoremap <Space>0 10<C-^>
 " List buffers and put :b on the command line
 noremap <Space>b :buffers<CR>:b<Space>
 
-" Show args
-nnoremap <Space>a :args<CR>
-
-" Find files in path
-nnoremap <Space>p :find *
-
 " Search for a tag by regex
 nnoremap <Space>] :tjump /
 nnoremap <Space>} :ptjump /
-
-" Show tag stack
-nnoremap <Space>t :tags<CR>
 
 " Open quickfix list
 nnoremap <silent> <Space>q :<C-U>call qf#toggle(0)<CR>
