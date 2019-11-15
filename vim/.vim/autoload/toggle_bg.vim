@@ -1,6 +1,8 @@
 " See :h xterm-true-color
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+if !has('nvim')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
 
 function! toggle_bg#toggle()
   if exists('g:toggle_bg_dark') && exists('g:toggle_bg_light')

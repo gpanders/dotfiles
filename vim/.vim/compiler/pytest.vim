@@ -3,14 +3,10 @@
 " Maintainer: Whyme Lyu <5longluna at gmail.com>
 " URL: https://github.com/5long/pytest-vim-compiler
 
-if exists("current_compiler")
+if exists('current_compiler')
   finish
 endif
-let current_compiler = "pytest"
-
-if exists(":CompilerSet") != 2 " older Vim always used :setlocal
-  command -nargs=* CompilerSet setlocal <args>
-endif
+let current_compiler = 'pytest'
 
 let s:cpo_save = &cpo
 set cpo-=C

@@ -15,8 +15,7 @@ function! s:completed(winid, filename, action, ...) abort
 endfunction
 
 function! s:tags(line) abort
-    let tag = split(a:line)[0]
-    let filename = split(a:line)[2]
+    let [tag, _, filename] = split(a:line)[0:2]
     let index = index(map(taglist('^' . tag . '$'), 'v:val.filename'), filename) + 1
     execute index . 'tag ' . tag
 endfunction
