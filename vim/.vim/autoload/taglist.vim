@@ -1,11 +1,15 @@
 function! s:tagjump()
   let l = getline('.')
-  let cmd = matchstr(l, '^[^\t]\+\t\zs[^\t]\+\ze;\?')
+  let cmd = matchstr(l, '^[^\t]\+\t\zs.*$')
   wincmd w
   let magic = &magic
   set nomagic
-  call execute(cmd)
+  execute s:escape(cmd)
   let &magic = magic
+endfunction
+
+function! s:escape(cmd)
+  return substitute(a:cmd, '.\zs/\ze.', '\\/', 'g')
 endfunction
 
 function! s:unescape(cmd)
@@ -24,9 +28,8 @@ function! taglist#open(...)
   let tags = filter(taglist(pattern, abspath),
         \ { _, val -> val.filename ==# relpath })
 
-  let maxtaglen = max(map(copy(tags), { _, val -> len(val.name) }))
-  let text = map(tags, { _, val ->
-        \ '[' . val.kind . '] ' . val.name . "\t" . s:unescape(val.cmd) })
+  let maxtaglen = max(map(copy(tags), 'len(v:val.name)'))
+  call map(tags, 'printf("[%s] %s\t%s", v:val.kind, v:val.name, s:unescape(v:val.cmd))')
 
   " Syntax of current buffer
   let syn = &syntax
@@ -45,14 +48,11 @@ function! taglist#open(...)
     %delete_
   else
     botright new
-    setlocal nobuflisted
-    setlocal buftype=nofile
-    setlocal bufhidden=hide
-    setlocal noswapfile
+    setlocal nobuflisted buftype=nofile bufhidden=hide noswapfile
     nnoremap <buffer> <silent> <CR> :<C-U>call <SID>tagjump()<CR>
     nnoremap <buffer> q <C-W>c
     10wincmd_
-    execute 'silent file Taglist'
+    silent execute 'file Taglist'
   endif
   let &l:tabstop = max([maxtaglen + 10, 40])
   put =tags
@@ -64,10 +64,5 @@ function! taglist#open(...)
   call matchadd('Conceal', '\t\zs/^\s*', 0)
   call matchadd('Conceal', '$/$', 0)
   call matchadd('Comment', '^\[\w]')
-  setlocal nomodifiable
-  setlocal cursorline
-  setlocal conceallevel=2
-  setlocal concealcursor=nc
-  setlocal nonumber
-  setlocal nowrap
+  setlocal nomodifiable cursorline conceallevel=2 concealcursor=nc nonumber nowrap
 endfunction
