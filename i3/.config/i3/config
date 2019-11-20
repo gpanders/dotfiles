@@ -247,6 +247,7 @@ gaps inner 30
 # Correct handling of floating dialogs
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
+for_window [title="^JidePopup$"] floating enable
 
 # Launch polybar
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
