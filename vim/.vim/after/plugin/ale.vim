@@ -1,7 +1,7 @@
 " ALE configuration
 " This file is executed AFTER ALE is loaded
 " Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-01-23
+" Date: 2019-11-18
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -49,6 +49,7 @@ let g:ale_vhdl_xvhdl_options = '--2008 --nolog'
 " Rust {{{
 let g:ale_linters.rust = ['cargo', 'rls']
 let g:ale_rust_rls_toolchain = 'stable'
+" }}}
 
 let g:ale_fixers = {
             \ 'python': ['isort'],
@@ -56,17 +57,8 @@ let g:ale_fixers = {
             \ 'c': ['clang-format'],
             \ '*': ['remove_trailing_lines', 'trim_whitespace']
             \}
-" }}}
 
 nmap <Space><C-F> <Plug>(ale_fix)
-nmap <Bslash>gd <Plug>(ale_go_to_definition)
-nmap <C-W><Bslash>d <Plug>(ale_go_to_definition_in_split)
-nmap <Bslash>gr <Plug>(ale_find_references)
-
-if get(g:, 'ale_completion_enabled')
-    " See :h ale-completion-completeopt-bug
-    set completeopt=menu,menuone,preview,noselect,noinsert
-endif
 
 function! s:lsp_setup()
     let buf = bufnr('')
@@ -78,10 +70,10 @@ function! s:lsp_setup()
 
     let b:ale_lsp_enabled = 1
     setlocal omnifunc=ale#completion#OmniFunc
-    nnoremap <buffer> <C-]> :<C-U>ALEGoToDefinition<CR>
-    nnoremap <buffer> <C-W>] :<C-U>ALEGoToDefinitionInSplit<CR>
-    nnoremap <buffer> <C-W><C-]> :<C-U>ALEGoToDefinitionInSplit<CR>
-    nnoremap <buffer> <Bslash>r :<C-U>ALEFindReferences<CR>
+    nmap <buffer> <C-]> <Plug>(ale_go_to_definition)
+    nmap <buffer> <C-W>] <Plug>(ale_go_to_definition_in_split)
+    nmap <buffer> <C-W><C-]> <Plug>(ale_go_to_definition_in_split)
+    nmap <buffer> <Bslash>r <Plug>(ale_find_references)
 endfunction
 
 function! s:toggle(...)
