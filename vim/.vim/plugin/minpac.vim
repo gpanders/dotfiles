@@ -55,10 +55,6 @@ function! s:PackInit()
         call minpac#add('georgewitteman/vim-fish')
         " }}}
 
-        " Go {{{
-        call minpac#add('fatih/vim-go', {'rev': 'v1.21'})
-        " }}}
-
         " Python {{{
         " Provides compilers for flake8 and pylint
         call minpac#add('drgarcia1986/python-compilers.vim')
