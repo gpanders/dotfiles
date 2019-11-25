@@ -1,6 +1,6 @@
 Create Both
 Expunge Both
-SyncState *
+SyncState ~/.local/share/mbsync/
 
 IMAPAccount gpanders
 Host mail.gandi.net
