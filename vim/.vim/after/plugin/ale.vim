@@ -58,6 +58,10 @@ let g:ale_fixers = {
             \ '*': ['remove_trailing_lines', 'trim_whitespace']
             \}
 
+" Go {{{
+let g:ale_linters.go = ['golint', 'gofmt', 'gopls']
+" }}}
+
 nmap <Space><C-F> <Plug>(ale_fix)
 
 function! s:lsp_setup()
