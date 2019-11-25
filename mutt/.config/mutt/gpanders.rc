@@ -29,6 +29,7 @@ mailboxes +Lists/kernelnewbies
 mailboxes +Lists/hackers
 mailboxes +Lists/neomutt-users
 mailboxes +Lists/zsh-users
+mailboxes +Lists/meta-xilinx
 mailboxes +Trash
 
 subscribe ^aerc@lists\\.sr\\.ht$
