@@ -227,8 +227,7 @@ inoremap {<CR> {<CR>}<Esc>ko
 inoremap <expr> <C-G><C-Y> repeat('<C-Y>', len(getline(line('.')-1))-col('.')+1)
 inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-N>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-Y>" : "\<Tab>"
 
 inoremap <C-R>! <C-R>=system(input(':!'))<CR>
 
@@ -236,32 +235,11 @@ inoremap <C-R>! <C-R>=system(input(':!'))<CR>
 
 " Normal {{{
 
-" Make Y work like D and C
-nnoremap Y y$
-
-" Switch to previous buffer
-nnoremap ga <C-^>
-
-" Map gA to default ga function
-nnoremap gA ga
-
 " Map Q to gq
 noremap Q gq
 
 " Write file with <Space>w
 nnoremap <Space>w :w<CR>
-
-" Buffer shortcuts
-nnoremap <Space>1 1<C-^>
-nnoremap <Space>2 2<C-^>
-nnoremap <Space>3 3<C-^>
-nnoremap <Space>4 4<C-^>
-nnoremap <Space>5 5<C-^>
-nnoremap <Space>6 6<C-^>
-nnoremap <Space>7 7<C-^>
-nnoremap <Space>8 8<C-^>
-nnoremap <Space>9 9<C-^>
-nnoremap <Space>0 10<C-^>
 
 " List buffers and put :b on the command line
 noremap <Space>b :buffers<CR>:b<Space>
@@ -270,15 +248,9 @@ noremap <Space>b :buffers<CR>:b<Space>
 nnoremap <Space>] :tjump /
 nnoremap <Space>} :ptjump /
 
-" Open quickfix list
-nnoremap <silent> <Space>q :<C-U>call qf#toggle(0)<CR>
-nnoremap <silent> <Space>l :<C-U>call qf#toggle(1)<CR>
-
 " Find files in current buffer's directory
 nnoremap <Space>e :e %:p:h/<Tab>
-
-" Budget fuzzy file finder
-nnoremap <Space>f :e **/*
+nnoremap <C-W><Space>e :sp %:p:h/<Tab>
 
 " Clear search buffer with <C-L>
 nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync fromstart<CR><C-L>
@@ -287,9 +259,6 @@ vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync fromstart<C
 " Format whole buffer with formatprg without changing cursor position
 " See :h restore-position
 nnoremap <Space>gq mzHmygggqG`yzt`z
-
-" Modify contents of a register
-nnoremap yr :<C-\>e'let @' . v:register . ' = ' . string(getreg(v:register))<CR><C-F>
 
 " Allow [[ and friends to work when opening brace is not in the first column
 noremap <silent> [[ ?{<CR>w99[{:let @/ = ''<CR>
@@ -322,11 +291,6 @@ nnoremap <expr> yod ':' . (&diff ? 'diffoff' : 'diffthis') . "\<CR>"
 
 " }}}
 
-" Visual {{{
-xnoremap * y/\V<C-R>"<CR>
-xnoremap # y?\V<C-R>"<CR>
-" }}}
-
 " Terminal {{{
 
 " Make neovim terminal behave like the vim terminal
@@ -353,36 +317,6 @@ else
   cnoremap <expr> <C-K> wildmenumode() ? "\<Up>\<Tab>" : "\<C-K>"
 endif
 " }}}
-
-" }}}
-
-" Abbreviations {{{
-
-" Command {{{
-" Sudo save
-cnoreabbrev w!! w !sudo tee % >/dev/null
-" }}}
-
-" }}}
-
-" Commands {{{
-
-" This comes from vimrc_example.vim. See :h :DiffOrig
-command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-      \ | wincmd p | diffthis
-
-" Open vimrc in new tab
-command! Vimrc tabedit $MYVIMRC | lcd %:p:h
-
-" Edit ftplugin file for current filetype
-command! EditFtplugin
-      \ if empty(&ft) |
-      \   echohl Error |
-      \     echo 'Error: This buffer has no filetype' |
-      \   echohl None |
-      \ else |
-      \   execute 'tabe ' . $VIMHOME . '/after/ftplugin/' . &ft . '.vim' |
-      \ endif
 
 " }}}
 

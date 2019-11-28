@@ -29,8 +29,8 @@ augroup plugin.fzy
                 \ endif
 augroup END
 
-nnoremap <silent> <Space>f :call fzy#files()<CR>
-nnoremap <silent> <Space>] :call fzy#tags()<CR>
+nnoremap <silent> <C-P> :call fzy#files()<CR>
+nnoremap <silent> <Space>t :call fzy#tags()<CR>
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
