@@ -9,14 +9,13 @@ function easyterm#open(mods, ...)
   if a:0 && !empty(a:1)
     let cmd = a:1
   else
-    let cmd = &shell
+    let cmd = expand('$SHELL')
   endif
 
-  let name = split(cmd)[0]
   let mods = empty(a:mods) ? 'botright' : a:mods
 
   let buf = filter(range(1, bufnr('$')),
-        \ 'getbufvar(v:val, "&buftype") ==# "terminal" && getbufvar(v:val, "' . name . '", 0)')
+        \ 'bufexists(v:val) && getbufvar(v:val, "easyterm", "") ==# "' . cmd . '"')
   if empty(buf)
     " No buffer yet, so start a new one
     if has('nvim')
@@ -24,7 +23,7 @@ function easyterm#open(mods, ...)
     else
       execute mods . ' term ' . cmd
     endif
-    let b:{name} = 1
+    let b:easyterm = cmd
   else
     " Buffer already exists
     let bufinfo = getbufinfo(buf[0])[0]
