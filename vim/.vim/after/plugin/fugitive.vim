@@ -9,6 +9,6 @@ endif
 augroup plugin.fugitive
     autocmd!
     autocmd BufReadPost fugitive://* setlocal bufhidden=delete
-    autocmd User Fugitive nnoremap <buffer> g<CR> :Ggrep<Space>
+    autocmd User Fugitive setlocal grepprg=git\ grep\ --line-number\ --column\ -I\ --untracked
     autocmd FileType fugitive nmap <silent> <buffer> q gq
 augroup END
