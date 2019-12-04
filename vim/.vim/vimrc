@@ -218,7 +218,6 @@ inoremap jk <Esc>
 " Set a new 'undo point' before undoing entire line
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
-inoremap <CR> <C-]><C-G>u<CR>
 
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
@@ -227,7 +226,9 @@ inoremap {<CR> {<CR>}<Esc>ko
 inoremap <expr> <C-G><C-Y> repeat('<C-Y>', len(getline(line('.')-1))-col('.')+1)
 inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-Y>" : "\<Tab>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-N>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
+inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<C-]><C-G>u\<CR>"
 
 inoremap <C-R>! <C-R>=system(input(':!'))<CR>
 
