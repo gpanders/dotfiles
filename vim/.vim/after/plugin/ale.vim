@@ -14,6 +14,14 @@ if !exists('g:ale_linters')
     let g:ale_linters = {}
 endif
 
+if get(g:, 'ale_completion_enabled')
+    let cot = &completeopt
+    set completeopt=menu,menuone,preview,noinsert
+    if cot =~# 'popup'
+        set completeopt-=preview completeopt+=popup
+    endif
+endif
+
 " Python {{{
 let g:ale_linters.python = ['pylint', 'flake8', 'pyls']
 let g:ale_python_pylint_change_directory = 0
