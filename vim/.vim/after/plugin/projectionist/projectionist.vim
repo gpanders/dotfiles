@@ -1,6 +1,6 @@
 " vim-projectionist configuration
 " Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-01-04
+" Date: 2019-12-09
 
 if !get(g:, 'loaded_projectionist', 0)
   finish
@@ -16,7 +16,7 @@ endfunction
 
 function! s:activate()
   " Binary (on/off) settings
-  for opt in ['expandtab', 'readonly', 'modifiable']
+  for opt in ['expandtab', 'readonly', 'modifiable', 'spell']
     for [root, value] in projectionist#query(opt)
       execute 'setlocal' (!value ? 'no' : '') . opt
     endfor
