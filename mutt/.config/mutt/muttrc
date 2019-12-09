@@ -83,7 +83,13 @@ hdr_order from: to: cc: date: subject:
 
 # Index view options
 set date_format = "%b %d %I:%M %p"
-set index_format = " [%Z]  %D  %-20.20F  %s"
+set index_format = " [%Z]  %-9@date@  %-20.20F  %s"
+index-format-hook date "~d<1d" "Today"
+index-format-hook date "~d<2d" "Yesterday"
+index-format-hook date "~d<1w" "%[%A]"
+index-format-hook date "~d<1y" "%[%b %d]"
+index-format-hook date "~A"    "%[%b %y]"
+
 set sort = threads
 set sort_aux = reverse-last-date-received
 set sort_re
