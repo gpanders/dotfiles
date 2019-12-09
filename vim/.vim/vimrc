@@ -289,6 +289,7 @@ nnoremap <expr> yol ':setlocal ' . (&list ? 'no' : '') . "list\<CR>"
 nnoremap <expr> yoc ':setlocal ' . (&cursorline ? 'no' : '') . "cursorline\<CR>"
 nnoremap <expr> yo<Bar> ':setlocal ' . (&cursorcolumn ? 'no' : '') . "cursorcolumn\<CR>"
 nnoremap <expr> yod ':' . (&diff ? 'diffoff' : 'diffthis') . "\<CR>"
+nnoremap <expr> yos ':setlocal ' . (&spell ? 'no' : '') . "spell\<CR>"
 
 " }}}
 
