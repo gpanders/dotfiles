@@ -1,7 +1,7 @@
 " ALE configuration
 " This file is executed AFTER ALE is loaded
 " Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-11-18
+" Date: 2019-12-05
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -16,7 +16,7 @@ endif
 
 if get(g:, 'ale_completion_enabled')
     let cot = &completeopt
-    set completeopt=menu,menuone,preview,noinsert
+    set completeopt=menu,menuone,preview,noselect,noinsert
     if cot =~# 'popup'
         set completeopt-=preview completeopt+=popup
     endif
