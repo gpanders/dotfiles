@@ -76,8 +76,9 @@ bindsym $sup+Return exec i3-sensible-terminal
 # Kill focused window
 bindsym $sup+Shift+q kill
 
-# Start rofi (a program launcher)
-bindsym $alt+space exec "rofi -show drun"
+# Start i3-dmenu-desktop. This is a wrapper around dmenu which only displays
+# applications shipping a .desktop file
+bindsym $alt+space exec i3-dmenu-desktop --dmenu='dmenu -i -l 10 -nb #393939 -nf #d3d0c8 -sb #6699cc -sf #f2f0ec'
 
 # Change focus
 bindsym $sup+h focus left
