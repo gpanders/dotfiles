@@ -1,0 +1,132 @@
+#!/bin/bash
+# Simple bash script for creating and maintaining plaintext notes
+
+if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/note/config ]; then
+    source "${XDG_CONFIG_HOME:-$HOME/.config}"/note/config
+elif [ -z "$NOTES_DIR" ]; then
+    NOTES_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/note
+fi
+
+if [ -z "$NOTES_DIR" ]; then
+    echo "Notes directory not set!" >&2
+    return 1
+fi
+
+if [ ! -d "$NOTES_DIR" ]; then
+    mkdir -p "$NOTES_DIR"
+fi
+
+usage() {
+    echo "Usage:
+    note s[how] <name>
+    note o[pen] [name]
+    note n[ew] <name>
+    note l[ist]
+    note g[rep] <pattern>
+    note t[ag] <tag>
+    note h[elp]"
+}
+
+note() {
+    if [ $# -lt 1 ]; then
+        usage >&2
+        return 1
+    fi
+
+    case "$1" in
+        h|he|hel|help)
+            usage
+            return 0
+            ;;
+        s|sh|sho|show)
+            if [ $# -lt 2 ]; then
+                usage >&2
+                return 1
+            fi
+
+            note=("$NOTES_DIR"/$2.*)
+            if [ ${#note} -eq 0 ]; then
+                echo "Note $2 not found" >&2
+                return 1
+            fi
+            cat "${note[0]}"
+            ;;
+        o|op|ope|open)
+            if [ $# -gt 1 ]; then
+                note=("$NOTES_DIR"/$2.*)
+                if [ ${#note} -eq 0 ]; then
+                    echo "Note $2 not found" >&2
+                    return 1
+                fi
+
+                ${EDITOR:-vi} "${note[0]}"
+            else
+                notes=("$NOTES_DIR"/*)
+                if [ ${#notes} -eq 0 ]; then
+                    echo "You have no notes" >&2
+                    return 1
+                fi
+
+                ${EDITOR:-vi} "${notes[@]}"
+            fi
+            ;;
+        n|ne|new)
+            if [ $# -lt 2 ]; then
+                usage >&2
+                return 1
+            fi
+
+            shift
+            name="$*"
+            date=$(date +%Y%m%d%H%M%S)
+            title="${date}_${name// /_}"
+            file="$NOTES_DIR"/"$title".md
+            cat > "$file" << EOF
+---
+title: $name
+author: Greg Anders
+date: $(date +'%F %T')
+tags:
+---
+EOF
+            ${EDITOR:-vi} "$file"
+            ;;
+        l|li|lis|list)
+            notes=("$NOTES_DIR"/*)
+            if [ ${#notes} -eq 0 ]; then
+                echo "You have no notes"
+                return 0
+            fi
+
+            for note in "${notes[@]}"; do
+                command basename -- "${note%.*}"
+            done
+            ;;
+        g|gr|gre|grep)
+            if [ $# -lt 2 ]; then
+                usage >&2
+                return 1
+            fi
+
+            shift
+            cd "$NOTES_DIR"
+            grep -i -r -C 1 --color "$*"
+            ;;
+        t|ta|tag)
+            if [ $# -lt 2 ]; then
+                usage >&2
+                return 1
+            fi
+
+            cd "$NOTES_DIR"
+            grep -r -H -E '^tags:' | grep -F "#$2" | cut -d : -f 1 | while IFS= read -r note; do
+                echo "${note%.*}"
+            done
+            ;;
+        *)
+            usage >&2
+            return 1
+            ;;
+    esac
+}
+note "$@"
