@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+_note () {
+    if [ "${#COMP_WORDS[@]}" -gt 3 ]; then
+        return
+    fi
+
+    if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/note/config ]; then
+        source "${XDG_CONFIG_HOME:-$HOME/.config}"/note/config
+    elif [ -z "$NOTES_DIR" ]; then
+        NOTES_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/note
+    fi
+
+    if [ -z "$NOTES_DIR" ]; then
+        return
+    fi
+
+    local cur commands
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    commands="show open list grep tag help"
+
+    if [ "$COMP_CWORD" -eq 1 ]; then
+        COMPREPLY=($(compgen -W "$commands" -- "$cur"))
+        return 0
+    fi
+
+    local notes=()
+    for note in "$NOTES_DIR"/*; do
+        notes+=($(basename -- "${note%.*}"))
+    done
+
+    case "${COMP_WORDS[1]}" in
+        s|sh|sho|show|o|op|ope|open)
+            COMPREPLY=($(compgen -W "${notes[*]}" -- "${COMP_WORDS[2]}"))
+            ;;
+        l|li|lis|list|g|gr|gre|grep|t|ta|tag|h|he|hel|help)
+            return
+            ;;
+        *)
+            COMPREPLY=($(compgen -W "$commands" -- "$cur"))
+            ;;
+    esac
+} &&
+complete -F _note note
