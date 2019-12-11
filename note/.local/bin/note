@@ -77,13 +77,13 @@ note() {
             fi
 
             shift
-            name="$*"
+            title="$*"
             date=$(date +%Y%m%d%H%M%S)
-            title="${date}_${name// /_}"
-            file="$NOTES_DIR"/"$title".md
+            fname="${date}_$(sed -e 's/[^[:alnum:]]/_/g' -e 's/^_\|_$//' <<< "$*" | tr -s '_')"
+            file="$NOTES_DIR"/"$fname".md
             cat > "$file" << EOF
 ---
-title: $name
+title: $title
 date: $(date +'%F %T')
 tags:
 ---
