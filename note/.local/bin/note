@@ -109,7 +109,7 @@ EOF
 
             shift
             cd "$NOTES_DIR"
-            grep -i -r -C 1 --color "$*"
+            grep -i -H -C 1 --color "$*" -- *
             ;;
         t|ta|tag)
             if [ $# -lt 2 ]; then
