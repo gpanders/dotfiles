@@ -59,6 +59,7 @@ note() {
                     return 1
                 fi
 
+                cd "$NOTES_DIR"
                 ${EDITOR:-vi} "${note[0]}"
             else
                 notes=("$NOTES_DIR"/*)
@@ -67,6 +68,7 @@ note() {
                     return 1
                 fi
 
+                cd "$NOTES_DIR"
                 ${EDITOR:-vi} "${notes[@]}"
             fi
             ;;
