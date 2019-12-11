@@ -118,7 +118,7 @@ EOF
             fi
 
             cd "$NOTES_DIR"
-            grep -r -H -E '^tags:' | grep -F "#$2" | cut -d : -f 1 | while IFS= read -r note; do
+            grep -H -i -F -w "#$2" -- * | cut -d : -f 1 | while IFS= read -r note; do
                 echo "${note%.*}"
             done
             ;;
