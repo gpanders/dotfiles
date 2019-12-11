@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ -d "${XDG_DATA_DIR:-$HOME/.local/share}"/bash-completion/completions ]; then
+    for f in "${XDG_DATA_DIR:-$HOME/.local/share}"/bash-completion/completions/*; do
+        [ -f "$f" ] && source "$f"
+    done
+fi
