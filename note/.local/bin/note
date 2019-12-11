@@ -84,7 +84,6 @@ note() {
             cat > "$file" << EOF
 ---
 title: $name
-author: Greg Anders
 date: $(date +'%F %T')
 tags:
 ---
