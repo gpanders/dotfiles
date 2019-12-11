@@ -32,3 +32,6 @@ let b:undo_ftplugin .= '|nun <buffer> [[|nun <buffer> ]]'
 
 nnoremap <buffer> <silent> Z! :<C-U>call ft#markdown#eval()<CR>
 let b:undo_ftplugin .= '|nun <buffer> Z!'
+
+nnoremap <buffer> <silent> <CR> :<C-U>call ft#markdown#open()<CR>
+let b:undo_ftplugin .= '|nun <buffer> <CR>'
