@@ -40,7 +40,7 @@ function! fzy#files()
 endfunction
 
 function! fzy#tags()
-    let tags = map(taglist('.'), {_, v -> printf('%-40s %-10s %s', v.name, v.kind, v.filename)})
+    let tags = map(taglist('.'), {_, v -> printf('%-40s %-12s %s', v.name, v.kind, fnamemodify(v.filename, ':.'))})
     let file = tempname()
     call writefile(tags, file)
     call s:fzy('cat ' . file, {t -> s:tags(t) && delete(file)}, 'tags')
