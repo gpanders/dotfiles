@@ -86,8 +86,8 @@ note() {
             cat > "$file" << EOF
 ---
 title: $title
-date: $(date +'%F %T')
-tags:
+date: $(date +'%B %d, %Y')
+keywords: []
 ---
 EOF
             ${EDITOR:-vi} "$file"
