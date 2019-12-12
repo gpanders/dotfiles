@@ -44,7 +44,7 @@ note() {
                 return 1
             fi
 
-            note=("$NOTES_DIR"/$2.*)
+            readarray -t note < <(ls "$NOTES_DIR"/"$2".*)
             if [ ${#note} -eq 0 ]; then
                 echo "Note $2 not found" >&2
                 return 1
@@ -53,7 +53,7 @@ note() {
             ;;
         o|op|ope|open)
             if [ $# -gt 1 ]; then
-                note=("$NOTES_DIR"/$2.*)
+                readarray -t note < <(ls "$NOTES_DIR"/"$2".*)
                 if [ ${#note} -eq 0 ]; then
                     echo "Note $2 not found" >&2
                     return 1
@@ -62,7 +62,7 @@ note() {
                 cd "$NOTES_DIR"
                 ${EDITOR:-vi} "${note[0]}"
             else
-                notes=("$NOTES_DIR"/*)
+                readarray -t notes < <(ls "$NOTES_DIR")
                 if [ ${#notes} -eq 0 ]; then
                     echo "You have no notes" >&2
                     return 1
