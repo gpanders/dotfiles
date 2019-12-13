@@ -59,7 +59,7 @@ note() {
                     return 1
                 fi
 
-                cd "$NOTES_DIR"
+                cd "$NOTES_DIR" || return 1
                 ${EDITOR:-vi} "${note[0]}"
             else
                 readarray -t notes < <(ls "$NOTES_DIR")
@@ -68,7 +68,7 @@ note() {
                     return 1
                 fi
 
-                cd "$NOTES_DIR"
+                cd "$NOTES_DIR" || return 1
                 ${EDITOR:-vi} "${notes[@]}"
             fi
             ;;
@@ -110,7 +110,7 @@ EOF
             fi
 
             shift
-            cd "$NOTES_DIR"
+            cd "$NOTES_DIR" || return 1
             grep -i -H -C 1 --color "$*" -- *
             ;;
         t|ta|tag)
@@ -119,7 +119,7 @@ EOF
                 return 1
             fi
 
-            cd "$NOTES_DIR"
+            cd "$NOTES_DIR" || return 1
             grep -H -i -F -w "#$2" -- * | cut -d : -f 1 | while IFS= read -r note; do
                 echo "${note%.*}"
             done
