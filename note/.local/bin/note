@@ -44,7 +44,7 @@ note() {
                 return 1
             fi
 
-            local title, note
+            local title note
             title="${2// /_}"
             note="$NOTES_DIR"/"$title".md
             if [ ! -f "$note" ]; then
@@ -59,7 +59,7 @@ note() {
                 return 1
             fi
 
-            local title, note
+            local title note
             title="${2// /_}"
             note="$NOTES_DIR"/"$title".md
             if [ ! -f "$note" ]; then
@@ -77,7 +77,7 @@ note() {
             fi
 
             shift
-            local title, date, fname, file
+            local title date fname file
             title="$*"
             date=$(date +%Y%m%d%H%M%S)
             fname="${date}_$(sed -e 's/[^[:alnum:]]/_/g' -e 's/^_\|_$//' <<< "$*" | tr -s '_')"
