@@ -19,7 +19,7 @@ fi
 usage() {
     echo "Usage:
     note s[how] <name>
-    note o[pen] [name]
+    note o[pen] <name>
     note n[ew] <name>
     note l[ist]
     note g[rep] <pattern>
@@ -44,33 +44,31 @@ note() {
                 return 1
             fi
 
-            readarray -t note < <(ls "$NOTES_DIR"/"$2".*)
-            if [ ${#note} -eq 0 ]; then
-                echo "Note $2 not found" >&2
+            local title, note
+            title="${2// /_}"
+            note="$NOTES_DIR"/"$title".md
+            if [ ! -f "$note" ]; then
+                echo "Note '$2' not found" >&2
                 return 1
             fi
-            cat "${note[0]}"
+            cat "$note"
             ;;
         o|op|ope|open)
-            if [ $# -gt 1 ]; then
-                readarray -t note < <(ls "$NOTES_DIR"/"$2".*)
-                if [ ${#note} -eq 0 ]; then
-                    echo "Note $2 not found" >&2
-                    return 1
-                fi
-
-                cd "$NOTES_DIR" || return 1
-                ${EDITOR:-vi} "${note[0]}"
-            else
-                readarray -t notes < <(ls "$NOTES_DIR")
-                if [ ${#notes} -eq 0 ]; then
-                    echo "You have no notes" >&2
-                    return 1
-                fi
-
-                cd "$NOTES_DIR" || return 1
-                ${EDITOR:-vi} "${notes[@]}"
+            if [ $# -lt 2 ]; then
+                usage >&2
+                return 1
             fi
+
+            local title, note
+            title="${2// /_}"
+            note="$NOTES_DIR"/"$title".md
+            if [ ! -f "$note" ]; then
+                echo "Note '$2' not found" >&2
+                return 1
+            fi
+
+            cd "$NOTES_DIR" || return 1
+            ${EDITOR:-vi} "$note"
             ;;
         n|ne|new)
             if [ $# -lt 2 ]; then
@@ -79,20 +77,21 @@ note() {
             fi
 
             shift
+            local title, date, fname, file
             title="$*"
             date=$(date +%Y%m%d%H%M%S)
             fname="${date}_$(sed -e 's/[^[:alnum:]]/_/g' -e 's/^_\|_$//' <<< "$*" | tr -s '_')"
             file="$NOTES_DIR"/"$fname".md
             cat > "$file" << EOF
----
-title: $title
-date: $(date +'%B %d, %Y')
-keywords: []
----
+Title:      $title
+Date:       $(date +'%B %d, %Y')
+Keywords:
 EOF
+            cd "$NOTES_DIR" || return 1
             ${EDITOR:-vi} "$file"
             ;;
         l|li|lis|list)
+            local notes
             readarray -t notes < <(ls "$NOTES_DIR")
             if [ ${#notes} -eq 0 ]; then
                 echo "You have no notes"
@@ -100,7 +99,7 @@ EOF
             fi
 
             for note in "${notes[@]}"; do
-                command basename -- "${note%.*}"
+                command basename -- "${note%.*}" | sed 's/_/ /g'
             done
             ;;
         g|gr|gre|grep)
@@ -120,8 +119,9 @@ EOF
             fi
 
             cd "$NOTES_DIR" || return 1
-            grep -H -i -F -w "#$2" -- * | cut -d : -f 1 | while IFS= read -r note; do
-                echo "${note%.*}"
+            grep -H -i -E '^(keywords|tags):' -- * | grep -F -w "$2" | cut -d : -f 1 | while IFS= read -r note; do
+                title="${note%.*}"
+                echo "${title//_/ }"
             done
             ;;
         *)
