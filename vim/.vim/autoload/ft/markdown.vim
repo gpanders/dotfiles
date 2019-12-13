@@ -27,7 +27,7 @@ function! ft#markdown#open(action) abort
         return
     endif
 
-    let matches = matchlist(line, '\(\[[^]]\+\]\)\(([^)]\+)\|\[[^]]\+]\|\[]\|[^[(]\=\)', col-1)
+    let matches = matchlist(line, '\(\[[^][]\+\]\)\(([^)]\+)\|\[[^]]\+]\|\[]\|[^[(]\=\)', col-1)
     if matches[2] =~# '([^)]\+)'
         " Normal link
         let link = matchstr(matches[2], '(\zs\([^)]\+\)\ze)')
