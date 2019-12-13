@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Simple bash script for creating and maintaining plaintext notes
 
 if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/note/config ]; then
