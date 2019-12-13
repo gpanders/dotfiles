@@ -93,7 +93,7 @@ EOF
             ${EDITOR:-vi} "$file"
             ;;
         l|li|lis|list)
-            notes=("$NOTES_DIR"/*)
+            readarray -t notes < <(ls "$NOTES_DIR")
             if [ ${#notes} -eq 0 ]; then
                 echo "You have no notes"
                 return 0
