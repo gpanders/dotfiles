@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Simple bash script for creating and maintaining plaintext notes
 
+set -e
+
 if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/note/config ]; then
     source "${XDG_CONFIG_HOME:-$HOME/.config}"/note/config
 elif [ -z "$NOTES_DIR" ]; then
@@ -23,8 +25,9 @@ usage() {
     note n[ew] <name>
     note l[ist]
     note g[rep] <pattern>
-    note t[ag] <tag>
-    note h[elp]"
+    note t[ag] [tag]
+    note h[elp]
+    note p[review]"
 }
 
 note() {
@@ -44,9 +47,8 @@ note() {
                 return 1
             fi
 
-            local title note
-            title="${2// /_}"
-            note="$NOTES_DIR"/"$title".md
+            local note
+            note="$NOTES_DIR"/"$2".txt
             if [ ! -f "$note" ]; then
                 echo "Note '$2' not found" >&2
                 return 1
@@ -59,9 +61,8 @@ note() {
                 return 1
             fi
 
-            local title note
-            title="${2// /_}"
-            note="$NOTES_DIR"/"$title".md
+            local note
+            note="$NOTES_DIR"/"$2".txt
             if [ ! -f "$note" ]; then
                 echo "Note '$2' not found" >&2
                 return 1
@@ -80,8 +81,8 @@ note() {
             local title date fname file
             title="$*"
             date=$(date +%Y%m%d%H%M%S)
-            fname="${date}_$(sed -e 's/[^[:alnum:]]/_/g' -e 's/^_\|_$//' <<< "$*" | tr -s '_')"
-            file="$NOTES_DIR"/"$fname".md
+            fname="${date} $(sed -e 's/[^[:alnum:]]/_/g' -e 's/^_\|_$//' <<< "$*" | tr -s '_')"
+            file="$NOTES_DIR"/"${fname//_/ }".txt
             cat > "$file" << EOF
 Title:      $title
 Date:       $(date +'%B %d, %Y')
@@ -99,7 +100,7 @@ EOF
             fi
 
             for note in "${notes[@]}"; do
-                command basename -- "${note%.*}" | sed 's/_/ /g'
+                command basename -- "${note%.*}"
             done
             ;;
         g|gr|gre|grep)
@@ -114,15 +115,46 @@ EOF
             ;;
         t|ta|tag)
             if [ $# -lt 2 ]; then
+                cd "$NOTES_DIR" || return 1
+                awk 'tolower($1) ~ /(keywords|tags)/ {$1=""; print $0}' ./*.txt | tr ',' '\n' | sort -u | awk '{$1=$1;print}'
+            else
+                cd "$NOTES_DIR" || return 1
+                grep -H -i -E '^(keywords|tags):' -- * | grep -F -w "$2" | cut -d : -f 1 | while IFS= read -r note; do
+                    echo "${note%.*}"
+                done
+            fi
+            ;;
+        p|pr|pre|prev|previ|previe|preview)
+            if [ $# -lt 2 ]; then
                 usage >&2
                 return 1
             fi
 
+            local note
+            note="$NOTES_DIR"/"$2".txt
+            if [ ! -f "$note" ]; then
+                echo "Note '$2' not found" >&2
+                return 1
+            fi
+
+            if ! command -v multimarkdown >/dev/null; then
+                echo "Couldn't find multimarkdown" >&2
+                return 1
+            fi
+
             cd "$NOTES_DIR" || return 1
-            grep -H -i -E '^(keywords|tags):' -- * | grep -F -w "$2" | cut -d : -f 1 | while IFS= read -r note; do
-                title="${note%.*}"
-                echo "${title//_/ }"
-            done
+            tmp=$(mktemp).html
+            multimarkdown --full --to html --output "$tmp" "$note"
+
+            if [ -n "$BROWSER" ]; then
+                $BROWSER "$tmp"
+            elif command -v xdg-open >/dev/null; then
+                xdg-open "$tmp"
+            elif command -v open >/dev/null; then
+                open "$tmp"
+            elif command -v firefox >/dev/null; then
+                firefox "$tmp"
+            fi
             ;;
         *)
             usage >&2
