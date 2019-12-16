@@ -23,7 +23,7 @@ function! s:activate()
   endfor
 
   " Single value settings
-  for opt in ['textwidth', 'shiftwidth', 'softtabstop', 'tabstop']
+  for opt in ['filetype', 'textwidth', 'shiftwidth', 'softtabstop', 'tabstop']
     for [root, value] in projectionist#query(opt)
       execute 'setlocal' opt . '=' . value
     endfor
