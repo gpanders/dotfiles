@@ -5,5 +5,3 @@ syn region markdownCodeBlock start="\n\(    \|\t\)" end="\v^((\t|\s{4})@!|$)" co
 " https://github.com/tpope/vim-markdown/pull/141/
 hi def link markdownLinkDelimiter     Delimiter
 hi def link markdownLinkTextDelimiter Delimiter
-
-let b:highlight_trailing_whitespace = 0
