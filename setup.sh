@@ -65,8 +65,8 @@ if [ $# -eq 0 ]; then
         fi
     done
 
-    if ! installed fzy && ask "Install fzy?"; then
-        install fzy
+    if ! installed fzf && ask "Install fzf?"; then
+        install fzf
     fi
 
     if ! installed nnn && ask "Install nnn?"; then
