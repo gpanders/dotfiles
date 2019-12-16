@@ -48,7 +48,7 @@ note() {
             fi
 
             local note
-            note="$NOTES_DIR"/"$2".txt
+            note="$NOTES_DIR"/"${2%.txt}".txt
             if [ ! -f "$note" ]; then
                 echo "Note '$2' not found" >&2
                 return 1
@@ -61,15 +61,15 @@ note() {
                 return 1
             fi
 
-            local note
-            note="$NOTES_DIR"/"$2".txt
-            if [ ! -f "$note" ]; then
-                echo "Note '$2' not found" >&2
-                return 1
-            fi
+            shift
+            local notes
+            notes=()
+            for note in "$@"; do
+                notes+=("$NOTES_DIR"/"${note%.txt}".txt)
+            done
 
             cd "$NOTES_DIR" || return 1
-            ${EDITOR:-vi} "$note"
+            ${EDITOR:-vi} "${notes[@]}"
             ;;
         n|ne|new)
             if [ $# -lt 2 ]; then
@@ -111,7 +111,7 @@ EOF
 
             shift
             cd "$NOTES_DIR" || return 1
-            grep -i -H -C 1 --color "$*" -- *
+            grep -i -H -C 1 --color=always "$*" -- * | less -R --no-init --quit-if-one-screen
             ;;
         t|ta|tag)
             if [ $# -lt 2 ]; then
@@ -131,20 +131,20 @@ EOF
             fi
 
             local note
-            note="$NOTES_DIR"/"$2".txt
+            note="$NOTES_DIR"/"${2%.txt}".txt
             if [ ! -f "$note" ]; then
                 echo "Note '$2' not found" >&2
                 return 1
             fi
 
-            if ! command -v multimarkdown >/dev/null; then
-                echo "Couldn't find multimarkdown" >&2
+            if ! command -v pandoc >/dev/null; then
+                echo "Couldn't find pandoc" >&2
                 return 1
             fi
 
             cd "$NOTES_DIR" || return 1
             tmp=$(mktemp).html
-            multimarkdown --full --to html --output "$tmp" "$note"
+            pandoc --standalone --to html --from markdown --output "$tmp" "$note"
 
             if [ -n "$BROWSER" ]; then
                 $BROWSER "$tmp"
