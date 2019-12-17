@@ -12,7 +12,7 @@ if !get(g:, 'loaded_fzf')
 endif
 
 " Ctrl-P to start FZF
-nnoremap <silent> <C-P> :FZF<CR>
+nnoremap <silent> <C-P> :FZF --layout=default<CR>
 
 " Create Helptags command and map it to Ctrl-H
 command! -bang Helptags call fzf#helptags(<bang>0)
