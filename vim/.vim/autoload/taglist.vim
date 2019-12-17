@@ -4,6 +4,7 @@ function! s:tagjump()
   wincmd w
   let magic = &magic
   set nomagic
+  call cursor(1, 1)
   execute s:escape(cmd)
   let &magic = magic
 endfunction
@@ -34,29 +35,16 @@ function! taglist#open(...)
   " Syntax of current buffer
   let syn = &syntax
 
-  let bufinfo = getbufinfo('Taglist')
-  if !empty(bufinfo)
-    " Buffer already exists
-    let bufinfo = bufinfo[0]
-    if !bufinfo.hidden && !empty(bufinfo.windows)
-      let winnum = win_id2win(bufinfo.windows[0])
-      execute winnum . 'wincmd w'
-    else
-      execute 'botright sb ' . bufinfo.bufnr . ' | resize 10'
-    endif
-    setlocal modifiable
-    %delete_
-  else
-    botright new
-    setlocal nobuflisted buftype=nofile bufhidden=hide noswapfile
-    nnoremap <buffer> <silent> <CR> :<C-U>call <SID>tagjump()<CR>
-    nnoremap <buffer> q <C-W>c
-    10wincmd_
-    silent execute 'file Taglist'
-  endif
+  for win in filter(range(1, winnr('$')), 'getwinvar(v:val, "taglist")')
+    execute win . 'windo close'
+  endfor
+  botright 10new
+  let w:taglist = 1
+  nnoremap <buffer> <silent> <CR> :<C-U>call <SID>tagjump()<CR>
+  nnoremap <buffer> q <C-W>c
+  silent file Taglist
+  call setline(1, tags)
   let &l:tabstop = max([maxtaglen + 10, 40])
-  put =tags
-  0delete_
   let &l:syntax = syn
   " concealing patterns with matchadd must have priority 0 to avoid conflicts
   " with hlsearch. This seems to be a bug, see:
@@ -64,5 +52,6 @@ function! taglist#open(...)
   call matchadd('Conceal', '\t\zs/^\s*', 0)
   call matchadd('Conceal', '$/$', 0)
   call matchadd('Comment', '^\[\w]')
+  setlocal nobuflisted buftype=nofile bufhidden=hide noswapfile
   setlocal nomodifiable cursorline conceallevel=2 concealcursor=nc nonumber nowrap
 endfunction
