@@ -144,7 +144,7 @@ EOF
 
             cd "$NOTES_DIR" || return 1
             tmp=$(mktemp).html
-            pandoc --standalone --to html --from markdown --output "$tmp" "$note"
+            pandoc --standalone --to html --from markdown+mmd_title_block --output "$tmp" "$note"
 
             if [ -n "$BROWSER" ]; then
                 $BROWSER "$tmp"
