@@ -8,5 +8,6 @@ if command -sq fzf
         set -gx FZF_FIND_FILE_COMMAND "ag -g ''"
     end
 
-    set -gx FZF_DEFAULT_OPTS "--height=10 --reverse --no-info --color=16"
+    set -gx FZF_DEFAULT_COMMAND $FZF_FIND_FILE_COMMAND
+    set -gx FZF_DEFAULT_OPTS "--height=10 --reverse --no-info --color=16 --cycle"
 end
