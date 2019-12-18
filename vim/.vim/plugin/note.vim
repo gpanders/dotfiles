@@ -10,5 +10,5 @@ let g:loaded_note = 1
 augroup plugin.note
     autocmd!
     autocmd BufReadPost $NOTES_DIR/*
-                \ setlocal include=\\[\\[\\zs[^]]\\+\\ze]] includeexpr=glob(v:fname.'*')
+                \ setlocal include=\\[\\[\\zs\\d\\+\\ze]] includeexpr=glob(v:fname.'*')
 augroup END
