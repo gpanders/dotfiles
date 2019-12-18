@@ -186,10 +186,8 @@ setglobal isfname+=@-@
 " Use a better grepprg if available
 set grepformat^=%f:%l:%c:%m
 if executable('rg')
-  " Use rg over grep
   set grepprg=rg\ --vimgrep\ --smart-case
 elseif executable('ag')
-  " Use ag over grep
   set grepprg=ag\ --vimgrep\ --smart-case
 elseif executable('grep')
   set grepprg=grep\ --line-number\ --recursive\ -I\ $*\ *
