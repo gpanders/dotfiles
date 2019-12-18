@@ -111,7 +111,9 @@ EOF
 
             shift
             cd "$NOTES_DIR" || return 1
-            grep -i -H -C 1 --color=always "$*" -- * | less -R --no-init --quit-if-one-screen
+            { grep -Fil "$*" -- * ; find . -iname "*${*}*" -exec basename {} \; ; } | while IFS= read -r line; do
+                echo "${line%.*}"
+            done | sort -u | less -R --no-init --quit-if-one-screen
             ;;
         t|ta|tag)
             if [ $# -lt 2 ]; then
