@@ -11,7 +11,7 @@ let s:cmd = join([
       \ 'import sys',
       \ 'from glob import glob',
       \ 'from os import path',
-      \ 'print(",".join([d if path.isdir(d) and glob(path.join(d, "*.py")) for d in sys.path]))'],
+      \ 'print(",".join([d for d in sys.path if path.isdir(d) and glob(path.join(d, "*.py"))]))'],
       \ ';')
 
 function! ft#python#set_path(...)
