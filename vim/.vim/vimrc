@@ -318,6 +318,8 @@ else
   cnoremap <expr> <C-J> wildmenumode() ? "\<Down>\<Tab>" : "\<C-J>"
   cnoremap <expr> <C-K> wildmenumode() ? "\<Up>\<Tab>" : "\<C-K>"
 endif
+
+cnoremap <expr> <Tab> cmdline#expand("\<Tab>")
 " }}}
 
 " }}}
