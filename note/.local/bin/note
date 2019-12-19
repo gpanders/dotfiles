@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # Simple bash script for creating and maintaining plaintext notes
 
-set -e
-
 if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/note/config ]; then
     source "${XDG_CONFIG_HOME:-$HOME/.config}"/note/config
 elif [ -z "$NOTES_DIR" ]; then
@@ -84,24 +82,26 @@ note() {
             fname="${date} $(sed -e 's/[^[:alnum:]]/_/g' -e 's/^_\|_$//' <<< "$*" | tr -s '_')"
             file="$NOTES_DIR"/"${fname//_/ }".txt
             cat > "$file" << EOF
-Title:      $title
-Date:       $(date +'%B %d, %Y')
-Keywords:
+---
+title:      $title
+date:       $(date +'%B %d, %Y')
+keywords:
+...
 EOF
             cd "$NOTES_DIR" || return 1
             ${EDITOR:-vi} "$file"
             ;;
         l|li|lis|list)
-            local notes
-            readarray -t notes < <(ls "$NOTES_DIR")
+            cd "$NOTES_DIR" || return 1
+            readarray -t notes < <(ls)
             if [ ${#notes} -eq 0 ]; then
                 echo "You have no notes"
                 return 0
             fi
 
             for note in "${notes[@]}"; do
-                command basename -- "${note%.*}"
-            done
+                echo "${note%.*}"
+            done | sort | less -R --no-init --quit-if-one-screen
             ;;
         g|gr|gre|grep)
             if [ $# -lt 2 ]; then
@@ -111,19 +111,26 @@ EOF
 
             shift
             cd "$NOTES_DIR" || return 1
-            { grep -Fil "$*" -- * ; find . -iname "*${*}*" -exec basename {} \; ; } | while IFS= read -r line; do
-                echo "${line%.*}"
+            readarray -t files < <(ls)
+            for pat in "$@"; do
+                readarray -t files < <({ grep -Fil "$pat" "${files[@]}" ; printf "%s\n" "${files[@]}" | grep -Fi "$pat" ; })
+                if [ "${#files}" -eq 0 ]; then
+                    break
+                fi
+            done
+
+            for file in "${files[@]}"; do
+                echo "${file%.*}"
             done | sort -u | less -R --no-init --quit-if-one-screen
             ;;
         t|ta|tag)
+            cd "$NOTES_DIR" || return 1
             if [ $# -lt 2 ]; then
-                cd "$NOTES_DIR" || return 1
-                awk 'tolower($1) ~ /(keywords|tags)/ {$1=""; print $0}' ./*.txt | tr ',' '\n' | sort -u | awk '{$1=$1;print}'
+                awk 'tolower($1) ~ /(keywords|tags)/ {$1=""; print $0}' ./*.txt | tr ',' '\n' | sort -u | awk '{$1=$1;print}' | less -R --no-init --quit-if-one-screen
             else
-                cd "$NOTES_DIR" || return 1
-                grep -H -i -E '^(keywords|tags):' -- * | grep -F -w "$2" | cut -d : -f 1 | while IFS= read -r note; do
+                grep -H -E -- '^Keywords:' * | grep -F -w "$2" | cut -d : -f 1 | while IFS= read -r note; do
                     echo "${note%.*}"
-                done
+                done | sort | less -R --no-init --quit-if-one-screen
             fi
             ;;
         p|pr|pre|prev|previ|previe|preview)
@@ -146,7 +153,7 @@ EOF
 
             cd "$NOTES_DIR" || return 1
             tmp=$(mktemp).html
-            pandoc --standalone --to html --from markdown+mmd_title_block --output "$tmp" "$note"
+            pandoc --standalone --to html --from markdown --output "$tmp" "$note"
 
             if [ -n "$BROWSER" ]; then
                 $BROWSER "$tmp"
