@@ -6,11 +6,9 @@ syn region markdownCodeBlock start="\n\(    \|\t\)" end="\v^((\t|\s{4})@!|$)" co
 hi def link markdownLinkDelimiter     Delimiter
 hi def link markdownLinkTextDelimiter Delimiter
 
-unlet! b:current_syntax
-syn include @yaml syntax/yaml.vim
+syn region markdownYamlMetadata matchgroup=markdownYamlMetadataDelimiter start="\%^---$" end="^\%(---\|\.\.\.\)$" keepend
 
-syn region markdownYamlMetadata matchgroup=markdownYamlMetadataDelimiter start="\%^---$" end="^\%(---\|\.\.\.\)$" keepend contains=@yaml
-
-hi link markdownYamlMetadataDelimiter PreProc
+hi link markdownYamlMetadataDelimiter Comment
+hi link markdownYamlMetadata          Normal
 
 let b:current_syntax = 'markdown'
