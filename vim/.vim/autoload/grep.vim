@@ -2,10 +2,12 @@
 " Author: Greg Anders
 " Date: 2019-05-18
 
-function! s:callback(l, lines)
+function! s:callback(l, lines) abort
   let F = a:l ? function('setloclist', [0]) : function('setqflist')
   call F([], 'a', {'lines': a:lines})
-  exe 'botright' a:l ? 'lwindow' : 'cwindow'
+endfunction
+
+function! s:completed(l) abort
   silent exe 'doautocmd QuickFixCmdPost' a:l ? 'lgrep' : 'grep'
 endfunction
 
@@ -17,9 +19,10 @@ function! grep#grep(l, args)
   endif
 
   " Run the grep command in a shell to enable shell expansion
-  call async#run(cmd, {lines -> s:callback(a:l, lines)}, {'shell': 1, 'buffered': 0})
+  call async#run(cmd, {lines -> s:callback(a:l, lines)}, {'shell': 1, 'buffered': 0, 'completed': {_ -> s:completed(a:l)}})
 
   silent exe 'doautocmd QuickFixCmdPre' a:l ? 'lgrep' : 'grep'
   let F = a:l ? function('setloclist', [0]) : function('setqflist')
   call F([], 'r', {'title': cmd, 'items': []})
+  exe 'botright' a:l ? 'lopen' : 'copen'
 endfunction
