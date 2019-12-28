@@ -39,9 +39,6 @@ function! s:PackInit()
         " Populate results of :ilist and :dlist in quickfix window
         call minpac#add('romainl/vim-qlist')
 
-        " Snippets
-        call minpac#add('gpanders/snipmate.vim')
-
         " Visualize undo tree
         call minpac#add('simnalamburt/vim-mundo')
 
