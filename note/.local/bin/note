@@ -126,9 +126,9 @@ EOF
         t|ta|tag)
             cd "$NOTES_DIR" || return 1
             if [ $# -lt 2 ]; then
-                awk 'tolower($1) ~ /(keywords|tags)/ {$1=""; print $0}' ./*.txt | tr ',' '\n' | sort -u | awk '{$1=$1;print}' | less -R --no-init --quit-if-one-screen
+                awk 'tolower($1) ~ /^(keywords|tags):/ {$1=""; print $0}' ./*.txt | tr ',' '\n' | sort -u | awk '{$1=$1;print}' | less -R --no-init --quit-if-one-screen
             else
-                grep -H -E -- '^Keywords:' * | grep -F -w "$2" | cut -d : -f 1 | while IFS= read -r note; do
+                grep -H -i -E -- '^(keywords|tags):' * | grep -F -w "$2" | cut -d : -f 1 | while IFS= read -r note; do
                     echo "${note%.*}"
                 done | sort | less -R --no-init --quit-if-one-screen
             fi
