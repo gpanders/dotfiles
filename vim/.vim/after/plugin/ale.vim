@@ -23,7 +23,7 @@ if get(g:, 'ale_completion_enabled')
 endif
 
 " Python {{{
-let g:ale_linters.python = ['pylint', 'flake8', 'pyls']
+let g:ale_linters.python = ['pylint', 'flake8', 'pyls', 'mypy']
 let g:ale_python_pylint_change_directory = 0
 let g:ale_python_flake8_change_directory = 0
 let g:ale_python_pyls_config = {
