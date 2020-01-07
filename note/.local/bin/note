@@ -54,20 +54,19 @@ note() {
             cat "$note"
             ;;
         o|op|ope|open)
-            if [ $# -lt 2 ]; then
-                usage >&2
-                return 1
-            fi
-
-            shift
-            local notes
-            notes=()
-            for note in "$@"; do
-                notes+=("$NOTES_DIR"/"${note%.txt}".txt)
-            done
-
             cd "$NOTES_DIR" || return 1
-            ${EDITOR:-vi} "${notes[@]}"
+            if [ $# -lt 2 ]; then
+                ${EDITOR:-vi}
+            else
+                shift
+                local notes
+                notes=()
+                for note in "$@"; do
+                    notes+=("$NOTES_DIR"/"${note%.txt}".txt)
+                done
+
+                ${EDITOR:-vi} "${notes[@]}"
+            fi
             ;;
         n|ne|new)
             if [ $# -lt 2 ]; then
