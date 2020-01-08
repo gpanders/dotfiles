@@ -1,6 +1,0 @@
-*.pyc
-*.lock
-mbnames/
-config.default
-Account-*
-Repository-*
