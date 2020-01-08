@@ -1,7 +1,0 @@
-.vim/autoload/pathogen.vim
-.vim/.netrwhist
-.vim/wikis.vim
-.vim/session
-.vim/pack/*
-.vim/spell
-!.vim/pack/minpac/opt/minpac
