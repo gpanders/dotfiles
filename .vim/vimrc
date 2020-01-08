@@ -343,7 +343,7 @@ if has('nvim')
 endif
 
 " Create syntax group for trailing whitespace in each new buffer
-let g:trailing_whitespace_blacklist = ['markdown', 'text']
+let g:trailing_whitespace_blacklist = ['markdown', 'text', 'mail']
 autocmd Syntax * if !&readonly && &modifiable && &filetype != '' && index(g:trailing_whitespace_blacklist, &filetype) == -1
             \ | syn match TrailingWhitespace /\\\@<!\s\+\%#\@<!$/ containedin=ALL | endif
 
