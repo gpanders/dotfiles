@@ -2,12 +2,13 @@
 " Author: Greg Anders
 " Date: 2018-12-02
 
-setlocal formatoptions+=wa
+let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
+
+setlocal formatoptions+=wan
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*[-*+]\\s\\+\\\|^\\[^\\ze[^\\]]\\+\\]:
 setlocal wrapmargin=0
 setlocal nonumber
 setlocal nolist
 setlocal spell
-let b:undo_ftplugin .= '|setl fo< wm< nu< list< spell<'
 
-let b:highlight_trailing_whitespace = 0
-let b:undo_ftplugin .= '|unlet! b:highlight_trailing_whitespace'
+let b:undo_ftplugin .= '|setl fo< flp< wm< nu< list< spell<'
