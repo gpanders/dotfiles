@@ -3,30 +3,35 @@ alias ll="ls -Alh"
 
 alias g="git"
 
+git() {
+    if [ "$PWD" = "$HOME" ]; then
+        command git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
+    else
+        command git "$@"
+    fi
+}
+
 if command -v nvim >/dev/null; then
     alias vi="nvim"
     alias vim="nvim"
 fi
 
 if [ -n "$EDITOR" ]; then
-    alias e="$EDITOR"
+    alias e="\$EDITOR"
 fi
 
 if [ -n "$BROWSER" ]; then
-    alias b="$BROWSER"
+    alias b="\$BROWSER"
 fi
 
 alias d="dirs -v"
 
 mkdcd() {
-    mkdir -p "$1" && cd "$1"
+    mkdir -p "$1" && cd "$1" || return 1
 }
 
 __cd() {
-    builtin cd "$@"
-    if [ $? -eq 0 ]; then
-        pushd -n "$(pwd)" >/dev/null
-    fi
+    builtin cd "$@" && pushd -n "$(pwd)" >/dev/null
 }
 alias cd=__cd
 
