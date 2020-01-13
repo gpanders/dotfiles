@@ -8,27 +8,13 @@
 let s:jobs = {}
 
 function! s:callback(id, msg)
-  let msg = a:msg
   let job = s:jobs[a:id]
   if type(job.cb) == type({-> 1})
-    call job.cb(msg)
+    call job.cb(a:msg)
   elseif type(job.cb) == type('')
-    if exists('*' . job.cb)
-      let F = function(job.cb)
-      call F(msg)
-    else
-      if type(msg) == type([])
-        let msg = join(msg, "\n")
-      endif
-      " Apparently the substitute() function removes escaped characters, so
-      " for example \" becomes ", so we have to escape the escaped
-      " characters, hence the `escape(..., '\')` in the line below
-      let command = substitute(job.cb, '\C\<v:val\>', '"' . escape(fnameescape(msg), '\') . '"', 'g')
-      " After double escaping (explained above) the newline characters are
-      " represented as \\n (a backslash followed by an actual newline). The
-      " following replaces these with the literal '\n' character
-      execute join(split(command, '\\\n'), '\n')
-    endif
+    for m in a:msg
+      execute substitute(job.cb, '\C\<v:val\>', shellescape(m), 'g')
+    endfor
   endif
 endfunction
 
@@ -39,7 +25,6 @@ function! s:stdout(channel, msg, ...)
     let id = ch_info(a:channel).id
   endif
 
-  " Make sure job is still available
   if has_key(s:jobs, id)
     let job = s:jobs[id]
     let msg = a:msg
@@ -82,10 +67,6 @@ function! s:exit(channel, msg, ...)
   call remove(s:jobs, id)
 endfunction
 
-function! s:shellsplit(str)
-  return map(split(a:str, '\%(^\%("[^"]*"\|[^"]\)*\)\@<= '), {_, v -> substitute(v, '^"\|"$', '', 'g')})
-endfunction
-
 if has('nvim')
   let s:opts = {
         \ 'on_stdout': {i, d, e -> s:stdout(e, d, i)},
@@ -104,40 +85,14 @@ else
 endif
 
 function! async#run(cmd, cb, ...)
-  let cmd = a:cmd
-
-  let opts = {}
-  if a:0
-    let opts = a:1
-  endif
-
-  if get(opts, 'shell', 0) " Run command in a subshell
-    " Convert command into a string if it is in list form
-    if type(cmd) == type([])
-      let cmd = join(cmd)
-    endif
-
-    if !has('nvim')
-      " Neovim's jobstart() uses 'shell' by default when the command argument
-      " is a string. For Vim, we have to explicitly add the shell command part
-      let cmd = split(&shell) + split(&shellcmdflag) + [cmd]
-    endif
-  elseif type(cmd) == type('')
-    " If the 'shell' option is not specified and the cmd argument is a string,
-    " convert it into a list
-    let cmd = s:shellsplit(cmd)
-  endif
-
+  let opts = get(a:, 1, {})
   if has('nvim')
-    let jobid = jobstart(cmd, s:opts)
+    let jobid = jobstart(a:cmd, s:opts)
   elseif has('job')
-    let job = job_start(cmd, s:opts)
+    let job = job_start(a:cmd, s:opts)
     let jobid = ch_info(job_info(job).channel).id
   else
-    echohl ErrorMsg
-    echom 'Jobs API not supported'
-    echohl None
-    return
+    throw 'Jobs API not supported'
   endif
 
   let s:jobs[jobid] = {
