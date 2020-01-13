@@ -1,5 +1,3 @@
-" Vim
-
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
 if has('folding')

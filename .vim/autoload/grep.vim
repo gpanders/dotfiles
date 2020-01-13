@@ -1,6 +1,4 @@
 " Asynchronous grep
-" Author: Greg Anders
-" Date: 2019-05-18
 
 function! s:callback(l, lines) abort
   let F = a:l ? function('setloclist', [0]) : function('setqflist')

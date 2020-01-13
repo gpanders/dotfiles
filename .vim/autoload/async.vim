@@ -1,6 +1,5 @@
 " Wrapper functions for asynchronous APIs for nvim and vim
 " Author: Greg Anders
-" Date: 2019-04-16
 
 " Neovim and Vim 8 both have a jobs API, but the syntax for each is slightly
 " different. This function aims to provide a consistent interface for both to

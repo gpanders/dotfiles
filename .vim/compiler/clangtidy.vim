@@ -1,7 +1,3 @@
-" Clang-tidy compiler plugin
-" Maintainer: Greg Anders <greg@gpanders.com>
-" Last Updated: 1/2/2019
-
 if exists('current_compiler')
   finish
 endif

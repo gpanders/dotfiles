@@ -1,7 +1,3 @@
-" DTC compiler plugin
-" Maintainer: Greg Anders <greg@gpanders.com>
-" Last Updated: 2019-05-08
-
 if exists('current_compiler')
   finish
 endif

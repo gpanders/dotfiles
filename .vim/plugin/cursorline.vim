@@ -1,8 +1,5 @@
 " Highlight the current line in the current window but disable in Insert mode
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-02-25
-
-if exists('g:loaded_cursorline')
+if exists('g:loaded_cursorline') || !has('syntax')
   finish
 endif
 let g:loaded_cursorline = 1

@@ -1,4 +1,3 @@
-" LaTeX
 let g:tex_flavor = 'latex'
 
 setlocal nocursorline

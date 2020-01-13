@@ -1,7 +1,3 @@
-" Use FZF to find help tags
-" Author: Greg Anders
-" Date: 2019-05-07
-
 function! fzf#helptags(bang) abort
     if !exists('*fzf#run')
         echohl ErrorMsg

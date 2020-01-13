@@ -1,7 +1,4 @@
 " Toggle between light and dark background
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-03-27
-
 if exists('g:loaded_toggle_bg') || !(has('termguicolors') || has('gui'))
   finish
 endif

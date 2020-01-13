@@ -1,6 +1,4 @@
 " Set the statusline
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-07-10
 
 " Initialize StatuslineMode highlight group
 highlight! link StatuslineMode StatuslineModeNormal

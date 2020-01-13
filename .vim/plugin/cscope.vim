@@ -1,7 +1,3 @@
-" cscope
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-08-05
-
 if !has('cscope') || !executable('cscope') || exists('g:loaded_cscope')
   finish
 endif

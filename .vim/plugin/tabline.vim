@@ -1,6 +1,4 @@
 " Set the tabline
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-07-10
 
 function! TabLine()
   let s = ''

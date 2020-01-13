@@ -1,5 +1,3 @@
-" Rust
-
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
 if executable('rustfmt')
