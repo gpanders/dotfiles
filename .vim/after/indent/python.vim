@@ -1,5 +1,3 @@
-" Python indent file
-
 let b:undo_indent = get(b:, 'undo_indent', '')
 
 setlocal shiftwidth=4

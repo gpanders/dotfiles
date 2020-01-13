@@ -1,8 +1,3 @@
-" pandoc compiler file
-" Compiler:         Pandoc
-" Maintainer:       Greg Anders <greg@gpanders.com>
-" Latest Revision:  2019-11-15
-
 if exists('current_compiler')
   finish
 endif

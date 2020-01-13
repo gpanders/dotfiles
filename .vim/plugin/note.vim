@@ -1,7 +1,3 @@
-" vim plugin for notes
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-12-17
-
 if exists('g:loaded_note') || empty($NOTES_DIR)
     finish
 endif

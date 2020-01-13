@@ -1,6 +1,3 @@
-" C filetype plugin
-" Author: Greg Anders <greg@gpanders.com>
-
 " Set comment string
 setlocal commentstring=//%s
 

@@ -1,7 +1,3 @@
-" snippets
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-12-27
-
 if exists('g:loaded_snippets')
     finish
 endif

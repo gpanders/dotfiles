@@ -1,6 +1,3 @@
-" Markdown filetype plugin
-" Author: Greg Anders <greg@gpanders.com>
-
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
 let g:markdown_interp_languages = ['python', 'sh=bash', 'bash', 'ruby', 'console=bash']

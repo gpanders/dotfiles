@@ -4,7 +4,7 @@
 "
 " Author: Tom Ryder <tom@sanctum.geek.nz>
 " License: Same as Vim itself
-"
+
 if exists('g:loaded_strip_trailing_whitespace') || &compatible
   finish
 endif

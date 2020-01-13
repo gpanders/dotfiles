@@ -1,8 +1,4 @@
-" easyterm
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-11-13
-
-if exists('g:loaded_easyterm')
+if exists('g:loaded_easyterm') || !(has('terminal') || has('nvim'))
     finish
 endif
 let g:loaded_easyterm = 1

@@ -1,7 +1,3 @@
-" mail filetype configuration
-" Author: Greg Anders
-" Date: 2018-12-02
-
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
 setlocal formatoptions+=wan
