@@ -9,11 +9,15 @@ function! s:completed(l) abort
   silent exe 'doautocmd QuickFixCmdPost' a:l ? 'lgrep' : 'grep'
 endfunction
 
+" Expand characters from :h cmdline-special
+let s:expandable = '\v(^| )(%(\%|#\d*|##|<%(cfile|cword|cWORD|cexpr)>)%(:[p~.htreS])*)%( |$)'
+
 function! grep#grep(l, args)
+  let args = substitute(a:args, s:expandable, '\=submatch(1) . expand(submatch(2) . '':S'')', '')
   if stridx(&grepprg, '$*') != -1
-    let cmd = substitute(&grepprg, '$\*', a:args, 'g')
+    let cmd = substitute(&grepprg, '$\*', args, 'g')
   else
-    let cmd = &grepprg . ' ' . a:args
+    let cmd = &grepprg . ' ' . args
   endif
 
   " Run the grep command in a shell to enable shell expansion
