@@ -12,19 +12,20 @@ endfunction
 " Expand characters from :h cmdline-special
 let s:expandable = '\v(^| )(%(\%|#\d*|##|<%(cfile|cword|cWORD|cexpr)>)%(:[p~.htreS])*)%( |$)'
 
-function! grep#grep(l, args)
+function! grep#grep(l, args) abort
   let args = substitute(a:args, s:expandable, '\=submatch(1) . expand(submatch(2) . '':S'')', '')
   if stridx(&grepprg, '$*') != -1
-    let cmd = substitute(&grepprg, '$\*', args, 'g')
+    let grepcmd = substitute(&grepprg, '$\*', args, 'g')
   else
-    let cmd = &grepprg . ' ' . args
+    let grepcmd = &grepprg . ' ' . args
   endif
 
   " Run the grep command in a shell to enable shell expansion
-  call async#run(cmd, {lines -> s:callback(a:l, lines)}, {'shell': 1, 'buffered': 0, 'completed': {_ -> s:completed(a:l)}})
+  let cmd = split(&shell) + split(&shellcmdflag) + [grepcmd]
+  call async#run(cmd, {lines -> s:callback(a:l, lines)}, {'buffered': 0, 'completed': {_ -> s:completed(a:l)}})
 
   silent exe 'doautocmd QuickFixCmdPre' a:l ? 'lgrep' : 'grep'
   let F = a:l ? function('setloclist', [0]) : function('setqflist')
-  call F([], 'r', {'title': cmd, 'items': []})
+  call F([], 'r', {'title': grepcmd, 'items': []})
   exe 'botright' a:l ? 'lopen' : 'copen'
 endfunction
