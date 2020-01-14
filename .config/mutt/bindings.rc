@@ -15,6 +15,10 @@ bind  pager k previous-line
 macro pager gg <top><refresh>
 macro pager G <bottom><refresh>
 
+# Shift+Tab moves backwards through unread
+bind index <esc><tab> noop
+bind index <backtab> previous-new-then-unread
+
 # Bind R to group-reply
 bind  index,pager R group-reply
 
