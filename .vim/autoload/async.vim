@@ -7,6 +7,31 @@
 
 let s:jobs = {}
 
+function! s:id(chan)
+  return has('nvim') ? a:chan : ch_info(a:chan).id
+endfunction
+
+function! s:jobstart(cmd)
+  if has('nvim')
+    return jobstart(a:cmd, {
+                \ 'on_stdout': function('s:stdout'),
+                \ 'on_stderr': function('s:error'),
+                \ 'on_exit': function('s:exit')
+                \ })
+  elseif has('job')
+    let job = job_start(a:cmd, {
+                \ 'out_cb': function('s:stdout'),
+                \ 'err_cb': function('s:error'),
+                \ 'exit_cb': function('s:exit'),
+                \ 'in_io': 'null',
+                \ 'out_mode': 'raw',
+                \ })
+    return ch_info(job_info(job).channel).id
+  else
+    throw 'Jobs API not supported'
+  endif
+endfunction
+
 function! s:callback(id, msg)
   let job = s:jobs[a:id]
   if type(job.cb) == type({-> 1})
@@ -19,12 +44,7 @@ function! s:callback(id, msg)
 endfunction
 
 function! s:stdout(channel, msg, ...)
-  if a:0
-    let id = a:1
-  else
-    let id = ch_info(a:channel).id
-  endif
-
+  let id = s:id(a:channel)
   if has_key(s:jobs, id)
     let job = s:jobs[id]
     let msg = a:msg
@@ -50,56 +70,25 @@ function! s:error(channel, msg, ...)
 endfunction
 
 function! s:exit(channel, msg, ...)
-  if a:0
-    let id = a:1
-  else
-    let id = ch_info(a:channel).id
-  endif
-
-  let job = s:jobs[id]
-  if job.buffered
-    if job.chunks[-1] ==# ''
-      call remove(job.chunks, -1)
+  let id = s:id(a:channel)
+  if has_key(s:jobs, id)
+    let job = s:jobs[id]
+    if job.buffered
+      if job.chunks[-1] ==# ''
+        call remove(job.chunks, -1)
+      endif
+      call s:callback(id, job.chunks)
     endif
-    call s:callback(id, job.chunks)
+    if has_key(job, 'completed')
+      call job.completed(a:msg)
+    endif
+    call remove(s:jobs, id)
   endif
-  call job.completed(a:msg)
-  call remove(s:jobs, id)
 endfunction
-
-if has('nvim')
-  let s:opts = {
-        \ 'on_stdout': {i, d, e -> s:stdout(e, d, i)},
-        \ 'on_stderr': {i, d, e -> s:error(e, d, i)},
-        \ 'on_exit': {i, d, e -> s:exit(e, d, i)},
-        \ 'stderr_buffered': 1,
-        \ }
-else
-  let s:opts = {
-        \ 'out_cb': function('s:stdout'),
-        \ 'err_cb': function('s:error'),
-        \ 'exit_cb': function('s:exit'),
-        \ 'in_io': 'null',
-        \ 'out_mode': 'raw'
-        \ }
-endif
 
 function! async#run(cmd, cb, ...)
   let opts = get(a:, 1, {})
-  if has('nvim')
-    let jobid = jobstart(a:cmd, s:opts)
-  elseif has('job')
-    let job = job_start(a:cmd, s:opts)
-    let jobid = ch_info(job_info(job).channel).id
-  else
-    throw 'Jobs API not supported'
-  endif
-
-  let s:jobs[jobid] = {
-        \ 'cb': a:cb,
-        \ 'chunks': [''],
-        \ 'buffered': get(opts, 'buffered', 1),
-        \ 'completed': get(opts, 'completed', {_ -> 0}),
-        \ }
-  return jobid
+  let id = s:jobstart(a:cmd)
+  let s:jobs[id] = extend({'cb': a:cb, 'chunks': [''], 'buffered': 1}, opts)
+  return id
 endfunction
