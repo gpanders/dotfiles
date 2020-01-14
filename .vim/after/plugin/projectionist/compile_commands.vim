@@ -1,7 +1,3 @@
-" Projections for projects with compile_commands.json
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-03-20
-
 if !get(g:, 'loaded_projectionist', 0)
   finish
 endif

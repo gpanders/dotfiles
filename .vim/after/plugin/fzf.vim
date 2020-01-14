@@ -1,6 +1,3 @@
-" fzf configuration
-" Author: Greg Anders <greg@gpanders.com>
-
 " Check for local installation if not already loaded
 if !get(g:, 'loaded_fzf') && isdirectory($HOME . '/.fzf')
   silent! source ~/.fzf/plugin/fzf.vim
