@@ -1,7 +1,3 @@
-" vim-easy-align configuration
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-02-28
-
 if !get(g:, 'loaded_easy_align_plugin')
   finish
 endif

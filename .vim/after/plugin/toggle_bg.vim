@@ -1,7 +1,3 @@
-" toggle_bg
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-03-27
-
 if !get(g:, 'loaded_toggle_bg')
   finish
 endif

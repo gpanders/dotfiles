@@ -1,7 +1,3 @@
-" vimtex configuration
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2018-12-03
-
 if executable('skim')
   let g:vimtex_view_method = 'skim'
 endif

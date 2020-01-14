@@ -1,7 +1,3 @@
-" vim-projectionist configuration
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-12-09
-
 if !get(g:, 'loaded_projectionist', 0)
   finish
 endif

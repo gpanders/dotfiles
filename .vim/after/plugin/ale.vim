@@ -1,8 +1,3 @@
-" ALE configuration
-" This file is executed AFTER ALE is loaded
-" Author: Greg Anders <greg@gpanders.com>
-" Date: 2019-12-05
-
 let s:save_cpo = &cpo
 set cpo&vim
 
