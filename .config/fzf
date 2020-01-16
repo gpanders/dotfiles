@@ -1,14 +1,19 @@
-#!/bin/bash
+#!/bin/sh
+
+case $- in
+    *i*) ;;
+    *) return
+esac
 
 # Find fzf installation
 if [ -z "$FZF_BASE" ]; then
-    fzf_dirs=(
-        "${XDG_DATA_HOME:-$HOME/.local/share}"/fzf
-        "$HOME"/.fzf
+    fzf_dirs="
+        ${XDG_DATA_HOME:-$HOME/.local/share}/fzf
+        $HOME/.fzf
         /usr/local/opt/fzf
         /usr/share/fzf
-    )
-    for dir in "${fzf_dirs[@]}"; do
+    "
+    for dir in $fzf_dirs; do
         if [ -d "$dir" ]; then
             FZF_BASE="$dir"
             break
@@ -18,60 +23,42 @@ fi
 
 if [ -n "$FZF_BASE" ]; then
     # Add fzf to path if it's not already there
-    if ! command -v fzf >/dev/null 2>&1; then
+    if ! command -v fzf >/dev/null 2>&1 && [ -d "$FZF_BASE"/bin ]; then
         export PATH="$FZF_BASE/bin:$PATH"
     fi
 
-    if [ ! -d "${FZF_BASE}/shell" ]; then
+    if [ ! -d "$FZF_BASE/"shell ]; then
         FZF_SHELL="$FZF_BASE"
     else
         FZF_SHELL="$FZF_BASE"/shell
     fi
 
     # Set up completion and key bindings
-    if [[ $- =~ i ]]; then
-        if [ -n "$BASH_VERSION" ]; then
-            source "$FZF_SHELL"/completion.bash 2>/dev/null
-            source "$FZF_SHELL"/key-bindings.bash 2>/dev/null
-        elif [ -n "$ZSH_VERSION" ]; then
-            source "$FZF_SHELL"/completion.zsh 2>/dev/null
-            source "$FZF_SHELL"/key-bindings.zsh 2>/dev/null
-        fi
+    if [ -n "$BASH_VERSION" ]; then
+        . "$FZF_SHELL"/key-bindings.bash 2>/dev/null
+    elif [ -n "$ZSH_VERSION" ]; then
+        . "$FZF_SHELL"/key-bindings.zsh 2>/dev/null
     fi
-
-    FZF_DEFAULT_OPTS=""
-
-    # Color
-    # Solarized Dark
-    # FZF_COLORS="dark,fg:-1,bg:-1,hl:#268bd2,fg+:#93a1a1,bg+:#073642,hl+:#268bd2,info:#b58900,prompt:#b58900,pointer:#2aa198,marker:#2aa198,spinner:#b58900"
-
-    # Solarized Light
-    # FZF_COLORS="light,fg:-1,bg:-1,hl:#268bd2,fg+:#586e75,bg+:#eee8d5,hl+:#268bd2,info:#b58900,prompt:#b58900,pointer:#2aa198,marker:#2aa198,spinner:#b58900"
-
-    # Base 16
-    FZF_COLORS="bg+:10,bg:0,spinner:6,hl:4,fg:12,header:4,info:3,pointer:6,marker:6,fg+:13,prompt:3,hl+:4"
-
-    FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color $FZF_COLORS"
 
     # Set default command
     if command -v fd >/dev/null 2>&1; then
         export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
         export FZF_ALT_C_COMMAND="fd -t d"
         _fzf_compgen_path() {
-            fd --hidden --follow --exclude ".git" . "$1"
+            fd --hidden --follow --exclude ".git" . "$@"
         }
         _fzf_compgen_dir() {
-            fd --type d --hidden --follow --exclude ".git" . "$1"
+            fd --type d --hidden --follow --exclude ".git" . "$@"
         }
     elif command -v rg >/dev/null 2>&1; then
         export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
         _fzf_compgen_path() {
-            rg --files --hidden --glob '!.git' "$1"
+            rg --files --hidden --glob '!.git' "$@"
         }
     elif command -v ag >/dev/null 2>&1; then
         export FZF_DEFAULT_COMMAND="ag -g ''"
         _fzf_compgen_path() {
-            ag -g '' "$1"
+            ag -g '' "$@"
         }
     fi
 
@@ -79,13 +66,5 @@ if [ -n "$FZF_BASE" ]; then
         export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     fi
 
-    if command -v highlight >/dev/null 2>&1; then
-        export FZF_CTRL_T_OPTS="--preview '! grep -qI . {} && echo {} is a binary file || highlight -O ansi -l {} 2>/dev/null | head -200'"
-    fi
-
-    if command -v tree >/dev/null 2>&1; then
-        export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-    fi
-
-    export FZF_DEFAULT_OPTS
+    export FZF_DEFAULT_OPTS="--height=10 --reverse --no-info --color=16 --cycle"
 fi
