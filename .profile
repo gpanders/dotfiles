@@ -1,31 +1,25 @@
-# ~/.profile: executed by the command interpreter for login shells.
-# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
-# exists.
-# see /usr/share/doc/bash/examples/startup-files for examples.
-# the files are located in the bash-doc package.
-
-# the default umask is set in /etc/profile; for setting the umask
-# for ssh logins, install and configure the libpam-umask package.
-#umask 022
+#!/bin/sh
 
 export EDITOR=vi
 export VISUAL=vi
 export PAGER=less
+export LESS="-g -M -R -W -X -z-4"
 
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
-    fi
-fi
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
-
-# set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ -d "$HOME/bin" ]; then
+    export PATH="$HOME/bin:$PATH"
+fi
+
+if [ -d "${XDG_CONFIG_HOME:-$HOME/.config}"/profile.d ]; then
+    for i in "${XDG_CONFIG_HOME:-$HOME/.config}"/profile.d/*.sh; do
+        [ -r "$i" ] && . "$i"
+    done
+fi
+
+if [ -n "$BASH_VERSION" ] && [ -n "$PS1" ]; then
+    # Source .bashrc for interactive bash shells
+    [ -r ~/.bashrc ] && . ~/.bashrc
 fi
