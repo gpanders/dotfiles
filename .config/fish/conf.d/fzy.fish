@@ -1,4 +1,4 @@
-if command -sq fzy
+if status is-interactive; and command -sq fzy
     if not set -q FZY_FIND_FILE_COMMAND
         if command -sq fd
             set FZY_FIND_FILE_COMMAND "fd --type f"
