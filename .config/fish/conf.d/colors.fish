@@ -6,6 +6,8 @@ if not set -q _fish_user_colors
     set -U fish_color_quote yellow
     set -U fish_color_redirection normal
     set -U fish_color_autosuggestion brblack
+    set -U fish_color_match blue
+    set -U fish_color_escape cyan
     set -U fish_color_operator blue
     set -U fish_color_end normal
     set -U fish_color_search_match normal --background=bryellow

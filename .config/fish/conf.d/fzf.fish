@@ -1,4 +1,4 @@
-if command -sq fzf
+if status is-interactive; and command -sq fzf
     if command -sq fd
         set FZF_FIND_FILE_COMMAND "fd --type f --hidden --follow --exclude .git"
         set FZF_CD_COMMAND "fd -t d"
