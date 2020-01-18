@@ -85,7 +85,7 @@ note() {
 title:      $title
 date:       $(date +'%B %d, %Y')
 keywords:
-...
+---
 EOF
             cd "$NOTES_DIR" || return 1
             ${EDITOR:-vi} "$file"
