@@ -141,7 +141,8 @@ disable=print-statement,
         comprehension-escape,
         redefined-outer-name,
         bad-continuation,
-        missing-docstring
+        missing-docstring,
+        too-few-public-methods
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
