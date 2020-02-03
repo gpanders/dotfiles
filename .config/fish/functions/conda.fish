@@ -5,7 +5,7 @@ function conda -d "Lazy load conda"
         conda $argv
     else
         __fish_command_not_found_handler conda
-        return 1
+        return 127
     end
 end
 
