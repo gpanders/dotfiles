@@ -22,11 +22,6 @@ if executable('pandoc')
   let b:undo_ftplugin .= '|setl fp< fex<|delc Toc|delc Reflinks'
 endif
 
-" Use [[ and ]] to navigate between sections
-nnoremap <buffer> <silent> [[ :<C-U>call ft#markdown#section(1)<CR>
-nnoremap <buffer> <silent> ]] :<C-U>call ft#markdown#section(0)<CR>
-let b:undo_ftplugin .= '|nun <buffer> [[|nun <buffer> ]]'
-
 nnoremap <buffer> <silent> Z! :<C-U>call ft#markdown#eval()<CR>
 let b:undo_ftplugin .= '|nun <buffer> Z!'
 

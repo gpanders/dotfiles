@@ -83,13 +83,6 @@ function! ft#markdown#reflinks(bang)
     call winrestview(view)
 endfunction
 
-function! ft#markdown#section(back)
-    for _ in range(v:count1)
-        call search('\%(^#\+ \|^\S.*\n^-\+$\|^\S.*\n^=\+$\)',
-                    \ (a:back ? 'b' : '') . 'sW')
-    endfor
-endfunction
-
 function! ft#markdown#eval()
   let view = winsaveview()
   let line = line('.')
