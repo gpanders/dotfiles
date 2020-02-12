@@ -1,8 +1,8 @@
 source ~/.config/mutt/default.rc
 
 set my_account = gpanders
-set my_prev_account = gmail
-set my_next_account = gmail
+set my_prev_account = gpanders
+set my_next_account = gpanders
 set folder = ~/.mail/gpanders
 set mbox_type = Maildir
 
