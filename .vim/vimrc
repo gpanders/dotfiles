@@ -228,7 +228,7 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-N>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
 inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<C-]><C-G>u\<CR>"
 
-inoremap <C-R>! <C-R>=system(input(':!'))<CR>
+inoremap <C-R>! <C-O>:r !
 
 " }}}
 
