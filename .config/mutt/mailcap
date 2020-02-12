@@ -10,11 +10,13 @@ text/calendar; mutt-ics; copiousoutput
 application/ics; mutt-ics; copiousoutput
 
 # Images
+image/*; open %s; test=uname | grep -q Darwin
 image/*; feh %s; test=command -v feh
 image/*; anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | pgmtopbm | pbmtoascii; test=command -v anytopnm; copiousoutput
 image/*; catimg %s; test=command -v catimg; copiousoutput
 
 # PDFs
+application/*; open %s; test=uname | grep -q Darwin
 application/pdf; pdftotext "%s" -; copiousoutput; description=PDF Document; nametemplate=%s.pdf
 
 # Word files
