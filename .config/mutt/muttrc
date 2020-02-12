@@ -146,9 +146,6 @@ source ~/.config/mutt/gpg.rc
 ifdef notmuch "set nm_default_uri = notmuch://`notmuch config get database.path`"
 # ifdef notmuch "source ~/.config/mutt/notmuch.rc"
 
-source ~/.config/mutt/gmail.rc
-folder-hook $folder source ~/.config/mutt/gmail.rc
-
 source ~/.config/mutt/gpanders.rc
 folder-hook $folder source ~/.config/mutt/gpanders.rc
 
