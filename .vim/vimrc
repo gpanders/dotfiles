@@ -141,6 +141,15 @@ set wildcharm=<Tab>
 set wildignorecase
 set wildmode=longest:full,full
 
+if has('wildignore')
+  set wildignore=*.7z,*.bz2,*.gz,*.jar,*.rar,*.tar,*.xz,*.zip
+  set wildignore+=*.pyc,__pycache__
+  set wildignore+=*.bin,*.exe,*.hdf,*.iso
+  set wildignore+=*.docx,*.pdf,*.ppt,*.pptx,*.xls,*.xlsx
+  set wildignore+=*.asc,*.gpg,*.ttf,*.bmp,*.gif,*.ico,*.jpeg,*.jpg,*.png
+  set wildignore+=*.o,*.a,.DS_Store,*~,*.swp
+endif
+
 if has('mouse')
   set mouse=a
 endif
