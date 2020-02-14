@@ -41,7 +41,7 @@ fi
 if [[ "$OSTYPE" == darwin* ]]; then
     export LSCOLORS="ExGxcxdxCxegedabagacad"
     alias ls="ls -G"
-elif [[ "$OSTYPE" == linux-gnu ]]; then
+elif [[ "$OSTYPE" == linux-gnu* ]]; then
     alias ls="ls --color=auto"
 fi
 
