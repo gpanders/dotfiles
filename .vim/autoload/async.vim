@@ -60,11 +60,11 @@ function! s:stdout(channel, msg, ...)
 endfunction
 
 function! s:error(channel, msg, ...)
-  echohl ErrorMsg
   let msg = a:msg
   if type(msg) == type([])
     let msg = join(msg[:-2])
   endif
+  echohl ErrorMsg
   echom msg
   echohl None
 endfunction
