@@ -1,4 +1,3 @@
-" Python specific settings
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
 " Set textwidth to 88 to mimic black

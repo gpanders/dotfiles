@@ -1,6 +1,5 @@
-let b:undo_indent = get(b:, 'undo_indent', '')
-
 setlocal noexpandtab
-setlocal shiftwidth&vim
-setlocal softtabstop&vim
+setlocal shiftwidth=0
+setlocal softtabstop=0
+
 let b:undo_ftplugin .= '|setl et< sw< sts<'
