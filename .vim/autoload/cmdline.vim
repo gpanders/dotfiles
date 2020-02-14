@@ -1,4 +1,4 @@
-let s:expandable = '\v^([%#$]|<(cfile|cword|cWORD|cexpr)>)'
+let s:expandable = '\v^([%#$]|\<(cfile|cword|cWORD|cexpr)\>)'
 
 function! s:expand(cmdline) abort
     let tokens = split(a:cmdline)
