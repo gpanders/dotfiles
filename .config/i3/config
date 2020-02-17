@@ -78,7 +78,7 @@ bindsym $sup+Shift+q kill
 
 # Start i3-dmenu-desktop. This is a wrapper around dmenu which only displays
 # applications shipping a .desktop file
-bindsym $alt+space exec i3-dmenu-desktop --dmenu='dmenu -i -l 10 -nb #393939 -nf #d3d0c8 -sb #6699cc -sf #f2f0ec'
+bindsym $sup+space exec i3-dmenu-desktop --dmenu='dmenu -i -l 10 -nb #393939 -nf #d3d0c8 -sb #6699cc -sf #f2f0ec'
 
 # Change focus
 bindsym $sup+h focus left
@@ -122,7 +122,7 @@ bindsym $sup+e layout toggle split
 bindsym $sup+Shift+space floating toggle
 
 # Change focus between tiling / floating windows
-bindsym $sup+space focus mode_toggle
+bindsym $sup+Tab focus mode_toggle
 
 # Focus the parent container
 bindsym $sup+a focus parent
