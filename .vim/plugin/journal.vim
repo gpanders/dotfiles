@@ -4,4 +4,4 @@ if exists('g:loaded_journal') || empty($JOURNAL_FILE)
 endif
 let g:loaded_journal = 1
 
-command! -nargs=0 Journal tabedit $JOURNAL_FILE
+command! -nargs=0 Journal tabedit +set\ ft=markdown $JOURNAL_FILE
