@@ -42,23 +42,6 @@ function! ft#markdown#open(action) abort
     endif
 endfunction
 
-function! ft#markdown#formatexpr()
-    " Only use this in normal mode to prevent automatic formatting being
-    " messed up in insert mode
-    if mode() !=# 'n'
-        return 1
-    endif
-
-    let range = v:lnum . ',' . (v:lnum + v:count - 1)
-    exe range . '!' . &l:formatprg
-    " Join wrapped links
-    silent exe 'keepjumps keeppatterns ' . range . 'g/\[[^]]*$/.,/\%(\[.*\)\@<!]/j'
-    " Convert *italics* (used by pandoc) to _italics_ (which I prefer)
-    silent exe 'keepjumps keeppatterns ' . range . 's/\*\@<!\*\([^*]\+\)\*\*\@!/_\1_/ge'
-    " Convert ```{.language} to just ```language
-    silent exe 'keepjumps keeppatterns ' . range . 's/[~`]\{3,}\zs\s*{\.\(\w\+\)}/\1/ge'
-endfunction
-
 function! ft#markdown#toc()
     let fp = &l:formatprg
     let &l:formatprg .= ' --toc'
@@ -68,14 +51,14 @@ function! ft#markdown#toc()
     let &l:formatprg = fp
 endfunction
 
-function! ft#markdown#reflinks(bang)
+function! ft#markdown#setopt(opt, bang)
     if a:bang
-        if &l:formatprg =~# '--reference-links'
-            let &l:formatprg = substitute(&l:formatprg, ' --reference-links', '', '')
+        if &l:formatprg =~# '--' . a:opt
+            let &l:formatprg = substitute(&l:formatprg, ' --' . a:opt, '', '')
         endif
     else
-        if &l:formatprg !~# '--reference-links'
-            let &l:formatprg .= ' --reference-links'
+        if &l:formatprg !~# '--' . a:opt
+            let &l:formatprg .= ' --' . a:opt
         endif
     endif
     let view = winsaveview()
