@@ -21,6 +21,8 @@ endif
 let g:ale_linters.python = ['pylint', 'flake8', 'pyls', 'mypy']
 let g:ale_python_pylint_change_directory = 0
 let g:ale_python_flake8_change_directory = 0
+let g:ale_python_mypy_ignore_invalid_syntax = 1
+let g:ale_python_mypy_options = '--ignore-missing-imports'
 let g:ale_python_pyls_config = {
             \ 'pyls': {
             \   'configurationSources': ['flake8', 'pylint'],
@@ -54,18 +56,9 @@ let g:ale_linters.rust = ['cargo', 'rls']
 let g:ale_rust_rls_toolchain = 'stable'
 " }}}
 
-let g:ale_fixers = {
-            \ 'python': ['isort'],
-            \ 'cpp': ['clang-format'],
-            \ 'c': ['clang-format'],
-            \ '*': ['remove_trailing_lines', 'trim_whitespace']
-            \}
-
 " Go {{{
 let g:ale_linters.go = ['golint', 'gofmt', 'gopls']
 " }}}
-
-nmap <Space><C-F> <Plug>(ale_fix)
 
 function! s:lsp_setup()
     let buf = bufnr('')
