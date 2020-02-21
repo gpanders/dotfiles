@@ -28,8 +28,12 @@ augroup plugin.fzy
                 \ endif
 augroup END
 
-nnoremap <silent> <C-P> :<C-U>call fzy#files()<CR>
-nnoremap <silent> <Space>t :<C-U>call fzy#tags()<CR>
+nnoremap <silent> <Space>ff :<C-U>call fzy#files()<CR>
+nnoremap <silent> <C-W><Space>ff :<C-U>call fzy#files({'split': 1})<CR>
+nnoremap <silent> <Space>ft :<C-U>call fzy#tags()<CR>
+nnoremap <silent> <C-W><Space>ft :<C-U>call fzy#tags({'split': 1})<CR>
+nnoremap <silent> <Space>fb :<C-U>call fzy#buffers()<CR>
+nnoremap <silent> <C-W><Space>fb :<C-U>call fzy#buffers({'split': 1})<CR>
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
