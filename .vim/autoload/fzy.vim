@@ -59,7 +59,7 @@ endfunction
 function! fzy#buffers(...)
     let opts = a:0 ? a:1 : {}
     let split = get(opts, 'split')
-    let buffers = map(getbufinfo(), {_, v -> printf('%-3d %s', v.bufnr, fnamemodify(v.name, ':.'))})
+    let buffers = map(getbufinfo({'buflisted': 1}), {_, v -> printf('%-3d %s', v.bufnr, fnamemodify(v.name, ':.'))})
     let file = tempname()
     call writefile(buffers, file)
     call s:fzy('cat ' . file, {b -> execute((split ? 's' : '') . 'b' . split(b)[0]) && delete(file)}, 'Buffers')
