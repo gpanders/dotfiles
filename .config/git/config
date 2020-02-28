@@ -1,6 +1,7 @@
 [user]
 	name = Greg Anders
 	email = greg@gpanders.com
+	signingKey = 0x56E93C2FB6B08BDB
 [alias]
 	co = checkout
 	st = status
