@@ -1,0 +1,40 @@
+#!/bin/sh
+
+usage() {
+	echo "Usage: $(basename "$0") [-q] [PASSWORD]"
+}
+
+while getopts "hq" o; do
+	case "$o" in
+		h) usage; exit 0 ;;
+		q) quiet=1 ;;
+		*) usage >&2; exit 1 ;;
+	esac
+done
+shift $((OPTIND-1))
+
+password="$1"
+if [ -z "$password" ]; then
+	if [ -t 0 ]; then
+		printf 'Password: '
+		stty -echo
+	fi
+	read -r password
+	if [ -t 0 ]; then
+		stty echo
+		printf '\n'
+	fi
+fi
+
+hash=$(echo "$password" | tr -d '\n' | sha1sum | cut -d' ' -f 1 | tr 'a-f' 'A-F')
+prefix=$(echo "$hash" | cut -c 1-5)
+suffix=$(echo "$hash" | cut -c 6-)
+match=$(curl -s https://api.pwnedpasswords.com/range/"$prefix" | grep "^$suffix")
+
+if [ -n "$match" ]; then
+	nmatches=$(echo "$match" | cut -d: -f 2 | tr -d '\r')
+	[ -z "$quiet" ] && echo "The password you entered was found $nmatches times in known data breaches."
+        exit 1
+elif [ -z "$quiet" ]; then
+	echo "The password you entered was not found in any known data breaches."
+fi
