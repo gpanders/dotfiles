@@ -274,14 +274,27 @@ noremap <silent> ]] j0?{<CR>w99[{%/{<CR>:let @/ = ''<CR>
 noremap <silent> [] k$/}<CR>b99]}%?}<CR>:let @/ = ''<CR>
 
 " Unimpaired style mappings
-for s:ch in ['a', 'b', 'l', 'q', 't']
-    let s:up = toupper(s:ch)
-    exe 'nnoremap <expr> [' . s:ch . ' bracket#left(''' . s:ch . ''')'
-    exe 'nnoremap <expr> [' . s:up . ' bracket#left(''' . s:up . ''')'
-    exe 'nnoremap <expr> ]' . s:ch . ' bracket#right(''' . s:ch . ''')'
-    exe 'nnoremap <expr> ]' . s:up . ' bracket#right(''' . s:up . ''')'
-endfor
-unlet s:ch s:up
+nnoremap <expr> [a ":\<C-U>" . v:count1 . "prev\<CR>"
+nnoremap <expr> ]a ":\<C-U>" . v:count1 . "next\<CR>"
+nnoremap <expr> [b ":\<C-U>" . v:count1 . "bprev\<CR>"
+nnoremap <expr> ]b ":\<C-U>" . v:count1 . "bnext\<CR>"
+nnoremap <expr> [l ":\<C-U>" . v:count1 . "lprev\<CR>"
+nnoremap <expr> ]l ":\<C-U>" . v:count1 . "lnext\<CR>"
+nnoremap <expr> [q ":\<C-U>" . v:count1 . "cprev\<CR>"
+nnoremap <expr> ]q ":\<C-U>" . v:count1 . "cnext\<CR>"
+nnoremap <expr> [t ":\<C-U>" . v:count1 . "tprev\<CR>"
+nnoremap <expr> ]t ":\<C-U>" . v:count1 . "tnext\<CR>"
+
+nnoremap [A :<C-U>first<CR>
+nnoremap ]A :<C-U>last<CR>
+nnoremap [B :<C-U>bfirst<CR>
+nnoremap ]B :<C-U>blast<CR>
+nnoremap [L :<C-U>lfirst<CR>
+nnoremap ]L :<C-U>llast<CR>
+nnoremap [Q :<C-U>cfirst<CR>
+nnoremap ]Q :<C-U>clast<CR>
+nnoremap [T :<C-U>tfirst<CR>
+nnoremap ]T :<C-U>tlast<CR>
 
 nnoremap <expr> [e ":\<C-U>.move --" . v:count1 . "\<CR>"
 nnoremap <expr> ]e ":\<C-U>.move +" . v:count1 . "\<CR>"
