@@ -1,7 +1,5 @@
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
-let g:markdown_interp_languages = ['python', 'sh=bash', 'bash', 'ruby', 'console=bash']
-
 setlocal textwidth=79
 " https://github.com/tpope/vim-markdown/issues/134
 setlocal comments=n:>
@@ -22,7 +20,7 @@ if executable('pandoc')
   let b:undo_ftplugin .= '|setl fp<|delc Toc|delc Reflinks|delc Setext'
 endif
 
-nnoremap <buffer> <silent> Z! :<C-U>call ft#markdown#eval()<CR>
+nnoremap <buffer> <silent> Z! :<C-U>EvalBlock<CR>
 let b:undo_ftplugin .= '|nun <buffer> Z!'
 
 nnoremap <buffer> <silent> <CR> :<C-U>call ft#markdown#open('edit')<CR>
