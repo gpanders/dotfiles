@@ -43,6 +43,9 @@ function! s:PackInit()
         " Visualize undo tree
         call minpac#add('simnalamburt/vim-mundo')
 
+        " Preview replacements when :substituting
+        call minpac#add('markonm/traces.vim')
+
         " Language Packs {{{
 
         " xdc {{{
