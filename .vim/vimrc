@@ -116,6 +116,7 @@ highlight link TrailingWhitespace Error
 
 " Settings {{{
 set backup
+set backupdir-=.
 set confirm
 set cursorline
 set expandtab
@@ -155,12 +156,6 @@ endif
 
 if has('folding')
   set foldlevelstart=99
-endif
-
-" Neovim specific settings
-if has('nvim')
-  set inccommand=nosplit
-  set backupdir-=.
 endif
 
 " Enable undofile if possible
