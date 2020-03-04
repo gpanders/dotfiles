@@ -13,7 +13,6 @@ git() {
 
 if command -v nvim >/dev/null; then
     alias vi='nvim'
-    alias vim='nvim'
 fi
 
 if [ -n "$EDITOR" ]; then
