@@ -15,6 +15,10 @@ let b:undo_ftplugin .= '|setl tw< fo< fdm< fdn<'
 " Make [d, [i, etc. find variables defined at the top-level (no indent)
 setlocal define=^\\ze\\i\\+\\s*=
 
+if exists('$VIRTUAL_ENV') && filereadable($VIRTUAL_ENV . '/tags')
+  let &l:tags = $VIRTUAL_ENV . '/tags,' . &l:tags
+endif
+
 " Try to infer python version from shebang
 let s:python = matchstr(getline(1), '^#!.*\zspython\([23]\)\?')
 
