@@ -1,9 +1,12 @@
+# Backup files and metadata
 .DS_Store
 *~
-.projections.json
-Session.vim
 *.swp
 \#*\#
+
+# Tool files
+.projections.json
+Session.vim
 .vscode/
 tags
 tags.lock
@@ -13,3 +16,22 @@ compile_commands.json
 .ccls-cache/
 .cquery
 .clangd/
+
+# Outputs
+*.so
+*.o
+*.a
+*.exe
+*.bin
+*.pyc
+__pycache__
+
+# Archives
+*.tar
+*.gz
+*.bz2
+*.jar
+*.rar
+*.xz
+*.zip
+*.7z
