@@ -1,1 +1,6 @@
---options=$HOME/.ctags.d/default.ctags
+--fields=-k+K
+--languages=-markdown,html,iniconf,yaml
+--tag-relative=yes
+--exclude=build
+
+--sh-kinds=-h

@@ -1,4 +1,1 @@
---fields=-k+K
---languages=-markdown,html,iniconf,yaml
---tag-relative=yes
---sh-kinds=-h
+../.ctags
