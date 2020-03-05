@@ -18,7 +18,16 @@ function! snippets#expand() abort
     endif
 
     delete _
-    execute lnum-1 . 'read ' . file
+    let snippet = readfile(file)
+    call append(lnum - 1, snippet)
     normal! =']
+
+    let [l, c] = searchpos('{}', '', lnum + len(snippet))
+    if l
+        call cursor(l, c)
+        call setline(l, substitute(getline(l), '{}', ' ', ''))
+    endif
+
+    " Must return an empty string so that no extra characters are inserted
     return ''
 endfunction
