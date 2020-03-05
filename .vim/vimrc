@@ -135,7 +135,6 @@ set smartcase
 set softtabstop=-1
 set noswapfile
 silent! set tagcase=match
-set tags^=./.git/tags;
 set virtualedit+=block
 set wildcharm=<Tab>
 set wildignorecase
