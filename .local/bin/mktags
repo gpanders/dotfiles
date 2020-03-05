@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import subprocess
+import sys
+
+
+def create_tags(output):
+    dirs = ["{}/lib".format(d) for d in (sys.base_prefix, sys.prefix)]
+    print("Generating tags for directories {} in file {}...".format(dirs, output))
+    subprocess.run(
+        ["ctags", "-R", "--languages=python", "-o", output] + dirs, check=True
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    if "VIRTUAL_ENV" in os.environ:
+        parser.add_argument(
+            "output",
+            nargs="?",
+            default="{}/tags".format(os.environ["VIRTUAL_ENV"]),
+            type=str,
+        )
+    else:
+        parser.add_argument("output", type=str)
+
+    args = parser.parse_args()
+    create_tags(args.output)
+
+
+if __name__ == "__main__":
+    main()
