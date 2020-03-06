@@ -15,5 +15,5 @@ elseif filereadable(s:pandoc_data_dir . '/templates/default.html')
   exe 'CompilerSet makeprg+=\ --template=\"' . s:pandoc_data_dir . '/templates/default.html\"'
 endif
 
-CompilerSet makeprg+=\ -o\ %:r.html\ %:S
+CompilerSet makeprg+=\ -o\ %:t:r.html\ %:S
 CompilerSet errorformat=
