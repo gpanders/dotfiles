@@ -304,6 +304,14 @@ nnoremap <expr> yo<Bar> ':setlocal ' . (&cursorcolumn ? 'no' : '') . "cursorcolu
 nnoremap <expr> yod ':' . (&diff ? 'diffoff' : 'diffthis') . "\<CR>"
 nnoremap <expr> yos ':setlocal ' . (&spell ? 'no' : '') . "spell\<CR>"
 
+function! Substitute(type, ...) abort
+    call setpos('.', getpos("''"))
+    call feedkeys(":'[,']s/" . expand('<cword>') . "//g\<Left>\<Left>", 'n')
+endfunction
+
+nnoremap <silent> gs m':set operatorfunc=Substitute<CR>g@
+nnoremap gS :<C-U>%s/<C-R><C-W>//g<Left><Left>
+
 " }}}
 
 " Terminal {{{
