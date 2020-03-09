@@ -7,7 +7,8 @@ import sys
 
 
 def create_tags(output):
-    dirs = ["{}/lib".format(d) for d in (sys.base_prefix, sys.prefix)]
+    v = "{}.{}".format(sys.version_info.major, sys.version_info.minor)
+    dirs = ["{}/lib/python{}".format(d, v) for d in (sys.base_prefix, sys.prefix)]
     print("Generating tags for directories {} in file {}...".format(dirs, output))
     subprocess.run(
         ["ctags", "-R", "--languages=python", "-o", output] + dirs, check=True
