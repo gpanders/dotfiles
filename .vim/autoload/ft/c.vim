@@ -32,7 +32,7 @@ function! s:path(ft)
 endfunction
 
 function! ft#c#set_path(ft)
-  let cmd = s:compiler . ' -E -v -x ' . (a:ft ==# 'cpp' ? 'c++' : 'c') . ' /dev/null 2>/dev/null 2>&1'
+  let cmd = s:compiler . ' -E -v -x ' . (a:ft ==# 'cpp' ? 'c++' : 'c') . ' /dev/null 2>&1'
   if !exists('g:' . a:ft . '_path')
     let cmd = split(&shell) + split(&shellcmdflag) + [cmd]
     call async#run(cmd, function('s:callback', [a:ft]))
