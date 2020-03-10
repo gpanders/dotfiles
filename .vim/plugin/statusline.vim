@@ -3,6 +3,16 @@
 " Initialize StatuslineMode highlight group
 highlight! link StatuslineMode StatuslineModeNormal
 
+function! FugitiveStatusLine(sep)
+  if exists('*fugitive#head')
+    let branch = fugitive#head()
+    if branch !=# ''
+      return branch . ' ' . a:sep . ' '
+    endif
+  endif
+  return ''
+endfunction
+
 function! StatusLine(sep)
   " Reset the statusline
   let s = ''
@@ -36,12 +46,8 @@ function! StatusLine(sep)
   let s .= '%<%f'
 
   " File flags (modified and read-only)
-  if &modified
-    let s .= ' +'
-  endif
-  if &readonly
-    let s .= ' [RO]'
-  endif
+  let s .= '%{&modified ? " +" : ""}'
+  let s .= '%{&readonly ? " [RO]" : ""}'
 
   " Set highlight to User2
   let s .= ' %2* '
@@ -53,28 +59,15 @@ function! StatusLine(sep)
   let s .= ' %3* '
 
   " Show git branch, if available
-  if exists('*FugitiveHead')
-    let branch = FugitiveHead()
-    if branch !=# ''
-      let s .= branch . ' ' . a:sep . ' '
-    endif
-  endif
+  let s .= '%{FugitiveStatusLine("' . a:sep . '")}'
 
   " Show line break style
-  if &fileformat ==# 'unix'
-    let s .= 'LF ' . a:sep . ' '
-  elseif &fileformat ==# 'dos'
-    let s .= 'CRLF ' . a:sep . ' '
-  elseif &fileformat ==# 'mac'
-    let s .= 'CR ' . a:sep . ' '
-  endif
+  let s .= '%{&fileformat ==# "unix" ? "LF ' . a:sep . ' " : ""}'
+  let s .= '%{&fileformat ==# "dos" ? "CRLF ' . a:sep . ' " : ""}'
+  let s .= '%{&fileformat ==# "mac" ? "CR ' . a:sep . ' " : ""}'
 
   " Show file type
-  if &filetype ==# ''
-    let s .= 'none'
-  else
-    let s .= &filetype
-  endif
+  let s .= '%{&filetype ==# "" ? "none" : &filetype}'
 
   " Set highlight to User4
   let s .= ' %4* '
