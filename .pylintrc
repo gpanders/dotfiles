@@ -60,7 +60,9 @@ confidence=
 # --enable=similarities". If you want to run only the classes checker, but have
 # no Warning level messages displayed, use "--disable=all --enable=classes
 # --disable=W".
-disable=print-statement,
+disable=missing-docstring,
+        bad-continuation,
+        print-statement,
         parameter-unpacking,
         unpacking-in-except,
         old-raise-syntax,
@@ -78,6 +80,10 @@ disable=print-statement,
         useless-suppression,
         deprecated-pragma,
         use-symbolic-message-instead,
+        too-many-instance-attributes,
+        too-few-public-methods,
+        too-many-arguments,
+        redefined-outer-name,
         apply-builtin,
         basestring-builtin,
         buffer-builtin,
@@ -138,11 +144,7 @@ disable=print-statement,
         xreadlines-attribute,
         deprecated-sys-function,
         exception-escape,
-        comprehension-escape,
-        redefined-outer-name,
-        bad-continuation,
-        missing-docstring,
-        too-few-public-methods
+        comprehension-escape
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -470,6 +472,14 @@ variable-naming-style=snake_case
 variable-rgx=(([a-z_][a-z0-9_]*)|(__[a-z][a-z0-9_]+__))$
 
 
+[STRING]
+
+# This flag controls whether the implicit-str-concat-in-sequence should
+# generate a warning on implicit string concatenation in sequences defined over
+# several lines.
+check-str-concat-over-line-jumps=no
+
+
 [IMPORTS]
 
 # Allow wildcard imports from modules that define __all__.
@@ -561,5 +571,5 @@ min-public-methods=2
 [EXCEPTIONS]
 
 # Exceptions that will emit a warning when being caught. Defaults to
-# "Exception".
+# "BaseException, Exception".
 overgeneral-exceptions=Exception
