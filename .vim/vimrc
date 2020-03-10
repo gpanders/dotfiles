@@ -308,9 +308,14 @@ function! Substitute(type, ...) abort
     call setpos('.', getpos("''"))
     call feedkeys(":'[,']s/" . expand('<cword>') . "//g\<Left>\<Left>", 'n')
 endfunction
+nnoremap <silent> gS m':set operatorfunc=Substitute<CR>g@
 
-nnoremap <silent> gs m':set operatorfunc=Substitute<CR>g@
-nnoremap gS :<C-U>%s/<C-R><C-W>//g<Left><Left>
+function! Sort(type, ...) abort
+    '[,']sort
+endfunction
+nnoremap <silent> gs :set operatorfunc=Sort<CR>g@
+xnoremap <silent> gs :sort<CR>
+
 
 " }}}
 
