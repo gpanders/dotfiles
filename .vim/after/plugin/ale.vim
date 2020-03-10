@@ -88,7 +88,10 @@ augroup plugin.ale
     autocmd!
     autocmd OptionSet modifiable,readonly call <SID>toggle()
     autocmd BufWinEnter * call <SID>toggle(0)
-    autocmd FileType * call <SID>lsp_setup()
+
+    if !get(g:, 'ale_disable_lsp')
+        autocmd FileType * call <SID>lsp_setup()
+    endif
 augroup END
 
 let &cpo = s:save_cpo
