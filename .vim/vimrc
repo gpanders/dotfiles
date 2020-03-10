@@ -174,8 +174,9 @@ if has('linebreak')
   set showbreak=>\ 
 endif
 
-if has('textprop') && has('patch-8.1.1880')
+if has('textprop')
   set completeopt+=popup
+  set completepopup=highlight:Pmenu,align:menu,border:off
 endif
 
 " Set default path variables to blank defaults
