@@ -31,7 +31,7 @@ function! s:PackInit()
         " Align lines to a character, e.g. =, ;, :, etc.
         call minpac#add('junegunn/vim-easy-align')
 
-        " Show change signs in the gutter for git files
+        " Show change signs for git files
         call minpac#add('mhinz/vim-signify')
 
         " Auto generate tags files
@@ -39,6 +39,9 @@ function! s:PackInit()
 
         " Populate results of :ilist and :dlist in quickfix window
         call minpac#add('romainl/vim-qlist')
+
+        " Automatically disable search highlighting
+        call minpac#add('romainl/vim-cool')
 
         " Visualize undo tree
         call minpac#add('simnalamburt/vim-mundo')
