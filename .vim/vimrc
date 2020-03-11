@@ -306,10 +306,9 @@ nnoremap <expr> yod ':' . (&diff ? 'diffoff' : 'diffthis') . "\<CR>"
 nnoremap <expr> yos ':setlocal ' . (&spell ? 'no' : '') . "spell\<CR>"
 
 function! Substitute(type, ...) abort
-    call setpos('.', getpos("''"))
     call feedkeys(":'[,']s/" . expand('<cword>') . "//g\<Left>\<Left>", 'n')
 endfunction
-nnoremap <silent> gS m':set operatorfunc=Substitute<CR>g@
+nnoremap <silent> gS :set operatorfunc=Substitute<CR>g@
 
 function! Sort(type, ...) abort
     '[,']sort
@@ -380,6 +379,12 @@ if exists('+omnifunc')
   autocmd FileType * if &omnifunc == '' | setlocal omnifunc=syntaxcomplete#Complete | endif
 endif
 
+" Preserve cursor position after using 'operatorfunc'
+autocmd OptionSet operatorfunc let w:view = winsaveview()
+autocmd CursorMoved * if &operatorfunc != '' && exists('w:view')
+            \ | call winrestview(w:view) | unlet w:view | set operatorfunc=
+            \ | endif
+
 if argc() == 0 && filereadable('Session.vim')
   if v:vim_did_enter
     source Session.vim
@@ -390,5 +395,3 @@ endif
 
 augroup END
 " }}}
-
-" vim: fdl=0
