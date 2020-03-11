@@ -6,4 +6,3 @@ let g:ale_lint_on_text_changed = 'normal'
 let g:ale_set_highlights = 0
 
 let g:ale_completion_enabled = 1
-let g:ale_completion_delay = 50
