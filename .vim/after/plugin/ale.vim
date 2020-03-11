@@ -25,7 +25,7 @@ let g:ale_python_mypy_ignore_invalid_syntax = 1
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 let g:ale_python_pyls_config = {
             \ 'pyls': {
-            \   'configurationSources': ['flake8', 'pylint'],
+            \   'configurationSources': ['flake8'],
             \   'plugins': {
             \     'pycodestyle': {
             \       'enabled': v:false,
@@ -76,10 +76,14 @@ function! s:lsp_setup()
     nmap <buffer> <Bslash>r <Plug>(ale_find_references)
 endfunction
 
-function! s:toggle(...)
+function! s:toggle()
+    if !g:ale_enabled
+        return
+    endif
+
     if !&modifiable || &readonly
         silent ALEDisableBuffer
-    elseif get(a:, '1', 1)
+    elseif !get(b:, 'ale_enabled', 1)
         silent ALEEnableBuffer
     endif
 endfunction
@@ -87,7 +91,7 @@ endfunction
 augroup plugin.ale
     autocmd!
     autocmd OptionSet modifiable,readonly call <SID>toggle()
-    autocmd BufWinEnter * call <SID>toggle(0)
+    autocmd BufWinEnter * call <SID>toggle()
 
     if !get(g:, 'ale_disable_lsp')
         autocmd FileType * call <SID>lsp_setup()
