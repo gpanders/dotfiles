@@ -1,8 +1,6 @@
 function! fzf#helptags(bang) abort
     if !exists('*fzf#run')
-        echohl ErrorMsg
-        echom 'FZF installation not found'
-        echohl None
+        echoerr 'FZF installation not found'
         return
     endif
 
@@ -16,14 +14,12 @@ endfunction
 
 function! fzf#tags(bang, query, mod) abort
     if !exists('*fzf#run')
-        echohl ErrorMsg
-        echom 'FZF installation not found'
-        echohl None
+        echoerr 'FZF installation not found'
         return
     endif
 
     let tags = map(taglist('.'), {_, v -> printf('%-40s %-10s %s', v.name, v.kind, fnamemodify(v.filename, ':.'))})
-    let options = '--select-1 --no-multi --cycle'
+    let options = '--select-1 --no-multi --cycle --tiebreak=begin,length'
     if !empty(a:query)
         let options .= ' --query=' . a:query
     endif
@@ -32,6 +28,21 @@ function! fzf#tags(bang, query, mod) abort
                 \ 'source': tags,
                 \ 'sink': {t -> s:tags(t, a:mod)},
                 \ 'options': options,
+                \ }, a:bang))
+endfunction
+
+function! fzf#buffers(bang, mod) abort
+    if !exists('*fzf#run')
+        echoerr 'FZF installation not found'
+        return
+    endif
+
+    let buffers = map(getbufinfo({'buflisted': 1}), {_, v -> printf('%-3d %s', v.bufnr, fnamemodify(v.name, ':.'))})
+
+    call fzf#run(fzf#wrap('Buffers', {
+                \ 'source': buffers,
+                \ 'sink': {b -> execute(a:mod . 'b' . split(b)[0])},
+                \ 'options': '--no-multi --tiebreak=end,length',
                 \ }, a:bang))
 endfunction
 
