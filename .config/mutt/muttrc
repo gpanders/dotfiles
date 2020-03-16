@@ -135,16 +135,12 @@ source ~/.config/mutt/colors/base16.muttrc
 source ~/.config/mutt/bindings.rc
 
 # Sidebar
-ifdef sidebar "source ~/.config/mutt/sidebar.rc"
+source ~/.config/mutt/sidebar.rc
 
 # GPG
 source ~/.config/mutt/gpg.rc
 
-# Set up notmuch virtual mailboxes
-ifdef notmuch "set nm_default_uri = notmuch://`notmuch config get database.path`"
-# ifdef notmuch "source ~/.config/mutt/notmuch.rc"
-
 source ~/.config/mutt/gpanders.rc
 folder-hook $folder source ~/.config/mutt/gpanders.rc
 
-# vim: ft=neomuttrc
+# vim: ft=muttrc

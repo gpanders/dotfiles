@@ -33,4 +33,4 @@ macro index,pager A "<enter-command>set my_resolve=\$resolve<enter><enter-comman
 # Fetch mail
 macro index <F5> "<enter-command>set my_wait_key=\$wait_key<enter><enter-command>unset wait_key<enter><shell-escape>mbsync gpanders<enter><enter-command>set wait_key=\$my_wait_key<enter>" "synchronize mailbox"
 
-# vim: ft=neomuttrc
+# vim: ft=muttrc

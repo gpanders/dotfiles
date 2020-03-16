@@ -20,6 +20,10 @@ application/*; open %s; test=uname | grep -q Darwin
 application/*; xdg-open %s; test=test -n "$DISPLAY" && uname | grep -q Linux
 application/pdf; pdftotext "%s" -; copiousoutput; description=PDF Document; nametemplate=%s.pdf
 
+# Audio
+audio/*; open %s; test=uname | grep -q Darwin
+audio/*; xdg-open %s; test=test -n "$DISPLAY" && uname | grep -q Linux
+
 # Word files
 application/msword; antiword "%s"; copiousoutput; description=Word Document; nametemplate=%s.doc
 application/msword; docx2text.pl "%s" -; copiousoutput; description=Word Document; nametemplate=%s.docx
