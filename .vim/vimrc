@@ -380,10 +380,10 @@ if exists('+omnifunc')
 endif
 
 " Preserve cursor position after using 'operatorfunc'
-autocmd OptionSet operatorfunc let w:view = winsaveview()
-autocmd CursorMoved * if &operatorfunc != '' && exists('w:view')
-            \ | call winrestview(w:view) | unlet w:view | set operatorfunc=
-            \ | endif
+autocmd OptionSet operatorfunc if !empty(&operatorfunc) |
+            \ let w:view = winsaveview() |
+            \ exe 'autocmd CursorMoved * ++once call winrestview(w:view) | unlet w:view' |
+            \ endif
 
 if argc() == 0 && filereadable('Session.vim')
   if v:vim_did_enter
