@@ -4,7 +4,6 @@
 	signingKey = 0x56E93C2FB6B08BDB
 [alias]
 	co = checkout
-	st = status
 	cm = commit
 	ls = ls-files
 	rs = reset
@@ -18,6 +17,7 @@
 	p = push
 	snapshot = !git stash && git stash apply -q
 	t = tag
+	s = status
 [commit]
 	verbose = true
 [sendemail]
