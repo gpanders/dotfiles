@@ -1,5 +1,3 @@
-# Greg Anders (gpanders)'s muttrc <https://github.com/gpanders/dotfiles.git>
-
 # Settings for handling MIME types
 set mailcap_path = ~/.config/mutt/mailcap
 alternative_order text/calendar text/plain text/enriched text/html

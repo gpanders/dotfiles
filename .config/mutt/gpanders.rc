@@ -23,20 +23,9 @@ mailboxes +Inbox
 mailboxes +Archive
 mailboxes +Sent
 mailboxes +Drafts
-mailboxes +Lists
-mailboxes +Lists/aerc
-mailboxes +Lists/kernelnewbies
-mailboxes +Lists/hackers
-mailboxes +Lists/neomutt-users
-mailboxes +Lists/zsh-users
-mailboxes +Lists/meta-xilinx
 mailboxes +Trash
 
-subscribe ^aerc@lists\\.sr\\.ht$
-subscribe ^kernelnewbies@kernelnewbies\\.org$
-subscribe ^neomutt-users@neomutt\\.org$
-subscribe ^hackers@suckless\\.org$
-subscribe ^zsh-users@zsh\\.org$
+source ~/.config/mutt/lists.rc
 
 # Move messages to the $mbox folder
 macro index,pager A "<enter-command>set my_resolve=\$resolve<enter><enter-command>unset resolve<enter><clear-flag>N<save-message>\><enter><enter-command>set resolve=\$my_resolve<enter><sync-mailbox><refresh>" "archive message"
