@@ -1,0 +1,15 @@
+mailboxes +Lists
+mailboxes +Lists/aerc
+mailboxes +Lists/hackers
+mailboxes +Lists/kernelnewbies
+mailboxes +Lists/meta-xilinx
+mailboxes +Lists/neomutt-users
+mailboxes +Lists/notmuch
+mailboxes +Lists/zsh-users
+
+subscribe ^aerc@lists\\.sr\\.ht$
+subscribe ^hackers@suckless\\.org$
+subscribe ^kernelnewbies@kernelnewbies\\.org$
+subscribe ^neomutt-users@neomutt\\.org$
+subscribe ^notmuch@notmuchmail\\.org$
+subscribe ^zsh-users@zsh\\.org$
