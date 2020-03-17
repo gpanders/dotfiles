@@ -1,6 +1,5 @@
 function venv
-    set -q VENV_DIR
-    or set -U VENV_DIR $XDG_DATA_HOME/venv
+    set -q venv_dir; or set -U venv_dir $XDG_DATA_HOME/venv
 
     if test (count $argv) -lt 1
         echo "Usage:
@@ -13,7 +12,7 @@ function venv
 
     switch $argv[1]
         case create
-            python3 -m venv $VENV_DIR/$argv[2]
+            python3 -m venv $venv_dir/$argv[2]
             if test $status
                 echo "Virtual environment $argv[2] created. Activate it using 'venv $argv[2]'"
             else
@@ -21,13 +20,13 @@ function venv
                 return 1
             end
         case ls
-            printf "%s\n" (command ls $VENV_DIR)
+            printf "%s\n" (command ls $venv_dir)
         case rm
-            if not test -d $VENV_DIR/$argv[2]
+            if not test -d $venv_dir/$argv[2]
                 echo "venv '$argv[2]' not found" >&2
                 return 1
             end
-            rm -rf $VENV_DIR/$argv[2]
+            rm -rf $venv_dir/$argv[2]
             if test $status
                 echo "Virtual environment '$argv[2]' was successfully deleted"
             else
@@ -35,11 +34,11 @@ function venv
                 return 1
             end
         case '*'
-            if not test -d $VENV_DIR/$argv[1]
+            if not test -d $venv_dir/$argv[1]
                 echo "venv '$argv[1]' not found" >&2
                 return 1
             end
-            source $VENV_DIR/$argv[1]/bin/activate.fish
+            source $venv_dir/$argv[1]/bin/activate.fish
     end
 end
 
