@@ -16,7 +16,7 @@ let b:undo_ftplugin .= '|setl tw< fo< fdm< fdn<'
 setlocal define=^\\ze\\i\\+\\s*=
 
 if exists('$VIRTUAL_ENV') && filereadable($VIRTUAL_ENV . '/tags')
-  let &l:tags = $VIRTUAL_ENV . '/tags,' . &l:tags
+  let &l:tags = $VIRTUAL_ENV . '/tags,' . &tags
 endif
 
 " Try to infer python version from shebang
