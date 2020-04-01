@@ -22,10 +22,10 @@ function! snippets#expand() abort
     call append(lnum - 1, snippet)
     normal! =']
 
-    let [l, c] = searchpos('{}', '', lnum + len(snippet))
+    let [l, c] = searchpos('{}', '', lnum + len(snippet) - 1)
     if l
         call cursor(l, c)
-        call setline(l, substitute(getline(l), '{}', ' ', ''))
+        call setline(l, substitute(getline(l), '{}', '', ''))
     endif
 
     " Must return an empty string so that no extra characters are inserted
