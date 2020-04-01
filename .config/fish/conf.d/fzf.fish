@@ -1,9 +1,9 @@
 if status is-interactive; and command -sq fzf
     if command -sq fd
-        set FZF_FIND_FILE_COMMAND "fd --type f --hidden --follow --exclude .git"
+        set FZF_FIND_FILE_COMMAND "fd --type f --follow"
         set FZF_CD_COMMAND "fd -t d"
     else if command -sq rg
-        set FZF_FIND_FILE_COMMAND "rg --files --hidden --glob '!.git'"
+        set FZF_FIND_FILE_COMMAND "rg --files"
     else if command -sq ag
         set FZF_FIND_FILE_COMMAND "ag -g ''"
     end
