@@ -84,11 +84,7 @@ if has('syntax') && !exists('g:syntax_on')
 endif
 
 " Set $VIMHOME
-if has('unix')
-  let $VIMHOME = $HOME . '/.vim'
-else
-  let $VIMHOME = $HOME . '/vimfiles'
-endif
+let $VIMHOME = split(&runtimepath, ',')[0]
 
 " Use vim-pathogen if native packages are not supported
 if !has('packages')
@@ -237,17 +233,22 @@ inoremap <C-R>! <C-O>:r !
 
 " Normal {{{
 
-" Map Q to gq
-noremap Q gq
+nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+
+nnoremap Q <Nop>
+nnoremap gQ <Nop>
 
 " Write file with <Space>w
 nnoremap <Space>w :w<CR>
 
 " List buffers and put :b on the command line
-noremap <Space>b :buffers<CR>:b<Space>
+nnoremap <Space>b :ls<CR>:b<Space>
+nnoremap <C-W><Space>b :ls<CR>:sb<Space>
 
 " Search for a tag by regex
 nnoremap <Space>] :tjump /
+nnoremap <C-W><Space>] :stjump /
 nnoremap <Space>} :ptjump /
 
 " Find files in current buffer's directory
@@ -260,7 +261,7 @@ vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync fromstart<C
 
 " Format whole buffer with formatprg without changing cursor position
 " See :h restore-position
-nnoremap <Space>gq mzHmygggqG`yzt`z
+nnoremap gq<CR> mzHmygggqG`yzt`z
 
 " Allow [[ and friends to work when opening brace is not in the first column
 noremap <silent> [[ ?{<CR>w99[{:let @/ = ''<CR>
