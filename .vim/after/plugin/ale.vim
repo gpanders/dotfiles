@@ -64,16 +64,17 @@ function! s:lsp_setup()
     let buf = bufnr('')
     let lsps = filter(ale#linter#Get(&filetype), {_, v -> 
                 \ !empty(v.lsp) && ale#engine#IsExecutable(buf, ale#linter#GetExecutable(buf, v))})
-    if empty(lsps)
-        return
-    endif
 
-    let b:ale_lsp_enabled = 1
-    setlocal omnifunc=ale#completion#OmniFunc
-    nmap <buffer> <C-]> <Plug>(ale_go_to_definition)
-    nmap <buffer> <C-W>] <Plug>(ale_go_to_definition_in_split)
-    nmap <buffer> <C-W><C-]> <Plug>(ale_go_to_definition_in_split)
-    nmap <buffer> <Bslash>r <Plug>(ale_find_references)
+    let b:ale_lsp_enabled = !empty(lsps)
+    if b:ale_lsp_enabled
+        setlocal omnifunc=ale#completion#OmniFunc
+        nmap <buffer> <C-]> <Plug>(ale_go_to_definition)
+        nmap <buffer> <C-W>] <Plug>(ale_go_to_definition_in_split)
+        nmap <buffer> <C-W><C-]> <Plug>(ale_go_to_definition_in_split)
+        nmap <buffer> gr <Plug>(ale_find_references)
+        nnoremap <silent> <buffer> gR :<C-U>ALERename<CR>
+        nmap <buffer> K <Plug>(ale_hover)
+    endif
 endfunction
 
 function! s:toggle()
