@@ -6,5 +6,5 @@ else
     command! -nargs=+ -complete=file_in_path LGrep silent lgrep <args> | redraw! | copen
 endif
 
-nnoremap g/ :Grep<space>
+nnoremap <Space>g :Grep<Space>
 nnoremap <silent> g<CR> :<C-U>Grep <C-R><C-W><CR>
