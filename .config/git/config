@@ -18,6 +18,8 @@
 	snapshot = !git stash && git stash apply -q
 	t = tag
 	s = status
+	ss = snapshot
+	lg = log --oneline --graph
 [commit]
 	verbose = true
 [sendemail]
