@@ -4,25 +4,15 @@ function! fzf#tags(bang, query, mod) abort
         return
     endif
 
-    let query = !empty(a:query) ? a:query : '.'
-    if query =~# '^/'
-        let query = query[1:]
-        if query =~# '/$'
-            let query = query[:-1]
-        endif
-    else
-        let query = '\c^' . query
-    endif
-
-    let tags = map(taglist(query), {_, v -> printf('%-40s %-10s %s', v.name, v.kind, fnamemodify(v.filename, ':.'))})
-    let options = '--select-1 --no-multi --cycle --nth=1'
+    let query = !empty(a:query) ? s:prepare_query(a:query) : '.'
+    let options = '--no-color --select-1 --no-multi --cycle --nth=1'
     if !empty(a:query)
         let options .= ' --query=' . matchstr(a:query, '^/\zs[^/]\+\ze/\?')
     endif
 
     call fzf#run(fzf#wrap('Tag', {
-                \ 'source': tags,
-                \ 'sink': {t -> s:tags(t, a:mod)},
+                \ 'source': s:tags(query),
+                \ 'sink': {t -> s:tag(t, a:mod)},
                 \ 'options': options,
                 \ }, a:bang))
 endfunction
@@ -38,12 +28,42 @@ function! fzf#buffers(bang, mod) abort
     call fzf#run(fzf#wrap('Buffers', {
                 \ 'source': buffers,
                 \ 'sink': {b -> execute(a:mod . 'b' . split(b)[0])},
-                \ 'options': '--layout=default --no-multi --tiebreak=end,length',
+                \ 'options': '--no-color --layout=default --no-multi --tiebreak=end,length',
                 \ }, a:bang))
 endfunction
 
-function! s:tags(line, mod) abort
+function! s:tags(query) abort
+    let query = a:query
+    if query =~# '^\\c'
+        let ignorecase = 1
+        let query = tolower(query[2:])
+    else
+        let ignorecase = 0
+    endif
+    let cmd = 'awk -F''\t'''
+    let cmd .= ' -v query=''' . query . ''''
+    let cmd .= ' -v ic=' . ignorecase
+    let cmd .= ' ''/^!/ {next};'
+    let cmd .= ' {if ((ic && tolower($1) !~ query) || (!ic && $1 !~ query)) next};'
+    let cmd .= ' {sub("/[^/]+/;\"", ""); gsub("(\\.\\./)*", "", $2); printf "%-40s %-10s %s\n", $1, $4, $2}'''
+    let cmd .= ' ' . join(tagfiles())
+    return cmd
+endfunction
+
+function! s:tag(line, mod) abort
     let [tag, _, filename] = split(a:line)[0:2]
     let index = index(map(taglist('^' . tag . '$'), 'v:val.filename'), filename) + 1
     execute index . a:mod . 'tag ' . tag
+endfunction
+
+function! s:prepare_query(query) abort
+    if a:query =~# '^/'
+        let query = a:query[1:]
+        if query =~# '/$'
+            let query = query[:-1]
+        endif
+        return '\c' . query
+    else
+        return '^' . a:query . '$'
+    endif
 endfunction
