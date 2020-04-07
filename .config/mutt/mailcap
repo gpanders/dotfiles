@@ -1,6 +1,7 @@
 text/plain; view %s; test=command -v view
 text/plain; less -R %s
-text/html; open -a firefox '%s' && sleep 3; test=test -n "$DISPLAY"; nametemplate=%s.html
+text/html; open -a firefox %s; test=test -n "$DISPLAY"; nametemplate=%s.html; needsterminal
+text/html; lynx -dump %s; copiousoutput; nametemplate=%s.html
 text/html; w3m -I %{charset} -T text/html -dump -o display_image=false -o display_link_number=true; copiousoutput
 text/x-diff; cat %s | colordiff; copiousoutput
 text/x-patch; cat %s | colordiff; copiousoutput
@@ -16,13 +17,13 @@ image/*; anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | pgmtopbm | pbmt
 image/*; catimg %s; test=command -v catimg; copiousoutput
 
 # PDFs
-application/*; open %s; test=uname | grep -q Darwin
-application/*; xdg-open %s; test=test -n "$DISPLAY" && uname | grep -q Linux
+application/*; open %s; test=uname | grep -q Darwin; needsterminal
+application/*; xdg-open %s; test=test -n "$DISPLAY" && uname | grep -q Linux; needsterminal
 application/pdf; pdftotext "%s" -; copiousoutput; description=PDF Document; nametemplate=%s.pdf
 
 # Audio
-audio/*; open %s; test=uname | grep -q Darwin
-audio/*; xdg-open %s; test=test -n "$DISPLAY" && uname | grep -q Linux
+audio/*; open %s; test=uname | grep -q Darwin; needsterminal
+audio/*; xdg-open %s; test=test -n "$DISPLAY" && uname | grep -q Linux; needsterminal
 
 # Word files
 application/msword; antiword "%s"; copiousoutput; description=Word Document; nametemplate=%s.doc
