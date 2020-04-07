@@ -39,6 +39,8 @@
 	cmd = vim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [color]
 	ui = auto
+[credential]
+	helper = !pass-git-helper \"$@\"
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
