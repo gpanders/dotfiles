@@ -5,6 +5,12 @@
 " different. This function aims to provide a consistent interface for both to
 " be used by other plugins throughout (n)vim.
 
+if !has('nvim') && !has('job')
+    let async#enabled = 0
+    finish
+endif
+let async#enabled = 1
+
 let s:jobs = {}
 
 function! s:id(chan)
@@ -27,8 +33,6 @@ function! s:jobstart(cmd)
                 \ 'out_mode': 'raw',
                 \ })
     return ch_info(job_info(job).channel).id
-  else
-    throw 'Jobs API not supported'
   endif
 endfunction
 
@@ -38,7 +42,7 @@ function! s:callback(id, msg)
     call job.cb(a:msg)
   elseif type(job.cb) == type('')
     for m in a:msg
-      execute substitute(job.cb, '\C\<v:val\>', shellescape(m), 'g')
+      silent execute substitute(job.cb, '\C\<v:val\>', shellescape(m), 'g')
     endfor
   endif
 endfunction
@@ -64,9 +68,7 @@ function! s:error(channel, msg, ...)
   if type(msg) == type([])
     let msg = join(msg[:-2])
   endif
-  echohl ErrorMsg
-  echom msg
-  echohl None
+  echoerr msg
 endfunction
 
 function! s:exit(channel, msg, ...)
@@ -80,7 +82,11 @@ function! s:exit(channel, msg, ...)
       call s:callback(id, job.chunks)
     endif
     if has_key(job, 'completed')
-      call job.completed(a:msg)
+      if type(job.completed) == type({-> 1})
+        call job.completed(a:msg)
+      elseif type(job.completed) == type('')
+        silent execute job.completed
+      endif
     endif
     call remove(s:jobs, id)
   endif
