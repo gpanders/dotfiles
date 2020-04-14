@@ -346,15 +346,6 @@ else
   cnoremap <expr> <C-K> wildmenumode() ? "\<Up>\<Tab>" : "\<C-K>"
 endif
 
-function! CmdLineTab() abort
-    if getcmdtype() ==# ':'
-        let token = matchstr(getcmdline()[:getcmdpos()-1], '[^ /]\+$')
-        let &wildignorecase = token !~# '[A-Z]'
-    endif
-    return "\<Tab>"
-endfunction
-
-cnoremap <expr> <Tab> CmdLineTab()
 " }}}
 
 " }}}
@@ -403,9 +394,6 @@ if argc() == 0 && filereadable('Session.vim')
     autocmd VimEnter * nested source Session.vim
   endif
 endif
-
-autocmd CmdlineEnter * let g:_wic = &wildignorecase
-autocmd CmdlineLeave * let &wildignorecase = g:_wic | unlet! g:_wic
 
 augroup END
 " }}}
