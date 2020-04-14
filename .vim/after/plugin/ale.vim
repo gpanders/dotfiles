@@ -9,6 +9,10 @@ if !exists('g:ale_linters')
     let g:ale_linters = {}
 endif
 
+if !exists('g:ale_fixers')
+    let g:ale_fixers = {}
+endif
+
 if get(g:, 'ale_completion_enabled')
     let cot = &completeopt
     set completeopt=menu,menuone,preview,noselect,noinsert
@@ -19,6 +23,7 @@ endif
 
 " Python {{{
 let g:ale_linters.python = ['pylint', 'flake8', 'pyls', 'mypy']
+let g:ale_python_black_change_directory = 0
 let g:ale_python_pylint_change_directory = 0
 let g:ale_python_flake8_change_directory = 0
 let g:ale_python_mypy_ignore_invalid_syntax = 1
@@ -32,6 +37,8 @@ let g:ale_python_pyls_config = {
             \     },
             \   },
             \ }}
+
+let g:ale_fixers.python = ['black', 'isort']
 " }}}
 
 " C/C++ {{{
@@ -89,7 +96,7 @@ function! s:toggle()
     endif
 endfunction
 
-augroup plugin.ale
+augroup plugin_ale
     autocmd!
     autocmd OptionSet modifiable,readonly call <SID>toggle()
     autocmd BufWinEnter * call <SID>toggle()
