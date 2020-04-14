@@ -16,7 +16,7 @@ let b:undo_ftplugin .= '|setl tw< fo< fdm< fdn<'
 setlocal define=^\\ze\\i\\+\\s*=
 
 if exists('$VIRTUAL_ENV') && filereadable($VIRTUAL_ENV . '/tags')
-  let &l:tags = $VIRTUAL_ENV . '/tags,' . &tags
+    let &l:tags = $VIRTUAL_ENV . '/tags,' . &tags
 endif
 
 " Try to infer python version from shebang
@@ -32,11 +32,21 @@ setlocal keywordprg=:Pydoc
 let b:undo_ftplugin .= '|delc Pydoc|setl kp<'
 
 if executable('black')
-  setlocal formatprg=black\ -q\ -\ 2>/dev/null
+    setlocal formatprg=black\ -q\ -\ 2>/dev/null
 elseif executable('yapf')
-  setlocal formatprg=yapf
+    setlocal formatprg=yapf
 endif
 
 if !empty(&l:formatprg)
-  let b:undo_ftplugin .= '|setl fp<'
+    let b:undo_ftplugin .= '|setl fp<'
+endif
+
+if executable('isort')
+    function! s:isort(line1, line2)
+        let view = winsaveview()
+        exe a:line1 . ',' . a:line2 . '!isort -y -'
+        call winrestview(view)
+    endfunction
+    command! -buffer -nargs=0 -range=% -bar Isort call <SID>isort(<line1>, <line2>)
+    let b:undo_ftplugin .= '|delc -buffer Isort'
 endif
