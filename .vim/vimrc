@@ -374,20 +374,17 @@ endif
 
 " Create syntax group for trailing whitespace in each new buffer
 let g:trailing_whitespace_blacklist = ['markdown', 'text', 'mail']
-autocmd Syntax * if !&readonly && &modifiable && &filetype != '' && index(g:trailing_whitespace_blacklist, &filetype) == -1
-            \ | syn match TrailingWhitespace /\\\@<!\s\+\%#\@<!$/ containedin=ALL | endif
+autocmd Syntax *
+            \ if !&readonly && &modifiable && &filetype != ''
+            \       && index(g:trailing_whitespace_blacklist, &filetype) == -1 |
+            \   syn match TrailingWhitespace /\\\@<!\s\+\%#\@<!$/ containedin=ALL |
+            \ endif
 
 " Enable omnicompletion from syntax if no other option available
 " See :h ft-syntax-omni
 if exists('+omnifunc')
   autocmd FileType * if &omnifunc == '' | setlocal omnifunc=syntaxcomplete#Complete | endif
 endif
-
-" Preserve cursor position after using 'operatorfunc'
-autocmd OptionSet operatorfunc if !empty(&operatorfunc) |
-            \ let w:view = winsaveview() |
-            \ exe 'autocmd CursorMoved * ++once call winrestview(w:view) | unlet w:view' |
-            \ endif
 
 if argc() == 0 && filereadable('Session.vim')
   if v:vim_did_enter
