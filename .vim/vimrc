@@ -318,6 +318,7 @@ endfunction
 nnoremap <silent> gs m':set operatorfunc=Sort<CR>g@
 xnoremap <silent> gs :sort<CR>
 
+nnoremap g/ :<C-U>g//#<Left><Left>
 
 " }}}
 
