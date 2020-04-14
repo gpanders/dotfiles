@@ -78,8 +78,6 @@ function! s:PackInit()
 
         " }}}
 
-        call minpac#add('natebosch/vim-lsc')
-
         " Asynchronous linting
         call minpac#add('dense-analysis/ale')
 
