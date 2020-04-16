@@ -68,7 +68,9 @@ function! s:error(channel, msg, ...)
   if type(msg) == type([])
     let msg = join(msg[:-2])
   endif
-  echoerr msg
+  echohl ErrorMsg
+  echom msg
+  echohl None
 endfunction
 
 function! s:exit(channel, msg, ...)
