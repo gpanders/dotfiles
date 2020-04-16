@@ -212,9 +212,10 @@ endif
 " jk in Insert mode escapes to Normal mode
 inoremap jk <Esc>
 
-" Set a new 'undo point' before undoing entire line
+" Set undo points when deleting and inserting newlines
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
+inoremap <CR> <C-]><C-G>u<CR>
 
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>ko
