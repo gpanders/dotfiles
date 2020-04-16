@@ -10,6 +10,16 @@ setlocal formatoptions-=t
 let b:undo_ftplugin .= '|setl tw< fo<'
 
 if executable('shellcheck')
-  compiler shellcheck
+    compiler shellcheck
 endif
 
+if executable('shfmt')
+    setlocal formatprg=shfmt\ -s
+    if get(b:, 'is_bash')
+        setlocal formatprg+=\ -ln=bash
+    else
+        setlocal formatprg+=\ -ln=posix
+    endif
+    setlocal formatprg+=\ -
+    let b:undo_ftplugin .= '|setl fp<'
+endif
