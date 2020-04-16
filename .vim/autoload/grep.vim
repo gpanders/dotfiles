@@ -1,29 +1,22 @@
-" Expand characters from :h cmdline-special
-let s:expandable = '\v(^| )(%(\%|#\d*|##|<%(cfile|cword|cWORD|cexpr)>)%(:[p~.htreS])*)%( |$)'
-function! s:expandcmd(cmd) abort
-    if exists('*expandcmd')
-        return expandcmd(a:cmd)
-    else
-        return substitute(a:cmd, s:expandable, '\=submatch(1) . expand(submatch(2) . '':S'')', '')
-    endif
+function! s:shellsplit(str)
+    return map(split(a:str, '\%(^\%("[^"]*"\|''[^'']*''\|[^"'']\)*\)\@<= '), {_, v -> substitute(v, '^["'']\|["'']$', '', 'g')})
 endfunction
 
-function! grep#grep(l, ...) abort
+function! grep#grep(l, args) abort
     " Separate options from arguments
     let opts = []
     let args = []
-    for arg in a:000
+    for arg in s:shellsplit(a:args)
         call add(arg =~# '^-' ? opts : args, arg)
     endfor
 
-    " Put flags first, followed by first argument without expanding, followed
-    " by the rest of the arguments expanded
-    let args = join(opts + [args[0]] + [s:expandcmd(join(args[1:], ' '))], ' ')
+    " Expand filename arguments and shellescape all args
+    let args = map([args[0]] + map(args[1:], 'expand(v:val)'), 'shellescape(v:val)')
 
-    if stridx(&grepprg, '$*') != -1
-        let grepcmd = substitute(&grepprg, '$\*', args, 'g')
+    if &grepprg =~# '$\*'
+        let grepcmd = substitute(&grepprg, '$\*', join(opts + args, ' '), '')
     else
-        let grepcmd = &grepprg . ' ' . args
+        let grepcmd = join([&grepprg] + opts + args, ' ')
     endif
 
     " Run the grep command in a shell to enable shell expansion
