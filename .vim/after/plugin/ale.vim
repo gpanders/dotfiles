@@ -13,6 +13,8 @@ if !exists('g:ale_fixers')
     let g:ale_fixers = {}
 endif
 
+augroup plugin_ale | execute 'autocmd!' | augroup END
+
 if get(g:, 'ale_completion_enabled')
     let cot = &completeopt
     set completeopt=menu,menuone,preview,noselect,noinsert
@@ -21,8 +23,11 @@ if get(g:, 'ale_completion_enabled')
     endif
 endif
 
-" Python {{{
+let g:ale_fix_on_save = 1
+
+" Python
 let g:ale_linters.python = ['pylint', 'flake8', 'pyls', 'mypy']
+let g:ale_fixers.python = ['black', 'isort']
 let g:ale_python_black_change_directory = 0
 let g:ale_python_pylint_change_directory = 0
 let g:ale_python_flake8_change_directory = 0
@@ -38,10 +43,7 @@ let g:ale_python_pyls_config = {
             \   },
             \ }}
 
-let g:ale_fixers.python = ['black', 'isort']
-" }}}
-
-" C/C++ {{{
+" C/C++
 let g:ale_linters.c = ['clangd']
 let g:ale_linters.cpp = g:ale_linters.c
 
@@ -52,20 +54,20 @@ let g:ale_cpp_clangd_options = g:ale_c_clangd_options . ' --clang-tidy-checks=cp
 let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
 
-" }}}
-
-" VHDL {{{
+" VHDL
 let g:ale_vhdl_xvhdl_options = '--2008 --nolog'
-" }}}
 
-" Rust {{{
+" Rust
 let g:ale_linters.rust = ['cargo', 'rls']
 let g:ale_rust_rls_toolchain = 'stable'
-" }}}
 
-" Go {{{
+" Go
 let g:ale_linters.go = ['golint', 'gofmt', 'gopls']
-" }}}
+
+" sh
+let g:ale_fixers.sh = ['shfmt']
+let g:ale_sh_shfmt_base_options = '-s'
+autocmd plugin_ale FileType sh let g:ale_sh_shfmt_options = g:ale_sh_shfmt_base_options . ' -ln=' . (get(b:, 'is_bash') ? 'bash' : 'posix')
 
 function! s:lsp_setup()
     let buf = bufnr('')
@@ -97,7 +99,6 @@ function! s:toggle()
 endfunction
 
 augroup plugin_ale
-    autocmd!
     autocmd OptionSet modifiable,readonly call <SID>toggle()
     autocmd BufWinEnter * call <SID>toggle()
 
