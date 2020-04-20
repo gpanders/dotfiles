@@ -48,5 +48,5 @@ if executable('isort')
         call winrestview(view)
     endfunction
     command! -buffer -nargs=0 -range=% -bar Isort call <SID>isort(<line1>, <line2>)
-    let b:undo_ftplugin .= '|delc -buffer Isort'
+    let b:undo_ftplugin .= '|delc Isort'
 endif
