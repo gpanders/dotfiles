@@ -1,41 +1,39 @@
-" Greg Anders (gpanders)'s vimrc <https://github.com/gpanders/dotfiles.git>
-
 " Normalization {{{
 if !has('nvim')
   " The following settings are the defaults in nvim. Set them also in vim for
   " a consistent experience between the two
   set autoindent
   set autoread
-  set backspace=indent,eol,start  " Allow vim to delete whitespace
+  set backspace=indent,eol,start
   silent! set belloff=all
   set complete-=i
   set display=lastline
   set nofsync
-  set formatoptions+=j  " Remove comment character when joining lines
+  set formatoptions+=j
   set history=10000
   set hlsearch
   set incsearch
   set langnoremap
   silent! set nolangremap
   set laststatus=2
-  set nrformats-=octal  " Don't interpret numbers starting with 0 as octal
+  set nrformats-=octal
   set ruler
-  set sessionoptions-=options  " Don't save options in session files
+  set sessionoptions-=options
   silent! set shortmess+=F
   set showcmd
   set sidescroll=1
   set smarttab
-  set tabpagemax=50  " Increase maximum number of tab pages allowed
+  set tabpagemax=50
   set tags=./tags;,tags
   set ttimeout
   set ttimeoutlen=50
   set ttyfast
-  set viminfo^=!  " Keep and store UPPERCASE global variables
+  set viminfo^=!
   set wildmenu
 
-  " Use UTF-8
   if has('multi_byte')
     set encoding=utf-8
+    scriptencoding utf-8
   endif
 
   " Set cursor shape based on mode (:h termcap-cursor-shape)
@@ -47,10 +45,10 @@ if !has('nvim')
   let &t_EI = "\e[2 q"
 
   let s:datadir = vim#datadir()
-  let &backupdir = s:datadir . '/backup//' . ',' . &backupdir
-  let &directory = s:datadir . '/swap//' . ',' . &directory
+  let &backupdir = s:datadir . '/backup//,' . &backupdir
+  let &directory = s:datadir . '/swap//,' . &directory
   if has('persistent_undo')
-      let &undodir = s:datadir . '/undo//' . ',' . &undodir
+      let &undodir = s:datadir . '/undo//,' . &undodir
   endif
 
   " Create directories if they don't exist
@@ -74,7 +72,6 @@ endif
 augroup vimrc | execute 'autocmd!' | augroup END
 
 " Setup {{{
-
 if has('autocmd')
   filetype plugin indent on
 endif
@@ -94,7 +91,6 @@ if !has('packages')
   endif
   silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
 endif
-
 " }}}
 
 " Colors {{{
@@ -107,7 +103,6 @@ silent! colorscheme base16-eighties
 
 " Highlight trailing whitespace
 highlight link TrailingWhitespace Error
-
 " }}}
 
 " Settings {{{
@@ -137,12 +132,7 @@ set wildignorecase
 set wildmode=longest:full,full
 
 if has('wildignore')
-  set wildignore=*.7z,*.bz2,*.gz,*.jar,*.rar,*.tar,*.xz,*.zip
-  set wildignore+=*.pyc,__pycache__
-  set wildignore+=*.bin,*.exe,*.hdf,*.iso
-  set wildignore+=*.docx,*.pdf,*.ppt,*.pptx,*.xls,*.xlsx
-  set wildignore+=*.asc,*.gpg,*.ttf,*.bmp,*.gif,*.ico,*.jpeg,*.jpg,*.png
-  set wildignore+=*.o,*.a,*.so,.DS_Store,*~,*.swp
+  set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#
 endif
 
 if has('mouse')
@@ -153,7 +143,6 @@ if has('folding')
   set foldlevelstart=99
 endif
 
-" Enable undofile if possible
 if has('persistent_undo')
   set undofile
 endif
@@ -163,7 +152,6 @@ if has('syntax')
   let &colorcolumn = '+' . join(range(1, 256), ',+')
 endif
 
-" Indent wrapped lines
 if has('linebreak')
   set linebreak
   set breakindent
@@ -202,7 +190,6 @@ endif
 if has('nvim-0.3.2') || has('patch-8.1.0360')
   set diffopt=filler,internal,algorithm:histogram,indent-heuristic
 endif
-
 " }}}
 
 " Mappings {{{
@@ -229,14 +216,13 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
 inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<C-]><C-G>u\<CR>"
 
 inoremap <C-R>! <C-O>:r !
-
 " }}}
 
 " Normal {{{
-
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 
+" Set Q and gQ to Nop to prevent accidentally entering command mode
 nnoremap Q <Nop>
 nnoremap gQ <Nop>
 
@@ -320,20 +306,18 @@ nnoremap <silent> gs m':set operatorfunc=Sort<CR>g@
 xnoremap <silent> gs :sort<CR>
 
 nnoremap g/ :<C-U>g//#<Left><Left>
-
 " }}}
 
 " Terminal {{{
-
-" Make neovim terminal behave like the vim terminal
-if has('nvim')
-  tnoremap <C-W> <C-\><C-N><C-W>
-  tnoremap <C-W>: <C-\><C-N>:
-  tnoremap <C-W>. <C-W>
-  tnoremap <C-W><C-\> <C-\>
-  tnoremap <C-W>N <C-\><C-N>
-  tnoremap <expr> <C-W>" '<C-\><C-N>"' . nr2char(getchar()) . 'pi'
-  tnoremap <C-W><C-C> <C-D>
+if exists(':tmap')
+    tnoremap <Esc> <C-\><C-N>
+    tnoremap <C-\><C-W> <C-\><C-N><C-W>
+    if has('nvim')
+        tnoremap <expr> <C-\><C-R> '<C-\><C-N>"' . nr2char(getchar()) . 'pi'
+    else
+        tnoremap <C-\><C-R> <C-W>"
+        tnoremap <C-W> <C-W>.
+    endif
 endif
 " }}}
 
@@ -348,7 +332,6 @@ else
   cnoremap <expr> <C-J> wildmenumode() ? "\<Down>\<Tab>" : "\<C-J>"
   cnoremap <expr> <C-K> wildmenumode() ? "\<Up>\<Tab>" : "\<C-K>"
 endif
-
 " }}}
 
 " }}}
@@ -366,20 +349,8 @@ autocmd BufLeave *.py mark P
 
 " Start insert immediately when terminal opens
 if exists('##TermOpen')
-  autocmd TermOpen * setlocal nonumber | startinsert
+  autocmd TermOpen * startinsert
 endif
-
-if has('nvim')
-  autocmd BufEnter term://* startinsert
-endif
-
-" Create syntax group for trailing whitespace in each new buffer
-let g:trailing_whitespace_blacklist = ['markdown', 'text', 'mail']
-autocmd Syntax *
-            \ if !&readonly && &modifiable && &filetype != ''
-            \       && index(g:trailing_whitespace_blacklist, &filetype) == -1 |
-            \   syn match TrailingWhitespace /\\\@<!\s\+\%#\@<!$/ containedin=ALL |
-            \ endif
 
 " Enable omnicompletion from syntax if no other option available
 " See :h ft-syntax-omni
