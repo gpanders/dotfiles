@@ -13,7 +13,7 @@ if !exists('g:ale_fixers')
     let g:ale_fixers = {}
 endif
 
-augroup plugin_ale | execute 'autocmd!' | augroup END
+augroup plugin_ale | exec 'autocmd!' | augroup END
 
 if get(g:, 'ale_completion_enabled')
     let cot = &completeopt
@@ -22,8 +22,6 @@ if get(g:, 'ale_completion_enabled')
         set completeopt-=preview completeopt+=popup
     endif
 endif
-
-let g:ale_fix_on_save = 1
 
 " Python
 let g:ale_linters.python = ['pylint', 'flake8', 'pyls', 'mypy']
@@ -63,6 +61,7 @@ let g:ale_rust_rls_toolchain = 'stable'
 
 " Go
 let g:ale_linters.go = ['golint', 'gofmt', 'gopls']
+let g:ale_fixers.go = ['gofmt']
 
 " sh
 let g:ale_fixers.sh = ['shfmt']
@@ -70,20 +69,32 @@ let g:ale_sh_shfmt_base_options = '-s'
 autocmd plugin_ale FileType sh let g:ale_sh_shfmt_options = g:ale_sh_shfmt_base_options . ' -ln=' . (get(b:, 'is_bash') ? 'bash' : 'posix')
 
 function! s:lsp_setup()
-    let buf = bufnr('')
-    let lsps = filter(ale#linter#Get(&filetype), {_, v -> 
-                \ !empty(v.lsp) && ale#engine#IsExecutable(buf, ale#linter#GetExecutable(buf, v))})
+    let buf = bufnr('%')
+    let lsps = filter(ale#linter#Get(&filetype),
+                \ {_, v -> !empty(v.lsp) && ale#engine#IsExecutable(buf, ale#linter#GetExecutable(buf, v))})
 
-    let b:ale_lsp_enabled = !empty(lsps)
-    if b:ale_lsp_enabled
-        setlocal omnifunc=ale#completion#OmniFunc
-        nmap <buffer> <C-]> <Plug>(ale_go_to_definition)
-        nmap <buffer> <C-W>] <Plug>(ale_go_to_definition_in_split)
-        nmap <buffer> <C-W><C-]> <Plug>(ale_go_to_definition_in_split)
-        nmap <buffer> gr <Plug>(ale_find_references)
-        nnoremap <silent> <buffer> gR :<C-U>ALERename<CR>
-        nmap <buffer> K <Plug>(ale_hover)
+    if empty(lsps)
+        return
     endif
+
+    let b:omnifunc_orig = &omnifunc
+    setlocal omnifunc=ale#completion#OmniFunc
+    nmap <buffer> <C-]> <Plug>(ale_go_to_definition)
+    nmap <buffer> <C-W>] <Plug>(ale_go_to_definition_in_split)
+    nmap <buffer> <C-W><C-]> <Plug>(ale_go_to_definition_in_split)
+    nmap <buffer> gr <Plug>(ale_find_references)
+    nnoremap <silent> <buffer> gR :<C-U>ALERename<CR>
+    nmap <buffer> K <Plug>(ale_hover)
+
+    let b:undo_ale_lsp = 'setl ofu=' . b:omnifunc_orig
+                \ . '|nun <buffer> <C-]>'
+                \ . '|nun <buffer> <C-W>]'
+                \ . '|nun <buffer> <C-W><C-]>'
+                \ . '|nun <buffer> gr'
+                \ . '|nun <buffer> gR'
+                \ . '|nun <buffer> K'
+
+    unlet b:omnifunc_orig
 endfunction
 
 function! s:toggle()
@@ -93,8 +104,15 @@ function! s:toggle()
 
     if !&modifiable || &readonly
         silent ALEDisableBuffer
+        if exists('b:undo_ale_lsp')
+            exec b:undo_ale_lsp
+            unlet b:undo_ale_lsp
+        endif
     elseif !get(b:, 'ale_enabled', 1)
         silent ALEEnableBuffer
+        if !get(g:, 'ale_disable_lsp')
+            call <SID>lsp_setup()
+        endif
     endif
 endfunction
 
@@ -105,6 +123,10 @@ augroup plugin_ale
     if !get(g:, 'ale_disable_lsp')
         autocmd FileType * call <SID>lsp_setup()
     endif
+
+    " Use ALE to format whole buffer if fixers are enabled for the current
+    " filetype
+    autocmd FileType * if has_key(g:ale_fixers, &filetype) | exec 'nmap gq<CR> <Plug>(ale_fix)' | endif
 augroup END
 
 let &cpo = s:save_cpo
