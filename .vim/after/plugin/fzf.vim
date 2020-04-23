@@ -22,4 +22,8 @@ nnoremap <silent> <C-W><Space>b :<C-U>call fzf#buffers(0, 's')<CR>
 augroup plugin.fzf
     autocmd!
     autocmd FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
+
+    " <Esc> is mapped to <C-\><C-N> in terminal mode in vimrc, which screws up
+    " the FZF terminal buffers. For FZF buffers only, make <Esc> send <Esc>
+    autocmd FileType fzf tnoremap <Esc> <Esc>
 augroup END
