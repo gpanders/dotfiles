@@ -10,15 +10,21 @@ endif
 " when the command is `pytest' (without the dot) unless we add this
 let g:dispatch_compilers['pytest'] = 'pytest'
 
+function! s:set_dispatch(val)
+    if !exists('b:dispatch')
+        let b:dispatch = a:val
+    endif
+endfunction
+
 augroup plugin.dispatch
   autocmd!
 
   " Python
-  autocmd FileType python let b:dispatch = 'pytest --tb=short -q'
+  autocmd FileType python call s:set_dispatch('pytest --tb=short -q')
 
   " TeX
-  autocmd FileType tex let b:dispatch = 'chktex -q -v0 -- %:S'
+  autocmd FileType tex call s:set_dispatch('chktex -q -v0 -- %:S')
 
   " Bash
-  autocmd FileType sh let b:dispatch = 'shellcheck -f gcc -- %:S'
+  autocmd FileType sh call s:set_dispatch('shellcheck -f gcc -- %:S')
 augroup END
