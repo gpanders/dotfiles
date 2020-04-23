@@ -1,7 +1,7 @@
 text/plain; view %s; test=command -v view
 text/plain; less -R %s
 text/html; open -a firefox %s; test=test -n "$DISPLAY"; nametemplate=%s.html; needsterminal
-text/html; lynx -dump %s; copiousoutput; nametemplate=%s.html
+text/html; lynx -dump --display_charset=utf-8 %s; copiousoutput; nametemplate=%s.html
 text/html; w3m -I %{charset} -T text/html -dump -o display_image=false -o display_link_number=true; copiousoutput
 text/x-diff; cat %s | colordiff; copiousoutput
 text/x-patch; cat %s | colordiff; copiousoutput
@@ -11,7 +11,7 @@ text/calendar; mutt-ics; copiousoutput
 application/ics; mutt-ics; copiousoutput
 
 # Images
-image/*; open %s; test=uname | grep -q Darwin
+image/*; open %s; test=uname | grep -q Darwin; needsterminal
 image/*; feh --scale-down %s &; test=command -v feh
 image/*; anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | pgmtopbm | pbmtoascii; test=command -v anytopnm; copiousoutput
 image/*; catimg %s; test=command -v catimg; copiousoutput
