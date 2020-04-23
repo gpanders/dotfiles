@@ -155,7 +155,6 @@ endif
 if has('linebreak')
   set linebreak
   set breakindent
-  let &showbreak = '↳ '
 endif
 
 if has('textprop')
@@ -221,6 +220,9 @@ inoremap <C-R>! <C-O>:r !
 " Normal {{{
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+nnoremap ^ g^
+nnoremap $ g$
+nnoremap 0 g0
 
 " Set Q and gQ to Nop to prevent accidentally entering command mode
 nnoremap Q <Nop>
