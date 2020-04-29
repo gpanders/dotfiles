@@ -2,7 +2,3 @@
 	path = .local/share/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
 	branch = master
-[submodule "minpac"]
-	path = .vim/pack/minpac/opt/minpac
-	url = https://github.com/k-takata/minpac
-	branch = master
