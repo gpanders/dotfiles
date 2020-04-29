@@ -1,103 +1,107 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! s:PackInit()
+function! s:PackInit() abort
     silent! packadd minpac
 
-    if exists('*minpac#init')
-        call minpac#init()
-        call minpac#add('k-takata/minpac', {'type': 'opt'})
-
-        " Colorscheme
-        call minpac#add('gpanders/base16-vim', {'type': 'opt'})
-
-        " Improved :Man command
-        call minpac#add('gpanders/vim-man', {'type': 'opt'})
-
-        " Improved :oldfiles command
-        call minpac#add('gpanders/vim-oldfiles')
-
-        " Evaluate code blocks in Markdown buffers
-        call minpac#add('gpanders/vim-medieval')
-
-        " Git wrapper in vim
-        call minpac#add('tpope/vim-fugitive')
-
-        " Mappings to modify parenthesis and other surrounding tokens
-        call minpac#add('tpope/vim-surround')
-
-        " Repeat certain plugin actions
-        call minpac#add('tpope/vim-repeat')
-
-        " Mappings for commenting source code
-        call minpac#add('tpope/vim-commentary')
-
-        " Asynchronous task runner
-        call minpac#add('tpope/vim-dispatch')
-
-        " Project management plugin
-        call minpac#add('tpope/vim-projectionist')
-
-        " Readline style bindings througout Vim
-        call minpac#add('tpope/vim-rsi')
-
-        " Unix commands in Vim
-        call minpac#add('tpope/vim-eunuch')
-
-        " Offers improved :substitute command and custom abbreviations
-        call minpac#add('tpope/vim-abolish')
-
-        " Vim debugging tools
-        call minpac#add('tpope/vim-scriptease')
-
-        " Session management
-        call minpac#add('tpope/vim-obsession')
-
-        " Better directory browser
-        call minpac#add('justinmk/vim-dirvish')
-
-        " Align lines to a character, e.g. =, ;, :, etc.
-        call minpac#add('junegunn/vim-easy-align')
-
-        " Show change signs for git files
-        call minpac#add('mhinz/vim-signify')
-
-        " Asynchronous linting
-        call minpac#add('dense-analysis/ale')
-
-        " Auto generate tags files
-        call minpac#add('ludovicchabant/vim-gutentags')
-
-        " Populate results of :ilist and :dlist in quickfix window
-        call minpac#add('romainl/vim-qlist')
-
-        " Automatically disable search highlighting
-        call minpac#add('romainl/vim-cool')
-
-        " Visualize undo tree
-        call minpac#add('simnalamburt/vim-mundo')
-
-        " Preview replacements when :substituting
-        call minpac#add('markonm/traces.vim')
-
-        " xdc
-        call minpac#add('amal-khailtash/vim-xdc-syntax')
-
-        " fish
-        call minpac#add('georgewitteman/vim-fish')
-
-        " LaTeX
-        call minpac#add('lervag/vimtex')
-
-        " Markdown
-        call minpac#add('tpope/vim-markdown')
-
-        " scdoc
-        call minpac#add('gpanders/vim-scdoc')
-
-        " zig
-        call minpac#add('ziglang/zig.vim')
+    if !exists('*minpac#init')
+        call mkdir($VIMHOME . '/pack/minpac/opt', 'p')
+        silent execute '!git clone https://github.com/k-takata/minpac ' . $VIMHOME . '/pack/minpac/opt/minpac'
+        packadd minpac
     endif
+
+    call minpac#init()
+    call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+    " Colorscheme
+    call minpac#add('gpanders/base16-vim', {'type': 'opt'})
+
+    " Improved :Man command
+    call minpac#add('gpanders/vim-man', {'type': 'opt'})
+
+    " Improved :oldfiles command
+    call minpac#add('gpanders/vim-oldfiles')
+
+    " Evaluate code blocks in Markdown buffers
+    call minpac#add('gpanders/vim-medieval')
+
+    " Git wrapper in vim
+    call minpac#add('tpope/vim-fugitive')
+
+    " Mappings to modify parenthesis and other surrounding tokens
+    call minpac#add('tpope/vim-surround')
+
+    " Repeat certain plugin actions
+    call minpac#add('tpope/vim-repeat')
+
+    " Mappings for commenting source code
+    call minpac#add('tpope/vim-commentary')
+
+    " Asynchronous task runner
+    call minpac#add('tpope/vim-dispatch')
+
+    " Project management plugin
+    call minpac#add('tpope/vim-projectionist')
+
+    " Readline style bindings througout Vim
+    call minpac#add('tpope/vim-rsi')
+
+    " Unix commands in Vim
+    call minpac#add('tpope/vim-eunuch')
+
+    " Offers improved :substitute command and custom abbreviations
+    call minpac#add('tpope/vim-abolish')
+
+    " Vim debugging tools
+    call minpac#add('tpope/vim-scriptease')
+
+    " Session management
+    call minpac#add('tpope/vim-obsession')
+
+    " Better directory browser
+    call minpac#add('justinmk/vim-dirvish')
+
+    " Align lines to a character, e.g. =, ;, :, etc.
+    call minpac#add('junegunn/vim-easy-align')
+
+    " Show change signs for git files
+    call minpac#add('mhinz/vim-signify')
+
+    " Asynchronous linting
+    call minpac#add('dense-analysis/ale')
+
+    " Auto generate tags files
+    call minpac#add('ludovicchabant/vim-gutentags')
+
+    " Populate results of :ilist and :dlist in quickfix window
+    call minpac#add('romainl/vim-qlist')
+
+    " Automatically disable search highlighting
+    call minpac#add('romainl/vim-cool')
+
+    " Visualize undo tree
+    call minpac#add('simnalamburt/vim-mundo')
+
+    " Preview replacements when :substituting
+    call minpac#add('markonm/traces.vim')
+
+    " xdc
+    call minpac#add('amal-khailtash/vim-xdc-syntax')
+
+    " fish
+    call minpac#add('georgewitteman/vim-fish')
+
+    " LaTeX
+    call minpac#add('lervag/vimtex')
+
+    " Markdown
+    call minpac#add('tpope/vim-markdown')
+
+    " scdoc
+    call minpac#add('gpanders/vim-scdoc')
+
+    " zig
+    call minpac#add('ziglang/zig.vim')
 endfunction
 
 function! s:PackUpdate()
