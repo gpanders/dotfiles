@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if command -v xdg-open >/dev/null 2>/dev/null; then
+	exec /usr/bin/xdg-open "$@"
+elif uname | grep -qF Darwin && [ -x /usr/bin/open ]; then
+	exec /usr/bin/open "$@"
+else
+	case "${1%%:*}" in
+	http | https | *.pdf)
+		command -v firefox >/dev/null 2>&1 && exec firefox "$1"
+		;;
+	mailto)
+		command -v mutt >/dev/null 2>&1 && exec mutt "$1"
+		;;
+	*)
+		echo "Don't know how to open $1" >&2
+		exit 1
+		;;
+	esac
+fi
