@@ -1,5 +1,5 @@
 function __fish_complete_venvs
-    set -q VENV_DIR; or set -U VENV_DIR $XDG_DATA_HOME/venv
+    set -q venv_dir; or set -U venv_dir $XDG_DATA_HOME/venv
     printf "%s\n" (command ls $VENV_DIR)
 end
 
