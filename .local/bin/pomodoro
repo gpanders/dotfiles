@@ -1,0 +1,73 @@
+#!/bin/sh
+
+usage() {
+	echo "Usage: $(basename "$0") [focus time] [short break] [long break]"
+}
+
+if [ "$1" = "-h" ]; then
+	usage
+	exit 0
+fi
+
+focus_time=${1:-25}
+short_break=${2:-5}
+long_break=${3:-15}
+
+# Ensure all arguments are numbers
+case $focus_time$short_break$long_break in
+	*[!0-9]*)
+		echo "Arguments must be positive integer numbers" >&2
+		usage >&2
+		exit 1
+		;;
+esac
+
+notify() {
+	echo "$1"
+	if command -v terminal-notifier >/dev/null 2>&1; then
+		terminal-notifier -title 'Pomodoro' -message "$1"
+	elif command -v notify-send >/dev/null 2>&1; then
+		notify-send "$1"
+	fi
+}
+
+countdown() {
+	timer=$(($1 * 60))
+	while true; do
+		minutes=$((timer / 60))
+		seconds=$((timer - 60*minutes))
+		printf '\e[0K\r'  # Clear current line
+		printf 'Remaining: %02d:%02d' "$minutes" "$seconds"
+
+		[ $timer -eq 0 ] && break
+		timer=$((timer - 1))
+		sleep 1
+	done
+	printf '\n'
+}
+
+while true; do
+	notify "Focus for $focus_time minutes"
+	countdown "$focus_time"
+
+	notify "Take a short break for $short_break minutes (1/4)"
+	countdown "$short_break"
+
+	notify "Focus for $focus_time minutes"
+	countdown "$focus_time"
+
+	notify "Take a short break for $short_break minutes (2/4)"
+	countdown "$short_break"
+
+	notify "Focus for $focus_time minutes"
+	countdown "$focus_time"
+
+	notify "Take a short break for $short_break minutes (3/4)"
+	countdown "$short_break"
+
+	notify "Focus for $focus_time minutes"
+	countdown "$focus_time"
+
+	notify "Take a long break for $long_break minutes (4/4)"
+	countdown "$long_break"
+done
