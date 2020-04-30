@@ -5,8 +5,9 @@ function! s:PackInit() abort
     silent! packadd minpac
 
     if !exists('*minpac#init')
-        call mkdir($VIMHOME . '/pack/minpac/opt', 'p')
-        silent execute '!git clone https://github.com/k-takata/minpac ' . $VIMHOME . '/pack/minpac/opt/minpac'
+        let packpath = split(&packpath, ',')[0]
+        call mkdir(packpath . '/pack/minpac/opt', 'p')
+        silent execute '!git clone https://github.com/k-takata/minpac ' . packpath . '/pack/minpac/opt/minpac'
         packadd minpac
     endif
 
