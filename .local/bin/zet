@@ -1,74 +1,74 @@
 #!/usr/bin/env bash
-# Simple bash script for creating and maintaining plaintext notes
+# Simple bash script for managing a Zettelkasten
 
-if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/note/config ]; then
-    source "${XDG_CONFIG_HOME:-$HOME/.config}"/note/config
-elif [ -z "$NOTES_DIR" ]; then
-    NOTES_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/note
-fi
-
-if [ -z "$NOTES_DIR" ]; then
-    echo "Notes directory not set!" >&2
-    return 1
-fi
-
-if [ ! -d "$NOTES_DIR" ]; then
-    mkdir -p "$NOTES_DIR"
+if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/zet/config ]; then
+    . "${XDG_CONFIG_HOME:-$HOME/.config}"/zet/config
+elif [ -z "$ZETTEL_DIR" ]; then
+    ZETTEL_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/zet
 fi
 
 usage() {
     echo "Usage:
-    note s[how] <name>
-    note o[pen] <name>
-    note n[ew] <name>
-    note l[ist]
-    note g[rep] <pattern>
-    note t[ag] [tag]
-    note h[elp]
-    note p[review]"
+    zet s|show <name>
+    zet o|open [name]
+    zet n|new <name>
+    zet l|list
+    zet g|grep <pattern>
+    zet t|tag [tag]
+    zet h|help
+    zet p|preview"
 }
 
-note() {
+zet() {
     if [ $# -lt 1 ]; then
         usage >&2
         return 1
     fi
 
+    if [ -z "$ZETTEL_DIR" ]; then
+        echo "ZETTEL_DIR not set!" >&2
+        return 1
+    fi
+
+    if [ ! -d "$ZETTEL_DIR" ]; then
+        mkdir -p "$ZETTEL_DIR"
+    fi
+
     case "$1" in
-        h|he|hel|help)
+        h|help)
             usage
             return 0
             ;;
-        s|sh|sho|show)
+        s|show)
             if [ $# -lt 2 ]; then
                 usage >&2
                 return 1
             fi
 
-            local note
-            note="$NOTES_DIR"/"${2%.txt}".txt
-            if [ ! -f "$note" ]; then
-                echo "Note '$2' not found" >&2
+            local zettel
+            zettel="$ZETTEL_DIR"/"${2%.txt}".txt
+            if [ ! -f "$zettel" ]; then
+                echo "Zettel '$2' not found" >&2
                 return 1
             fi
-            cat "$note"
+            cat "$zettel"
             ;;
-        o|op|ope|open)
-            cd "$NOTES_DIR" || return 1
+        o|open)
+            cd "$ZETTEL_DIR" || return 1
             if [ $# -lt 2 ]; then
                 ${EDITOR:-vi}
             else
                 shift
-                local notes
-                notes=()
-                for note in "$@"; do
-                    notes+=("$NOTES_DIR"/"${note%.txt}".txt)
+                local zettels
+                zettels=()
+                for zettel in "$@"; do
+                    zettels+=("$ZETTEL_DIR"/"${zettel%.txt}".txt)
                 done
 
-                ${EDITOR:-vi} "${notes[@]}"
+                ${EDITOR:-vi} "${zettels[@]}"
             fi
             ;;
-        n|ne|new)
+        n|new)
             if [ $# -lt 2 ]; then
                 usage >&2
                 return 1
@@ -79,37 +79,37 @@ note() {
             title="$*"
             date=$(date +%Y%m%d%H%M%S)
             fname="${date} $(sed -e 's/[^[:alnum:]]/_/g' -e 's/^_\|_$//' <<< "$*" | tr -s '_')"
-            file="$NOTES_DIR"/"${fname//_/ }".txt
+            file="$ZETTEL_DIR"/"${fname//_/ }".txt
             cat > "$file" << EOF
 ---
-title:      $title
-date:       $(date +'%B %d, %Y')
+title:    $title
+date:     $(date +'%B %d, %Y')
 keywords:
 ---
 EOF
-            cd "$NOTES_DIR" || return 1
+            cd "$ZETTEL_DIR" || return 1
             ${EDITOR:-vi} "$file"
             ;;
-        l|li|lis|list)
-            cd "$NOTES_DIR" || return 1
-            readarray -t notes < <(ls)
-            if [ ${#notes} -eq 0 ]; then
-                echo "You have no notes"
+        l|ls|list)
+            cd "$ZETTEL_DIR" || return 1
+            readarray -t zettels < <(ls)
+            if [ ${#zettels} -eq 0 ]; then
+                echo "You have no zettels"
                 return 0
             fi
 
-            for note in "${notes[@]}"; do
-                echo "${note%.*}"
+            for zettel in "${zettels[@]}"; do
+                echo "${zettel%.*}"
             done | sort | less -R --no-init --quit-if-one-screen
             ;;
-        g|gr|gre|grep)
+        g|grep)
             if [ $# -lt 2 ]; then
                 usage >&2
                 return 1
             fi
 
             shift
-            cd "$NOTES_DIR" || return 1
+            cd "$ZETTEL_DIR" || return 1
             readarray -t files < <(ls)
             for pat in "$@"; do
                 readarray -t files < <({ grep -Fil "$pat" "${files[@]}" ; printf "%s\n" "${files[@]}" | grep -Fi "$pat" ; })
@@ -122,26 +122,26 @@ EOF
                 echo "${file%.*}"
             done | sort -u | less -R --no-init --quit-if-one-screen
             ;;
-        t|ta|tag)
-            cd "$NOTES_DIR" || return 1
+        t|tag)
+            cd "$ZETTEL_DIR" || return 1
             if [ $# -lt 2 ]; then
                 awk 'tolower($1) ~ /^(keywords|tags):/ {$1=""; print $0}' ./*.txt | tr ',' '\n' | sort -u | awk '{$1=$1;print}' | less -R --no-init --quit-if-one-screen
             else
-                grep -H -i -E -- '^(keywords|tags):' * | grep -F -w "$2" | cut -d : -f 1 | while IFS= read -r note; do
-                    echo "${note%.*}"
+                grep -H -i -E -- '^(keywords|tags):' * | grep -F -w "$2" | cut -d : -f 1 | while IFS= read -r zettel; do
+                    echo "${zettel%.*}"
                 done | sort | less -R --no-init --quit-if-one-screen
             fi
             ;;
-        p|pr|pre|prev|previ|previe|preview)
+        p|pre|prev|preview)
             if [ $# -lt 2 ]; then
                 usage >&2
                 return 1
             fi
 
-            local note
-            note="$NOTES_DIR"/"${2%.txt}".txt
-            if [ ! -f "$note" ]; then
-                echo "Note '$2' not found" >&2
+            local zettel
+            zettel="$ZETTEL_DIR"/"${2%.txt}".txt
+            if [ ! -f "$zettel" ]; then
+                echo "Zettel '$2' not found" >&2
                 return 1
             fi
 
@@ -150,9 +150,9 @@ EOF
                 return 1
             fi
 
-            cd "$NOTES_DIR" || return 1
+            cd "$ZETTEL_DIR" || return 1
             tmp=$(mktemp).html
-            pandoc --standalone --to html --from markdown --output "$tmp" "$note"
+            pandoc --standalone --to html --from markdown --output "$tmp" "$zettel"
 
             if [ -n "$BROWSER" ]; then
                 $BROWSER "$tmp"
@@ -170,4 +170,4 @@ EOF
             ;;
     esac
 }
-note "$@"
+zet "$@"
