@@ -10,11 +10,11 @@ fi
 usage() {
 	cat <<-EOF
 		Usage:
-		    zet s|show <name>
+		    zet sh|show <name>
 		    zet o|open [name]
 		    zet n|new <name>
 		    zet l|list
-		    zet g|grep <pattern>
+		    zet s|search <pattern>
 		    zet t|tag [tag]
 		    zet h|help
 		    zet p|preview
@@ -41,7 +41,7 @@ zet() {
 		usage
 		return 0
 		;;
-	s | show)
+	sh | show)
 		if [ $# -lt 2 ]; then
 			usage >&2
 			return 1
@@ -98,7 +98,7 @@ EOF
 		fi
 		printf '%s\n' "${zettels[@]}" | sed 's/\.txt$//' | less -R -X -F
 		;;
-	g | grep)
+	s | search)
 		if [ $# -lt 2 ]; then
 			usage >&2
 			return 1
