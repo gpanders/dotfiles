@@ -1,3 +1,5 @@
+let s:placeholder = '{%}'
+
 function! snippets#expand() abort
     let lnum = line('.')
     let col = col('.')
@@ -22,10 +24,10 @@ function! snippets#expand() abort
     call append(lnum - 1, snippet)
     normal! =']
 
-    let [l, c] = searchpos('{}', '', lnum + len(snippet) - 1)
+    let [l, c] = searchpos(s:placeholder, '', lnum + len(snippet) - 1)
     if l
         call cursor(l, c)
-        call setline(l, substitute(getline(l), '{}', '', ''))
+        call setline(l, substitute(getline(l), s:placeholder, '', ''))
     endif
 
     " Must return an empty string so that no extra characters are inserted
