@@ -15,6 +15,6 @@ cnoremap <expr> <Tab> <SID>CmdlineTab()
 
 augroup wildignorecase
     autocmd!
-    autocmd CmdlineEnter * let g:wic_tmp = &wildignorecase
-    autocmd CmdlineLeave * if exists('g:wic_tmp') | let &wildignorecase = g:wic_tmp | unlet g:wic_tmp | endif
+    autocmd CmdlineEnter * let wic_save = &wildignorecase
+    autocmd CmdlineLeave * if exists('wic_save') | let &wildignorecase = wic_save | unlet wic_save | endif
 augroup END

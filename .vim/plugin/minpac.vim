@@ -59,6 +59,9 @@ function! s:PackInit() abort
     " Session management
     call minpac#add('tpope/vim-obsession')
 
+    " Automatically close blocks
+    call minpac#add('tpope/vim-endwise')
+
     " Better directory browser
     call minpac#add('justinmk/vim-dirvish')
 
