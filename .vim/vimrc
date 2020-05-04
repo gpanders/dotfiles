@@ -198,18 +198,20 @@ endif
 " jk in Insert mode escapes to Normal mode
 inoremap jk <Esc>
 
-" Set undo points when deleting and inserting newlines
+" Set undo points when deleting
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
-inoremap <CR> <C-]><C-G>u<CR>
 
 " Auto close braces in insert mode
-inoremap {<CR> {<CR>}<Esc>ko
+inoremap {<CR> {<CR>}<Esc>O
 
 " Copy line above/below (similar to <C-Y>/<C-E> but works on the whole line)
 inoremap <expr> <C-G><C-Y> repeat('<C-Y>', len(getline(line('.')-1))-col('.')+1)
 inoremap <expr> <C-G><C-E> repeat('<C-E>', len(getline(line('.')-1))-col('.')+1)
 
+" Navigate through popup menu with Tab and S-Tab and use Enter to make a
+" selection. If popup menu is not visible, Enter should set an undo point
+" before inserting a newline
 inoremap <expr> <Tab> pumvisible() ? "\<C-N>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
 inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<C-]><C-G>u\<CR>"
