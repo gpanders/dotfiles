@@ -225,6 +225,9 @@ nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap ^ g^
 nnoremap $ g$
 nnoremap 0 g0
+nnoremap g^ ^
+nnoremap g$ $
+nnoremap g0 0
 
 " Set Q and gQ to Nop to prevent accidentally entering command mode
 nnoremap Q <Nop>
