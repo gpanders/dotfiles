@@ -106,6 +106,9 @@ function! s:PackInit() abort
 
     " zig
     call minpac#add('ziglang/zig.vim')
+
+    " TOML
+    call minpac#add('cespare/vim-toml')
 endfunction
 
 function! s:PackUpdate()
