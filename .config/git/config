@@ -20,6 +20,7 @@
 	s = status
 	ss = snapshot
 	lg = log --oneline --graph
+	st = stash
 [commit]
 	verbose = true
 [sendemail]
