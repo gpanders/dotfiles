@@ -46,3 +46,5 @@
 	ui = auto
 [credential]
 	helper = !pass-git-helper \"$@\"
+[log]
+	date = local
