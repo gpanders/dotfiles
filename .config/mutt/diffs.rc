@@ -1,9 +1,0 @@
-color body red default "^diff \-.*"
-color body yellow default "^index [a-f0-9].*"
-color body green default "^\-\-\- .*"
-color body red default "^[\+]{3} .*"
-color body green default "^[\+][^\+]+.*"
-color body red  default "^\-[^\-]+.*"
-color body blue default "^@@ .* @@"
-
-# vim: ft=muttrc

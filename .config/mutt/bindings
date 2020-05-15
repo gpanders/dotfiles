@@ -77,4 +77,8 @@ macro index \C] \
 <enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
       "reconstruct thread with notmuch"
 
-# vim: ft=muttrc
+# Move messages to the $mbox folder
+macro index,pager A "<enter-command>set my_resolve=\$resolve<enter><enter-command>unset resolve<enter><clear-flag>N<save-message>\><enter><enter-command>set resolve=\$my_resolve<enter><sync-mailbox><refresh>" "archive message"
+
+# Fetch mail
+macro index <F5> "<enter-command>set my_wait_key=\$wait_key<enter><enter-command>unset wait_key<enter><shell-escape>mbsync gpanders<enter><enter-command>set wait_key=\$my_wait_key<enter>" "synchronize mailbox"
