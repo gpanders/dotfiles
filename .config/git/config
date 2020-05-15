@@ -1,6 +1,5 @@
 [user]
 	name = Greg Anders
-	email = greg@gpanders.com
 	signingKey = 0x56E93C2FB6B08BDB
 [alias]
 	co = checkout
@@ -27,11 +26,9 @@
 [commit]
 	verbose = true
 [sendemail]
-	smtpEncryption = tls
-	smtpServer = mail.gandi.net
-	smtpUser = greg@gpanders.com
-	smtpServerPort = 587
 	annotate = yes
+[include]
+	path = ~/.config/git/smtp
 [rebase]
 	autoSquash = true
 [grep]
@@ -48,3 +45,5 @@
 	helper = !pass-git-helper \"$@\"
 [log]
 	date = local
+[email]
+	github = 8965202+gpanders@users.noreply.github.com
