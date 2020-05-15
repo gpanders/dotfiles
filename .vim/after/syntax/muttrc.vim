@@ -1,0 +1,5 @@
+syn keyword muttrcColorField contained sidebar_divider
+syn keyword muttrcColorField contained sidebar_flagged
+syn keyword muttrcColorField contained sidebar_highlight
+syn keyword muttrcColorField contained sidebar_indicator
+syn keyword muttrcColorField contained sidebar_new
