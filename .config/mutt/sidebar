@@ -84,5 +84,3 @@ color sidebar_flagged color1 color0
 
 # Color to give mailboxes containing new mail
 color sidebar_new color2 color0
-
-# vim: syntax=muttrc

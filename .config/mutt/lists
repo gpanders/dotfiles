@@ -1,0 +1,5 @@
+lists @lists\\.sr\\.ht$
+lists ^[a-z]+-users@
+lists ^hackers@suckless\\.org$
+lists ^kernelnewbies@kernelnewbies\\.org$
+lists ^notmuch@notmuchmail\\.org$

@@ -1,3 +1,11 @@
+set folder = "~/.mail/gpanders"
+set mbox_type = Maildir
+set spoolfile = +Inbox
+set postponed = +Drafts
+set record    = +Sent
+set mbox      = +Archive
+set trash     = +Trash
+
 # Settings for handling MIME types
 set mailcap_path = ~/.config/mutt/mailcap
 alternative_order text/calendar text/plain text/enriched text/html
@@ -9,9 +17,14 @@ auto_view text/x-patch
 set allow_ansi
 
 set realname = "Greg Anders"
+set from = "greg@gpanders.com"
 set editor = "`echo \$EDITOR`"
 set use_from = yes
 set use_envelope_from = yes
+
+source ~/.config/mutt/credentials
+set smtp_url = "smtp://$my_smtp_user@$my_smtp_url"
+set smtp_pass = $my_smtp_pass
 
 # Skip to compose when replying
 set fast_reply
@@ -81,7 +94,7 @@ hdr_order from: to: cc: date: subject:
 
 # Index view options
 set date_format = "%b %d %I:%M %p"
-set index_format = " [%Z]  %-9@date@  %-20.20F  %s"
+set index_format = " [%Z]  %-9@date@  %-20.20L  %s"
 index-format-hook date "~d<1d" "Today"
 index-format-hook date "~d<2d" "Yesterday"
 index-format-hook date "~d<1w" "%[%A]"
@@ -107,7 +120,13 @@ set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
 alternative_order text/plain text/enriched text/html
 
 # Colorized diffs and patches
-source ~/.config/mutt/diffs.rc
+color body red default "^diff \-.*"
+color body yellow default "^index [a-f0-9].*"
+color body green default "^\-\-\- .*"
+color body red default "^[\+]{3} .*"
+color body green default "^[\+][^\+]+.*"
+color body red  default "^\-[^\-]+.*"
+color body blue default "^@@ .* @@"
 
 # Cache message headers and bodies
 set message_cachedir = ~/.cache/mutt/
@@ -128,19 +147,13 @@ set imap_keepalive = 300
 # How often to check for new mail (time in seconds)
 set mail_check = 60
 
-# Colorscheme
-source ~/.config/mutt/colors/base16.muttrc
+set status_format = "    %r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %?p?(%p postponed)? %>"
 
-# Bindings
-source ~/.config/mutt/bindings.rc
+# External command to lookup email addresses
+set query_command = "khard email --parsable --search-in-source-files '%s'"
 
-# Sidebar
-source ~/.config/mutt/sidebar.rc
-
-# GPG
-source ~/.config/mutt/gpg.rc
-
-source ~/.config/mutt/gpanders.rc
-folder-hook $folder source ~/.config/mutt/gpanders.rc
-
-# vim: ft=muttrc
+source ~/.config/mutt/colors/base16
+source ~/.config/mutt/bindings
+source ~/.config/mutt/sidebar
+source ~/.config/mutt/mailboxes
+source ~/.config/mutt/lists
