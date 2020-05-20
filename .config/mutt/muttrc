@@ -22,7 +22,7 @@ set editor = "`echo \$EDITOR`"
 set use_from = yes
 set use_envelope_from = yes
 
-source ~/.config/mutt/credentials
+source ~/.config/mutt/credentials.rc
 set smtp_url = "smtp://$my_smtp_user@$my_smtp_url"
 set smtp_pass = $my_smtp_pass
 
@@ -152,8 +152,9 @@ set status_format = "    %r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t
 # External command to lookup email addresses
 set query_command = "khard email --parsable --search-in-source-files '%s'"
 
-source ~/.config/mutt/colors/base16
-source ~/.config/mutt/bindings
-source ~/.config/mutt/sidebar
-source ~/.config/mutt/mailboxes
-source ~/.config/mutt/lists
+source ~/.config/mutt/colors.rc
+source ~/.config/mutt/bindings.rc
+source ~/.config/mutt/sidebar.rc
+source ~/.config/mutt/mailboxes.rc
+source ~/.config/mutt/lists.rc
+source ~/.config/mutt/gpg.rc
