@@ -28,7 +28,7 @@ function! fzf#buffers(bang, mod) abort
     call fzf#run(fzf#wrap('Buffers', {
                 \ 'source': buffers,
                 \ 'sink': {b -> execute(a:mod . 'b' . split(b)[0])},
-                \ 'options': '--no-color --layout=default --no-multi --tiebreak=end,length',
+                \ 'options': '--layout=default --no-multi --tiebreak=end,length',
                 \ }, a:bang))
 endfunction
 
