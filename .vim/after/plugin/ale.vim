@@ -68,12 +68,8 @@ let g:ale_fixers.sh = ['shfmt']
 let g:ale_sh_shfmt_base_options = '-s'
 autocmd plugin_ale FileType sh let g:ale_sh_shfmt_options = g:ale_sh_shfmt_base_options . ' -ln=' . (get(b:, 'is_bash') ? 'bash' : 'posix')
 
-function! s:lsp_setup()
-    let buf = bufnr('%')
-    let lsps = filter(ale#linter#Get(&filetype),
-                \ {_, v -> !empty(v.lsp) && ale#engine#IsExecutable(buf, ale#linter#GetExecutable(buf, v))})
-
-    if empty(lsps)
+function! s:completion()
+    if !ale#completion#GetCompletions()
         return
     endif
 
@@ -86,7 +82,7 @@ function! s:lsp_setup()
     nnoremap <silent> <buffer> gR :<C-U>ALERename<CR>
     nmap <buffer> K <Plug>(ale_hover)
 
-    let b:undo_ale_lsp = 'setl ofu=' . b:omnifunc_orig
+    let b:undo_ale_completion = 'setl ofu=' . b:omnifunc_orig
                 \ . '|nun <buffer> <C-]>'
                 \ . '|nun <buffer> <C-W>]'
                 \ . '|nun <buffer> <C-W><C-]>'
@@ -104,25 +100,20 @@ function! s:toggle()
 
     if !&modifiable || &readonly
         silent ALEDisableBuffer
-        if exists('b:undo_ale_lsp')
-            exec b:undo_ale_lsp
-            unlet b:undo_ale_lsp
+        if exists('b:undo_ale_completion')
+            exec b:undo_ale_completion
+            unlet b:undo_ale_completion
         endif
     elseif !get(b:, 'ale_enabled', 1)
         silent ALEEnableBuffer
-        if !get(g:, 'ale_disable_lsp')
-            call <SID>lsp_setup()
-        endif
+        call <SID>completion()
     endif
 endfunction
 
 augroup plugin_ale
     autocmd OptionSet modifiable,readonly call <SID>toggle()
     autocmd BufWinEnter * call <SID>toggle()
-
-    if !get(g:, 'ale_disable_lsp')
-        autocmd FileType * call <SID>lsp_setup()
-    endif
+    autocmd FileType * call <SID>completion()
 
     " Use ALE to format whole buffer if fixers are enabled for the current
     " filetype
