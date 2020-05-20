@@ -23,6 +23,7 @@
 	s = status
 	ss = snapshot
 	st = stash
+	ca = commit --amend
 [commit]
 	verbose = true
 [sendemail]
