@@ -89,6 +89,9 @@ function! s:PackInit() abort
     " Preview replacements when :substituting
     call minpac#add('markonm/traces.vim')
 
+    " C / C++
+    call minpac#add('bfrg/vim-cpp-modern')
+
     " xdc
     call minpac#add('amal-khailtash/vim-xdc-syntax')
 
