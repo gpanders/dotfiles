@@ -215,6 +215,11 @@ inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<C-]><C-G>u\<CR>"
 inoremap <C-R>! <C-O>:r !
 " }}}
 
+" Visual {{{
+xnoremap * y/\V<C-R>"<CR>
+xnoremap # y?\V<C-R>"<CR>
+" }}}
+
 " Normal {{{
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
