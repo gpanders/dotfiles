@@ -1,5 +1,5 @@
-lists @lists\\.sr\\.ht$
-lists ^[a-z]+-users@
-lists ^hackers@suckless\\.org$
-lists ^kernelnewbies@kernelnewbies\\.org$
-lists ^notmuch@notmuchmail\\.org$
+subscribe @lists\\.sr\\.ht$
+subscribe ^[a-z]+-users@
+subscribe ^hackers@suckless\\.org$
+subscribe ^kernelnewbies@kernelnewbies\\.org$
+subscribe ^notmuch@notmuchmail\\.org$
