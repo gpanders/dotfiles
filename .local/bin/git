@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Override PATH so this script doesn't call itself and go into infinite
+# recursion. This assumes that the "real" git will be in either /usr/local/bin/
+# or /usr/bin/. I don't think I have ever encountered a system where that
+# wasn't true, but if it is then this PATH variable will need to be updated
+PATH=/usr/local/bin:/usr/bin
+
+if [ "$PWD" = "$HOME" ]; then
+	command git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
+else
+	command git "$@"
+fi
