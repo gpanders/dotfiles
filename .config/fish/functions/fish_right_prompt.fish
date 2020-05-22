@@ -10,8 +10,9 @@ function fish_right_prompt
     end
 
     set -l cmd_duration
-    if test $CMD_DURATION -ge 5000
+    if test -n "$CMD_DURATION" -a "$CMD_DURATION" -ge 5000
         set cmd_duration (humanize_duration $CMD_DURATION)
+        set -e CMD_DURATION
     end
 
     # Move cursor up so that right prompt aligns with first line of left prompt
