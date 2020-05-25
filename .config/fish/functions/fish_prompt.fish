@@ -2,6 +2,8 @@ function fish_prompt
     set -l last_status $status
     set -l pwd_color (set_color blue)
     set -l git_color (set_color brblack)
+    set -l jobs_color (set_color white)
+    set -l cmd_duration_color (set_color yellow)
     set -l delim_color (set_color magenta)
 
     if test $last_status -ne 0
@@ -9,6 +11,19 @@ function fish_prompt
     end
 
     set -l delim '❯'
+
+    set -l jobs
+    set -l njobs (count (jobs -p))
+    if test $njobs -gt 0
+        set jobs "[$njobs]"
+    end
+
+    set -l cmd_duration
+    if test -n "$CMD_DURATION" -a "$CMD_DURATION" -ge 5000
+        set cmd_duration (humanize_duration $CMD_DURATION)
+        set -e CMD_DURATION
+    end
+
     set -l git_info (command git symbolic-ref --short HEAD 2>/dev/null)
     if test -n "$git_info"
         set -l git_upstream_status (command git rev-list --left-right --count 'HEAD...@{upstream}' 2>/dev/null)
@@ -33,8 +48,8 @@ function fish_prompt
 
     set -l pwd (fish_prompt_pwd_dir_length=0 prompt_pwd)
 
-    echo $pwd_color$pwd $git_color$git_info
-    echo -n $delim_color$delim' '
+    echo $pwd_color$pwd $git_color$git_info $cmd_duration_color$cmd_duration
+    echo -n $jobs_color$jobs $delim_color$delim' '
     echo -n (set_color normal)
 end
 
