@@ -5,7 +5,7 @@ function nnn --description "Support nnn quit and change directory"
         set -x NNN_TMPFILE "$HOME/.config/nnn/.lastd"
     end
 
-    command nnn $argv
+    command nnn -e $argv
 
     if test -e $NNN_TMPFILE
         source $NNN_TMPFILE
