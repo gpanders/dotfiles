@@ -346,9 +346,6 @@ endif
 
 " Autocommands {{{
 augroup vimrc
-" Have Vim jump to the last position when reopening a file
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
-      \ | exe "normal! g`\"" | endif
 
 " Set marks by filetype for quick navigation
 autocmd BufLeave *.h mark H
