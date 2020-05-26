@@ -1,4 +1,8 @@
 function humanize_duration --argument-names milliseconds
+    if test -z "$milliseconds"
+        return
+    end
+
     set -l seconds (math -s0 "$milliseconds / 1000 % 60")
     set -l minutes (math -s0 "$milliseconds / 60000 % 60")
     set -l hours (math -s0 "$milliseconds / 3600000 % 24")

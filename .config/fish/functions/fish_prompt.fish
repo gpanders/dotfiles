@@ -1,21 +1,37 @@
 function fish_prompt
     set -l last_status $status
-    set -l pwd_color (set_color blue)
-    set -l git_color (set_color brblack)
-    set -l jobs_color (set_color white)
-    set -l cmd_duration_color (set_color yellow)
-    set -l delim_color (set_color magenta)
+    set -l pwd_color (set_color $fish_color_cwd)
+    set -l git_color (set_color $__fish_git_prompt_color)
+    set -l venv_color (set_color $fish_color_venv)
+    set -l jobs_color (set_color $fish_color_jobs)
+    set -l cmd_duration_color (set_color $fish_color_cmd_duration)
+    set -l delim_color (set_color $fish_color_prompt_delim)
 
     if test $last_status -ne 0
-        set delim_color (set_color red)
+        set delim_color (set_color $fish_color_error)
     end
 
-    set -l delim '❯'
+    set -l pwd (fish_prompt_pwd_dir_length=0 prompt_pwd)
 
-    set -l jobs
-    set -l njobs (count (jobs -p))
-    if test $njobs -gt 0
-        set jobs "[$njobs]"
+    set -l git_info (git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    if test -n "$git_info"
+        set -l git_action (fish_print_git_action)
+        if test -n "$git_action"
+            set git_info $git_info" ($git_action)"
+        end
+
+        # Upstream status
+        set count (git rev-list --count --left-right @{u}...HEAD 2>/dev/null)
+        switch "$count"
+            case ''
+            case '0'\t'0'
+            case '0'\t'*'
+                set git_info $git_info' '(set_color cyan)'⇡'
+            case '*'\t'0'
+                set git_info $git_info' '(set_color cyan)'⇣'
+            case '*'
+                set git_info $git_info' '(set_color cyan)'⇡⇣'
+        end
     end
 
     set -l cmd_duration
@@ -24,32 +40,18 @@ function fish_prompt
         set -e CMD_DURATION
     end
 
-    set -l git_info (command git symbolic-ref --short HEAD 2>/dev/null)
-    if test -n "$git_info"
-        set -l git_upstream_status (command git rev-list --left-right --count 'HEAD...@{upstream}' 2>/dev/null)
-        if test -n "$git_upstream_status"
-            echo $git_upstream_status | read -l -a git_status
-            set -l commit_to_push $git_status[1]
-            set -l commit_to_pull $git_status[2]
-
-            if test $commit_to_push -gt 0 -o $commit_to_pull -gt 0
-                set git_info $git_info' '
-            end
-
-            if test $commit_to_push -gt 0
-                set git_info $git_info(set_color cyan)'⇡'
-            end
-
-            if test $commit_to_pull -gt 0
-                set git_info $git_info(set_color cyan)'⇣'
-            end
-        end
+    set -l jobs
+    set -l njobs (count (jobs -p))
+    if test $njobs -gt 0
+        set jobs "[$njobs]"
     end
 
-    set -l pwd (fish_prompt_pwd_dir_length=0 prompt_pwd)
+    set -l virtualenv
+    set -q VIRTUAL_ENV; and set virtualenv (basename $VIRTUAL_ENV)
+
+    set -l delim '❯'
 
     echo $pwd_color$pwd $git_color$git_info $cmd_duration_color$cmd_duration
-    echo -n $jobs_color$jobs $delim_color$delim' '
-    echo -n (set_color normal)
+    echo -n $jobs_color$jobs $venv_color$virtualenv $delim_color$delim' '
+    echo -n (set_color $fish_color_normal)
 end
-
