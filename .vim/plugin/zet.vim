@@ -13,5 +13,5 @@ endif
 
 augroup plugin_zet
     autocmd!
-    autocmd BufReadPost $ZETTEL_DIR/* setlocal include=\\[\\[\\zs\\d\\+\\ze]] includeexpr=glob($ZETTEL_DIR.'/'.v:fname.'*')
+    autocmd BufReadPost $ZETTEL_DIR/* setlocal include=\\[\\[\\zs\\d\\+\\ze]] includeexpr=glob($ZETTEL_DIR.'/'.v:fname.'*') omnifunc=zet#complete
 augroup END
