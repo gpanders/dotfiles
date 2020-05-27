@@ -51,6 +51,8 @@ function fish_prompt
 
     set -l delim '❯'
 
+    # Clear existing line
+    echo -e -n '\r\033[K'
     echo $pwd_color$pwd $git_color$git_info $cmd_duration_color$cmd_duration
     echo -n $jobs_color$jobs $venv_color$virtualenv $delim_color$delim' '
     echo -n (set_color $fish_color_normal)
