@@ -89,6 +89,9 @@ function! s:PackInit() abort
     " Preview replacements when :substituting
     call minpac#add('markonm/traces.vim')
 
+    " Better writing mode
+    call minpac#add('junegunn/goyo.vim')
+
     " C / C++
     call minpac#add('bfrg/vim-cpp-modern')
 
