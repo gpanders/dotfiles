@@ -92,6 +92,9 @@ function! s:PackInit() abort
     " Better writing mode
     call minpac#add('junegunn/goyo.vim')
 
+    " REPL
+    call minpac#add('urbainvaes/vim-ripple')
+
     " C / C++
     call minpac#add('bfrg/vim-cpp-modern')
 
@@ -115,6 +118,9 @@ function! s:PackInit() abort
 
     " TOML
     call minpac#add('cespare/vim-toml')
+
+    " PlantUML
+    call minpac#add('aklt/plantuml-syntax')
 endfunction
 
 function! s:PackUpdate()
