@@ -352,9 +352,10 @@ autocmd BufLeave *.h mark H
 autocmd BufLeave *.{c,cc,cpp} mark C
 autocmd BufLeave *.py mark P
 
-" Start insert immediately when terminal opens
+" Start insert mode when entering terminal
 if exists('##TermOpen')
   autocmd TermOpen * startinsert
+  autocmd BufEnter term://* startinsert
 endif
 
 " Enable omnicompletion from syntax if no other option available
