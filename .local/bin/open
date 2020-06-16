@@ -2,7 +2,7 @@
 
 if command -v xdg-open >/dev/null 2>/dev/null; then
 	exec /usr/bin/xdg-open "$@"
-elif uname | grep -qF Darwin && [ -x /usr/bin/open ]; then
+elif [ "$(uname)" = Darwin ] && [ -x /usr/bin/open ]; then
 	exec /usr/bin/open "$@"
 else
 	case "${1%%:*}" in
