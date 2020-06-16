@@ -1,29 +1,28 @@
-text/plain; view %s; test=command -v view
+text/plain; view %s; test=command -v view >/dev/null
 text/plain; less -R %s
-text/html; open -a firefox %s; test=test -n "$DISPLAY"; nametemplate=%s.html; needsterminal
+text/html; ~/.local/bin/open %s; nametemplate=%s.html; needsterminal
 text/html; lynx -dump --display_charset=utf-8 %s; copiousoutput; nametemplate=%s.html
 text/html; w3m -I %{charset} -T text/html -dump -o display_image=false -o display_link_number=true; copiousoutput
 text/x-diff; cat %s | colordiff; copiousoutput
 text/x-patch; cat %s | colordiff; copiousoutput
 
+text/calendar; ~/.local/share/mutt/calimport.sh %s; nametemplate=%s.ics; needsterminal
+
 # Install mutt-ics with pipx install mutt_ics
-text/calendar; mutt-ics; copiousoutput
-application/ics; mutt-ics; copiousoutput
+text/calendar; mutt-ics; test=command -v mutt-ics >/dev/null; copiousoutput
+application/ics; mutt-ics; test=command -v mutt-ics >/dev/null; copiousoutput
 
 # Images
-image/*; open %s; test=uname | grep -q Darwin; needsterminal
-image/*; feh --scale-down %s &; test=command -v feh
-image/*; anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | pgmtopbm | pbmtoascii; test=command -v anytopnm; copiousoutput
-image/*; catimg %s; test=command -v catimg; copiousoutput
+image/*; ~/.local/bin/open %s; needsterminal
+image/*; anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | pgmtopbm | pbmtoascii; test=command -v anytopnm >/dev/null; copiousoutput
+image/*; catimg %s; test=command -v catimg >/dev/null; copiousoutput
 
 # PDFs
-application/*; open %s; test=uname | grep -q Darwin; needsterminal
-application/*; xdg-open %s; test=test -n "$DISPLAY" && uname | grep -q Linux; needsterminal
+application/*; ~/.local/bin/open %s; needsterminal
 application/pdf; pdftotext "%s" -; copiousoutput; description=PDF Document; nametemplate=%s.pdf
 
 # Audio
-audio/*; open %s; test=uname | grep -q Darwin; needsterminal
-audio/*; xdg-open %s; test=test -n "$DISPLAY" && uname | grep -q Linux; needsterminal
+audio/*; ~/.local/bin/open %s; needsterminal
 
 # Word files
 application/msword; antiword "%s"; copiousoutput; description=Word Document; nametemplate=%s.doc
