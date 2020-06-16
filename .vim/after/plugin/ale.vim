@@ -1,7 +1,4 @@
-let s:save_cpo = &cpo
-set cpo&vim
-
-if !get(g:, 'loaded_ale')
+if !get(g:, 'loaded_ale') || &compatible
     finish
 endif
 
@@ -72,31 +69,6 @@ let g:ale_fixers.sh = ['shfmt']
 let g:ale_sh_shfmt_base_options = '-s'
 autocmd plugin_ale FileType sh let g:ale_sh_shfmt_options = g:ale_sh_shfmt_base_options . ' -ln=' . (get(b:, 'is_bash') ? 'bash' : 'posix')
 
-function! s:completion()
-    if !ale#completion#GetCompletions()
-        return
-    endif
-
-    let b:omnifunc_orig = &omnifunc
-    setlocal omnifunc=ale#completion#OmniFunc
-    nmap <buffer> <C-]> <Plug>(ale_go_to_definition)
-    nmap <buffer> <C-W>] <Plug>(ale_go_to_definition_in_split)
-    nmap <buffer> <C-W><C-]> <Plug>(ale_go_to_definition_in_split)
-    nmap <buffer> gr <Plug>(ale_find_references)
-    nnoremap <silent> <buffer> gR :<C-U>ALERename<CR>
-    nmap <buffer> K <Plug>(ale_hover)
-
-    let b:undo_ale_completion = 'setl ofu=' . b:omnifunc_orig
-                \ . '|nun <buffer> <C-]>'
-                \ . '|nun <buffer> <C-W>]'
-                \ . '|nun <buffer> <C-W><C-]>'
-                \ . '|nun <buffer> gr'
-                \ . '|nun <buffer> gR'
-                \ . '|nun <buffer> K'
-
-    unlet b:omnifunc_orig
-endfunction
-
 function! s:toggle()
     if !g:ale_enabled
         return
@@ -104,25 +76,16 @@ function! s:toggle()
 
     if !&modifiable || &readonly
         silent ALEDisableBuffer
-        if exists('b:undo_ale_completion')
-            exec b:undo_ale_completion
-            unlet b:undo_ale_completion
-        endif
     elseif !get(b:, 'ale_enabled', 1)
         silent ALEEnableBuffer
-        call <SID>completion()
     endif
 endfunction
 
 augroup plugin_ale
     autocmd OptionSet modifiable,readonly call <SID>toggle()
     autocmd BufWinEnter * call <SID>toggle()
-    autocmd FileType * call <SID>completion()
 
     " Use ALE to format whole buffer if fixers are enabled for the current
     " filetype
     autocmd FileType * if has_key(g:ale_fixers, &filetype) | exec 'nmap gq<CR> <Plug>(ale_fix)' | endif
 augroup END
-
-let &cpo = s:save_cpo
-unlet s:save_cpo

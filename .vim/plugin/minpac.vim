@@ -86,6 +86,9 @@ function! s:PackInit() abort
     " Auto completion
     call minpac#add('lifepillar/vim-mucomplete')
 
+    " Language Server Client
+    call minpac#add('natebosch/vim-lsc')
+
     " REPL
     call minpac#add('urbainvaes/vim-ripple')
 
