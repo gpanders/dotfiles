@@ -9,7 +9,7 @@ function! zet#complete(findstart, base)
     else
         let zettels = glob($ZETTEL_DIR . '/*.md', 0, 1)
         call map(zettels, 'fnamemodify(v:val, '':t'')')
-        call filter(zettels, 'v:val[0] =~# ''^'' . a:base')
+        call filter(zettels, 'v:val =~? a:base')
 
         let matches = []
         for zet in zettels
