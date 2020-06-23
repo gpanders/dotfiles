@@ -51,9 +51,9 @@ function! s:tags(query) abort
 endfunction
 
 function! s:tag(line, mod) abort
-    let [tag, _, filename] = split(a:line)[0:2]
-    let index = index(map(taglist('^' . tag . '$'), 'v:val.filename'), filename) + 1
-    execute index . a:mod . 'tag ' . tag
+    let [tag, _, fname] = split(a:line)[0:2]
+    let idx = index(map(taglist('^' . tag . '$', expand('%')), 'v:val.filename'), fname) + 1
+    execute idx . a:mod . 'tag ' . tag
 endfunction
 
 function! s:prepare_query(query) abort
