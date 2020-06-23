@@ -66,5 +66,5 @@ if [ -n "$FZF_BASE" ]; then
         export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     fi
 
-    export FZF_DEFAULT_OPTS="--height=10 --reverse --no-info --color=16 --cycle"
+    export FZF_DEFAULT_OPTS="--height=10 --reverse --no-info --no-color --cycle"
 fi
