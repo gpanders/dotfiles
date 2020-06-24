@@ -1,5 +1,7 @@
 let s:placeholder = '{%}'
 
+let s:extmap = {'python': 'py'}
+
 function! snippets#expand() abort
     let lnum = line('.')
     let col = col('.')
@@ -11,6 +13,10 @@ function! snippets#expand() abort
 
     let token = split(curline[0:col-1])[-1]
     let ext = expand('%:e')
+    if ext ==# ''
+        let ext = get(s:extmap, &filetype, &filetype)
+    endif
+
     if filereadable(g:snippets_dir . '/' . token . '.' . ext)
         let file = g:snippets_dir . '/' . token . '.' . ext
     elseif filereadable(g:snippets_dir . '/' . token . '.' . &filetype)
