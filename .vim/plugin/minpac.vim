@@ -83,6 +83,9 @@ function! s:PackInit() abort
     " Better writing mode
     call minpac#add('junegunn/goyo.vim')
 
+    " Auto completion
+    call minpac#add('lifepillar/vim-mucomplete')
+
     " REPL
     call minpac#add('urbainvaes/vim-ripple')
 
