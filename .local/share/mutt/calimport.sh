@@ -5,4 +5,4 @@ cp "$1" "$tmpdir"/orig.ics
 sed 's/^METHOD:REQUEST$/METHOD:PUBLISH/' "$tmpdir"/orig.ics > "$1"
 rm -rf "$tmpdir"
 
-exec ~/.local/bin/open "$1"
+exec open "$1"

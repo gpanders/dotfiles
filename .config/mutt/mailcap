@@ -1,29 +1,17 @@
 text/plain; view %s; test=command -v view >/dev/null
 text/plain; less -R %s
-text/html; ~/.local/bin/open %s; nametemplate=%s.html; needsterminal
+text/html; open %s; nametemplate=%s.html; needsterminal
 text/html; lynx -dump --display_charset=utf-8 %s; copiousoutput; nametemplate=%s.html
-text/html; w3m -I %{charset} -T text/html -dump -o display_image=false -o display_link_number=true; copiousoutput
-text/x-diff; cat %s | colordiff; copiousoutput
-text/x-patch; cat %s | colordiff; copiousoutput
+text/html; w3m -I %{charset} -T text/html -o display_link_number=true; copiousoutput
+text/x-diff; colordiff; copiousoutput
+text/x-patch; colordiff; copiousoutput
 
 text/calendar; ~/.local/share/mutt/calimport.sh %s; nametemplate=%s.ics; needsterminal
 
-# Install mutt-ics with pipx install mutt_ics
 text/calendar; mutt-ics; test=command -v mutt-ics >/dev/null; copiousoutput
 application/ics; mutt-ics; test=command -v mutt-ics >/dev/null; copiousoutput
 
-# Images
-image/*; ~/.local/bin/open %s; needsterminal
-image/*; anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | pgmtopbm | pbmtoascii; test=command -v anytopnm >/dev/null; copiousoutput
-image/*; catimg %s; test=command -v catimg >/dev/null; copiousoutput
-
-# PDFs
-application/*; ~/.local/bin/open %s; needsterminal
-application/pdf; pdftotext "%s" -; copiousoutput; description=PDF Document; nametemplate=%s.pdf
-
-# Audio
-audio/*; ~/.local/bin/open %s; needsterminal
-
-# Word files
-application/msword; antiword "%s"; copiousoutput; description=Word Document; nametemplate=%s.doc
-application/msword; docx2text.pl "%s" -; copiousoutput; description=Word Document; nametemplate=%s.docx
+# Open these MIME types in external program
+application/*; open %s; needsterminal
+audio/*; open %s; needsterminal
+image/*; open %s; needsterminal
