@@ -40,13 +40,3 @@ endif
 if !empty(&l:formatprg)
     let b:undo_ftplugin .= '|setl fp<'
 endif
-
-if executable('isort')
-    function! s:isort(line1, line2)
-        let view = winsaveview()
-        exe a:line1 . ',' . a:line2 . '!isort -y -'
-        call winrestview(view)
-    endfunction
-    command! -buffer -nargs=0 -range=% -bar Isort call <SID>isort(<line1>, <line2>)
-    let b:undo_ftplugin .= '|delc Isort'
-endif
