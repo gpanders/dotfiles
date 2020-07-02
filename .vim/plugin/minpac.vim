@@ -41,9 +41,6 @@ function! s:PackInit() abort
     " Asynchronous task runner
     call minpac#add('tpope/vim-dispatch')
 
-    " Project management plugin
-    call minpac#add('tpope/vim-projectionist')
-
     " Readline style bindings througout Vim
     call minpac#add('tpope/vim-rsi')
 
@@ -58,9 +55,6 @@ function! s:PackInit() abort
 
     " Session management
     call minpac#add('tpope/vim-obsession')
-
-    " Automatically close blocks
-    call minpac#add('tpope/vim-endwise')
 
     " Better directory browser
     call minpac#add('justinmk/vim-dirvish')
@@ -82,9 +76,6 @@ function! s:PackInit() abort
 
     " Automatically disable search highlighting
     call minpac#add('romainl/vim-cool')
-
-    " Visualize undo tree
-    call minpac#add('simnalamburt/vim-mundo')
 
     " Preview replacements when :substituting
     call minpac#add('markonm/traces.vim')
