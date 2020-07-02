@@ -16,6 +16,7 @@ endfunction
 augroup journal
     autocmd!
     autocmd BufRead $JOURNAL_FILE call s:entry()
+    autocmd BufWinEnter $JOURNAL_FILE setlocal foldlevel=0
 augroup END
 
 command! -nargs=0 Journal edit +set\ ft=markdown $JOURNAL_FILE
