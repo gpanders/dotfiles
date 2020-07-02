@@ -23,6 +23,10 @@ if get(g:, 'ale_completion_enabled')
     endif
 endif
 
+if empty(&completefunc)
+    setglobal completefunc=ale#completion#OmniFunc
+endif
+
 " Python
 let g:ale_linters.python = ['pylint', 'flake8', 'pyls', 'mypy']
 let g:ale_fixers.python = ['black', 'isort']
