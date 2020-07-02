@@ -66,7 +66,7 @@ function! s:PackInit() abort
     call minpac#add('mhinz/vim-signify')
 
     " Asynchronous linting
-    call minpac#add('dense-analysis/ale')
+    call minpac#add('neomake/neomake')
 
     " Auto generate tags files
     call minpac#add('ludovicchabant/vim-gutentags')
