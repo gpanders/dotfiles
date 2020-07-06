@@ -289,6 +289,8 @@ nnoremap ]T :<C-U>tlast<CR>
 
 nnoremap <expr> [e ":\<C-U>.move --" . v:count1 . "\<CR>"
 nnoremap <expr> ]e ":\<C-U>.move +" . v:count1 . "\<CR>"
+xnoremap <expr> [e ":move --" . v:count1 . "\<CR>gv"
+xnoremap <expr> ]e ":move +" . (v:count1 + line("'>") - line("'<")) . "\<CR>gv"
 
 nnoremap [<Space> :<C-U>put! =repeat(nr2char(10), v:count1)<CR><CR>:']+1<CR>
 nnoremap ]<Space> :<C-U>put =repeat(nr2char(10), v:count1)<CR><CR>:'[-1<CR>
