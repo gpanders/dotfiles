@@ -17,7 +17,10 @@ endfunction
 function! s:compltag(line, findstart, base)
     if a:findstart
         let start = col('.') - 1
-        while start > 0 && a:line[start - 1] !~# '[, ]'
+        while a:line[start - 1] !~# '[, ]'
+            if start == 0
+                return -2
+            endif
             let start -= 1
         endwhile
         return start
@@ -49,7 +52,10 @@ endfunction
 function! s:compllink(line, findstart, base)
     if a:findstart
         let start = col('.') - 1
-        while start > 0 && a:line[start - 2:start - 1] !=# '[['
+        while a:line[start - 2:start - 1] !=# '[['
+            if start == 0
+                return -2
+            endif
             let start -= 1
         endwhile
         return start
