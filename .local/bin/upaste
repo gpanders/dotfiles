@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -euf
+
+case "$1" in
+-h | --help)
+	echo "Example: upaste [-t js] [test.js]"
+	echo "Reads from stdin if no filename is supplied."
+	exit
+	;;
+-t)
+	type="$2"
+	shift 2
+	;;
+esac
+
+curl -F text=@"${1:--}" ${type:+"-F type=$type"} https://upaste.de/
