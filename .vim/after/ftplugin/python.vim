@@ -37,6 +37,14 @@ elseif executable('yapf')
     setlocal formatprg=yapf
 endif
 
+if executable('isort')
+    if empty(&l:formatprg)
+        setlocal formatprg=isort\ -q\ -
+    else
+        setlocal formatprg+=\|\ isort\ -q\ -
+    endif
+endif
+
 if !empty(&l:formatprg)
     let b:undo_ftplugin .= '|setl fp<'
 endif
