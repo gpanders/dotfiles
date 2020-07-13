@@ -1,6 +1,19 @@
+" Autoload fzf plugin file
+unlet! g:loaded_fzf
+runtime! plugin/fzf.vim
+
+function! fzf#files() abort
+    if !exists('g:loaded_fzf')
+        echo 'FZF not installed'
+        return
+    endif
+
+    FZF --layout=default --tiebreak=end,length
+endfunction
+
 function! fzf#tags(bang, query, mod) abort
-    if !exists('*fzf#run')
-        echoerr 'FZF installation not found'
+    if !exists('g:loaded_fzf')
+        echo 'FZF not installed'
         return
     endif
 
@@ -18,8 +31,9 @@ function! fzf#tags(bang, query, mod) abort
 endfunction
 
 function! fzf#buffers(bang, mod) abort
-    if !exists('*fzf#run')
-        echoerr 'FZF installation not found'
+    if !exists('g:loaded_fzf')
+        ls
+        call feedkeys(':b ')
         return
     endif
 
