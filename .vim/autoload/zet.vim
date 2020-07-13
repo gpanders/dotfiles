@@ -1,4 +1,4 @@
-function! zet#complete(findstart, base)
+function! zet#complete(findstart, base) abort
     let line = getline('.')
     if line =~# '^tags:'
         return s:compltag(line, a:findstart, a:base)
@@ -14,15 +14,15 @@ function! s:zettels(base) abort
     return zettels
 endfunction
 
-function! s:compltag(line, findstart, base)
+function! s:compltag(line, findstart, base) abort
     if a:findstart
         let start = col('.') - 1
-        while a:line[start - 1] !~# '[, ]'
-            if start == 0
-                return -2
-            endif
+        while start > 0 && a:line[start - 1] !~# '[, ]'
             let start -= 1
         endwhile
+        if start == 0
+            return -2
+        endif
         return start
     else
         let zettels = s:zettels('')
@@ -49,15 +49,15 @@ function! s:compltag(line, findstart, base)
     endif
 endfunction
 
-function! s:compllink(line, findstart, base)
+function! s:compllink(line, findstart, base) abort
     if a:findstart
         let start = col('.') - 1
-        while a:line[start - 2:start - 1] !=# '[['
-            if start == 0
-                return -2
-            endif
+        while start > 0 && a:line[start - 2:start - 1] !=# '[['
             let start -= 1
         endwhile
+        if start == 0
+            return -2
+        endif
         return start
     else
         let zettels = s:zettels(a:base)
