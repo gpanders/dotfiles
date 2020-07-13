@@ -1,9 +1,14 @@
 let g:lsc_auto_map = {
-            \ 'defaults': v:true,
-            \ 'WorkspaceSymbol': '',
-            \ 'FindCodeActions': 'gA',
-            \ 'NextReference': ']r',
-            \ 'PreviousReference': '[r',
+            \   'defaults': v:true,
+            \   'FindReferences': '<C-_>r',
+            \   'NextReference': ']r',
+            \   'PreviousReference': '[r',
+            \   'FindImplementations': '<C-_>I',
+            \   'DocumentSymbol': '<C-_>o',
+            \   'WorkspaceSymbol': '<C-_>S',
+            \   'FindCodeActions': '<C-_>a',
+            \   'Rename': '<C-_>R',
+            \   'SignatureHelp': '<C-_>m',
             \ }
 
 let g:lsc_enable_diagnostics = v:false
