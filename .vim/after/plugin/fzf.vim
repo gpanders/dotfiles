@@ -1,14 +1,8 @@
-" Check for local installation if not already loaded
-if !get(g:, 'loaded_fzf') && isdirectory($HOME . '/.fzf')
-  silent! source ~/.fzf/plugin/fzf.vim
-endif
-
-" If fzf is still not found, give up
 if !get(g:, 'loaded_fzf')
   finish
 endif
 
-nnoremap <silent> <Space>f :FZF --layout=default --tiebreak=end,length<CR>
+nnoremap <silent> <Space>f :<C-U>call fzf#files()<CR>
 
 command! -bang -complete=tag -nargs=? Tags call fzf#tags(<bang>0, <q-args>, '')
 command! -bang -complete=tag -nargs=? Stags call fzf#tags(<bang>0, <q-args>, 's')
