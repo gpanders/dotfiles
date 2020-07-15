@@ -7,14 +7,14 @@ setlocal include=^\\s*#\\s*include\\s*[\"<]\\@=
 setlocal includeexpr&
 
 " Keep lines at 80 characters or fewer
-setlocal textwidth=79
+setlocal textwidth=80
 
 " Support /// as a comment leader, used for writing Doxygen comments
 setlocal comments-=://
 setlocal comments+=:///,://
 
 " Set path
-call ft#c#set_path(&filetype)
+call ft#c#set_path()
 
 let b:undo_ftplugin .= '|setl cms< def< inc< inex< path< tw< com<'
 
