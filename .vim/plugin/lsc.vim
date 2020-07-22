@@ -12,7 +12,6 @@ let g:lsc_auto_map = {
             \ }
 
 let g:lsc_enable_diagnostics = v:false
-let g:lsc_enable_popup_syntax = v:false
 let g:lsc_enable_autocomplete = v:false
 
 " Configure LSP servers
