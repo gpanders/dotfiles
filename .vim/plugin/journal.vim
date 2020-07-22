@@ -17,6 +17,10 @@ augroup journal
     autocmd!
     autocmd BufRead $JOURNAL_FILE call s:entry()
     autocmd BufWinEnter $JOURNAL_FILE setlocal foldlevel=0
+    autocmd BufWinEnter $JOURNAL_FILE let w:view = winsaveview() |
+                \ normal! 1Gzo |
+                \ call winrestview(w:view) |
+                \ unlet w:view
 augroup END
 
 command! -nargs=0 Journal edit +set\ ft=markdown $JOURNAL_FILE
