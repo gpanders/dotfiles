@@ -105,7 +105,7 @@ function! s:PackInit() abort
     call minpac#add('lervag/vimtex')
 
     " Markdown
-    call minpac#add('tpope/vim-markdown')
+    call minpac#add('gpanders/vim-markdown')
 
     " scdoc
     call minpac#add('gpanders/vim-scdoc')
