@@ -17,6 +17,8 @@ if !exists('g:neomake')
     let g:neomake = {}
 endif
 
+let g:neomake_highlight_columns = 0
+
 let g:neomake_error_sign = { 'text': 'E' }
 let g:neomake_warning_sign = { 'text': 'W' }
 let g:neomake_message_sign = { 'text': 'M' }
