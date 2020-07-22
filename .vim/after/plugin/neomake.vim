@@ -25,3 +25,7 @@ let g:neomake_message_sign = { 'text': 'M' }
 let g:neomake_info_sign = { 'text': 'I' }
 
 let g:neomake_python_enabled_makers = ['pylint', 'mypy']
+
+let g:neomake_c_enabled_makers = ['clangtidy', 'clangcheck']
+let g:neomake_cpp_enabled_makers = g:neomake_c_enabled_makers
+let g:neomake_cpp_clangtidy_args = ['--checks="cppcoreguidelines-*"']
