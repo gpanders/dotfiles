@@ -1,6 +1,7 @@
 [user]
 	name = Greg Anders
 	signingKey = 0x56E93C2FB6B08BDB
+	email = pub@gpanders.com
 [alias]
 	co = checkout
 	cm = commit
@@ -12,7 +13,7 @@
 	d = diff
 	ds = diff --staged
 	a = add
-	b = branch
+	b = branch -vv
 	f = fetch
 	m = merge
 	fm = pull
