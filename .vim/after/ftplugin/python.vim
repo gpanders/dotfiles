@@ -41,7 +41,7 @@ if executable('isort')
     if empty(&l:formatprg)
         setlocal formatprg=isort\ -q\ -
     else
-        setlocal formatprg+=\|\ isort\ -q\ -
+        setlocal formatprg+=\ \|\ isort\ -q\ -
     endif
 endif
 
