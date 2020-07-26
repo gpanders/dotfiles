@@ -354,6 +354,9 @@ autocmd BufLeave *.h mark H
 autocmd BufLeave *.{c,cc,cpp} mark C
 autocmd BufLeave *.py mark P
 
+" Close preview window with q
+autocmd BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
+
 " Start insert mode when entering terminal
 if exists('##TermOpen')
   autocmd TermOpen * startinsert
