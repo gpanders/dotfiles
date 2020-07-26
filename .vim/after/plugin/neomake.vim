@@ -29,3 +29,5 @@ let g:neomake_python_enabled_makers = ['pylint', 'mypy']
 let g:neomake_c_enabled_makers = ['clangtidy', 'clangcheck']
 let g:neomake_cpp_enabled_makers = g:neomake_c_enabled_makers
 let g:neomake_cpp_clangtidy_args = ['--checks="cppcoreguidelines-*"']
+
+let g:neomake_rust_cargo_command = ['clippy']
