@@ -13,11 +13,11 @@ let async#enabled = 1
 
 let s:jobs = {}
 
-function! s:id(chan)
+function! s:id(chan) abort
   return has('nvim') ? a:chan : ch_info(a:chan).id
 endfunction
 
-function! s:jobstart(cmd)
+function! s:jobstart(cmd) abort
   if has('nvim')
     return jobstart(a:cmd, {
                 \ 'on_stdout': function('s:stdout'),
@@ -36,18 +36,22 @@ function! s:jobstart(cmd)
   endif
 endfunction
 
-function! s:callback(id, msg)
+function! s:callback(id, msg) abort
   let job = s:jobs[a:id]
   if type(job.cb) == type({-> 1})
     call job.cb(a:msg)
   elseif type(job.cb) == type('')
-    for m in a:msg
-      silent execute substitute(job.cb, '\C\<v:val\>', shellescape(m), 'g')
-    endfor
+    if empty(a:msg)
+      silent execute job.cb
+    else
+      for m in a:msg
+        silent execute substitute(job.cb, '\C\<v:val\>', shellescape(m), 'g')
+      endfor
+    endif
   endif
 endfunction
 
-function! s:stdout(channel, msg, ...)
+function! s:stdout(channel, msg, ...) abort
   let id = s:id(a:channel)
   if has_key(s:jobs, id)
     let job = s:jobs[id]
@@ -63,7 +67,7 @@ function! s:stdout(channel, msg, ...)
   endif
 endfunction
 
-function! s:error(channel, msg, ...)
+function! s:error(channel, msg, ...) abort
   let msg = a:msg
   if type(msg) == type([])
     let msg = join(msg[:-2])
@@ -73,7 +77,7 @@ function! s:error(channel, msg, ...)
   echohl None
 endfunction
 
-function! s:exit(channel, msg, ...)
+function! s:exit(channel, msg, ...) abort
   let id = s:id(a:channel)
   if has_key(s:jobs, id)
     let job = s:jobs[id]
@@ -94,7 +98,7 @@ function! s:exit(channel, msg, ...)
   endif
 endfunction
 
-function! async#run(cmd, cb, ...)
+function! async#run(cmd, cb, ...) abort
   let opts = get(a:, 1, {})
   let id = s:jobstart(a:cmd)
   let s:jobs[id] = extend({'cb': a:cb, 'chunks': [''], 'buffered': 1}, opts)
