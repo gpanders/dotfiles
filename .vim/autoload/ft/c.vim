@@ -25,26 +25,28 @@ function! s:path(ft) abort
   " Ensure directory of current file is always first on the path
   setlocal path-=.
   setlocal path^=.
-
-  " Add tags file for compiler
-  call s:tags(a:ft)
 endfunction
 
-function! s:tags(ft) abort
-  let compiler = a:ft ==# 'cpp' ? s:cxx : s:cc
-  let machine = systemlist(compiler . ' -dumpmachine')[0]
-  let tagfile = vim#cachedir() . '/tags.' . machine
-  let &l:tags .= ',' . tagfile
+function! ft#c#tags(update) abort
+  let compiler = &filetype ==# 'cpp' ? s:cxx : s:cc
+  let tagfile = vim#cachedir() . '/tags/' . substitute(expand('%:p'), '/', '%', 'g') . '.tags'
+  execute 'setlocal tags+=' . tagfile
+  let &l:tags = join(uniq(split(&l:tags, ',')), ',')
 
-  if !filereadable(tagfile)
-    let cmd = ['ctags', '-R', '-o', tagfile] + split(g:{a:ft}_path, ',')
-    if a:ft ==# 'c'
-        let cmd += ['--c-kinds=+p', '--langmap=c:.h', '--languages=c']
+  if !filereadable(tagfile) || a:update
+    call mkdir(fnamemodify(tagfile, ':h'), 'p')
+    let cmd = [compiler, '-M', '-I', 'include', expand('%'),
+                \ '|', 'awk', '''gsub(" ", "\n")''',
+                \ '|', 'sed', '-e', '''/^\//!d''', '-e', '''/^\\*\s*$/d''',
+                \ '|', 'ctags', '-L', '-', '-o', tagfile]
+    if &filetype ==# 'c'
+      let cmd += ['--c-kinds=+px', '--langmap=c:+.h', '--languages=c']
     else
-        let cmd += ['--c++-kinds=+p', '--languages=c++']
+      let cmd += ['--c++-kinds=+px', '--extras=+q', '--language-force=c++', '--languages=c++']
     endif
-    let cmd += split(g:{a:ft}_path, ',')
-    call async#run(cmd, '')
+
+    let fullcmd = split(&shell) + split(&shellcmdflag) + [join(cmd)]
+    call async#run(fullcmd, '')
   endif
 endfunction
 

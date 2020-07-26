@@ -16,7 +16,15 @@ setlocal comments+=:///,://
 " Set path
 call ft#c#set_path()
 
-let b:undo_ftplugin .= '|setl cms< def< inc< inex< path< tw< com<'
+" Create and set tags file
+call ft#c#tags(v:false)
+
+augroup ftplugin_c
+  autocmd!
+  autocmd BufWritePost <buffer> call ft#c#tags(v:true)
+augroup END
+
+let b:undo_ftplugin .= '|setl cms< def< inc< inex< path< tw< com<|au! ftplugin_c'
 
 " Use improved :Man command as keywordprg
 if exists(':Man') == 2
