@@ -14,10 +14,13 @@ endfunction
 
 function! s:openreflink(name, action) abort
     let l = search('^\s*\[' . a:name . '\]\s*:\s\+', 'nw')
-    if l
-        let link = matchlist(getline(l), '^\s*\[' . a:name . '\]\s*:\s\+\(\S\+\)')[1]
-        call s:openlink(link, a:action)
+    if !l
+        echo 'Link ''' . a:name . ''' not found'
+        return
     endif
+
+    let link = matchlist(getline(l), '^\s*\[' . a:name . '\]\s*:\s\+\(\S\+\)')[1]
+    call s:openlink(link, a:action)
 endfunction
 
 function! ft#markdown#open(action) abort
@@ -37,31 +40,8 @@ function! ft#markdown#open(action) abort
         let ref = matchstr(matches[2], '\[\zs\([^]]\+\)\ze]')
         call s:openreflink(ref, a:action)
     else
+        " Shortcutlink
         let ref = matchstr(matches[1], '\[\zs\([^]]\+\)\ze]')
         call s:openreflink(ref, a:action)
     endif
-endfunction
-
-function! ft#markdown#toc()
-    let fp = &l:formatprg
-    let &l:formatprg .= ' --toc'
-    let view = winsaveview()
-    normal! gggqG
-    call winrestview(view)
-    let &l:formatprg = fp
-endfunction
-
-function! ft#markdown#setopt(opt, bang)
-    if a:bang
-        if &l:formatprg =~# '--' . a:opt
-            let &l:formatprg = substitute(&l:formatprg, ' --' . a:opt, '', '')
-        endif
-    else
-        if &l:formatprg !~# '--' . a:opt
-            let &l:formatprg .= ' --' . a:opt
-        endif
-    endif
-    let view = winsaveview()
-    normal! gggqG
-    call winrestview(view)
 endfunction

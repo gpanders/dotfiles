@@ -10,5 +10,3 @@ syn region markdownYamlMetadata matchgroup=markdownYamlMetadataDelimiter start="
 
 hi link markdownYamlMetadataDelimiter Comment
 hi link markdownYamlMetadata          Normal
-
-let b:current_syntax = 'markdown'
