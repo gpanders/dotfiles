@@ -49,3 +49,5 @@
 	date = local
 [email]
 	github = 8965202+gpanders@users.noreply.github.com
+[pull]
+	rebase = true
