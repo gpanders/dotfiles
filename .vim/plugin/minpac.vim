@@ -12,7 +12,10 @@ function! s:PackInit() abort
     endif
 
     call minpac#init()
-    call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+    " Use devel branch until https://github.com/k-takata/minpac/pull/99 is
+    " merged
+    call minpac#add('k-takata/minpac', {'type': 'opt', 'branch': 'devel'})
 
     " Colorscheme
     call minpac#add('gpanders/base16-vim', {'type': 'opt'})
@@ -25,6 +28,9 @@ function! s:PackInit() abort
 
     " Evaluate code blocks in Markdown buffers
     call minpac#add('gpanders/vim-medieval')
+
+    " wk plugin
+    call minpac#add('https://git.sr.ht/~gpanders/wk', {'subdir': 'contrib/vim'})
 
     " Git wrapper in vim
     call minpac#add('tpope/vim-fugitive')
