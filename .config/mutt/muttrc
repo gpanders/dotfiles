@@ -16,8 +16,8 @@ auto_view text/x-diff
 auto_view text/x-patch
 set allow_ansi
 
-set realname = "Greg Anders"
-set from = "greg@gpanders.com"
+set realname = "Gregory Anders"
+set from = "pub@gpanders.com"
 set editor = "`echo \$EDITOR`"
 set use_from = yes
 set use_envelope_from = yes
