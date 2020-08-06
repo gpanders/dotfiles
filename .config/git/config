@@ -51,3 +51,8 @@
 	github = 8965202+gpanders@users.noreply.github.com
 [pull]
 	rebase = true
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
