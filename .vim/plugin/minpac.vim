@@ -124,6 +124,9 @@ function! s:PackInit() abort
 
     " PlantUML
     call minpac#add('aklt/plantuml-syntax')
+
+    " Meson
+    call minpac#add('mesonbuild/meson', {'subdir': 'data/syntax-highlighting/vim'})
 endfunction
 
 function! s:PackUpdate()
