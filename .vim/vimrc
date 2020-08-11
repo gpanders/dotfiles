@@ -303,6 +303,10 @@ nnoremap <expr> yo<Bar> ':setlocal ' . (&cursorcolumn ? 'no' : '') . "cursorcolu
 nnoremap <expr> yod ':' . (&diff ? 'diffoff' : 'diffthis') . "\<CR>"
 nnoremap <expr> yos ':setlocal ' . (&spell ? 'no' : '') . "spell\<CR>"
 
+nnoremap m<CR> :make<CR>
+nnoremap m<Space> :comp<Space><Space><Bar><Space>make<S-Left><S-Left><Left>
+nnoremap m? :set makeprg?<CR>
+
 function! Substitute(type, ...) abort
     call feedkeys(":'[,']s/" . expand('<cword>') . "//g\<Left>\<Left>", 'n')
 endfunction

@@ -13,6 +13,11 @@ augroup plugin_neomake
                 \ }, 500)
 augroup END
 
+nnoremap m<CR> :<C-U>Neomake!<CR>
+nnoremap m! :<C-U>Neomake!
+nnoremap m<Space> :<C-U>Neomake<Space>
+nnoremap `<Space> :<C-U>NeomakeSh<Space>
+
 if !exists('g:neomake')
     let g:neomake = {}
 endif

@@ -44,9 +44,6 @@ function! s:PackInit() abort
     " Mappings for commenting source code
     call minpac#add('tpope/vim-commentary')
 
-    " Asynchronous task runner
-    call minpac#add('tpope/vim-dispatch')
-
     " Readline style bindings througout Vim
     call minpac#add('tpope/vim-rsi')
 
