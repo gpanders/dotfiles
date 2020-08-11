@@ -159,6 +159,9 @@ bindsym $sup+8 workspace $ws8
 bindsym $sup+9 workspace $ws9
 bindsym $sup+0 workspace $ws10
 
+# Toggle back to last used workspace
+bindsym $alt+Tab workspace back_and_forth
+
 # Move focused container to workspace
 bindsym $sup+Shift+1 move container to workspace $ws1
 bindsym $sup+Shift+2 move container to workspace $ws2
