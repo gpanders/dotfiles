@@ -1,5 +1,6 @@
-let s:save_cpo = &cpo
-set cpo&vim
+if &compatible
+    finish
+endif
 
 function! s:PackInit() abort
     silent! packadd minpac
@@ -123,7 +124,7 @@ function! s:PackInit() abort
     call minpac#add('aklt/plantuml-syntax')
 
     " Meson
-    call minpac#add('mesonbuild/meson', {'subdir': 'data/syntax-highlighting/vim'})
+    call minpac#add('mesonbuild/meson', {'subdir': 'data/syntax-highlighting/vim', 'rev': '0.55.0'})
 endfunction
 
 function! s:PackUpdate()
@@ -147,6 +148,3 @@ augroup END
 
 command! PackUpdate call <SID>PackUpdate()
 command! PackClean call <SID>PackClean()
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
