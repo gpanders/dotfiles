@@ -67,9 +67,6 @@ macro index K <sidebar-prev><sidebar-open>
 # Move the highlight to the next mailbox
 macro index J <sidebar-next><sidebar-open>
 
-# Toggle the visibility of the Sidebar.
-bind index,pager B sidebar-toggle-visible
-
 # Color of the open mailbox
 color sidebar_indicator brightcolor15 color10
 

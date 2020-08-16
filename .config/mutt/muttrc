@@ -18,9 +18,13 @@ set allow_ansi
 
 set realname = "Gregory Anders"
 set from = "pub@gpanders.com"
-set editor = "`echo \$EDITOR`"
 set use_from = yes
 set use_envelope_from = yes
+
+# The bgedit.sh script launches the editor in a new pane if tmux is active.
+# Otherwise it just starts the editor as normal.
+set editor = "~/.local/share/mutt/bgedit.sh `echo $EDITOR`"
+set background_edit = `[ -n "$TMUX" ] && echo 'yes' || echo 'no'`
 
 source ~/.config/mutt/credentials.rc
 set smtp_url = "smtp://$my_smtp_user@$my_smtp_url"
