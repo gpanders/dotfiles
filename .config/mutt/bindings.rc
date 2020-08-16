@@ -28,19 +28,6 @@ macro index d <clear-flag>N<delete-message> "delete the current entry"
 # View attachments properly
 bind attach <return> view-mailcap
 
-# Convert markdown emails to HTML
-macro compose K \
-"<enter-command>set my_wait_key=\$wait_key<enter><enter-command>unset wait_key<enter>\
-<enter-command>set my_resolve=\$resolve<enter><enter-command>unset resolve<enter>\
-<enter-command>set my_pipe_decode=\$pipe_decode<enter><enter-command>set pipe_decode<enter>\
-<pipe-entry>pandoc -s -f markdown-blank_before_blockquote -o /tmp/mutt-msg.html 2>/dev/null<enter>\
-<attach-file>/tmp/mutt-msg.html<enter>\
-<tag-entry><previous-entry><tag-entry><group-alternatives>\
-<enter-command>set pipe_decode=\$my_pipe_decode<enter>\
-<enter-command>set resolve=\$my_resolve<enter>\
-<enter-command>set wait_key=\$my_wait_key<enter>" \
-"convert Markdown email to HTML and send as multipart/alternative"
-
 # Save new addresses to address book
 macro index,pager a "<pipe-message>khard add-email<enter>" "add the sender email address to khard"
 
@@ -63,6 +50,7 @@ macro index,pager [a "<sync-mailbox><enter-command>source ~/.config/mutt/$my_pre
 macro index,pager \Cb <pipe-message>urlview<enter> "call urlview to extract URLs out of a message"
 macro attach,compose \Cb <pipe-entry>urlview<enter> "call urlview to extract URLs out of a message"
 
+# Search with notmuch-mutt
 macro index \Cs \
 "<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
 <shell-escape>notmuch-mutt -r --prompt search<enter>\
@@ -70,6 +58,7 @@ macro index \Cs \
 <enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
       "search mail with notmuch"
 
+# Use notmuch-mutt to reconstruct thread
 macro index \C] \
 "<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
 <pipe-message>notmuch-mutt -r thread<enter>\
@@ -81,4 +70,4 @@ macro index \C] \
 macro index,pager A "<enter-command>set my_resolve=\$resolve<enter><enter-command>unset resolve<enter><clear-flag>N<save-message>\><enter><enter-command>set resolve=\$my_resolve<enter><sync-mailbox><refresh>" "archive message"
 
 # Fetch mail
-macro index <F5> "<enter-command>set my_wait_key=\$wait_key<enter><enter-command>unset wait_key<enter><shell-escape>mbsync gpanders<enter><enter-command>set wait_key=\$my_wait_key<enter>" "synchronize mailbox"
+macro index <F5> "<enter-command>set my_wait_key=\$wait_key<enter><enter-command>unset wait_key<enter><shell-escape>mbsync -a<enter><enter-command>set wait_key=\$my_wait_key<enter>" "synchronize mailbox"
