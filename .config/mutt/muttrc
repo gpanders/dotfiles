@@ -162,6 +162,10 @@ set query_command = "khard email --parsable --search-in-source-files '%s'"
 set send_multipart_alternative = ask-no
 set send_multipart_alternative_filter = ~/.local/share/mutt/md2html.sh
 
+# Save history to file
+set history_file = ~/.cache/mutt/history
+set save_history = 10
+
 source ~/.config/mutt/colors.rc
 source ~/.config/mutt/bindings.rc
 source ~/.config/mutt/sidebar.rc
