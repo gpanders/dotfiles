@@ -14,9 +14,7 @@ function! s:PackInit() abort
 
     call minpac#init()
 
-    " Use devel branch until https://github.com/k-takata/minpac/pull/99 is
-    " merged
-    call minpac#add('k-takata/minpac', {'type': 'opt', 'branch': 'devel'})
+    call minpac#add('k-takata/minpac', {'type': 'opt'})
 
     " Colorscheme
     call minpac#add('gpanders/base16-vim', {'type': 'opt'})
