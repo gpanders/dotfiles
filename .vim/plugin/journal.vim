@@ -23,4 +23,4 @@ augroup journal
                 \ unlet w:view
 augroup END
 
-command! -nargs=0 Journal edit +set\ ft=markdown $JOURNAL_FILE
+command! -nargs=0 Journal edit $JOURNAL_FILE
