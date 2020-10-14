@@ -157,7 +157,7 @@ if has('linebreak')
   set breakindent
 endif
 
-if has('textprop')
+if has('popupwin')
   set completeopt+=popup
   set completepopup=highlight:Pmenu,align:menu,border:off
 endif
