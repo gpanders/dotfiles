@@ -12,7 +12,7 @@ function venv
     if test (count $argv) -lt 1
         echo 'Usage:
     venv create <venv>
-    venv rm <venv>
+    venv rm <venv> [venv [...]]
     venv ls
     venv <venv>' >&2
         return 1
@@ -26,16 +26,18 @@ function venv
         case ls
             printf '%s\n' (command ls $venv_dir)
         case rm
-            if not test -d $venv_dir/$argv[2]
-                echo "venv '$argv[2]' not found" >&2
-                return 1
-            end
-            rm -rf $venv_dir/$argv[2]
-            if test $status
-                echo "Virtual environment '$argv[2]' was successfully deleted"
-            else
-                echo "Something went wrong; virtual environment deletion failed" >&2
-                return 1
+            for _venv in $argv[2..-1]
+                if not test -d $venv_dir/$_venv
+                    echo "venv '$_venv' not found" >&2
+                    return 1
+                end
+                rm -rf $venv_dir/$_venv
+                if test $status
+                    echo "Virtual environment '$_venv' was successfully deleted"
+                else
+                    echo "Something went wrong; virtual environment deletion failed" >&2
+                    return 1
+                end
             end
         case '*'
             if test -d $venv_dir/$argv[1]
