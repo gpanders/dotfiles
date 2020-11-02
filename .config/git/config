@@ -1,7 +1,6 @@
 [user]
 	name = Gregory Anders
 	signingKey = 0x56E93C2FB6B08BDB
-	email = pub@gpanders.com
 [alias]
 	co = checkout
 	cm = commit
@@ -30,25 +29,19 @@
 [sendemail]
 	annotate = yes
 [include]
-	path = ~/.config/git/smtp
+	path = ~/.config/git/private
 [rebase]
 	autoSquash = true
 [grep]
 	lineNumber = true
 	column = true
 	patternType = extended
-[merge]
-	tool = fugitive
-[mergetool "fugitive"]
-	cmd = vim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [color]
 	ui = auto
 [credential]
 	helper = !pass-git-helper \"$@\"
 [log]
 	date = local
-[email]
-	github = 8965202+gpanders@users.noreply.github.com
 [pull]
 	rebase = true
 [filter "lfs"]

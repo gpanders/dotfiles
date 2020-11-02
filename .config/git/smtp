@@ -1,5 +1,0 @@
-[sendemail]
-	smtpEncryption = tls
-	smtpServer = mail.gandi.net
-	smtpUser = greg@gpanders.com
-	smtpServerPort = 587
