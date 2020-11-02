@@ -124,6 +124,9 @@ function! s:PackInit() abort
     " PlantUML
     call minpac#add('aklt/plantuml-syntax')
 
+    " Rust
+    call minpac#add('rust-lang/rust.vim')
+
     " Meson
     call minpac#add('mesonbuild/meson', {'subdir': 'data/syntax-highlighting/vim', 'rev': '0.55.0'})
 endfunction
