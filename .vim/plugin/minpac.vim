@@ -28,12 +28,6 @@ function! s:PackInit() abort
     " Evaluate code blocks in Markdown buffers
     call minpac#add('gpanders/vim-medieval')
 
-    " wk plugin
-    call minpac#add('https://git.sr.ht/~gpanders/wk', {'subdir': 'contrib/vim'})
-
-    " Git wrapper in vim
-    call minpac#add('tpope/vim-fugitive')
-
     " Mappings to modify parenthesis and other surrounding tokens
     call minpac#add('tpope/vim-surround')
 
@@ -43,23 +37,11 @@ function! s:PackInit() abort
     " Mappings for commenting source code
     call minpac#add('tpope/vim-commentary')
 
-    " Asynchronous task runner
-    call minpac#add('tpope/vim-dispatch')
-
     " Readline style bindings througout Vim
     call minpac#add('tpope/vim-rsi')
 
-    " Unix commands in Vim
-    call minpac#add('tpope/vim-eunuch')
-
-    " Offers improved :substitute command and custom abbreviations
-    call minpac#add('tpope/vim-abolish')
-
     " Vim debugging tools
-    call minpac#add('tpope/vim-scriptease')
-
-    " Session management
-    call minpac#add('tpope/vim-obsession')
+    call minpac#add('tpope/vim-scriptease', {'type': 'opt'})
 
     " Better directory browser
     call minpac#add('justinmk/vim-dirvish')
@@ -79,23 +61,11 @@ function! s:PackInit() abort
     " Populate results of :ilist and :dlist in quickfix window
     call minpac#add('romainl/vim-qlist')
 
-    " Automatically disable search highlighting
-    call minpac#add('romainl/vim-cool')
-
-    " Preview replacements when :substituting
-    call minpac#add('markonm/traces.vim')
-
     " Better writing mode
     call minpac#add('junegunn/goyo.vim')
 
-    " Auto completion
-    call minpac#add('lifepillar/vim-mucomplete')
-
     " Language Server Client
     call minpac#add('natebosch/vim-lsc')
-
-    " REPL
-    call minpac#add('urbainvaes/vim-ripple')
 
     " C / C++
     call minpac#add('bfrg/vim-cpp-modern')
