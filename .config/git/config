@@ -28,6 +28,7 @@
 	verbose = true
 [sendemail]
 	annotate = yes
+	confirm = compose
 [include]
 	path = ~/.config/git/private
 [rebase]
