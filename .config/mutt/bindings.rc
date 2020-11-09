@@ -19,8 +19,9 @@ macro pager G <bottom><refresh>
 bind index <esc><tab> noop
 bind index <backtab> previous-new-then-unread
 
-# Bind R to group-reply
-bind  index,pager R group-reply
+# Reply-all by default, use R to reply individually
+bind  index,pager r group-reply
+bind  index,pager R reply
 
 # Deleting a message should also clear the 'new' flag
 macro index d <clear-flag>N<delete-message> "delete the current entry"
@@ -41,10 +42,6 @@ macro pager q <exit><refresh>
 # Return to the inbox from anywhere
 macro index,pager gi <change-folder>!<enter> "go to inbox"
 macro index,pager ga <change-folder>\><enter> "go to archive"
-
-# Change accounts
-macro index,pager ]a "<sync-mailbox><enter-command>source ~/.config/mutt/$my_next_account.rc<enter><change-folder>!<enter>" "next account"
-macro index,pager [a "<sync-mailbox><enter-command>source ~/.config/mutt/$my_prev_account.rc<enter><change-folder>!<enter>" "previous account"
 
 # View urls within a message with urlview
 macro index,pager \Cb <pipe-message>urlview<enter> "call urlview to extract URLs out of a message"

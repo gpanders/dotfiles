@@ -1,4 +1,6 @@
-set folder = "~/.mail/gpanders"
+set realname = "Gregory Anders"
+
+set folder    = ~/.mail/gpanders
 set mbox_type = Maildir
 set spoolfile = +Inbox
 set postponed = +Drafts
@@ -14,19 +16,14 @@ auto_view text/calendar
 auto_view text/html
 auto_view text/x-diff
 auto_view text/x-patch
-set allow_ansi
-
-set realname = "Gregory Anders"
-set from = "pub@gpanders.com"
-set use_from = yes
-set use_envelope_from = yes
 
 # The bgedit.sh script launches the editor in a new pane if tmux is active.
 # Otherwise it just starts the editor as normal.
 set editor = "~/.local/share/mutt/bgedit.sh `echo $EDITOR`"
 set background_edit = `[ -n "$TMUX" ] && echo 'yes' || echo 'no'`
 
-source ~/.config/mutt/credentials.rc
+source ~/.config/mutt/private.rc
+set from = $my_email_addr
 set smtp_url = "smtp://$my_smtp_user@$my_smtp_url"
 set smtp_pass = $my_smtp_pass
 
@@ -36,32 +33,17 @@ set fast_reply
 # Format of subject when forwarding
 set forward_format = "Fwd: %s"
 
-# Decode when forwarding
-set forward_decode
-
 # Format of quoting header
 set attribution = "On %{!%a, %d %b %Y at %I:%M %p}, %n wrote:"
 
-# Reply to Reply to: field
-set reply_to
-
-# Reply as whomever it was to
-set reverse_name
-
 # Include message in replies
 set include
-
-# Include message in forwards
-set forward_quote
 
 # Time before Mutt gives up waiting for user input (default is 600)
 set timeout = 10
 
 # Force UTF-8
 set send_charset = "utf-8"
-
-# Require that all connections to remote servers be encyrpted
-set ssl_force_tls = yes
 
 # Enable text_flowed formatting
 set text_flowed
@@ -88,14 +70,6 @@ set folder_format = "%t %N %-20.20f %?n?%8n?"
 # Remove delay between switching folders
 set sleep_time = 0
 
-# Ignore all headers except the ones listed
-ignore *
-unignore from: to: cc: date: subject:
-
-# Reset header order
-unhdr_order *
-hdr_order from: to: cc: date: subject:
-
 # Index view options
 set date_format = "%b %d %I:%M %p"
 set index_format = " [%Z]  %-9@date@  %-20.20L  %s"
@@ -112,16 +86,13 @@ set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 set pager_index_lines = 10
 set pager_context = 3
 set pager_stop
-set menu_scroll
 
-# Pad bottom of pager with tildes (like vim)
-set tilde
+# Scroll menus by one line instead of a whole page when crossing a screen
+# boundary
+set menu_scroll
 
 # Don't show + signs for wrapped lines
 unset markers
-
-set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
-alternative_order text/plain text/enriched text/html
 
 # Colorized diffs and patches
 color body red default "^diff \-.*"
@@ -139,22 +110,7 @@ set header_cache = ~/.cache/mutt/
 # Where to store certificates
 set certificate_file = ~/.cache/mutt/certificates
 
-# Don't show an indicator when mailbox is unchanged
-set status_chars = " *%A"
-
-# Allow Mutt to open a new IMAP connection automatically
-unset imap_passive
-
-# Keep the IMAP connection alive by polling intermittently (time in seconds)
-set imap_keepalive = 300
-
-# How often to check for new mail (time in seconds)
-set mail_check = 60
-
-set status_format = "    %r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %?p?(%p postponed)? %>"
-
-# External command to lookup email addresses
-set query_command = "khard email --parsable --search-in-source-files '%s'"
+set status_format = "    %m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %?p?(%p postponed)? %>"
 
 # Optionally convert emails to multipart/alternative with an HTML part
 # The script below takes the plain text email on its stdin and produces
