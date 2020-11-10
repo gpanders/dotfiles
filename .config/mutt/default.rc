@@ -1,0 +1,6 @@
+unalias *
+unmailboxes *
+
+set from = ""
+set query_command = ""
+set alias_file = ""

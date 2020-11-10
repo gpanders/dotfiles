@@ -1,13 +1,5 @@
 set realname = "Gregory Anders"
 
-set folder    = ~/.mail/gpanders
-set mbox_type = Maildir
-set spoolfile = +Inbox
-set postponed = +Drafts
-set record    = +Sent
-set mbox      = +Archive
-set trash     = +Trash
-
 # Settings for handling MIME types
 set mailcap_path = ~/.config/mutt/mailcap
 alternative_order text/calendar text/plain text/enriched text/html
@@ -125,6 +117,13 @@ set save_history = 10
 source ~/.config/mutt/colors.rc
 source ~/.config/mutt/bindings.rc
 source ~/.config/mutt/sidebar.rc
-source ~/.config/mutt/mailboxes.rc
 source ~/.config/mutt/lists.rc
 source ~/.config/mutt/gpg.rc
+
+folder-hook . 'source ~/.config/mutt/default.rc'
+
+# Create folder hook for each account
+folder-hook gpanders.com 'source ~/.config/mutt/gpanders.rc'
+
+# Source default account
+source ~/.config/mutt/gpanders.rc
