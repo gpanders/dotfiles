@@ -43,7 +43,7 @@ set pgp_default_key="B9D50EDFE95EECD0C13500A956E93C2FB6B08BDB"
 # capability, uncomment this line and replace the keyid with your
 # signing keyid.
 #
-# set pgp_sign_as="0x87654321"
+set pgp_sign_as="0x44C462BBD762AD2A"
 
 
 # Section B: Commands
