@@ -14,10 +14,8 @@ auto_view text/x-patch
 set editor = "~/.local/share/mutt/bgedit.sh `echo $EDITOR`"
 set background_edit = `[ -n "$TMUX" ] && echo 'yes' || echo 'no'`
 
-source ~/.config/mutt/private.rc
-set from = $my_email_addr
-set smtp_url = "smtp://$my_smtp_user@$my_smtp_url"
-set smtp_pass = $my_smtp_pass
+set envelope_from
+set sendmail = msmtp
 
 # Skip to compose when replying
 set fast_reply
