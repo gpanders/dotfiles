@@ -1,0 +1,16 @@
+set folder    = "~/.mail/gpanders.com"
+set spoolfile = "+Inbox"
+set postponed = "+Drafts"
+set record    = "+Sent"
+set mbox      = "+Archive"
+set trash     = "+Trash"
+
+mailboxes +Inbox
+mailboxes +Sent
+mailboxes +Archive
+mailboxes +Drafts
+mailboxes +Lists
+mailboxes +Trash
+
+set from = "greg@gpanders.com"
+set query_command = "khard email --parsable --search-in-source-files '%s'"
