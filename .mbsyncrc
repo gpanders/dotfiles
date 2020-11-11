@@ -13,8 +13,8 @@ Account gpanders
 
 MaildirStore gpanders-local
 Subfolders Verbatim
-Path ~/.mail/gpanders/
-Inbox ~/.mail/gpanders/Inbox
+Path ~/.mail/gpanders.com/
+Inbox ~/.mail/gpanders.com/Inbox
 
 Channel gpanders
 Master :gpanders-remote:
