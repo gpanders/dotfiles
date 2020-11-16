@@ -29,9 +29,9 @@
 	verbose = true
 [sendemail]
 	annotate = yes
-	confirm = compose
-[include]
-	path = ~/.config/git/private
+	confirm = auto
+	smtpServer = /usr/bin/msmtp
+	envelopeSender = auto
 [rebase]
 	autoSquash = true
 [grep]
