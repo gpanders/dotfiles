@@ -1,14 +1,20 @@
 configuration {
-	font: "mono 14";
+	font: "sans-serif 16";
 	combi-hide-mode-prefix: true;
-	modi: "drun,run,calc:qalc +u8";
+	combi-modi: "window,drun";
+	modi: "drun,window";
+	drun-match-fields: "name,generic,exec,categories,comment";
+        drun-display-format: "{name}\n[<span weight='light' size='x-small'>{comment}</span>]";
+        display-drun: "Applications";
+        display-window: "Windows";
 	show-icons: true;
 	matching: "normal";
 	sidebar-mode: true;
 	lines: 8;
 	fixed-num-lines: false;
 	yoffset: -250;
-/*	width: 50;*/
+	width: 33;
+	hide-scrollbar: true;
 /*	columns: 1;*/
 /*	bw: 1;*/
 /*	location: 0;*/
@@ -23,9 +29,7 @@ configuration {
 /*	window-command: "wmctrl -i -R {window}";*/
 /*	window-match-fields: "all";*/
 /*	icon-theme: ;*/
-/*	drun-match-fields: "name,generic,exec,categories";*/
 /*	drun-show-actions: false;*/
-/*	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";*/
 /*	disable-history: false;*/
 /*	ignored-prefixes: "";*/
 /*	sort: false;*/
@@ -42,7 +46,6 @@ configuration {
 /*	line-padding: 1;*/
 /*	filter: ;*/
 /*	separator-style: "dash";*/
-/*	hide-scrollbar: false;*/
 /*	fullscreen: false;*/
 /*	fake-transparency: false;*/
 /*	dpi: -1;*/
@@ -142,26 +145,51 @@ configuration {
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 }
 
-@import "~/.local/share/rofi/themes/Arc.rasi"
+@theme "Arc"
 
 * {
+    foreground: rgb(20, 20, 20);
     alternate-normal-background: @background;
-    separatorcolor:              @background;
-}
-
-#element {
-    padding: 15px 1px;
+    separatorcolor: @background;
 }
 
 window {
-    border-color: @background;
-    border-radius: 1px;
+    border-radius: 4px;
+    padding: 0;
+    border: 0;
 }
 
-#inputbar {
+element {
+    padding: 10px 10px 25px;
+    border: 0;
+}
+
+element-icon {
+    enabled: false;
+}
+
+mainbox {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+listview {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    scrollbar: false;
+}
+
+inputbar {
     children: [ entry,case-indicator ];
 }
 
-#button {
+entry {
+    font: "sans-serif 24";
+    padding: 10px;
+}
+
+button {
     padding: 10px 1px;
 }
