@@ -43,6 +43,9 @@ function! s:PackInit() abort
     " Vim debugging tools
     call minpac#add('tpope/vim-scriptease', {'type': 'opt'})
 
+    " Git integration
+    call minpac#add('tpope/vim-fugitive')
+
     " Better directory browser
     call minpac#add('justinmk/vim-dirvish')
 
