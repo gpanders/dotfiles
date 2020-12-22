@@ -1,4 +1,4 @@
-if status is-interactive; and command -sq fzf
+if status is-interactive
     if command -sq fd
         set fuzzy_find_file_command 'fd --type f --follow'
         set fuzzy_find_dir_command 'fd -t d'
@@ -12,8 +12,4 @@ if status is-interactive; and command -sq fzf
 
     set -gx FZF_DEFAULT_COMMAND $fuzzy_find_file_command
     set -gx FZF_DEFAULT_OPTS "--height=10 --reverse --no-info --no-color --cycle"
-
-    bind \ct '__fuzzy_find fzf'
-    bind \cr '__fuzzy_history fzf'
-    bind \ec '__fuzzy_cd fzf'
 end
