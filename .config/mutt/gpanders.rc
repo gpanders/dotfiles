@@ -14,3 +14,5 @@ mailboxes +Trash
 
 set from = "greg@gpanders.com"
 set query_command = "khard email --parsable --search-in-source-files '%s'"
+
+alternates @gpanders\\.com$

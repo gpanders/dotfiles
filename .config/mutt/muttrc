@@ -88,6 +88,9 @@ set menu_scroll
 # Don't show + signs for wrapped lines
 unset markers
 
+# Reply using the address the original email was sent to
+set reverse_name
+
 # Colorized diffs and patches
 color body red default "^diff \-.*"
 color body yellow default "^index [a-f0-9].*"
