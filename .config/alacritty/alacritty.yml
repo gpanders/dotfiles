@@ -1,6 +1,6 @@
 import:
-    - .config/alacritty/colors/base16-eighties.yml
-    - .config/alacritty/keys.yml
+    - ~/.config/alacritty/colors/base16-eighties.yml
+    - ~/.config/alacritty/keys.yml
 
 font:
   normal:
