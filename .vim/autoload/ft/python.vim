@@ -14,7 +14,7 @@ let s:cmd = join([
       \ 'print(",".join([d for d in sys.path if path.isdir(d) and glob(path.join(d, "*.py"))]))'],
       \ ';')
 
-function! ft#python#set_path(...)
+function! ft#python#set_path(...) abort
   let python = 'python'
   if a:0 && !empty(a:1)
     let python = a:1
@@ -31,7 +31,7 @@ function! ft#python#set_path(...)
   endif
 endfunction
 
-function! ft#python#pydoc(...)
+function! ft#python#pydoc(...) abort
   let keyword = a:0 ? a:1 : expand('<cword>')
   let tmpfile = tempname()
   call writefile(systemlist('pydoc ' . keyword), tmpfile, '')

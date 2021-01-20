@@ -28,7 +28,7 @@ function! s:jobstart(cmd) abort
     let job = job_start(a:cmd, {
                 \ 'out_cb': function('s:stdout'),
                 \ 'err_cb': function('s:error'),
-                \ 'exit_cb': function('s:exit'),
+                \ 'close_cb': function('s:exit'),
                 \ 'in_io': 'null',
                 \ 'out_mode': 'raw',
                 \ })
@@ -52,6 +52,7 @@ function! s:callback(id, msg) abort
 endfunction
 
 function! s:stdout(channel, msg, ...) abort
+  echom 'out_cb called'
   let id = s:id(a:channel)
   if has_key(s:jobs, id)
     let job = s:jobs[id]
@@ -59,7 +60,11 @@ function! s:stdout(channel, msg, ...) abort
     if type(msg) == type('')
       let msg = split(msg, "\n", 1)
     endif
-    let job.chunks[-1] .= msg[0]
+    if len(job.chunks)
+        let job.chunks[-1] .= msg[0]
+    else
+        call add(job.chunks, msg[0])
+    endif
     call extend(job.chunks, msg[1:])
     if !job.buffered && len(job.chunks) > 1
       call s:callback(id, remove(job.chunks, 0, -2))
@@ -77,7 +82,7 @@ function! s:error(channel, msg, ...) abort
   echohl None
 endfunction
 
-function! s:exit(channel, msg, ...) abort
+function! s:exit(channel, ...) abort
   let id = s:id(a:channel)
   if has_key(s:jobs, id)
     let job = s:jobs[id]
@@ -88,10 +93,22 @@ function! s:exit(channel, msg, ...) abort
       call s:callback(id, job.chunks)
     endif
     if has_key(job, 'completed')
+      if a:0
+        let code = a:1
+      elseif exists('*job_info')
+        let code = job_info(a:channel).exitval
+      else
+        echohl ErrorMsg
+        echom 'Couldn''t get exit code for job ' . a:channel
+        echohl None
+        call remove(s:jobs, id)
+        return
+      endif
+
       if type(job.completed) == type({-> 1})
-        call job.completed(a:msg)
+        call job.completed(code)
       elseif type(job.completed) == type('')
-        silent execute job.completed
+        silent execute substitute(job.completed, '\C\<v:val\>', code, 'g')
       endif
     endif
     call remove(s:jobs, id)
