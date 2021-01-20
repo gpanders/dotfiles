@@ -119,6 +119,9 @@ set send_multipart_alternative_filter = ~/.local/share/mutt/md2html.sh
 set history_file = ~/.cache/mutt/history
 set save_history = 10
 
+# Disable signature
+unset signature
+
 # Set default directory to save attachments into
 set attach_save_dir = ~/Downloads
 
