@@ -43,31 +43,31 @@ macro pager q <exit><refresh>
 macro index,pager gi <change-folder>!<enter> "go to inbox"
 macro index,pager ga <change-folder>\><enter> "go to archive"
 
-# View urls within a message with urlview
-macro index,pager \Cb <pipe-message>urlview<enter> "call urlview to extract URLs out of a message"
-macro attach,compose \Cb <pipe-entry>urlview<enter> "call urlview to extract URLs out of a message"
+# View urls within a message with urlscan
+macro index,pager \Cb "<enter-command>set my_wait_key=\$wait_key wait_key=no<enter><pipe-message>urlscan<enter><enter-command>set wait_key=\$my_wait_key<enter>" "extract URLs from message"
+macro attach,compose \Cb "<enter-command>set my_wait_key=\$wait_key wait_key=no<enter><pipe-entry>urlscan<enter><enter-command>set wait_key=\$my_wait_key<enter>" "extract URLs from attachment"
 
 # Search with notmuch-mutt
 macro index \Cs \
-"<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
+"<enter-command>set my_pipe_decode=\$pipe_decode my_wait_key=\$wait_key pipe_decode=no wait_key=no<enter>\
 <shell-escape>notmuch-mutt -r --prompt search<enter>\
 <change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
-<enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
+<enter-command>set pipe_decode=\$my_pipe_decode wait_key=\$my_wait_key<enter>" \
       "search mail with notmuch"
 
 # Use notmuch-mutt to reconstruct thread
 macro index \C] \
-"<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
+"<enter-command>set my_pipe_decode=\$pipe_decode my_wait_key=\$wait_key pipe_decode=no wait_key=no<enter>\
 <pipe-message>notmuch-mutt -r thread<enter>\
 <change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
-<enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
+<enter-command>set pipe_decode=\$my_pipe_decode wait_key=\$my_wait_key<enter>" \
       "reconstruct thread with notmuch"
 
 # Move messages to the $mbox folder
-macro index,pager A "<enter-command>set my_resolve=\$resolve<enter><enter-command>unset resolve<enter><clear-flag>N<save-message>\><enter><enter-command>set resolve=\$my_resolve<enter><sync-mailbox><refresh>" "archive message"
+macro index,pager A "<enter-command>set my_resolve=\$resolve resolve=no<enter><clear-flag>N<save-message>\><enter><enter-command>set resolve=\$my_resolve<enter><sync-mailbox><refresh>" "archive message"
 
 # Fetch mail
-macro index <F5> "<enter-command>set my_wait_key=\$wait_key<enter><enter-command>unset wait_key<enter><shell-escape>mbsync -a<enter><enter-command>set wait_key=\$my_wait_key<enter>" "synchronize mailbox"
+macro index <F5> "<enter-command>set my_wait_key=\$wait_key wait_key=no<enter><shell-escape>mbsync -a<enter><enter-command>set wait_key=\$my_wait_key<enter>" "synchronize mailbox"
 
 # Switch between accounts
 macro index,pager <esc>1 "<sync-mailbox><enter-command>source ~/.config/mutt/gpanders.rc<enter><change-folder>!<enter>"
