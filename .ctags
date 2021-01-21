@@ -1,5 +1,5 @@
 --fields=-k+K
---languages=-markdown,html,iniconf,yaml
+--languages=-markdown,html,iniconf,yaml,json
 --tag-relative=yes
 --exclude=build
 
