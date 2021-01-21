@@ -51,12 +51,18 @@ function! fzy#files(...) abort
 endfunction
 
 function! fzy#tags(...) abort
+    if empty(tagfiles())
+        echohl ErrorMsg
+        echom 'No tag files'
+        echohl None
+        return
+    endif
+
     let opts = a:0 ? a:1 : {}
     let split = get(opts, 'split')
-    let tags = map(taglist('.'), {_, v -> printf('%-40s %-12s %s', v.name, v.kind, fnamemodify(v.filename, ':.'))})
-    let file = tempname()
-    call writefile(tags, file)
-    call s:fzy('cat ' . file, {t -> s:tags(split, t) && delete(file)}, 'Tags')
+
+    let cmd = 'awk -F''\t'' ''/^!/{next};{sub("/[^/]+/;\"","");gsub("([.]{2}/)+","",$2);printf "%-40s %-10s %s\n", $1, $4, $2}'' ' . join(tagfiles())
+    call s:fzy(cmd, {t -> s:tags(split, t)}, 'Tags')
 endfunction
 
 function! fzy#buffers(...) abort
