@@ -19,7 +19,8 @@ endif
 augroup plugin.fzy
     autocmd!
     " If in a git repo use git ls-files
-    autocmd BufReadPost *
+    autocmd BufReadPost,DirChanged *
+                \ unlet! b:fzy_find_files_cmd |
                 \ if get(systemlist('git rev-parse --is-inside-work-tree'), 0, '') ==# 'true' |
                 \   let b:fzy_find_files_cmd = 'git ls-files -co --exclude-standard' |
                 \ endif
