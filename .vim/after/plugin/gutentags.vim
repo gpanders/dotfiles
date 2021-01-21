@@ -26,5 +26,10 @@ endfunction
 
 let g:gutentags_init_user_func = 'GutentagsInitUserFunc'
 
+" Don't auto-set the 'tags' variable, instead just set the global setting to
+" always look under the .git/ directory by default
+let g:gutentags_ctags_auto_set_tags = 0
+setglobal tags^=./.git/tags;
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
