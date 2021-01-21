@@ -52,7 +52,6 @@ function! s:callback(id, msg) abort
 endfunction
 
 function! s:stdout(channel, msg, ...) abort
-  echom 'out_cb called'
   let id = s:id(a:channel)
   if has_key(s:jobs, id)
     let job = s:jobs[id]
