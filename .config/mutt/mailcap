@@ -1,5 +1,4 @@
-text/plain; view %s; test=command -v view >/dev/null
-text/plain; less -R %s
+text/plain; ${EDITOR:-vi} %s
 text/html; open %s; nametemplate=%s.html; needsterminal
 text/html; lynx -dump --display_charset=utf-8 %s; copiousoutput; nametemplate=%s.html
 text/html; w3m -I %{charset} -T text/html -o display_link_number=true; copiousoutput
