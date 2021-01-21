@@ -109,11 +109,20 @@ set certificate_file = ~/.cache/mutt/certificates
 
 set status_format = "    %m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %?p?(%p postponed)? %>"
 
-# Optionally convert emails to multipart/alternative with an HTML part
 # The script below takes the plain text email on its stdin and produces
 # HTML-ized output using a Markdown to HTML converter
-set send_multipart_alternative = ask-no
 set send_multipart_alternative_filter = ~/.local/share/mutt/md2html.sh
+
+# Offer to send multipart/alternative emails when replying to a text/html email
+reply-hook . 'set send_multipart_alternative = no'
+reply-hook '~M text/html' 'set send_multipart_alternative = ask-yes'
+
+# Don't send multipart/alternative emails for new emails ('! ~Q' means "not
+# replied" and matches on messages that are not replies)
+send-hook '! ~Q' 'set send_multipart_alternative = no'
+
+# Never send multipart emails to mailing lists
+send-hook '~l' 'set send_multipart_alternative = no'
 
 # Save history to file
 set history_file = ~/.cache/mutt/history
