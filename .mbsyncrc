@@ -10,7 +10,7 @@ Path ~/.mail/
 IMAPStore personal
 Host mail.gandi.net
 User greg@gpanders.com
-PassCmd "pass mail/greg@gpanders.com"
+UseKeychain yes
 SSLType IMAPS
 
 Channel personal
