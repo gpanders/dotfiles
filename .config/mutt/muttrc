@@ -14,7 +14,7 @@ auto_view text/x-patch
 set editor = "~/.local/share/mutt/bgedit.sh `echo $EDITOR`"
 set background_edit = `[ -n "$TMUX" ] && echo 'yes' || echo 'no'`
 
-set envelope_from
+set use_envelope_from
 set sendmail = msmtp
 
 # Skip to compose when replying
@@ -131,6 +131,11 @@ set save_history = 10
 # Disable signature
 unset signature
 
+# Use GPGME for encryption
+set crypt_use_gpgme
+
+set pgp_default_key = "0x56E93C2FB6B08BDB"
+
 # Set default directory to save attachments into
 set attach_save_dir = ~/Downloads
 
@@ -138,7 +143,6 @@ source ~/.config/mutt/colors.rc
 source ~/.config/mutt/bindings.rc
 source ~/.config/mutt/sidebar.rc
 source ~/.config/mutt/lists.rc
-source ~/.config/mutt/gpg.rc
 
 folder-hook . 'source ~/.config/mutt/default.rc'
 
