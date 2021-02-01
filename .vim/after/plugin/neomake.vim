@@ -24,10 +24,28 @@ let g:neomake_warning_sign = { 'text': 'W' }
 let g:neomake_message_sign = { 'text': 'M' }
 let g:neomake_info_sign = { 'text': 'I' }
 
-let g:neomake_python_enabled_makers = ['pylint', 'mypy']
+let g:neomake_python_enabled_makers = []
 
-let g:neomake_c_enabled_makers = ['clangtidy', 'clangcheck']
+if executable('pylint')
+    let g:neomake_python_enabled_makers += ['pylint']
+endif
+
+if executable('mypy')
+    let g:neomake_python_enabled_makers += ['mypy']
+endif
+
+let g:neomake_c_enabled_makers = []
+
+if executable('clang-tidy')
+    let g:neomake_c_enabled_makers += ['clangtidy']
+endif
+
+if executable('clang-check')
+    let g:neomake_c_enabled_makers += ['clangcheck']
+endif
+
 let g:neomake_cpp_enabled_makers = g:neomake_c_enabled_makers
+
 let g:neomake_cpp_clangtidy_args = ['--checks="cppcoreguidelines-*"']
 
 let g:neomake_rust_cargo_command = ['clippy']
