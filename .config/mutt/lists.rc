@@ -1,4 +1,5 @@
 subscribe @lists\\.
+subscribe @googlegroups\\.com
 subscribe ^[A-Za-z0-9._-]+-users@
 subscribe ^[A-Za-z0-9._-]+-discuss@
 subscribe ^[A-Za-z0-9._-]+-devel@
