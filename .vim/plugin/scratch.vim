@@ -7,3 +7,5 @@ endif
 let g:loaded_scratch = 1
 
 command! -nargs=1 -complete=command Scratch call scratch#open(<q-args>, <q-mods>)
+command! -nargs=? Marks call scratch#open('marks ' . <q-args>, <q-mods>)
+command! -nargs=0 Messages call scratch#open('messages', <q-mods>)
