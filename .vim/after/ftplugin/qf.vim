@@ -6,7 +6,7 @@ let b:undo_ftplugin .= '|nun <buffer> q'
 
 augroup qf
   autocmd!
-  autocmd BufEnter <buffer> nested if winnr('$') < 2 | q | endif
+  autocmd BufEnter <buffer> ++nested if winnr('$') < 2 | q | endif
 augroup END
 let b:undo_ftplugin .= '|au! qf * <buffer>'
 

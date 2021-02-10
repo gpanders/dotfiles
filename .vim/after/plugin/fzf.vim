@@ -13,7 +13,7 @@ nnoremap <silent> <Space>b :<C-U>call fzf#buffers(0, '')<CR>
 nnoremap <silent> <C-W><Space>b :<C-U>call fzf#buffers(0, 's')<CR>
 
 " Hide statusline in FZF buffers
-augroup plugin.fzf
+augroup plugin_fzf
     autocmd!
     autocmd FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
 
