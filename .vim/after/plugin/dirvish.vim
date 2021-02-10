@@ -9,7 +9,7 @@ command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args
 command! -nargs=? -complete=dir Hexplore belowright split | silent Dirvish <args>
 command! -nargs=? -complete=dir Vexplore leftabove vsplit | silent Dirvish <args>
 
-augroup plugin.dirvish
+augroup plugin_dirvish
     autocmd!
     autocmd FileType dirvish nmap <silent> <buffer> q <Plug>(dirvish_quit)
 augroup END
