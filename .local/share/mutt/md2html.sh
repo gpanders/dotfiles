@@ -6,4 +6,9 @@
 
 printf 'text/html\n\n'
 
-{ cmark || pandoc -f commonmark -t html5 || markdown || exit 1 ; } 2>/dev/null
+{
+	pandoc -s --template email -M document-css=false -f commonmark_x -t html5 || \
+	cmark || \
+	markdown || \
+	exit 1
+} 2>/dev/null
