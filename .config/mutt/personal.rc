@@ -1,4 +1,4 @@
-set folder    = "~/.mail/gpanders.com"
+set folder    = "~/.mail/personal"
 set spoolfile = "+Inbox"
 set postponed = "+Drafts"
 set record    = "+Sent"
