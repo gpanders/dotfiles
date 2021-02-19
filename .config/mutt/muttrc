@@ -91,6 +91,9 @@ unset markers
 # Reply using the address the original email was sent to
 set reverse_name
 
+# ...but always use my real name
+unset reverse_realname
+
 # Colorized diffs and patches
 color body red default "^diff \-.*"
 color body yellow default "^index [a-f0-9].*"
@@ -143,11 +146,7 @@ source ~/.config/mutt/colors.rc
 source ~/.config/mutt/bindings.rc
 source ~/.config/mutt/sidebar.rc
 source ~/.config/mutt/lists.rc
-
-folder-hook . 'source ~/.config/mutt/default.rc'
-
-# Create folder hook for each account
-folder-hook gpanders.com 'source ~/.config/mutt/gpanders.rc'
+source ~/.config/mutt/hooks.rc
 
 # Source default account
 source ~/.config/mutt/gpanders.rc

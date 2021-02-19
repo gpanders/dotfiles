@@ -1,0 +1,4 @@
+folder-hook . 'source ~/.config/mutt/default.rc'
+
+# Create folder hook for each account
+folder-hook gpanders.com 'source ~/.config/mutt/gpanders.rc'
