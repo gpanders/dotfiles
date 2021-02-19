@@ -74,4 +74,4 @@ macro index,pager A "<enter-command>set my_resolve=\$resolve resolve=no<enter><c
 macro index <F5> "<enter-command>set my_wait_key=\$wait_key wait_key=no<enter><shell-escape>mbsync -a<enter><enter-command>set wait_key=\$my_wait_key<enter>" "synchronize mailbox"
 
 # Switch between accounts
-macro index,pager <esc>1 "<sync-mailbox><enter-command>source ~/.config/mutt/gpanders.rc<enter><change-folder>!<enter>"
+macro index,pager <esc>1 "<sync-mailbox><enter-command>source ~/.config/mutt/personal.rc<enter><change-folder>!<enter>"

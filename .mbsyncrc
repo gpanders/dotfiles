@@ -1,22 +1,19 @@
 Create Both
 Expunge Both
 SyncState *
+CopyArrivalDate yes
 
-IMAPAccount gpanders
+MaildirStore local
+Subfolders Verbatim
+Path ~/.mail/
+
+IMAPStore personal
 Host mail.gandi.net
 User greg@gpanders.com
 PassCmd "pass mail/greg@gpanders.com"
 SSLType IMAPS
 
-IMAPStore gpanders-remote
-Account gpanders
-
-MaildirStore gpanders-local
-Subfolders Verbatim
-Path ~/.mail/gpanders.com/
-Inbox ~/.mail/gpanders.com/Inbox
-
-Channel gpanders
-Master :gpanders-remote:
-Slave :gpanders-local:
-Patterns * !Junk !Spam
+Channel personal
+Far :personal:
+Near :local:personal/
+Patterns % !Junk !Spam

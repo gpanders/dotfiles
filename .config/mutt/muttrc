@@ -149,4 +149,4 @@ source ~/.config/mutt/lists.rc
 source ~/.config/mutt/hooks.rc
 
 # Source default account
-source ~/.config/mutt/gpanders.rc
+source ~/.config/mutt/personal.rc
