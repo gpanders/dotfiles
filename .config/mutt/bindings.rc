@@ -49,12 +49,12 @@ macro attach,compose \Cb "<enter-command>set my_wait_key=\$wait_key wait_key=no<
 
 # Search with notmuch-mutt
 macro index \Cs \
-"<enter-command>set my_wait_key=\$wait_key my_from=\$from wait_key=no<enter>\
+"<enter-command>set my_wait_key=\$wait_key wait_key=no<enter>\
 <shell-escape>notmuch-mutt -r --prompt search<enter>\
 <enter-command>unhook folder-hook<enter>\
 <change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
 <enter-command>source ~/.config/mutt/hooks.rc<enter>\
-<enter-command>set wait_key=\$my_wait_key from=\$my_from<enter>" \
+<enter-command>set wait_key=\$my_wait_key<enter>" \
       "search mail with notmuch"
 
 # Use notmuch-mutt to reconstruct thread
