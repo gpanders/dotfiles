@@ -1,16 +1,20 @@
 text/plain; ${EDITOR:-vi} %s
 text/html; open %s; nametemplate=%s.html; needsterminal
-text/html; lynx -dump --display_charset=utf-8 %s; copiousoutput; nametemplate=%s.html
-text/html; w3m -I %{charset} -T text/html -o display_link_number=true; copiousoutput
+text/html; w3m -I %{charset} -O utf-8 -T text/html -o display_link_number=1; copiousoutput
 text/x-diff; colordiff; copiousoutput
 text/x-patch; colordiff; copiousoutput
 
-text/calendar; ~/.local/share/mutt/calimport.sh %s; nametemplate=%s.ics; needsterminal
-
+text/calendar; sed 's/^METHOD:REQUEST$/METHOD:PUBLISH/' %s > %s.tmp && mv %s.tmp %s && open %s; nametemplate=%s.ics; needsterminal
 text/calendar; mutt-ics; test=command -v mutt-ics >/dev/null; copiousoutput
 application/ics; mutt-ics; test=command -v mutt-ics >/dev/null; copiousoutput
 
+# Fallback to lesspipe for pager display
+text/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
+application/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
+image/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
+audio/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
+
 # Open these MIME types in external program
 application/*; open %s; needsterminal
-audio/*; open %s; needsterminal
 image/*; open %s; needsterminal
+audio/*; open %s; needsterminal
