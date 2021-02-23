@@ -36,8 +36,7 @@ function! ft#c#tags(update) abort
   if !filereadable(tagfile) || a:update
     call mkdir(fnamemodify(tagfile, ':h'), 'p')
     let cmd = [compiler, '-M', '-I', 'include', expand('%'),
-                \ '|', 'awk', '''gsub(" ", "\n")''',
-                \ '|', 'sed', '-e', '''/^\//!d''', '-e', '''/^\\*\s*$/d''',
+                \ '|', 'awk', '''{for (i=1; i<=NF; i++) if ($i ~ /.h$/) print $i}''',
                 \ '|', 'ctags', '-L', '-', '-o', tagfile]
     if &filetype ==# 'c'
       let cmd += ['--c-kinds=+px', '--langmap=c:+.h', '--languages=c']
