@@ -2,3 +2,8 @@ folder-hook . 'source ~/.config/mutt/default.rc'
 
 # Create folder hook for each account
 folder-hook personal 'source ~/.config/mutt/personal.rc'
+
+# The MUTTREPLY variable can be used in the mailcap file to change how MIME
+# messages are decoded in replies
+reply-hook ~A 'setenv MUTTREPLY yes'
+send2-hook ~A 'unsetenv MUTTREPLY'
