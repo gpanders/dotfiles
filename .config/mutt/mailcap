@@ -1,6 +1,9 @@
 text/plain; ${EDITOR:-vi} %s
 text/html; open %s; nametemplate=%s.html; needsterminal
+text/html; w3m -I %{charset} -O utf-8 -T text/html; copiousoutput; test=test -n "$MUTTREPLY"
+text/html; lynx -dump -display_charset=utf-8 -nolist %s; copiousoutput; nametemplate=%s.html; test=test -n "$MUTTREPLY"
 text/html; w3m -I %{charset} -O utf-8 -T text/html -o display_link_number=1; copiousoutput
+text/html; lynx -dump -display_charset=utf-8 %s; copiousoutput; nametemplate=%s.html
 text/x-diff; colordiff; copiousoutput
 text/x-patch; colordiff; copiousoutput
 
