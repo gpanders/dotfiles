@@ -3,6 +3,6 @@ if exists('g:loaded_snippets')
 endif
 let g:loaded_snippets = 1
 
-let g:snippets_dir = $VIMHOME . '/snippets'
+let g:snippets_dir = split(&runtimepath, ',')[0] . '/snippets'
 
 imap <silent> <expr> <Tab> pumvisible() ? "\<C-N>" : "\<C-R>=snippets#expand()\<CR>"

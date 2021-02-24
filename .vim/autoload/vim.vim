@@ -1,7 +1,7 @@
 let s:cachedir = ''
 let s:datadir = ''
 
-function! vim#cachedir()
+function! vim#cachedir() abort
     if exists('*stdpath')
         return stdpath('cache')
     endif
@@ -19,7 +19,7 @@ function! vim#cachedir()
     return s:cachedir
 endfunction
 
-function! vim#datadir()
+function! vim#datadir() abort
     if exists('*stdpath')
         return stdpath('data')
     endif
@@ -35,4 +35,16 @@ function! vim#datadir()
         endif
     endif
     return s:datadir
+endfunction
+
+function! vim#mkdirs() abort
+  if exists('*mkdir')
+    let dirs = [&backupdir, &directory]
+    if has('persistent_undo')
+        let dirs += [&undodir]
+    endif
+    for dir in dirs
+      call mkdir(simplify(split(dir, ',')[0]), 'p')
+    endfor
+  endif
 endfunction

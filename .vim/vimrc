@@ -31,10 +31,8 @@ if !has('nvim')
   set viminfo^=!
   set wildmenu
 
-  if has('multi_byte')
-    set encoding=utf-8
-    scriptencoding utf-8
-  endif
+  set encoding=utf-8
+  scriptencoding utf-8
 
   " Set cursor shape based on mode (:h termcap-cursor-shape)
   " Vertical bar in insert mode
@@ -44,27 +42,14 @@ if !has('nvim')
   " Block in normal mode
   let &t_EI = "\e[2 q"
 
-  let s:datadir = vim#datadir()
-  let &backupdir = s:datadir . '/backup//,' . &backupdir
-  let &directory = s:datadir . '/swap//,' . &directory
+  let &backupdir = vim#datadir() . '/backup//,' . &backupdir
+  let &directory = vim#datadir() . '/swap//,' . &directory
   if has('persistent_undo')
-      let &undodir = s:datadir . '/undo//,' . &undodir
+      let &undodir = vim#datadir() . '/undo//,' . &undodir
   endif
 
-  " Create directories if they don't exist
-  if exists('*mkdir')
-    let s:dirs = [&backupdir, &directory]
-    if has('persistent_undo')
-        let s:dirs += [&undodir]
-    endif
-    for s:opt in s:dirs
-      let s:dir = simplify(split(s:opt, ',')[0])
-      if !isdirectory(s:dir)
-        call mkdir(s:dir, 'p')
-      endif
-    endfor
-    unlet s:dirs s:opt s:dir
-  endif
+  " Create datadir subdirectories
+  call vim#mkdirs()
 endif
 " }}}
 
@@ -72,24 +57,21 @@ endif
 augroup vimrc | execute 'autocmd!' | augroup END
 
 " Setup {{{
-if has('autocmd')
-  filetype plugin indent on
-endif
+filetype plugin indent on
 
-if has('syntax') && !exists('g:syntax_on')
+if !exists('g:syntax_on')
   syntax enable
 endif
-
-" Set $VIMHOME
-let $VIMHOME = split(&runtimepath, ',')[0]
 
 " Use vim-pathogen if native packages are not supported
 if !has('packages')
   " Use vim-pathogen to emulate native packaging behavior
-  if empty(glob($VIMHOME . '/autoload/pathogen.vim'))
-    silent execute '!curl -LSso ' . $VIMHOME . '/autoload/pathogen.vim https://tpo.pe/pathogen.vim'
+  let s:vimdir = split(&runtimepath, ',')[0]
+  if empty(glob(s:vimdir . '/autoload/pathogen.vim'))
+    silent execute '!curl -LSso ' . s:vimdir . '/autoload/pathogen.vim https://tpo.pe/pathogen.vim'
   endif
   silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
+  unlet s:vimdir
 endif
 " }}}
 
@@ -111,6 +93,7 @@ set backupdir-=.
 set confirm
 set cursorline
 set expandtab
+set foldlevelstart=99
 set hidden
 set ignorecase
 set lazyredraw
@@ -128,19 +111,12 @@ set noswapfile
 silent! set tagcase=match
 set virtualedit+=block
 set wildcharm=<Tab>
+set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#
 set wildignorecase
 set wildmode=longest:full,full
 
-if has('wildignore')
-  set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#
-endif
-
 if has('mouse')
   set mouse=a
-endif
-
-if has('folding')
-  set foldlevelstart=99
 endif
 
 if has('persistent_undo')
@@ -148,9 +124,7 @@ if has('persistent_undo')
 endif
 
 " Color the whole area outside of 'textwidth'
-if has('syntax')
-  let &colorcolumn = '+' . join(range(1, 256), ',+')
-endif
+let &colorcolumn = '+' . join(range(1, 256), ',+')
 
 if has('linebreak')
   set linebreak
@@ -162,7 +136,7 @@ if has('popupwin')
   set completepopup=highlight:Pmenu,align:menu,border:off
 endif
 
-" Set default path variables to blank defaults
+" Clear default path variables
 setglobal path=.,,
 setglobal include=
 setglobal includeexpr=
@@ -182,17 +156,12 @@ else
 endif
 
 " Enable histogram diff
-if has('nvim-0.3.2') || has('patch-8.1.0360')
-  set diffopt=filler,internal,algorithm:histogram,indent-heuristic
-endif
+silent! set diffopt=filler,internal,algorithm:histogram,indent-heuristic
 " }}}
 
 " Mappings {{{
 
 " Insert {{{
-
-" jk in Insert mode escapes to Normal mode
-inoremap jk <Esc>
 
 " Set undo points when deleting
 inoremap <C-U> <C-G>u<C-U>
@@ -307,11 +276,6 @@ nnoremap m<CR> :make<CR>
 nnoremap m<Space> :make<Space>
 nnoremap m? :set makeprg?<CR>
 
-function! Substitute(type, ...) abort
-    call feedkeys(":'[,']s/" . expand('<cword>') . "//g\<Left>\<Left>", 'n')
-endfunction
-nnoremap <silent> gS :set operatorfunc=Substitute<CR>g@
-
 function! Sort(type, ...) abort
     '[,']sort
     call setpos('.', getpos("''"))
@@ -369,9 +333,7 @@ endif
 
 " Enable omnicompletion from syntax if no other option available
 " See :h ft-syntax-omni
-if exists('+omnifunc')
-  autocmd FileType * if &omnifunc == '' | setlocal omnifunc=syntaxcomplete#Complete | endif
-endif
+autocmd FileType * if &omnifunc == '' | setlocal omnifunc=syntaxcomplete#Complete | endif
 
 if argc() == 0 && filereadable('Session.vim')
   if v:vim_did_enter
