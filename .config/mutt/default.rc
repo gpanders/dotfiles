@@ -1,9 +1,7 @@
-unalias *
 unmailboxes *
 unalternates *
 
 unset from
 unset envelope_from_address
 unset query_command
-unset alias_file
 unset hostname
