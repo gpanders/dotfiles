@@ -29,9 +29,6 @@ macro index d <clear-flag>N<delete-message> "delete the current entry"
 # View attachments properly
 bind attach <return> view-mailcap
 
-# Save new addresses to address book
-macro index,pager a "<pipe-message>khard add-email<enter>" "add the sender email address to khard"
-
 # Show mailbox listing by default
 macro index,pager c <change-folder>?<tab> "open a different folder"
 
