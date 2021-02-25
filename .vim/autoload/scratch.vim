@@ -15,4 +15,29 @@ function! scratch#open(cmd, mods) abort
     let w:scratch = 1
     setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile
     call setline(1, output)
+    call s:highlight()
+endfunction
+
+" Highlight scratch buffer to match native command output for certain commands
+function! s:highlight() abort
+    let firstline = getline(1)
+    if firstline =~# '^--- Registers ---\|Type Name Content$'
+        call matchaddpos('Title', [1])
+        call matchadd('SpecialKey', '\^\S\|<[^>]\{2}>')
+    elseif firstline ==# 'mark line  col file/text'
+        call matchaddpos('Title', [1])
+    elseif firstline =~# '^\w\+\s\+xxx \%(links\|cleared\|cterm\|gui\|term\)'
+        syntax match Keyword /\v%(c?term%([fb]g)?|gui%([fb]g)?)\=/
+        syntax keyword Keyword links to
+        highlight Keyword ctermfg=4 guifg=Cyan
+        for linenr in range(1, line('$'))
+            let line = getline(linenr)
+            let syn = matchstr(line, '^\w\+')
+            let col = match(line, '\<xxx\>')
+            call matchaddpos(syn, [[linenr, col + 1, 3]])
+        endfor
+    elseif search('\v^(E[0-9]+:|line\s+[0-9]+:)', 'cnW')
+        call matchadd('ErrorMsg', '^E[0-9]\+: .\+$')
+        call matchadd('LineNr', '^line\s\+[0-9]\+:$')
+    end
 endfunction
