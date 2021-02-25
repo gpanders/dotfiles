@@ -11,13 +11,13 @@ text/calendar; sed 's/^METHOD:REQUEST$/METHOD:PUBLISH/' %s > %s.tmp && mv %s.tmp
 text/calendar; mutt-ics; test=command -v mutt-ics >/dev/null; copiousoutput
 application/ics; mutt-ics; test=command -v mutt-ics >/dev/null; copiousoutput
 
+# Open these MIME types in external program
+application/*; open %s; needsterminal
+image/*; open %s; needsterminal
+audio/*; open %s; needsterminal
+
 # Fallback to lesspipe for pager display
 text/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
 application/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
 image/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
 audio/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
-
-# Open these MIME types in external program
-application/*; open %s; needsterminal
-image/*; open %s; needsterminal
-audio/*; open %s; needsterminal
