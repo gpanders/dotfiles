@@ -24,7 +24,7 @@ function! s:highlight() abort
     if firstline =~# '^--- Registers ---\|Type Name Content$'
         call matchaddpos('Title', [1])
         call matchadd('SpecialKey', '\^\S\|<[^>]\{2}>')
-    elseif firstline ==# 'mark line  col file/text'
+    elseif firstline =~# '^\%(mark\|change\| jump\) line  col \%(file/\)\?text$'
         call matchaddpos('Title', [1])
     elseif firstline =~# '^\w\+\s\+xxx \%(links\|cleared\|cterm\|gui\|term\)'
         syntax match Keyword /\v%(c?term%([fb]g)?|gui%([fb]g)?)\=/
