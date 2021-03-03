@@ -21,7 +21,7 @@
 	p = push
 	snapshot = !git stash && git stash apply -q
 	t = tag
-	s = status
+	s = -p status
 	ss = snapshot
 	st = stash
 	ca = commit --amend
@@ -53,3 +53,5 @@
 	smudge = git-lfs smudge -- %f
 [init]
 	defaultBranch = master
+[status]
+	showStash = true
