@@ -25,6 +25,7 @@
 	ss = snapshot
 	st = stash
 	ca = commit --amend
+	mkrelease = !.git/mkrelease
 [commit]
 	verbose = true
 [sendemail]
@@ -53,5 +54,6 @@
 	smudge = git-lfs smudge -- %f
 [init]
 	defaultBranch = master
+	templateDir = ~/.config/git/template
 [status]
 	showStash = true
