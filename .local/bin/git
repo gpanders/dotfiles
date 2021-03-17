@@ -1,0 +1,9 @@
+#!/bin/sh
+
+PATH=/usr/local/bin:/usr/bin
+
+if [ "$PWD" = "$HOME" ]; then
+	command git --git-dir="$HOME/.dotfiles" "$@"
+else
+	command git "$@"
+fi

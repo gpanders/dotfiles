@@ -3,14 +3,6 @@ alias ll='ls -Alh'
 
 alias g='git'
 
-git() {
-	if [ "$PWD" = "$HOME" ]; then
-		command git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
-	else
-		command git "$@"
-	fi
-}
-
 if command -v nvim >/dev/null; then
     alias vi='nvim'
 fi
