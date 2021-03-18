@@ -15,11 +15,11 @@ function! scratch#open(cmd, mods) abort
     let w:scratch = 1
     setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile
     call setline(1, output)
-    call s:highlight()
+    call s:highlight(a:cmd)
 endfunction
 
 " Highlight scratch buffer to match native command output for certain commands
-function! s:highlight() abort
+function! s:highlight(cmd) abort
     let firstline = getline(1)
     if firstline =~# '^--- Registers ---\|Type Name Content$'
         call matchaddpos('Title', [1])
@@ -39,5 +39,7 @@ function! s:highlight() abort
     elseif search('\v^(E[0-9]+:|line\s+[0-9]+:)', 'cnW')
         call matchadd('ErrorMsg', '^E[0-9]\+: .\+$')
         call matchadd('LineNr', '^line\s\+[0-9]\+:$')
-    end
+    elseif a:cmd =~# '^dig'
+        call matchadd('SpecialKey', '[A-Za-z0-9[:graph:]]\{2}\s\+\zs\S\+\ze\s\+\d\+')
+    endif
 endfunction
