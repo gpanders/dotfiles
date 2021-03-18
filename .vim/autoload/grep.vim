@@ -8,7 +8,7 @@ function! s:expandcmd(cmd) abort
     endif
 endfunction
 
-function! grep#grep(l, args) abort
+function! s:grep(l, args, mods) abort
     let args = s:expandcmd(a:args)
     if &grepprg =~# '$\*'
         let grepcmd = substitute(&grepprg, '$\*', args, '')
@@ -17,18 +17,32 @@ function! grep#grep(l, args) abort
     endif
 
     let F = a:l ? function('setloclist', [0]) : function('setqflist')
-    let completed = 'doautocmd QuickFixCmdPost ' . (a:l ? 'lgrep' : 'grep')
+    let post = 'doautocmd QuickFixCmdPost ' . (a:l ? 'lgrep' : 'grep')
 
     silent exe 'doautocmd QuickFixCmdPre' a:l ? 'lgrep' : 'grep'
 
     if g:async#enabled
+        if exists('s:jobid')
+            call async#cancel(s:jobid)
+            unlet s:jobid
+        endif
+
         " Run the grep command in a shell to enable shell expansion
         let cmd = split(&shell) + split(&shellcmdflag) + [grepcmd]
-        call async#run(cmd, {lines -> F([], 'a', {'lines': lines})}, {'buffered': 0, 'completed': completed})
-        call F([], 'r', {'title': grepcmd, 'items': []})
+        let opts = {'buffered': 0, 'exit': {code -> !code && execute(post . '|unlet s:jobid')}}
+        let s:jobid = async#run(cmd, {lines -> F([], 'a', {'lines': lines})}, opts)
+        call F([], ' ', {'title': grepcmd, 'nr': '$', 'items': []})
     else
-        call F([], 'r', {'title': grepcmd, 'lines': systemlist(grepcmd)})
-        silent exe completed
+        call F([], ' ', {'title': grepcmd, 'nr': '$', 'lines': systemlist(grepcmd)})
+        silent exe post
     endif
-    exe 'botright' a:l ? 'lopen' : 'copen'
+    exe a:mods a:l ? 'lopen' : 'copen'
+endfunction
+
+function! grep#grep(args, mods) abort
+    call s:grep(0, a:args, a:mods)
+endfunction
+
+function! grep#lgrep(args, mods) abort
+    call s:grep(1, a:args, a:mods)
 endfunction
