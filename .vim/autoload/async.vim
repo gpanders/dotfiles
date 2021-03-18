@@ -1,5 +1,5 @@
 " Wrapper functions for asynchronous APIs for nvim and vim
-" Author: Greg Anders
+" Author: Gregory Anders
 
 " Neovim and Vim 8 both have a jobs API, but the syntax for each is slightly
 " different. This function aims to provide a consistent interface for both to
@@ -13,7 +13,7 @@ let async#enabled = 1
 
 let s:jobs = {}
 
-function! s:id(chan) abort
+function! s:chanid(chan) abort
   return has('nvim') ? a:chan : ch_info(a:chan).id
 endfunction
 
@@ -32,15 +32,15 @@ function! s:jobstart(cmd) abort
                 \ 'in_io': 'null',
                 \ 'out_mode': 'raw',
                 \ })
-    return ch_info(job_info(job).channel).id
+    return job_getchannel(job)
   endif
 endfunction
 
 function! s:callback(id, msg) abort
   let job = s:jobs[a:id]
-  if type(job.cb) == type({-> 1})
+  if type(job.cb) == v:t_func
     call job.cb(a:msg)
-  elseif type(job.cb) == type('')
+  elseif type(job.cb) == v:t_string
     if empty(a:msg)
       silent execute job.cb
     else
@@ -52,11 +52,11 @@ function! s:callback(id, msg) abort
 endfunction
 
 function! s:stdout(channel, msg, ...) abort
-  let id = s:id(a:channel)
+  let id = s:chanid(a:channel)
   if has_key(s:jobs, id)
     let job = s:jobs[id]
     let msg = a:msg
-    if type(msg) == type('')
+    if type(msg) == v:t_string
       let msg = split(msg, "\n", 1)
     endif
     if len(job.chunks)
@@ -73,7 +73,7 @@ endfunction
 
 function! s:error(channel, msg, ...) abort
   let msg = a:msg
-  if type(msg) == type([])
+  if type(msg) == v:t_list
     let msg = join(msg[:-2])
   endif
   echohl ErrorMsg
@@ -82,7 +82,7 @@ function! s:error(channel, msg, ...) abort
 endfunction
 
 function! s:exit(channel, ...) abort
-  let id = s:id(a:channel)
+  let id = s:chanid(a:channel)
   if has_key(s:jobs, id)
     let job = s:jobs[id]
     if job.buffered
@@ -91,7 +91,7 @@ function! s:exit(channel, ...) abort
       endif
       call s:callback(id, job.chunks)
     endif
-    if has_key(job, 'completed')
+    if has_key(job, 'exit')
       if a:0
         let code = a:1
       elseif exists('*job_info')
@@ -104,10 +104,10 @@ function! s:exit(channel, ...) abort
         return
       endif
 
-      if type(job.completed) == type({-> 1})
-        call job.completed(code)
-      elseif type(job.completed) == type('')
-        silent execute substitute(job.completed, '\C\<v:val\>', code, 'g')
+      if type(job.exit) == v:t_func
+        call job.exit(code)
+      elseif type(job.exit) == v:t_string
+        silent execute substitute(job.exit, '\C\<v:val\>', code, 'g')
       endif
     endif
     call remove(s:jobs, id)
@@ -116,7 +116,17 @@ endfunction
 
 function! async#run(cmd, cb, ...) abort
   let opts = get(a:, 1, {})
-  let id = s:jobstart(a:cmd)
-  let s:jobs[id] = extend({'cb': a:cb, 'chunks': [''], 'buffered': 1}, opts)
+  let chan = s:jobstart(a:cmd)
+  let id = s:chanid(chan)
+  let s:jobs[id] = extend({'cb': a:cb, 'chunks': [''], 'buffered': 1, 'chan': chan}, opts)
   return id
+endfunction
+
+function! async#cancel(id) abort
+  if has('nvim')
+    call jobstop(a:id)
+  elseif has('job')
+    let chan = s:jobs[a:id].chan
+    call job_stop(ch_getjob(chan))
+  endif
 endfunction
