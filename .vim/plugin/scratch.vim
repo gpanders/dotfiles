@@ -14,3 +14,4 @@ command! -nargs=? Display <mods> Scratch display <args>
 command! -nargs=? Highlight <mods> Scratch highlight <args>
 command! -nargs=0 Jumps <mods> Scratch jumps
 command! -nargs=0 Changes <mods> Scratch changes
+command! -nargs=0 Digraphs <mods> Scratch digraphs
