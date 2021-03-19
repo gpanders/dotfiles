@@ -3,7 +3,7 @@ if exists('g:loaded_highlight_trailing_whitespace')
 endif
 let g:loaded_highlight_trailing_whitespace = 1
 
-let s:blacklist = ['markdown', 'text', 'mail']
+let s:blacklist = ['markdown', 'text', 'mail', 'gitsendemail']
 
 function! s:highlight_trailing_whitespace() abort
     let modifiable = !&readonly && &modifiable
