@@ -27,7 +27,7 @@ set fast_reply
 set forward_format = "Fwd: %s"
 
 # Format of quoting header
-set attribution = "On %{%a, %d %b %Y %T %z}, %n <%a> wrote:"
+set attribution = "On %{%a, %d %b %Y %H:%M %z}, %n wrote:"
 
 # Include message in replies
 set include
