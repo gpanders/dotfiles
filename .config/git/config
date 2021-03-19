@@ -7,7 +7,7 @@
 	cm = commit
 	ls = ls-files
 	rs = reset
-	rb = rebase --autostash
+	rb = rebase
 	l = log
 	lg = log --oneline --graph
 	d = diff
@@ -35,6 +35,7 @@
 	envelopeSender = greg@gpanders.com
 [rebase]
 	autoSquash = true
+	autoStash = true
 [grep]
 	lineNumber = true
 	column = true
