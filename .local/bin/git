@@ -2,7 +2,13 @@
 
 PATH=/usr/local/bin:/usr/bin
 
-if [ "$PWD" = "$HOME" ]; then
+case "$*" in
+'-C '* | *' -C '*)
+	C=1
+	;;
+esac
+
+if [ "$PWD" = "$HOME" ] && [ -z "$C" ]; then
 	command git --git-dir="$HOME/.dotfiles" "$@"
 else
 	command git "$@"
