@@ -12,7 +12,7 @@ function! s:PackInit() abort
         packadd minpac
     endif
 
-    call minpac#init()
+    call minpac#init({'status_auto': v:true})
 
     call minpac#add('k-takata/minpac', {'type': 'opt'})
 
@@ -101,20 +101,27 @@ function! s:PackInit() abort
     call minpac#add('rust-lang/rust.vim')
 
     " Meson
-    call minpac#add('mesonbuild/meson', {'subdir': 'data/syntax-highlighting/vim', 'rev': '0.55.0'})
+    call minpac#add('mesonbuild/meson', {'subdir': 'data/syntax-highlighting/vim', 'rev': '*'})
+
+    " nim
+    call minpac#add('zah/nim.vim')
 endfunction
 
-function! s:PackUpdate()
+function! s:PackUpdate(...)
     call s:PackInit()
     if exists('*minpac#update')
-        call minpac#update('', {'do': 'call minpac#status()'})
+        call minpac#update(a:0 ? a:1 : '')
     endif
 endfunction
 
-function! s:PackClean()
+function! s:PackClean(...)
     call s:PackInit()
     if exists('*minpac#clean')
-        call minpac#clean()
+        if a:0
+            call minpac#clean(a:1)
+        else
+            call minpac#clean()
+        endif
     endif
 endfunction
 
@@ -123,5 +130,5 @@ augroup minpac
     exe 'autocmd BufWritePost ' . expand('<sfile>') . ' source <afile>'
 augroup END
 
-command! PackUpdate call <SID>PackUpdate()
-command! PackClean call <SID>PackClean()
+command! -nargs=* PackUpdate call <SID>PackUpdate(<f-args>)
+command! -nargs=* PackClean call <SID>PackClean(<f-args>)
