@@ -1,6 +1,7 @@
 #!/bin/sh
 
-PATH=/usr/local/bin:/usr/bin
+# Find the first git in PATH that is not this script
+git=$(which -a git | sed -n "\:$0:!{p;q;}")
 
 case "$*" in
 '-C '* | *' -C '*)
@@ -9,7 +10,7 @@ case "$*" in
 esac
 
 if [ "$PWD" = "$HOME" ] && [ -z "$C" ]; then
-	command git --git-dir="$HOME/.dotfiles" "$@"
+	$git --git-dir="$HOME/.dotfiles" "$@"
 else
-	command git "$@"
+	$git "$@"
 fi
