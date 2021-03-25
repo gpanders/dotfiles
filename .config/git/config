@@ -9,7 +9,7 @@
 	rs = reset
 	rb = rebase
 	l = log
-	lg = log --oneline --graph
+	lg = log --oneline --decorate --graph --all
 	d = diff
 	ds = diff --staged
 	a = add
