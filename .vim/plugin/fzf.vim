@@ -8,11 +8,5 @@ let g:did_fzf_hack = 1
 " Block the fzf plugin from loading
 let g:loaded_fzf = 1
 
-" Add Homebrew directory to runtimepath
-set runtimepath+=/usr/local/opt/fzf
-
-" Add Debian installation directory to runtimepath
-set runtimepath+=/usr/share/doc/fzf/examples
-
-" Add local installation to runtimepath
+" Add installation to runtimepath
 set runtimepath+=$HOME/.fzf
