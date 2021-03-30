@@ -8,9 +8,6 @@ function n --wraps nnn --description "Alias for nnn"
     # Filetype colors. This mimics dircolors
     set -x NNN_FCOLORS 030304020000060801030500
 
-    # Trash (instead of delete) files to desktop Trash
-    set -x NNN_TRASH 1
-
     set -x NNN_PLUG p:preview-tui
 
     if test -x $nnn_config_dir/plugins/nuke
@@ -26,12 +23,11 @@ function n --wraps nnn --description "Alias for nnn"
         end
     end
 
-    set NNN_TMPFILE $nnn_config_dir/nnn/.lastd
+    set NNN_TMPFILE $nnn_config_dir/.lastd
 
     nnn -a -e $argv
 
-    if test -e "$NNN_TMPFILE"
-        cat $NNN_TMPFILE
+    if test -e $NNN_TMPFILE
         source $NNN_TMPFILE
         rm $NNN_TMPFILE
     end
