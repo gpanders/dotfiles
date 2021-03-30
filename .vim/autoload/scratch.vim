@@ -16,6 +16,10 @@ function! scratch#open(cmd, mods) abort
     setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile
     call setline(1, output)
     call s:highlight(a:cmd)
+
+    augroup scratch
+      autocmd BufEnter <buffer> ++nested if winnr('$') < 2 | q | endif
+    augroup END
 endfunction
 
 " Highlight scratch buffer to match native command output for certain commands
