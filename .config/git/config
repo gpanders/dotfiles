@@ -26,6 +26,7 @@
 	st = stash
 	ca = commit --amend
 	mkrelease = !.git/mkrelease
+	sw = switch
 [commit]
 	verbose = true
 [sendemail]
