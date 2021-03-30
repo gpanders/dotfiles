@@ -65,12 +65,7 @@ set sleep_time = 0
 
 # Index view options
 set date_format = "%a, %d %b %Y %H:%M:%S"
-set index_format = " [%Z]  %-9@date@  %-20.20F %@list@%s"
-index-format-hook date "~d<1d" "Today"
-index-format-hook date "~d<2d" "Yesterday"
-index-format-hook date "~d<1w" "%[%A]"
-index-format-hook date "~d<1y" "%[%b %d]"
-index-format-hook date "~A"    "%[%b %y]"
+set index_format = " [%Z]  %{%b %d}  %-20.20F %@list@%s"
 
 index-format-hook list "~l" "[%B] "
 
