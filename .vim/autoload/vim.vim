@@ -44,7 +44,7 @@ function! vim#mkdirs() abort
         let dirs += [&undodir]
     endif
     for dir in dirs
-      call mkdir(simplify(split(dir, ',')[0]), 'p')
+      silent! call mkdir(simplify(split(dir, ',')[0]), 'p')
     endfor
   endif
 endfunction
