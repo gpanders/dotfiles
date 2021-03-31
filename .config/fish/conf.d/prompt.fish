@@ -24,10 +24,11 @@ function __prompt_update_git_branch --on-variable PWD --on-event fish_postexec
             set -g __prompt_git_branch
         else
             set -l os
-            set -g __prompt_git_branch (string replace -r '^ref: refs/heads/' '' < $HEAD; set os $status)
+            set -l branch (string replace -r '^ref: refs/heads/' '' < $HEAD; set os $status)
             if test $os -ne 0
-                set -g __prompt_git_branch (string sub -l 7 $__prompt_git_branch)
+                set branch (string sub -l 7 $__prompt_git_branch)
             end
+            set -g __prompt_git_branch "$branch "
         end
 
         set -U $__prompt_git $__prompt_git_branch
