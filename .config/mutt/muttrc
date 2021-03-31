@@ -69,7 +69,7 @@ set index_format = " [%Z]  %{%b %d}  %-20.20F %@list@%s"
 
 index-format-hook list "~l" "[%B] "
 
-set pager_format = " %.50s / %n / %D%* %P "
+set pager_format = " %.50s // %n // %D%* %P "
 
 set sort = threads
 set sort_aux = reverse-last-date-received
