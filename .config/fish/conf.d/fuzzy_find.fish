@@ -11,5 +11,5 @@ if status is-interactive
     end
 
     set -gx FZF_DEFAULT_COMMAND "$fuzzy_find_file_command"
-    set -gx FZF_DEFAULT_OPTS "--height=10 --reverse --no-info --no-color --cycle"
+    set -gx FZF_DEFAULT_OPTS '--height=20 --reverse --no-info --cycle --color=16,fg:-1,fg+:-1:bold,hl:3:bold,hl+:3:bold,pointer:4,marker:-1,prompt:-1,info:-1'
 end
