@@ -9,22 +9,24 @@ end
 function venv
     set -q venv_dir; or set -U venv_dir $XDG_DATA_HOME/venv
 
-    if test (count $argv) -lt 1
-        echo 'Usage:
-    venv create <venv>
-    venv rm <venv> [venv [...]]
-    venv ls
-    venv <venv>' >&2
-        return 1
-    end
-
     switch $argv[1]
+        case '-h' '--help' 'help'
+            echo 'Usage:
+    venv                                List existing venvs and select using fzf
+    venv create <venv>                  Create a new venv
+    venv rm <venv> [venv [...]]         Remove existing venv(s)
+    venv <venv>                         Activate the given venv
+' >&2
+            return 1
+        case ''
+            set -l venv (printf '%s\n' (command ls $venv_dir) | fzf)
+            if test -n "$venv"
+                source $venv_dir/$venv/bin/activate.fish
+            end
         case create
             if __venv_create $venv_dir/$argv[2]
                 echo "Virtual environment $argv[2] created. Activate it using 'venv $argv[2]'"
             end
-        case ls
-            printf '%s\n' (command ls $venv_dir)
         case rm
             for _venv in $argv[2..-1]
                 if not test -d $venv_dir/$_venv
