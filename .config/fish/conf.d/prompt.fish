@@ -11,32 +11,9 @@ function $__prompt_git --on-variable $__prompt_git
     commandline -f repaint
 end
 
-function __prompt_update_git_branch --on-variable PWD --on-event fish_postexec
-    if test -n "$argv[1]"
-        set -l HEAD
-        if test -f .git/HEAD
-            set HEAD .git/HEAD
-        else
-            set HEAD (command git rev-parse --git-path HEAD 2>/dev/null)
-        end
-
-        if test -z "$HEAD"
-            set -g __prompt_git_branch
-        else
-            set -l os
-            set -l branch (string replace -r '^ref: refs/heads/' '' < $HEAD; set os $status)
-            if test $os -ne 0
-                set branch (string sub -l 7 $__prompt_git_branch)
-            end
-            set -g __prompt_git_branch "$branch "
-        end
-
-        set -U $__prompt_git $__prompt_git_branch
-    end
-end
-
 function __prompt_update_pwd --on-variable PWD
     set -g __prompt_pwd (string replace -r -- '^'$HOME \~ $PWD)
+    set -e __prompt_git_head
 end
 
 function __prompt_venv --on-variable VIRTUAL_ENV
@@ -73,50 +50,72 @@ function __prompt_fish_postexec_handler --on-event fish_postexec
 end
 
 function __prompt_fish_prompt_handler --on-event fish_prompt
-    set -l last_status $status
-    if test $last_status -ne 0
+    if test $status -ne 0
         set __prompt_color_prompt_delim (set_color $fish_color_error)
     else
         set __prompt_color_prompt_delim (set_color $fish_color_prompt_delim)
     end
 
     set -q __prompt_pwd; or __prompt_update_pwd
-    set -q __prompt_git_branch; or __prompt_update_git_branch true
+
+    if not set -q __prompt_git_head
+        if test -n "$GIT_DIR" && test -f $GIT_DIR/HEAD
+            set -g __prompt_git_head $GIT_DIR/HEAD
+        else if test -f .git/HEAD
+            set -g __prompt_git_head .git/HEAD
+        else
+            set -g __prompt_git_head (command git rev-parse --git-path HEAD 2>/dev/null)
+        end
+    end
+
+    if test -z "$__prompt_git_head"
+        set -g __prompt_git_branch
+        set -U $__prompt_git
+    else
+        set -l os
+        set -l branch (string replace -r '^ref: refs/heads/' '' < $__prompt_git_head; set os $status)
+        if test $os -ne 0
+            set branch (string sub -l 7 $branch)
+        end
+
+        if test "$branch" != "$__prompt_git_branch"
+            set -g __prompt_git_branch $branch
+            set -U $__prompt_git "$branch "
+        end
+    end
 
     command kill $__prompt_last_pid 2>/dev/null
 
+    if test -z "$__prompt_git_branch"
+        return
+    end
+
     fish -P -c "
-        set git_info (git rev-parse --short HEAD 2>/dev/null; git rev-parse --abbrev-ref HEAD 2>/dev/null)
-        if test \"\$git_info[2]\" != HEAD
-            set git_info \$git_info[2]
-        else
-            set git_info \$git_info[1]
+        set -l action (fish_print_git_action)
+        if test -n \"\$action\"
+            set action \"(\$action) \"
         end
 
-        if test -z \"\$git_info\"
-            set $__prompt_git
-            exit
-        end
-
-        set git_action (fish_print_git_action)
-        if test -n \"\$git_action\"
-            set git_info \$git_info\" (\$git_action)\"
+        set -l dirty
+        if not command git diff-index --no-ext-diff --quiet HEAD
+            set dirty '*'
         end
 
         # Upstream status
         set count (git rev-list --count --left-right @{u}...HEAD 2>/dev/null)
+        set upstream
         switch \"\$count\"
             case ''
             case '0'\t'0'
             case '0'\t'*'
-                set git_info \$git_info' '(set_color cyan)'⇡'
+                set upstream (set_color cyan)'⇡ '
             case '*'\t'0'
-                set git_info \$git_info' '(set_color cyan)'⇣'
+                set upstream (set_color cyan)'⇣ '
             case '*'
-                set git_info \$git_info' '(set_color cyan)'⇡⇣'
+                set upstream (set_color cyan)'⇡⇣ '
         end
 
-        set -U $__prompt_git \"\$git_info \"
+        set -U $__prompt_git \"$__prompt_git_branch\$dirty \$action\$upstream\"
     " &
 
     set -g __prompt_last_pid (jobs -l -p)
