@@ -100,9 +100,6 @@ function! s:PackInit() abort
     " Rust
     call minpac#add('rust-lang/rust.vim')
 
-    " Meson
-    call minpac#add('mesonbuild/meson', {'subdir': 'data/syntax-highlighting/vim', 'rev': '*'})
-
     " nim
     call minpac#add('zah/nim.vim')
 endfunction
