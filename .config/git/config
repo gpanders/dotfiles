@@ -32,7 +32,6 @@
 [sendemail]
 	annotate = yes
 	confirm = auto
-	smtpServer = /usr/bin/msmtp
 	envelopeSender = greg@gpanders.com
 [rebase]
 	autoSquash = true
