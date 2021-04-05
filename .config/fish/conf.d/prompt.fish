@@ -49,6 +49,24 @@ function __prompt_fish_postexec_handler --on-event fish_postexec
     end
 end
 
+function __prompt_exit_status --on-event fish_postexec
+    set -l last_pipestatus $pipestatus
+    set -lx __fish_last_status $status
+    if test $__fish_last_status -eq 0
+        set -g __prompt_status
+        return
+    end
+
+    set -q __prompt_status_generation; or set -g __prompt_status_generation $status_generation
+
+    set -l bold_flag --bold
+    if test $__prompt_status_generation = $status_generation
+        set bold_flag
+    end
+    set __prompt_status_generation $status_generation
+    set -g __prompt_status (__fish_print_pipestatus '[' '] ' '|' (set_color $fish_color_status) (set_color $bold_flag $fish_color_status) $last_pipestatus)
+end
+
 function __prompt_fish_prompt_handler --on-event fish_prompt
     if test $status -ne 0
         set __prompt_color_prompt_delim (set_color $fish_color_error)
@@ -134,4 +152,3 @@ for type in cwd venv jobs git cmd_duration prompt_delim
     end
     __prompt_color_$type
 end
-
