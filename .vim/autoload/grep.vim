@@ -1,10 +1,13 @@
 " Expand characters from :h cmdline-special
-let s:expandable = '\v(\\@<!%(\%|##|#\d*|<%(cfile|cword|cWORD|cexpr)>)%(:[p~.htreS])*)'
+let s:expandable = '\v(%(\%|##|#\d*|#<\d\+|<%(cfile|cword|cWORD|cexpr)>)%(:[p~.htreS])*)'
 function! s:expandcmd(cmd) abort
     if exists('*expandcmd')
         return expandcmd(a:cmd)
     else
-        return substitute(a:cmd, s:expandable, '\=expand(submatch(1))', 'g')
+        let s = substitute(a:cmd, '\\\@<!' . s:expandable, '\=expand(submatch(1))', 'g')
+
+        " Remove backslashes used to escape expandable characters
+        return substitute(s, '\\\ze' . s:expandable, '', 'g')
     endif
 endfunction
 
@@ -17,24 +20,19 @@ function! s:grep(l, args, mods) abort
     endif
 
     let F = a:l ? function('setloclist', [0]) : function('setqflist')
-    let post = 'doautocmd QuickFixCmdPost ' . (a:l ? 'lgrep' : 'grep')
+    let cmdpost = 'doautocmd QuickFixCmdPost ' . (a:l ? 'lgrep' : 'grep')
 
     silent exe 'doautocmd QuickFixCmdPre' a:l ? 'lgrep' : 'grep'
 
     if g:async#enabled
-        if exists('s:jobid')
-            call async#cancel(s:jobid)
-            unlet s:jobid
-        endif
-
         " Run the grep command in a shell to enable shell expansion
         let cmd = split(&shell) + split(&shellcmdflag) + [grepcmd]
-        let opts = {'buffered': 0, 'exit': {code -> !code && execute(post . '|unlet s:jobid')}}
-        let s:jobid = async#run(cmd, {lines -> F([], 'a', {'lines': lines})}, opts)
+        let opts = {'buffered': 0, 'exit': cmdpost}
+        call async#run(cmd, {lines -> F([], 'a', {'lines': lines})}, opts)
         call F([], ' ', {'title': grepcmd, 'nr': '$', 'items': []})
     else
         call F([], ' ', {'title': grepcmd, 'nr': '$', 'lines': systemlist(grepcmd)})
-        silent exe post
+        silent exe cmdpost
     endif
     exe a:mods a:l ? 'lopen' : 'copen'
 endfunction
