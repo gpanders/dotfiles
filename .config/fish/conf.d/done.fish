@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-set -g __done_version 1.14.6
+set -g __done_version 1.16.0
 
 function __done_run_powershell_script
     set -l powershell_exe (command --search "powershell.exe")
@@ -40,8 +40,42 @@ function __done_run_powershell_script
     end
 end
 
+function __done_windows_notification -a "title" -a "message"
+    if test "$__done_notify_sound" -eq 1
+        set soundopt "<audio silent=\"false\" src=\"ms-winsoundevent:Notification.Default\" />"
+    else
+        set soundopt "<audio silent=\"true\" />"
+    end
+
+    __done_run_powershell_script "
+[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
+[Windows.UI.Notifications.ToastNotification, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
+
+\$toast_xml_source = @\"
+    <toast>
+        $soundopt
+        <visual>
+            <binding template=\"ToastText02\">
+                <text id=\"1\">$title</text>
+                <text id=\"2\">$message</text>
+            </binding>
+        </visual>
+    </toast>
+\"@
+
+\$toast_xml = New-Object Windows.Data.Xml.Dom.XmlDocument
+\$toast_xml.loadXml(\$toast_xml_source)
+
+\$toast = New-Object Windows.UI.Notifications.ToastNotification \$toast_xml
+
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier(\"fish\").Show(\$toast)
+"
+end
+
 function __done_get_focused_window_id
-    if type -q lsappinfo
+    if test "$TERM_PROGRAM" = iTerm.app
+        echo com.googlecode.iterm2
+    else if type -q lsappinfo
         lsappinfo info -only bundleID (lsappinfo front) | cut -d '"' -f4
     else if test -n "$SWAYSOCK"
         and type -q jq
@@ -54,7 +88,7 @@ function __done_get_focused_window_id
         # Test that the X server at $DISPLAY is running
         and xprop -grammar >/dev/null 2>&1
         xprop -root 32x '\t$0' _NET_ACTIVE_WINDOW | cut -f 2
-    else if uname -a | string match --quiet --regex Microsoft
+    else if uname -a | string match --quiet --ignore-case --regex microsoft
         __done_run_powershell_script '
 Add-Type @"
     using System;
@@ -66,20 +100,26 @@ Add-Type @"
 "@
 [WindowsCompat]::GetForegroundWindow()
 '
+    else if set -q __done_allow_nongraphical
+        echo 12345 # dummy value
     end
 end
 
 function __done_is_tmux_window_active
     set -q fish_pid; or set -l fish_pid %self
 
-    # If tmux is set to not run as a login shell,
-    # e.g. `set -g default-command "${SHELL}"` in tmux config,
-    # then the pane_pid will be parent pid of the current fish shell.
-    if status is-login
+    # Prior to fish 3.2.0, when tmux is set to not run as a login shell, e.g.
+    # `set -g default-command "${SHELL}"` in tmux config, then the pane_pid
+    # will be parent pid of the current fish shell.
+    set fish_version (string split . $FISH_VERSION)
+    if test $fish_version[1] -eq 3; and test $fish_version[2] -ge 2
+        set tmux_fish_pid $fish_pid
+    else if status is-login
         set tmux_fish_pid $fish_pid
     else
-        set tmux_fish_pid (ps -o ppid= -p $fish_pid)
+        set tmux_fish_pid (ps -o ppid= -p $fish_pid | string trim)
     end
+
     # tmux session attached and window is active -> no notification
     # all other combinations -> send notification
     tmux list-panes -a -F "#{session_attached} #{window_active} #{pane_pid}" | string match -q "1 1 $tmux_fish_pid"
@@ -91,6 +131,11 @@ end
 
 function __done_is_process_window_focused
     # Return false if the window is not focused
+
+    if set -q __done_allow_nongraphical
+        return 1
+    end
+
     set __done_focused_window_id (__done_get_focused_window_id)
     if test "$__done_sway_ignore_visible" -eq 1
         and test -n "$SWAYSOCK"
@@ -116,11 +161,34 @@ function __done_is_process_window_focused
     return 0
 end
 
+function __done_humanize_duration -a milliseconds
+    set -l seconds (math --scale=0 "$milliseconds/1000" % 60)
+    set -l minutes (math --scale=0 "$milliseconds/60000" % 60)
+    set -l hours (math --scale=0 "$milliseconds/3600000")
+
+    if test $hours -gt 0
+        printf '%s' $hours'h '
+    end
+    if test $minutes -gt 0
+        printf '%s' $minutes'm '
+    end
+    if test $seconds -gt 0
+        printf '%s' $seconds's'
+    end
+end
 
 # verify that the system has graphical capabilities before initializing
 if test -z "$SSH_CLIENT" # not over ssh
     and count (__done_get_focused_window_id) >/dev/null # is able to get window id
+    set __done_enabled
+end
 
+if set -q __done_allow_nongraphical
+    and set -q __done_notification_command
+    set __done_enabled
+end
+
+if set -q __done_enabled
     set -g __done_initial_window_id ''
     set -q __done_min_cmd_duration; or set -g __done_min_cmd_duration 5000
     set -q __done_exclude; or set -g __done_exclude 'git (?!push|pull)'
@@ -143,7 +211,7 @@ if test -z "$SSH_CLIENT" # not over ssh
             and not string match -qr $__done_exclude $history[1] # don't notify on git commands which might wait external editor
 
             # Store duration of last command
-            set -l humanized_duration (humanize_duration $cmd_duration)
+            set -l humanized_duration (__done_humanize_duration "$cmd_duration")
 
             set -l title "Done in $humanized_duration"
             set -l wd (string replace --regex "^$HOME" "~" (pwd))
@@ -173,12 +241,23 @@ if test -z "$SSH_CLIENT" # not over ssh
                 end
 
             else if type -q notify-send # Linux notify-send
-                set -l urgency $__done_notification_urgency_level
+                # set urgency to normal
+                set -l urgency "normal"
+
+                # use user-defined urgency if set
+                if set -q __done_notification_urgency_level
+                    set urgency "$__done_notification_urgency_level"
+                end
                 # override user-defined urgency level if non-zero exitstatus
                 if test $exit_status -ne 0
-                    set urgency "--urgency=critical"
+                    set urgency "critical"
+                    if set -q __done_notification_urgency_level_failure
+                        set urgency "$__done_notification_urgency_level_failure"
+                    end
                 end
-                notify-send $urgency --icon=utilities-terminal --app-name=fish "$title" "$message"
+
+                notify-send --urgency=$urgency --icon=utilities-terminal --app-name=fish "$title" "$message"
+
                 if test "$__done_notify_sound" -eq 1
                     echo -e "\a" # bell sound
                 end
@@ -193,19 +272,8 @@ if test -z "$SSH_CLIENT" # not over ssh
                     echo -e "\a" # bell sound
                 end
 
-            else if uname -a | string match --quiet --regex Microsoft
-                if test "$__done_notify_sound" -eq 1
-                    set soundopt "-Sound Default"
-                else
-                    set soundopt "-Silent"
-                end
-
-                __done_run_powershell_script "
-                    Import-Module -Name BurntToast 2>&1 | Out-Null
-                    if (Get-Module -Name BurntToast) {
-                        New-BurntToastNotification -Text \"$title\",\"$message\" $soundopt
-                    }
-                "
+            else if uname -a | string match --quiet --ignore-case --regex microsoft
+                __done_windows_notification "$title" "$message"
 
             else # anything else
                 echo -e "\a" # bell sound
@@ -223,6 +291,9 @@ function __done_uninstall -e done_uninstall
     functions -e __done_is_tmux_window_active
     functions -e __done_is_screen_window_active
     functions -e __done_is_process_window_focused
+    functions -e __done_windows_notification
+    functions -e __done_run_powershell_script
+    functions -e __done_humanize_duration
 
     # Erase __done variables
     set -e __done_version

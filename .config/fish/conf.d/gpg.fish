@@ -1,3 +1,1 @@
-if status is-interactive
-    set -gx GPG_TTY (tty)
-end
+status is-interactive; and set -gx GPG_TTY (tty)

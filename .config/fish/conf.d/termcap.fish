@@ -1,3 +1,5 @@
+status is-interactive; or exit
+
 set -gx LESS_TERMCAP_mb (printf "\e[1;31m")
 set -gx LESS_TERMCAP_md (printf "\e[1;31m")
 set -gx LESS_TERMCAP_me (printf "\e[0m")
