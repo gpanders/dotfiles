@@ -7,6 +7,11 @@ set -q fish_prompt_delim; or set -g fish_prompt_delim '❯'
 
 set -g __prompt_git __prompt_git_$fish_pid
 
+for type in cwd venv jobs git cmd_duration prompt_delim
+    set -l color fish_color_$type
+    set -g __prompt_color_$type (set_color $$color)
+end
+
 function $__prompt_git --on-variable $__prompt_git
     commandline -f repaint
 end
@@ -24,10 +29,17 @@ function __prompt_venv --on-variable VIRTUAL_ENV
     end
 end
 
-function __prompt_fish_postexec_handler --on-event fish_postexec
-    if test "$CMD_DURATION" -lt 1000
-        set -g __prompt_cmd_duration
+function __prompt_update_jobs
+    set -l njobs (count (jobs -p))
+    if test $njobs -eq 0
+        set -g __prompt_jobs
     else
+        set -g __prompt_jobs "[$njobs] "
+    end
+end
+
+function __prompt_fish_postexec_handler --on-event fish_postexec
+    if test "$CMD_DURATION" -gt 1000
         set -l secs (math --scale=1 $CMD_DURATION/1000 % 60)
         set -l mins (math --scale=0 $CMD_DURATION/60000 % 60)
         set -l hours (math --scale=0 $CMD_DURATION/3600000)
@@ -36,16 +48,17 @@ function __prompt_fish_postexec_handler --on-event fish_postexec
         test $mins -gt 0; and set -l -a out $mins"m"
         test $secs -gt 0; and set -l -a out $secs"s"
 
-        set -g __prompt_cmd_duration "$out "
+        set -g __prompt_cmd_duration_tmp "$out "
     end
 
-    set CMD_DURATION 0
-
-    set -l njobs (count (jobs -p))
-    if test $njobs -eq 0
-        set -g __prompt_jobs
-    else
-        set -g __prompt_jobs "[$njobs] "
+    set -l last_job (jobs -l -g)
+    if test -n "$last_job"; and test "$last_job" != "$__prompt_last_job"
+        set -g __prompt_last_job $last_job
+        __prompt_update_jobs
+        function _notify_job_$last_job --on-job-exit $last_job --inherit-variable last_job
+            functions -e _notify_job_$last_job
+            __prompt_update_jobs
+        end
     end
 end
 
@@ -75,6 +88,13 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
     end
 
     set -q __prompt_pwd; or __prompt_update_pwd
+
+    if set -q __prompt_cmd_duration_tmp
+        set -g __prompt_cmd_duration $__prompt_cmd_duration_tmp
+        set -e __prompt_cmd_duration_tmp
+    else
+        set -g __prompt_cmd_duration
+    end
 
     if not set -q __prompt_git_head
         if test -n "$GIT_DIR" && test -f $GIT_DIR/HEAD
@@ -143,12 +163,4 @@ end
 function __prompt_fish_exit_handler --on-event fish_exit
     set -q __prompt_last_pid; and command kill $__prompt_last_pid 2>/dev/null
     set -e $__prompt_git
-end
-
-for type in cwd venv jobs git cmd_duration prompt_delim
-    function __prompt_color_$type --on-variable fish_color_$type --inherit-variable type
-        set -l color fish_color_$type
-        set -g __prompt_color_$type (set_color $$color)
-    end
-    __prompt_color_$type
 end
