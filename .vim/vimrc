@@ -155,8 +155,8 @@ else
   set grepprg=internal
 endif
 
-" Enable histogram diff
-silent! set diffopt=filler,internal,algorithm:histogram,indent-heuristic
+" Enable indent-heuristic to make vimdiff more closely match git diff
+silent! set diffopt+=indent-heuristic
 " }}}
 
 " Mappings {{{
