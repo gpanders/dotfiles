@@ -73,7 +73,7 @@ function __done_windows_notification -a "title" -a "message"
 end
 
 function __done_get_focused_window_id
-    if test "$TERM_PROGRAM" = iTerm.app
+    if set -q ITERM_SESSION_ID
         echo com.googlecode.iterm2
     else if type -q lsappinfo
         lsappinfo info -only bundleID (lsappinfo front) | cut -d '"' -f4
