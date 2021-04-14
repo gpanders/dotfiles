@@ -52,7 +52,7 @@ macro index \Cs \
 <change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
 <enter-command>source ~/.config/mutt/hooks.rc<enter>\
 <enter-command>set wait_key=\$my_wait_key<enter>" \
-      "search mail with notmuch"
+    "search mail with notmuch"
 
 # Use notmuch-mutt to reconstruct thread
 macro index \C] \
@@ -62,10 +62,17 @@ macro index \C] \
 <change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
 <enter-command>source ~/.config/mutt/hooks.rc<enter>\
 <enter-command>set wait_key=\$my_wait_key<enter>" \
-      "reconstruct thread with notmuch"
+    "reconstruct thread with notmuch"
 
 # Move messages to the $mbox folder
 macro index,pager A "<enter-command>set my_resolve=\$resolve resolve=no<enter><clear-flag>N<save-message>\><enter><enter-command>set resolve=\$my_resolve<enter><sync-mailbox><refresh>" "archive message"
+
+# Open message with viewhtmlmsg
+macro index,pager H \
+"<enter-command>set my_wait_key=\$wait_key my_pipe_decode=\$pipe_decode wait_key=no pipe_decode=no<enter>\
+<pipe-message>viewhtmlmsg -s<enter>\
+<enter-command>set wait_key=\$my_wait_key pipe_decode=\$my_pipe_decode &my_pipe_decode &my_wait_key<enter>" \
+    "view HTML in browser"
 
 # Fetch mail
 macro index <F5> "<enter-command>set my_wait_key=\$wait_key wait_key=no<enter><shell-escape>mbsync -a<enter><enter-command>set wait_key=\$my_wait_key<enter>" "synchronize mailbox"
