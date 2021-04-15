@@ -12,7 +12,7 @@ else if command -sq ag
 end
 
 set -gx FZF_DEFAULT_COMMAND "$FZF_CTRL_T_COMMAND"
-set -gx FZF_DEFAULT_OPTS '--height=20 --reverse --no-info --cycle --color=16,fg:-1,fg+:-1:bold,hl:3:bold,hl+:3:bold,pointer:4,marker:-1,prompt:-1,info:-1'
+set -gx FZF_DEFAULT_OPTS '--color=16,fg:-1,fg+:-1:bold,hl:3:bold,hl+:3:bold,pointer:4,marker:-1,prompt:-1,info:-1,border:11'
 
 set -l dirs /opt/local/share/fzf/shell /usr/share/doc/fzf/examples $HOME/.fzf/shell
 for dir in $dirs
