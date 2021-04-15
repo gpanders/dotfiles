@@ -2,13 +2,7 @@ if !get(g:, 'loaded_fzf')
   finish
 endif
 
-nnoremap <silent> <Space>f :<C-U>call fzf#files()<CR>
-
-command! -bang -complete=tag -nargs=? Tags call fzf#tags(<bang>0, <q-args>, '')
-command! -bang -complete=tag -nargs=? Stags call fzf#tags(<bang>0, <q-args>, 's')
-nnoremap <Space>t :<C-U>Tags<CR>
-nnoremap <C-W><Space>t :<C-U>Stags<CR>
-
+nnoremap <silent> <C-P> :<C-U>call fzf#files()<CR>
 nnoremap <silent> <Space>b :<C-U>call fzf#buffers(0, '')<CR>
 nnoremap <silent> <C-W><Space>b :<C-U>call fzf#buffers(0, 's')<CR>
 
