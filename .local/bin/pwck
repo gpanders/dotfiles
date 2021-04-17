@@ -1,40 +1,52 @@
-#!/bin/sh
+#!/usr/bin/env python3
 
-usage() {
-	echo "Usage: $(basename "$0") [-q] [PASSWORD]"
-}
+import getpass
+import hashlib
+import sys
+import urllib.request
 
-while getopts "hq" o; do
-	case "$o" in
-		h) usage; exit 0 ;;
-		q) quiet=1 ;;
-		*) usage >&2; exit 1 ;;
-	esac
-done
-shift $((OPTIND-1))
 
-password="$1"
-if [ -z "$password" ]; then
-	if [ -t 0 ]; then
-		printf 'Password: '
-		stty -echo
-	fi
-	read -r password
-	if [ -t 0 ]; then
-		stty echo
-		printf '\n'
-	fi
-fi
+def pwck(password):
+    if password is None:
+        if sys.stdin.isatty():
+            password = getpass.getpass()
+        else:
+            password = sys.stdin.read().rstrip()
 
-hash=$(echo "$password" | tr -d '\n' | sha1sum | cut -d' ' -f 1 | tr 'a-f' 'A-F')
-prefix=$(echo "$hash" | cut -c 1-5)
-suffix=$(echo "$hash" | cut -c 6-)
-match=$(curl -s https://api.pwnedpasswords.com/range/"$prefix" | grep "^$suffix")
+    sha1 = hashlib.sha1(password.encode("utf8")).hexdigest().upper()
+    prefix = sha1[0:5]
+    suffix = sha1[5:]
 
-if [ -n "$match" ]; then
-	nmatches=$(echo "$match" | cut -d: -f 2 | tr -d '\r')
-	[ -z "$quiet" ] && echo "The password you entered was found $nmatches times in known data breaches."
-        exit 1
-elif [ -z "$quiet" ]; then
-	echo "The password you entered was not found in any known data breaches."
-fi
+    res = urllib.request.urlopen(f"https://api.pwnedpasswords.com/range/{prefix}")
+    for line in res.read().splitlines():
+        hash, num = line.decode("ascii").split(":")
+        if hash == suffix:
+            return int(num)
+
+    return 0
+
+
+def main():
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-q", "--quiet", action="store_true", help="suppress output")
+    parser.add_argument("password", nargs="?")
+
+    args = parser.parse_args()
+
+    matches = pwck(args.password)
+    if not args.quiet:
+        if matches > 0:
+            print(
+                f"The password you entered was found {matches} times in known data "
+                "breaches."
+            )
+        else:
+            print("The password you entered was not found in any known data breaches.")
+
+    return 0 if matches == 0 else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
