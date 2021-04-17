@@ -26,7 +26,9 @@ let g:neomake_info_sign = { 'text': 'I' }
 
 let g:neomake_python_enabled_makers = []
 
-if executable('pylint')
+if executable('flake8')
+    let g:neomake_python_enabled_makers += ['flake8']
+elseif executable('pylint')
     let g:neomake_python_enabled_makers += ['pylint']
 endif
 
