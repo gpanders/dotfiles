@@ -1,15 +1,14 @@
 text/plain; ${EDITOR:-vi} %s
 text/html; open %s; nametemplate=%s.html; needsterminal
-text/html; w3m -I %{charset} -O utf-8 -T text/html; copiousoutput; test=test -n "$MUTT_EDITOR"
-text/html; lynx -dump -display_charset=utf-8 -nolist %s; copiousoutput; nametemplate=%s.html; test=test -n "$MUTT_EDITOR"
+text/html; html2text --pad-tables --reference-links --ignore-mailto-links --no-wrap-links %s %{charset}; copiousoutput; test=test -n "$MUTT_EDITOR"
 text/html; w3m -I %{charset} -O utf-8 -T text/html -o display_link_number=1; copiousoutput
 text/html; lynx -dump -display_charset=utf-8 %s; copiousoutput; nametemplate=%s.html
 text/x-diff; colordiff; copiousoutput
 text/x-patch; colordiff; copiousoutput
 
 text/calendar; sed 's/^METHOD:REQUEST$/METHOD:PUBLISH/' %s > %s.tmp && mv %s.tmp %s && open %s; nametemplate=%s.ics; needsterminal
-text/calendar; mutt-ics; test=command -v mutt-ics >/dev/null; copiousoutput
-application/ics; mutt-ics; test=command -v mutt-ics >/dev/null; copiousoutput
+text/calendar; mutt-ics; copiousoutput
+application/ics; mutt-ics; copiousoutput
 
 # Open these MIME types in external program
 application/*; open %s; needsterminal
