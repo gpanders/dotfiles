@@ -1,6 +1,9 @@
 let s:placeholder = '{%}'
 
-let s:extmap = {'python': 'py'}
+" Map filetypes to extensions for files that don't have extensions but do have
+" a known filetype. If an extension and its filetype are the same (e.g. 'c')
+" then it doesn't need an entry
+let s:extmap = {'python': 'py', 'ruby': 'rb'}
 
 function! snippets#expand() abort
     let lnum = line('.')
@@ -28,11 +31,10 @@ function! snippets#expand() abort
     delete _
     let snippet = readfile(file)
     call append(lnum - 1, snippet)
-    normal! =']
+    normal! '[
 
     let [l, c] = searchpos(s:placeholder, '', lnum + len(snippet) - 1)
     if l
-        call cursor(l, c)
         call setline(l, substitute(getline(l), s:placeholder, '', ''))
     endif
 
