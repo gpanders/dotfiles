@@ -1,7 +1,7 @@
 text/plain; ${EDITOR:-vi} %s
 text/html; open %s; nametemplate=%s.html; needsterminal
-text/html; html2text --pad-tables --reference-links --ignore-mailto-links --no-wrap-links %s %{charset}; copiousoutput; test=test -n "$MUTT_EDITOR"
-text/html; w3m -I %{charset} -O utf-8 -T text/html -o display_link_number=1; copiousoutput
+text/html; html2text --pad-tables --images-to-alt --reference-links --ignore-mailto-links --no-wrap-links %s %{charset}; copiousoutput; test=test -n "$MUTT_EDITOR"
+text/html; w3m -I %{charset} -O utf-8 -T text/html -o pseudo_inlines=0 -o display_link_number=1; copiousoutput
 text/html; lynx -dump -display_charset=utf-8 %s; copiousoutput; nametemplate=%s.html
 text/x-diff; colordiff; copiousoutput
 text/x-patch; colordiff; copiousoutput
