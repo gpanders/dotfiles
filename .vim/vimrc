@@ -106,7 +106,6 @@ set shiftwidth=4
 set showmatch
 set sidescrolloff=5
 set smartcase
-set softtabstop=-1
 set noswapfile
 silent! set tagcase=match
 set virtualedit+=block
