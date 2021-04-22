@@ -1,10 +1,13 @@
 status is-interactive; or exit
 
 if command -sq fd
-    set -g FZF_CTRL_T_COMMAND fd --type f --follow
-    set -g FZF_ALT_C_COMMAND fd -t d
+    set -g FZF_CTRL_T_COMMAND fd --type f --follow --no-ignore-vcs
+    set -g FZF_ALT_C_COMMAND fd -t d --no-ignore-vcs
+else if command -sq fdfind
+    set -g FZF_CTRL_T_COMMAND fdfind --type f --follow --no-ignore-vcs
+    set -g FZF_ALT_C_COMMAND fdfind -t d --no-ignore-vcs
 else if command -sq rg
-    set -g FZF_CTRL_T_COMMAND rg --files
+    set -g FZF_CTRL_T_COMMAND rg --files --no-ignore-vcs
     set -g FZF_ALT_C_COMMAND find -L . -mindepth 1 -type d -print | sed 's|^\./||'
 else if command -sq ag
     set -g FZF_CTRL_T_COMMAND ag -g ''
