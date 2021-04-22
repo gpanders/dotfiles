@@ -8,7 +8,7 @@ function! fzf#files() abort
         return
     endif
 
-    FZF --layout=default --tiebreak=end,length
+    FZF --tiebreak=length,end
 endfunction
 
 function! fzf#buffers(bang, mod) abort
@@ -18,19 +18,21 @@ function! fzf#buffers(bang, mod) abort
         return
     endif
 
-    let digits = (bufnr('$') / 10) + 1
-    let buffers = map(reverse(getbufinfo({'buflisted': 1})), {_, v -> 
-                \ printf('%-*d %-1s %-1s %s',
-                \       digits,
+    let buffers = reverse(getbufinfo({'buflisted': 1}))
+    let curbuf = bufnr('')
+    let lastbuf = bufnr('#')
+    let header_lines = '--header-lines=' . (buffers[0].bufnr == curbuf ? 1 : 0)
+    let lines = map(buffers, {_, v ->
+                \ printf("%d\t%-1s%-1s\x1b[0m %s",
                 \       v.bufnr,
-                \       bufnr('') == v.bufnr ? '%' : bufnr('#') == v.bufnr ? '#' : '',
-                \       getbufvar(v.bufnr, '&modified') ? '+' : '',
-                \       fnamemodify(v.name, ':.')
+                \       curbuf == v.bufnr ? "\x1b[34m%" : lastbuf == v.bufnr ? "\x1b[35m#" : '',
+                \       v.changed ? "\x1b[31m+" : '',
+                \       empty(v.name) ? '[No Name]' : fnamemodify(v.name, ':p:~:.')
                 \ )})
 
     call fzf#run(fzf#wrap('Buffers', {
-                \ 'source': buffers,
+                \ 'source': lines,
                 \ 'sink': {b -> execute(a:mod . 'b' . split(b)[0])},
-                \ 'options': '-n -1 --layout=default --no-info --no-multi --tiebreak=index',
+                \ 'options': '+m ' . header_lines . ' -d \\t --ansi --tiebreak=index -n 1 --with-nth=2..',
                 \ }, a:bang))
 endfunction
