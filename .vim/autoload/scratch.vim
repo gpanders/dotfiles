@@ -13,8 +13,9 @@ function! scratch#open(cmd, mods) abort
     endif
     execute a:mods . ' new'
     let w:scratch = 1
-    setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile
     call setline(1, output)
+    nnoremap <buffer> q <C-W>q
+    setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nomodifiable
     call s:highlight(a:cmd)
 
     augroup scratch
