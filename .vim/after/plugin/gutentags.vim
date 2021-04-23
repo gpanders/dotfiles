@@ -1,9 +1,6 @@
-if !get(g:, 'loaded_gutentags')
+if !get(g:, 'loaded_gutentags') || &compatible
     finish
 endif
-
-let s:save_cpo = &cpo
-set cpo&vim
 
 let g:gutentags_ctags_extra_args = ['--tag-relative=yes']
 let g:gutentags_ctags_exclude = ['build']
@@ -30,6 +27,3 @@ let g:gutentags_init_user_func = 'GutentagsInitUserFunc'
 " always look under the .git/ directory by default
 let g:gutentags_ctags_auto_set_tags = 0
 setglobal tags^=./.git/tags;
-
-let &cpo = s:save_cpo
-unlet s:save_cpo

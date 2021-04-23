@@ -1,6 +1,5 @@
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
-" enable spell check
 setlocal spell
 setlocal textwidth=72
 setlocal formatoptions+=cn

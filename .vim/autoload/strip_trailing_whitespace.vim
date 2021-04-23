@@ -39,7 +39,7 @@ function! strip_trailing_whitespace#strip(start, end) abort
 endfunction
 
 " Strip horizontal trailing whitespace, return the number of lines changed
-function s:StripHorizontal(start, end) abort
+function! s:StripHorizontal(start, end) abort
 
   " Start a count of lines trimmed
   let l:count = 0
@@ -66,7 +66,7 @@ function s:StripHorizontal(start, end) abort
 endfunction
 
 " Strip trailing vertical whitespace, return the number of lines changed
-function s:StripVertical() abort
+function! s:StripVertical() abort
 
   " Store the number of the last line we found with non-whitespace characters
   " on it; start at 1 because even if it's empty it's never trailing
@@ -102,7 +102,7 @@ function s:StripVertical() abort
 endfunction
 
 " Position the cursor; use cursor() if we have it, :normal if not (Vim 6.0)
-function s:Cursor(line, col) abort
+function! s:Cursor(line, col) abort
   if exists('*cursor')
     return cursor(a:line, a:col)
   else

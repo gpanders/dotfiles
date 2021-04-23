@@ -1,5 +1,3 @@
-" Set the tabline
-
 function! TabLine()
   let s = ''
   for i in range(1, tabpagenr('$'))

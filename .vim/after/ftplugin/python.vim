@@ -1,12 +1,11 @@
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
-" Set textwidth to 88 to mimic black
+" black uses 88 chars by default
 setlocal textwidth=88
 
-" Set format options
-setlocal formatoptions-=t " Don't auto-wrap lines unless they're comments
+" Don't auto-wrap lines unless they're comments
+setlocal formatoptions-=t
 
-" Use indent for foldmethod
 setlocal foldmethod=indent
 setlocal foldnestmax=2
 

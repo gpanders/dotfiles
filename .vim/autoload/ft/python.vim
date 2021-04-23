@@ -1,6 +1,3 @@
-" Python autoload functions
-" Author: Greg Anders
-
 " Generate include path for python, using the terminal's version of Python and
 " not Vim's compiled version. Use the asynchronous jobs API if available,
 " otherwise make a system call and cache the result.
