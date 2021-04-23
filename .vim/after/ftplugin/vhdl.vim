@@ -1,8 +1,5 @@
-" VHDL uses -- as comment string
 setlocal comments=:--
 setlocal commentstring=--%s
-
-" VHDL is case insensitive
 setlocal tagcase=ignore
 setlocal ignorecase
 setlocal nosmartcase

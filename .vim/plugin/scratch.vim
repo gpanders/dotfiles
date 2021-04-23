@@ -1,6 +1,3 @@
-" Provide a :Scratch command to view output of any command in a scratch
-" buffer
-
 if exists('g:loaded_scratch')
   finish
 endif

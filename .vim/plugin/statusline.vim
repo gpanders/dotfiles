@@ -1,6 +1,3 @@
-" Set the statusline
-
-" Initialize StatuslineMode highlight group
 highlight! link StatuslineMode StatuslineModeNormal
 
 function! FugitiveStatusLine(sep)
@@ -14,13 +11,11 @@ function! FugitiveStatusLine(sep)
 endfunction
 
 function! StatusLine(sep)
-  " Reset the statusline
   let s = ''
 
   " Set highlight to StatuslineMode
   let s .= '%#StatuslineMode# '
 
-  " Show mode
   let m = mode()
   if m ==# 'n'
     highlight! link StatuslineMode StatuslineModeNormal

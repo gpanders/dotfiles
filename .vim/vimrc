@@ -48,12 +48,10 @@ if !has('nvim')
       let &undodir = vim#datadir() . '/undo//,' . &undodir
   endif
 
-  " Create datadir subdirectories
   call vim#mkdirs()
 endif
 " }}}
 
-" Clear all vimrc autocmds at the beginning
 augroup vimrc | execute 'autocmd!' | augroup END
 
 " Setup {{{
@@ -65,7 +63,6 @@ endif
 
 " Use vim-pathogen if native packages are not supported
 if !has('packages')
-  " Use vim-pathogen to emulate native packaging behavior
   let s:vimdir = split(&runtimepath, ',')[0]
   if empty(glob(s:vimdir . '/autoload/pathogen.vim'))
     silent execute '!curl -LSso ' . s:vimdir . '/autoload/pathogen.vim https://tpo.pe/pathogen.vim'
@@ -80,10 +77,8 @@ endif
 " Try to make comments italic
 autocmd vimrc ColorScheme * highlight Comment gui=italic cterm=italic
 
-" Load colorscheme
 silent! colorscheme base16-eighties
 
-" Highlight trailing whitespace
 highlight link TrailingWhitespace Error
 " }}}
 
@@ -122,7 +117,6 @@ if has('persistent_undo')
   set undofile
 endif
 
-" Color the whole area outside of 'textwidth'
 let &colorcolumn = '+' . join(range(1, 256), ',+')
 
 if has('linebreak')
@@ -135,14 +129,12 @@ if has('popupwin')
   set completepopup=highlight:Pmenu,align:menu,border:off
 endif
 
-" Clear default path variables
 setglobal path=.,,
 setglobal include=
 setglobal includeexpr=
 setglobal define=
 setglobal isfname+=@-@
 
-" Use a better grepprg if available
 set grepformat^=%f:%l:%c:%m
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case
@@ -196,10 +188,8 @@ nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap Q <Nop>
 nnoremap gQ <Nop>
 
-" Write file with <Space>w
 nnoremap <Space>w :w<CR>
 
-" List buffers and put :b on the command line
 nnoremap <Space>b :ls<CR>:b<Space>
 nnoremap <C-W><Space>b :ls<CR>:sb<Space>
 
@@ -314,21 +304,13 @@ endif
 " Autocommands {{{
 augroup vimrc
 
-" Set marks by filetype for quick navigation
-autocmd BufLeave *.h mark H
-autocmd BufLeave *.{c,cc,cpp} mark C
-autocmd BufLeave *.py mark P
-
-" Close preview window with q
 autocmd BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
 
-" Start insert mode when entering terminal
 if exists('##TermOpen')
   autocmd TermOpen * startinsert
   autocmd BufEnter term://* startinsert
 endif
 
-" Enable omnicompletion from syntax if no other option available
 " See :h ft-syntax-omni
 autocmd FileType * if &omnifunc == '' | setlocal omnifunc=syntaxcomplete#Complete | endif
 
