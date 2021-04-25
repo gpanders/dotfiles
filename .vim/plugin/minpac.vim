@@ -5,10 +5,10 @@ endif
 function! s:PackInit() abort
     silent! packadd minpac
 
-    if !exists('*minpac#init')
-        let packpath = split(&packpath, ',')[0]
-        call mkdir(packpath . '/pack/minpac/opt', 'p')
-        silent execute '!git clone https://github.com/k-takata/minpac ' . packpath . '/pack/minpac/opt/minpac'
+    if !exists('g:loaded_minpac')
+        let packpath = split(&packpath, ',')[0] . '/pack/minpac/opt'
+        call mkdir(packpath, 'p')
+        silent execute '!git clone https://github.com/k-takata/minpac' packpath . '/minpac'
         packadd minpac
     endif
 
