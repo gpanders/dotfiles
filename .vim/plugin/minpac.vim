@@ -104,21 +104,17 @@ function! s:PackInit() abort
     call minpac#add('zah/nim.vim')
 endfunction
 
-function! s:PackUpdate(...)
+function! s:PackUpdate(...) abort
     call s:PackInit()
-    if exists('*minpac#update')
-        call minpac#update(a:0 ? a:1 : '')
-    endif
+    call minpac#update(a:0 ? a:1 : '')
 endfunction
 
-function! s:PackClean(...)
+function! s:PackClean(...) abort
     call s:PackInit()
-    if exists('*minpac#clean')
-        if a:0
-            call minpac#clean(a:1)
-        else
-            call minpac#clean()
-        endif
+    if a:0
+        call minpac#clean(a:1)
+    else
+        call minpac#clean()
     endif
 endfunction
 

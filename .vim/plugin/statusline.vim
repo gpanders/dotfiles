@@ -1,7 +1,7 @@
 highlight! link StatuslineMode StatuslineModeNormal
 
 function! FugitiveStatusLine(sep)
-  if exists('*fugitive#head')
+  if get(g:, 'loaded_fugitive')
     let branch = fugitive#head()
     if branch !=# ''
       return branch . ' ' . a:sep . ' '
