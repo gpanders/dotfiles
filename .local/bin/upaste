@@ -1,6 +1,4 @@
-#!/bin/sh
-
-set -euf
+#!/bin/sh -euf
 
 usage() {
 	echo "Example: upaste [-t js] [test.js]"
@@ -15,7 +13,6 @@ while getopts 'ht:' o; do
 		;;
 	t)
 		type="$OPTARG"
-		shift 2
 		;;
 	*)
 		usage
