@@ -44,11 +44,11 @@ function __prompt_fish_postexec_handler --on-event fish_postexec
         set -l mins (math --scale=0 $CMD_DURATION/60000 % 60)
         set -l hours (math --scale=0 $CMD_DURATION/3600000)
 
-        test $hours -gt 0; and set -l -a out $hours"h"
-        test $mins -gt 0; and set -l -a out $mins"m"
-        test $secs -gt 0; and set -l -a out $secs"s"
-
-        set -g __prompt_cmd_duration_tmp "$out "
+        set -g __prompt_cmd_duration_tmp
+        test $hours -gt 0; and set -a __prompt_cmd_duration_tmp $hours"h"
+        test $mins -gt 0; and set -a __prompt_cmd_duration_tmp $mins"m"
+        test $secs -gt 0; and set -a __prompt_cmd_duration_tmp $secs"s"
+        set -a __prompt_cmd_duration_tmp ' '
     end
 
     set -l last_job (jobs -l -g)
@@ -88,6 +88,10 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
     end
 
     set -q __prompt_pwd; or __prompt_update_pwd
+
+    if set -q IN_NIX_SHELL
+        set -g __prompt_venv 'nix-shell '
+    end
 
     if set -q __prompt_cmd_duration_tmp
         set -g __prompt_cmd_duration $__prompt_cmd_duration_tmp
