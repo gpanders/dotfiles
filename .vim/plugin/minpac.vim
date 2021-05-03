@@ -102,6 +102,9 @@ function! s:PackInit() abort
 
     " nim
     call minpac#add('zah/nim.vim')
+
+    " Nix
+    call minpac#add('LnL7/vim-nix')
 endfunction
 
 function! s:PackUpdate(...) abort
