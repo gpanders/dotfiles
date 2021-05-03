@@ -14,10 +14,9 @@ auto_view text/x-patch
 set editor = "~/.local/share/mutt/bgedit.sh `echo $EDITOR`"
 set background_edit = `[ -n "$TMUX" ] && echo 'yes' || echo 'no'`
 
-# Set the envelope from address. This will cause the sendmail command to be
-# invoked with the -f flag with the value of 'envelope_from_address' if set, or
-# using the From header otherwise.
 set use_envelope_from
+
+set sendmail = msmtp
 
 set alias_file = ~/.local/share/mutt/aliases
 source $alias_file

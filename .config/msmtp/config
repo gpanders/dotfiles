@@ -1,0 +1,13 @@
+defaults
+
+tls on
+auth on
+
+account personal
+
+host mail.gandi.net
+port 587
+from greg@gpanders.com
+user greg@gpanders.com
+
+account default : personal
