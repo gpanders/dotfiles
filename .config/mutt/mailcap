@@ -14,9 +14,3 @@ application/ics; mutt-ics; copiousoutput
 application/*; open %s; needsterminal
 image/*; open %s; needsterminal
 audio/*; open %s; needsterminal
-
-# Fallback to lesspipe for pager display
-text/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
-application/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
-image/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
-audio/*; LESSQUIET=1 lesspipe.sh %s; copiousoutput
