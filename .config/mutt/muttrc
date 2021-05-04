@@ -1,6 +1,5 @@
 set realname = "Gregory Anders"
 
-# Settings for handling MIME types
 set mailcap_path = ~/.config/mutt/mailcap
 alternative_order text/calendar text/plain text/enriched text/html
 unauto_view *
@@ -9,9 +8,11 @@ auto_view text/html
 auto_view text/x-diff
 auto_view text/x-patch
 
-# The bgedit.sh script launches the editor in a new pane if tmux is active.
+unignore sender
+
+# The bgedit script launches the editor in a new pane if tmux is active.
 # Otherwise it just starts the editor as normal.
-set editor = "~/.local/share/mutt/bgedit.sh `echo $EDITOR`"
+set editor = "~/.local/share/mutt/bgedit `echo $EDITOR`"
 set background_edit = `[ -n "$TMUX" ] && echo 'yes' || echo 'no'`
 
 set use_envelope_from
@@ -24,14 +25,10 @@ source $alias_file
 # Skip to compose when replying
 set fast_reply
 
-# Format of subject when forwarding
 set forward_format = "Fwd: %s"
 
 # Format of quoting header
 set attribution = "On %{%a, %d %b %Y %H:%M %z}, %n wrote:"
-
-# Include message in replies
-set include
 
 # Time before Mutt gives up waiting for user input (default is 600)
 set timeout = 10
@@ -39,45 +36,49 @@ set timeout = 10
 # Force UTF-8
 set send_charset = "utf-8"
 
-# Enable text_flowed formatting
+# Enable format=flowed
 set text_flowed
 
 # Don't mark messages as "old" if they're still unread
-set mark_old = no
+unset mark_old
 
 # Don't ask to append messages to a mailbox
-set confirmappend = no
+unset confirmappend
 
 # Don't ask to delete messages, just do it
-set delete = yes
+set delete
 
 # Don't move cursor after applying an action to a message (e.g. deleting or tagging)
-set resolve = no
+unset resolve
 
 # Automatically apply actions to all tagged messages. This is how most modern
 # email clients work anyway
-set auto_tag = yes
-
-# Format of directory listings when using <change-folder>
-set folder_format = "%t %N %-20.20f %?n?%8n?"
+set auto_tag
 
 # Remove delay between switching folders
 set sleep_time = 0
 
-# Index view options
-set date_format = "%a, %d %b %Y %H:%M:%S"
-set index_format = " [%Z]  %{%b %d}  %-20.20F %@list@%s"
+set folder_format = "%t %N %-20.20f %?n?%8n?"
+set index_format = " %-10.10@date@ %-30.30F %Z %@list@%-80.80s"
+set pager_format = " %-20.20n   %s%*  -- (%P)"
+set status_format = "    %m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %?p?(%p postponed)? %>"
 
+index-format-hook date "~d<1d" "%[%I:%m %p]"
+index-format-hook date "~d 01/01-" "%[%b %d]"
+index-format-hook date "~A"    "%[%Y-%m-%d]"
 index-format-hook list "~l" "[%B] "
 
-set pager_format = " %.50s // %n // %D%* %P "
-
+# Sort by threads and by reverse date within threads
 set sort = threads
-set sort_aux = reverse-last-date-received
-set sort_re
-set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+set sort_aux = reverse-last-date
+
+# Show the pager while a message is open
 set pager_index_lines = 10
+
+# Maintain three lines of context when moving by page
 set pager_context = 3
+
+# Don't move to the next message when scrolling past the bottom of a message
 set pager_stop
 
 # Scroll menus by one line instead of a whole page when crossing a screen
@@ -93,48 +94,32 @@ set reverse_name
 # ...but always use my real name
 unset reverse_realname
 
-# Colorized diffs and patches
-color body red default "^diff \-.*"
-color body yellow default "^index [a-f0-9].*"
-color body green default "^\-\-\- .*"
-color body red default "^[\+]{3} .*"
-color body green default "^[\+][^\+]+.*"
-color body red  default "^\-[^\-]+.*"
-color body blue default "^@@ .* @@"
-
-# Cache message headers and bodies
 set message_cachedir = ~/.cache/mutt/
 set header_cache = ~/.cache/mutt/
 
-# Where to store certificates
 set certificate_file = ~/.cache/mutt/certificates
-
-set status_format = "    %m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %?p?(%p postponed)? %>"
 
 # The script below takes the plain text email on its stdin and produces
 # HTML-ized output using a Markdown to HTML converter
-set send_multipart_alternative_filter = ~/.local/share/mutt/md2html.sh
+set send_multipart_alternative_filter = ~/.local/share/mutt/md2html
 
 # Offer to send multipart/alternative emails when replying to a text/html email
-reply-hook . 'set send_multipart_alternative = no'
+reply-hook . 'unset send_multipart_alternative'
 reply-hook '~M text/html' 'set send_multipart_alternative = ask-yes'
 
 # '! ~Q' means "not replied" and matches on messages that are not replies
-send-hook '! ~Q' 'set send_multipart_alternative = no'
+send-hook '! ~Q' 'unset send_multipart_alternative'
 
-# Save history to file
 set history_file = ~/.cache/mutt/history
 set save_history = 10
 
-# Disable signature
 unset signature
 
-# Use GPGME for encryption
 set crypt_use_gpgme
-
 set pgp_default_key = "0x56E93C2FB6B08BDB"
 
-# Set default directory to save attachments into
+set allow_ansi
+
 set attach_save_dir = ~/Downloads
 
 source ~/.config/mutt/colors.rc
@@ -143,5 +128,4 @@ source ~/.config/mutt/sidebar.rc
 source ~/.config/mutt/lists.rc
 source ~/.config/mutt/hooks.rc
 
-# Source default account
 source ~/.config/mutt/personal.rc

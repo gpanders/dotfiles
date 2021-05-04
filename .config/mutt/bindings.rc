@@ -1,9 +1,6 @@
-# g is group-reply by default, we'll map that to R instead
 bind  index,pager g noop
 bind  index,query gg first-entry
 bind  index,query G last-entry
-bind  index ^ imap-fetch-mail
-bind  index <space> collapse-thread
 
 # Navigate like vim
 bind  index,pager,query \Cu previous-page
@@ -15,67 +12,71 @@ bind  pager k previous-line
 macro pager gg <top><refresh>
 macro pager G <bottom><refresh>
 
+macro  index,pager g! <change-folder>!<enter>
+macro  index,pager g< <change-folder>\<<enter>
+macro  index,pager g> <change-folder>\><enter>
+
 # Shift+Tab moves backwards through unread
 bind index <esc><tab> noop
 bind index <backtab> previous-new-then-unread
 
-# Reply-all by default, use R to reply individually
-bind  index,pager r group-reply
-bind  index,pager R reply
+# Copy reply bindings from aerc
+macro index,pager rr "<enter-command>unset include<enter><group-reply>"
+macro index,pager rq "<enter-command>set include<enter><group-reply>"
+macro index,pager Rr "<enter-command>unset include<enter><reply>"
+macro index,pager Rq "<enter-command>set include<enter><reply>"
 
 # Deleting a message should also clear the 'new' flag
-macro index d <clear-flag>N<delete-message> "delete the current entry"
-
-# View attachments properly
-bind attach <return> view-mailcap
-
-# Show mailbox listing by default
-macro index,pager c <change-folder>?<tab> "open a different folder"
+macro index d "<enter-command>set my_resolve=\$resolve noresolve<enter><clear-flag>N<enter-command>set resolve=\$my_resolve &my_resolve<enter><delete-message>" "delete the current entry"
 
 # For some reason the screen gets borked after closing a message and requires
 # a redraw
 macro pager q <exit><refresh>
 
-# Return to the inbox from anywhere
-macro index,pager gi <change-folder>!<enter> "go to inbox"
-macro index,pager ga <change-folder>\><enter> "go to archive"
-
-# View urls within a message with urlscan
-macro index,pager \Cb "<enter-command>set my_wait_key=\$wait_key wait_key=no<enter><pipe-message>urlscan<enter><enter-command>set wait_key=\$my_wait_key<enter>" "extract URLs from message"
-macro attach,compose \Cb "<enter-command>set my_wait_key=\$wait_key wait_key=no<enter><pipe-entry>urlscan<enter><enter-command>set wait_key=\$my_wait_key<enter>" "extract URLs from attachment"
+# View urls within a message or attachment
+macro index,pager \Cb \
+"<enter-command>set my_wait_key=\$wait_key my_pipe_decode=\$pipe_decode nowait_key pipe_decode<enter>\
+<pipe-message>~/.local/share/tmux/scripts/fzfurl.sh<enter>\
+<enter-command>set wait_key=\$my_wait_key pipe_decode=\$my_pipe_decode &my_wait_key &my_pipe_decode<enter>" \
+    "extract URLs from message"
+macro attach,compose \Cb \
+"<enter-command>set my_wait_key=\$wait_key my_pipe_decode=\$pipe_decode nowait_key pipe_decode<enter>\
+<pipe-entry>~/.local/share/tmux/scripts/fzfurl.sh<enter>\
+<enter-command>set wait_key=\$my_wait_key pipe_decode=\$my_pipe_decode &my_wait_key &my_pipe_decode<enter>" \
+    "extract URLs from attachment"
 
 # Search with notmuch-mutt
 macro index \Cs \
-"<enter-command>set my_wait_key=\$wait_key wait_key=no<enter>\
+"<enter-command>set my_wait_key=\$wait_key nowait_key<enter>\
 <shell-escape>notmuch-mutt -r --prompt search<enter>\
 <enter-command>unhook folder-hook<enter>\
 <change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
 <enter-command>source ~/.config/mutt/hooks.rc<enter>\
-<enter-command>set wait_key=\$my_wait_key<enter>" \
+<enter-command>set wait_key=\$my_wait_key &my_wait_key<enter>" \
     "search mail with notmuch"
 
 # Use notmuch-mutt to reconstruct thread
 macro index \C] \
-"<enter-command>set my_wait_key=\$wait_key wait_key=no<enter>\
+"<enter-command>set my_wait_key=\$wait_key nowait_key<enter>\
 <pipe-message>notmuch-mutt -r thread<enter>\
 <enter-command>unhook folder-hook<enter>\
 <change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
 <enter-command>source ~/.config/mutt/hooks.rc<enter>\
-<enter-command>set wait_key=\$my_wait_key<enter>" \
+<enter-command>set wait_key=\$my_wait_key &my_wait_key<enter>" \
     "reconstruct thread with notmuch"
 
 # Move messages to the $mbox folder
-macro index,pager A "<enter-command>set my_resolve=\$resolve resolve=no<enter><clear-flag>N<save-message>\><enter><enter-command>set resolve=\$my_resolve<enter><sync-mailbox><refresh>" "archive message"
+macro index,pager A "<enter-command>set my_resolve=\$resolve noresolve<enter><clear-flag>N<enter-command>set resolve=\$my_resolve &my_resolve<enter><save-message>\><enter><sync-mailbox><refresh>" "archive message"
 
 # Open message with viewhtmlmsg
 macro index,pager H \
-"<enter-command>set my_wait_key=\$wait_key my_pipe_decode=\$pipe_decode wait_key=no pipe_decode=no<enter>\
+"<enter-command>set my_wait_key=\$wait_key my_pipe_decode=\$pipe_decode nowait_key nopipe_decode<enter>\
 <pipe-message>viewhtmlmsg -s<enter>\
 <enter-command>set wait_key=\$my_wait_key pipe_decode=\$my_pipe_decode &my_pipe_decode &my_wait_key<enter>" \
     "view HTML in browser"
 
 # Fetch mail
-macro index <F5> "<enter-command>set my_wait_key=\$wait_key wait_key=no<enter><shell-escape>mbsync -a<enter><enter-command>set wait_key=\$my_wait_key<enter>" "synchronize mailbox"
+macro index <F5> "<enter-command>set my_wait_key=\$wait_key nowait_key<enter><shell-escape>mbsync -a<enter><enter-command>set wait_key=\$my_wait_key &my_wait_key<enter>" "synchronize mailbox"
 
 # Switch between accounts
 macro index,pager <esc>1 "<sync-mailbox><enter-command>source ~/.config/mutt/personal.rc<enter><change-folder>!<enter>"

@@ -1,9 +1,16 @@
 folder-hook . 'source ~/.config/mutt/default.rc'
 
+folder-hook . 'set read_inc = 1000'
+folder-hook (^imap) 'set read_inc = 100'
+
 # Create folder hook for each account
 folder-hook personal 'source ~/.config/mutt/personal.rc'
 
 # The MUTT_EDITOR variable can be used in the mailcap file to change how MIME
 # messages are decoded in replies
-send-hook ~A 'setenv MUTT_EDITOR yes'
-send2-hook ~A 'unsetenv MUTT_EDITOR
+send-hook ~A 'setenv MUTT_EDITOR 1'
+send2-hook ~A 'unsetenv MUTT_EDITOR'
+
+# Highlight git diffs in messages
+message-hook ~A 'unset display_filter'
+message-hook '~b "^diff --git"' 'set display_filter = "awk -f ~/.local/share/mutt/hldiff.awk"'
