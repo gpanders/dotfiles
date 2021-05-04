@@ -44,11 +44,11 @@ function __prompt_fish_postexec_handler --on-event fish_postexec
         set -l mins (math --scale=0 $CMD_DURATION/60000 % 60)
         set -l hours (math --scale=0 $CMD_DURATION/3600000)
 
-        set -g __prompt_cmd_duration_tmp
-        test $hours -gt 0; and set -a __prompt_cmd_duration_tmp $hours"h"
-        test $mins -gt 0; and set -a __prompt_cmd_duration_tmp $mins"m"
-        test $secs -gt 0; and set -a __prompt_cmd_duration_tmp $secs"s"
-        set -a __prompt_cmd_duration_tmp ' '
+        set -l dur
+        test $hours -gt 0; and set -a dur $hours"h"
+        test $mins -gt 0; and set -a dur $mins"m"
+        test $secs -gt 0; and set -a dur $secs"s"
+        set -g __prompt_cmd_duration_tmp "$dur "
     end
 
     set -l last_job (jobs -l -g)
