@@ -3,7 +3,7 @@
 export EDITOR=vi
 export VISUAL=vi
 export PAGER=less
-export LESS="-g -M -R -W -X -z-4"
+export LESS="-F -g -M -R -W -X -z-4"
 
 if [ -d "$HOME/.local/bin" ] ; then
     export PATH="$HOME/.local/bin:$PATH"
