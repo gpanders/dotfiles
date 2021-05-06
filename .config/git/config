@@ -4,7 +4,7 @@
 	signingKey = 0x56E93C2FB6B08BDB
 [alias]
 	co = checkout
-	cm = commit
+	c = commit
 	ls = ls-files
 	rs = reset
 	rb = rebase
@@ -16,8 +16,6 @@
 	b = branch -vv
 	f = fetch
 	m = merge
-	fm = pull
-	fr = pull --rebase
 	p = push
 	snapshot = !git stash && git stash apply -q
 	t = tag
