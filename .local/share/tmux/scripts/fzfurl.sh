@@ -1,17 +1,12 @@
 #!/bin/sh -uf
 
-if [ -z "$TMUX" ]; then
+if [ -z "${TMUX:-}" ]; then
 	echo 'Not in a tmux session' >&2
 	exit
 fi
 
 if [ -t 0 ]; then
 	tmux display-message 'No data on stdin'
-	exit
-fi
-
-if [ -z "$DISPLAY" ]; then
-	tmux display-message 'DISPLAY is not set'
 	exit
 fi
 
