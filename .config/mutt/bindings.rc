@@ -20,11 +20,8 @@ macro  index,pager g> <change-folder>\><enter>
 bind index <esc><tab> noop
 bind index <backtab> previous-new-then-unread
 
-# Copy reply bindings from aerc
-macro index,pager rr "<enter-command>unset include<enter><group-reply>"
-macro index,pager rq "<enter-command>set include<enter><group-reply>"
-macro index,pager Rr "<enter-command>unset include<enter><reply>"
-macro index,pager Rq "<enter-command>set include<enter><reply>"
+bind index,pager r group-reply
+bind index,pager R reply
 
 # Deleting a message should also clear the 'new' flag
 macro index d "<enter-command>set my_resolve=\$resolve noresolve<enter><clear-flag>N<enter-command>set resolve=\$my_resolve &my_resolve<enter><delete-message>" "delete the current entry"

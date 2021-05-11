@@ -25,6 +25,9 @@ source $alias_file
 # Skip to compose when replying
 set fast_reply
 
+# Quote message in reply
+set include
+
 set forward_format = "Fwd: %s"
 
 # Format of quoting header
