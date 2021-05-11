@@ -36,6 +36,7 @@ function __prompt_update_jobs
     else
         set -g __prompt_jobs "[$njobs] "
     end
+    commandline -f repaint
 end
 
 function __prompt_fish_postexec_handler --on-event fish_postexec
