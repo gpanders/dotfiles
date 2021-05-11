@@ -63,14 +63,16 @@ set index_format = " %-10.10@date@ %-30.30F %Z %@list@%-80.80s"
 set pager_format = " %-20.20n   %s%*  -- (%P)"
 set status_format = "    %m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %?p?(%p postponed)? %>"
 
-index-format-hook date "~d<1d" "%[%I:%m %p]"
-index-format-hook date "~d 01/01-" "%[%b %d]"
-index-format-hook date "~A"    "%[%Y-%m-%d]"
+index-format-hook date "~r<1d" "%(%I:%m %p)"
+index-format-hook date "~r 01/01-" "%(%b %d)"
+index-format-hook date "~A"    "%(%Y-%m-%d)"
 index-format-hook list "~l" "[%B] "
 
-# Sort by threads and by reverse date within threads
 set sort = threads
-set sort_aux = reverse-last-date
+set sort_aux = reverse-last-date-received
+
+# Thread messages using received date instead of send date
+set thread_received
 
 # Show the pager while a message is open
 set pager_index_lines = 10
