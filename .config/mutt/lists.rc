@@ -1,9 +1,0 @@
-subscribe @lists\\.
-subscribe @googlegroups\\.com
-subscribe -users@
-subscribe -discuss@
-subscribe -announce@
-subscribe -dev(el)?@
-subscribe ^hackers@suckless\\.org$
-subscribe ^kernelnewbies@kernelnewbies\\.org$
-subscribe ^notmuch@notmuchmail\\.org$

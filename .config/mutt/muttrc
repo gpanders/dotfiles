@@ -99,6 +99,10 @@ set reverse_name
 # ...but always use my real name
 unset reverse_realname
 
+# Automatically assume that messages containing a List-Post header are
+# subscribed to
+set auto_subscribe
+
 set message_cachedir = ~/.cache/mutt/
 set header_cache = ~/.cache/mutt/
 
@@ -130,7 +134,6 @@ set attach_save_dir = ~/Downloads
 source ~/.config/mutt/colors.rc
 source ~/.config/mutt/bindings.rc
 source ~/.config/mutt/sidebar.rc
-source ~/.config/mutt/lists.rc
 source ~/.config/mutt/hooks.rc
 
 source ~/.config/mutt/personal.rc
