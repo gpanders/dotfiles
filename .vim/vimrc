@@ -203,8 +203,8 @@ nnoremap <Space>e :e %:p:h/<Tab>
 nnoremap <C-W><Space>e :sp %:p:h/<Tab>
 
 " Clear search buffer with <C-L>
-nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync fromstart<CR><C-L>
-vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync fromstart<CR>gv<C-L>
+nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync minlines=50<CR><C-L>
+vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync minlines=50<CR>gv<C-L>
 
 " Format whole buffer with formatprg without changing cursor position
 " See :h restore-position
