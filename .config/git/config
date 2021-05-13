@@ -29,8 +29,6 @@
 	verbose = true
 [sendemail]
 	annotate = yes
-	confirm = auto
-	envelopeSender = greg@gpanders.com
 [rebase]
 	autoSquash = true
 	autoStash = true
