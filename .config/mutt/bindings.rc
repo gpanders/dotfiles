@@ -23,6 +23,9 @@ bind index <backtab> previous-new-then-unread
 bind index,pager r group-reply
 bind index,pager R reply
 
+# Searching backward is more useful to me than clearing the new flag
+bind index,pager N search-opposite
+
 # Deleting a message should also clear the 'new' flag
 macro index d "<enter-command>set my_resolve=\$resolve noresolve<enter><clear-flag>N<enter-command>set resolve=\$my_resolve &my_resolve<enter><delete-message>" "delete the current entry"
 
