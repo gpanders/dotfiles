@@ -29,6 +29,7 @@
 	verbose = true
 [sendemail]
 	annotate = yes
+	confirm = auto
 [rebase]
 	autoSquash = true
 	autoStash = true
