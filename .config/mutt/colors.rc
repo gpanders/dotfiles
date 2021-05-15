@@ -18,9 +18,9 @@ color index                             red           default           "~v~(~F)
 color index                             color11       default           "~D"       # deleted messages
 
 color hdrdefault                        color12       color10
-color header                            color12       color10           "^"
-color header                            default       color10           "^(From)"
-color header                            default       color10           "^(Subject)"
+color header            bold            white         color10           "^Subject: .*$"
+color header            bold            red           color10           "(dkim|spf|dmarc)=fail"
+color header                            green         color10           "(dkim|spf|dmarc)=pass"
 
 color normal                            default       default
 color underline         underline       default       default

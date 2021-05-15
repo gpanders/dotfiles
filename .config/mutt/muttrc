@@ -8,7 +8,11 @@ auto_view text/html
 auto_view text/x-diff
 auto_view text/x-patch
 
-unignore sender
+ignore *
+unignore subject date from to cc sender
+
+unhdr_order *
+hdr_order subject date from to cc
 
 # The bgedit script launches the editor in a new pane if tmux is active.
 # Otherwise it just starts the editor as normal.
@@ -132,6 +136,8 @@ set crypt_use_gpgme
 set pgp_default_key = "0x56E93C2FB6B08BDB"
 
 set allow_ansi
+
+set header_color_partial
 
 set attach_save_dir = ~/Downloads
 
