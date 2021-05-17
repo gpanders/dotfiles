@@ -19,6 +19,8 @@ hdr_order subject date from to cc
 set editor = "~/.local/share/mutt/bgedit `echo $EDITOR`"
 set background_edit = `[ -n "$TMUX" ] && echo 'yes' || echo 'no'`
 
+set use_envelope_from
+
 set sendmail = msmtp
 
 set alias_file = ~/.local/share/mutt/aliases
