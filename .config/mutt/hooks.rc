@@ -12,8 +12,8 @@ send-hook ~A 'setenv MUTT_EDITOR 1'
 send2-hook ~A 'unsetenv MUTT_EDITOR'
 
 # Highlight git diffs in messages
-message-hook ~A 'unset display_filter'
-message-hook '~b "^diff --git"' 'set display_filter = "awk -f ~/.local/share/mutt/hldiff.awk"'
+message-hook ~A 'unset display_filter allow_ansi'
+message-hook '~b "^diff --git"' 'set allow_ansi display_filter="awk -f ~/.local/share/mutt/hldiff.awk"'
 
 # Show Authentication-Results header for failed authentication
 message-hook ~A 'ignore authentication-results'
