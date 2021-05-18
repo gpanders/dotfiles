@@ -1,4 +1,4 @@
-if &compatible
+if !has('packages')
     finish
 endif
 
@@ -18,9 +18,6 @@ function! s:PackInit() abort
 
     " Colorscheme
     call minpac#add('gpanders/base16-vim', {'type': 'opt'})
-
-    " Improved :Man command
-    call minpac#add('gpanders/vim-man', {'type': 'opt'})
 
     " Improved :oldfiles command
     call minpac#add('gpanders/vim-oldfiles')
