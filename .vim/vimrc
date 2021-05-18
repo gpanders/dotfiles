@@ -1,7 +1,5 @@
-" Normalization {{{
 if !has('nvim')
-  " The following settings are the defaults in nvim. Set them also in vim for
-  " a consistent experience between the two
+  filetype plugin indent on
   set autoindent
   set autoread
   set backspace=indent,eol,start
@@ -42,56 +40,39 @@ if !has('nvim')
   " Block in normal mode
   let &t_EI = "\e[2 q"
 
-  let &backupdir = vim#datadir() . '/backup//,' . &backupdir
-  let &directory = vim#datadir() . '/swap//,' . &directory
-  if has('persistent_undo')
-      let &undodir = vim#datadir() . '/undo//,' . &undodir
-  endif
+  let s:datadir = vim#datadir()
+  let &backupdir = s:datadir . '/backup//,' . &backupdir
+  let &directory = s:datadir . '/swap//,' . &directory
+  let &undodir = s:datadir . '/undo//,' . &undodir
+  unlet s:datadir
 
   call vim#mkdirs()
 endif
-" }}}
 
 augroup vimrc | execute 'autocmd!' | augroup END
-
-" Setup {{{
-filetype plugin indent on
 
 if !exists('g:syntax_on')
   syntax enable
 endif
 
-" Use vim-pathogen if native packages are not supported
-if !has('packages')
-  let s:vimdir = split(&runtimepath, ',')[0]
-  if empty(glob(s:vimdir . '/autoload/pathogen.vim'))
-    silent execute '!curl -LSso ' . s:vimdir . '/autoload/pathogen.vim https://tpo.pe/pathogen.vim'
-  endif
-  silent! execute pathogen#infect('pack/{}/start/{}', 'pack/{}/opt/{}')
-  unlet s:vimdir
-endif
-" }}}
-
-" Colors {{{
-
-" Try to make comments italic
 autocmd vimrc ColorScheme * highlight Comment gui=italic cterm=italic
 
 silent! colorscheme base16-eighties
 
 highlight link TrailingWhitespace Error
-" }}}
 
-" Settings {{{
 set backup
 set backupdir-=.
+set breakindent
 set confirm
 set cursorline
 set expandtab
 set foldlevelstart=99
 set hidden
 set ignorecase
+silent! set inccommand=nosplit
 set lazyredraw
+set linebreak
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set matchpairs+=<:>
 set pumheight=10
@@ -102,32 +83,15 @@ set showmatch
 set sidescrolloff=5
 set smartcase
 set noswapfile
-silent! set tagcase=match
+set tagcase=match
+set undofile
 set virtualedit+=block
 set wildcharm=<Tab>
 set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#
 set wildignorecase
 set wildmode=longest:full,full
 
-if has('mouse')
-  set mouse=a
-endif
-
-if has('persistent_undo')
-  set undofile
-endif
-
 let &colorcolumn = '+' . join(range(1, 256), ',+')
-
-if has('linebreak')
-  set linebreak
-  set breakindent
-endif
-
-if has('popupwin')
-  set completeopt+=popup
-  set completepopup=highlight:Pmenu,align:menu,border:off
-endif
 
 setglobal path=.,,
 setglobal include=
@@ -138,21 +102,12 @@ setglobal isfname+=@-@
 set grepformat^=%f:%l:%c:%m
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case
-elseif executable('ag')
-  set grepprg=ag\ --vimgrep\ --smart-case
-elseif executable('grep')
-  set grepprg=grep\ --line-number\ --recursive\ -I\ $*\ *
 else
-  set grepprg=internal
+  set grepprg=grep\ --line-number\ --recursive\ -I\ $*\ /dev/null
 endif
 
 " Enable indent-heuristic to make vimdiff more closely match git diff
-silent! set diffopt+=indent-heuristic
-" }}}
-
-" Mappings {{{
-
-" Insert {{{
+set diffopt+=indent-heuristic
 
 " Set undo points when deleting
 inoremap <C-U> <C-G>u<C-U>
@@ -173,36 +128,23 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
 inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<C-]><C-G>u\<CR>"
 
 inoremap <C-R>! <C-O>:r !
-" }}}
 
-" Visual {{{
+" Make * and # work in visual mode
 xnoremap * y/\V<C-R>"<CR>
 xnoremap # y?\V<C-R>"<CR>
-" }}}
 
-" Normal {{{
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
-
-" Set Q and gQ to Nop to prevent accidentally entering command mode
 nnoremap Q <Nop>
 nnoremap gQ <Nop>
-
 nnoremap <Space>w :w<CR>
-
 nnoremap <Space>b :ls<CR>:b<Space>
 nnoremap <C-W><Space>b :ls<CR>:sb<Space>
-
-" Search for a tag by regex
 nnoremap <Space>] :tjump /
 nnoremap <C-W><Space>] :stjump /
 nnoremap <Space>} :ptjump /
-
-" Find files in current buffer's directory
 nnoremap <Space>e :e %:p:h/<Tab>
 nnoremap <C-W><Space>e :sp %:p:h/<Tab>
-
-" Clear search buffer with <C-L>
 nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync minlines=50<CR><C-L>
 vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync minlines=50<CR>gv<C-L>
 
@@ -231,7 +173,6 @@ nnoremap <expr> [<C-Q> ":\<C-U>" . v:count1 . "colder\<CR>"
 nnoremap <expr> ]<C-Q> ":\<C-U>" . v:count1 . "cnewer\<CR>"
 nnoremap <expr> [t ":\<C-U>" . v:count1 . "tprev\<CR>"
 nnoremap <expr> ]t ":\<C-U>" . v:count1 . "tnext\<CR>"
-
 nnoremap [A :<C-U>first<CR>
 nnoremap ]A :<C-U>last<CR>
 nnoremap [B :<C-U>bfirst<CR>
@@ -242,15 +183,12 @@ nnoremap [Q :<C-U>cfirst<CR>
 nnoremap ]Q :<C-U>clast<CR>
 nnoremap [T :<C-U>tfirst<CR>
 nnoremap ]T :<C-U>tlast<CR>
-
 nnoremap <expr> [e ":\<C-U>.move --" . v:count1 . "\<CR>"
 nnoremap <expr> ]e ":\<C-U>.move +" . v:count1 . "\<CR>"
 xnoremap <expr> [e ":move --" . v:count1 . "\<CR>gv"
 xnoremap <expr> ]e ":move +" . (v:count1 + line("'>") - line("'<")) . "\<CR>gv"
-
 nnoremap [<Space> :<C-U>put! =repeat(nr2char(10), v:count1)<CR><CR>:']+1<CR>
 nnoremap ]<Space> :<C-U>put =repeat(nr2char(10), v:count1)<CR><CR>:'[-1<CR>
-
 nnoremap <expr> yon ':setlocal ' . (&number ? 'no' : '') . "number\<CR>"
 nnoremap <expr> yor ':setlocal ' . (&relativenumber ? 'no' : '') . "relativenumber\<CR>"
 nnoremap <expr> yol ':setlocal ' . (&list ? 'no' : '') . "list\<CR>"
@@ -271,45 +209,21 @@ nnoremap <silent> gs m':set operatorfunc=Sort<CR>g@
 xnoremap <silent> gs :sort<CR>
 
 nnoremap g/ :<C-U>g//#<Left><Left>
-" }}}
 
-" Terminal {{{
-if exists(':tmap')
-    tnoremap <Esc> <C-\><C-N>
-    tnoremap <C-\><C-W> <C-\><C-N><C-W>
-    if has('nvim')
-        tnoremap <expr> <C-\><C-R> '<C-\><C-N>"' . nr2char(getchar()) . 'pi'
-    else
-        tnoremap <C-\><C-R> <C-W>"
-        tnoremap <C-W> <C-W>.
-    endif
-endif
-" }}}
-
-" Command {{{
 cnoremap <expr> <C-P> wildmenumode() ? "\<C-P>" : "\<Up>"
 cnoremap <expr> <C-N> wildmenumode() ? "\<C-N>" : "\<Down>"
 
-if has('nvim') && &wildoptions =~# 'pum'
+if &wildoptions =~# 'pum'
   cnoremap <expr> <C-J> pumvisible() ? "\<Down>\<Tab>" : "\<C-J>"
   cnoremap <expr> <C-K> pumvisible() ? "\<Up>\<Tab>" : "\<C-K>"
 else
   cnoremap <expr> <C-J> wildmenumode() ? "\<Down>\<Tab>" : "\<C-J>"
   cnoremap <expr> <C-K> wildmenumode() ? "\<Up>\<Tab>" : "\<C-K>"
 endif
-" }}}
 
-" }}}
-
-" Autocommands {{{
 augroup vimrc
 
 autocmd BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
-
-if exists('##TermOpen')
-  autocmd TermOpen * startinsert
-  autocmd BufEnter term://* startinsert
-endif
 
 " See :h ft-syntax-omni
 autocmd FileType * if &omnifunc == '' | setlocal omnifunc=syntaxcomplete#Complete | endif
@@ -323,4 +237,3 @@ if argc() == 0 && filereadable('Session.vim')
 endif
 
 augroup END
-" }}}

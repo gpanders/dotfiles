@@ -7,11 +7,10 @@ function! vim#cachedir() abort
     endif
 
     if empty(s:cachedir)
-        let n = has('nvim') ? 'n' : ''
         if exists('$XDG_CACHE_HOME')
-            let s:cachedir = $XDG_CACHE_HOME . '/' . n . 'vim'
+            let s:cachedir = $XDG_CACHE_HOME . '/vim'
         elseif has('unix')
-            let s:cachedir = $HOME . '/.cache/' . n . 'vim'
+            let s:cachedir = $HOME . '/.cache/vim'
         else
             let s:cachedir = $HOME . '/vimfiles/cache'
         endif
@@ -25,11 +24,10 @@ function! vim#datadir() abort
     endif
 
     if empty(s:datadir)
-        let n = has('nvim') ? 'n' : ''
         if exists('$XDG_DATA_HOME')
-            let s:datadir = $XDG_DATA_HOME . '/' . n . 'vim'
+            let s:datadir = $XDG_DATA_HOME . '/vim'
         elseif has('unix')
-            let s:datadir = $HOME . '/.local/share/' . n . 'vim'
+            let s:datadir = $HOME . '/.local/share/vim'
         else
             let s:datadir = $HOME . '/vimfiles/cache'
         endif
@@ -38,13 +36,7 @@ function! vim#datadir() abort
 endfunction
 
 function! vim#mkdirs() abort
-  if exists('*mkdir')
-    let dirs = [&backupdir, &directory]
-    if has('persistent_undo')
-        let dirs += [&undodir]
-    endif
-    for dir in dirs
-      silent! call mkdir(simplify(split(dir, ',')[0]), 'p')
+    for dir in [&backupdir, &directory, &undodir]
+      call mkdir(fnamemodify(split(dir, ',')[0], 'p'), 'p')
     endfor
-  endif
 endfunction
