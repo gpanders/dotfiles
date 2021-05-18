@@ -137,8 +137,6 @@ unset signature
 set crypt_use_gpgme
 set pgp_default_key = "0x56E93C2FB6B08BDB"
 
-set header_color_partial
-
 set attach_save_dir = ~/Downloads
 
 source ~/.config/mutt/colors.rc

@@ -15,6 +15,6 @@ send2-hook ~A 'unsetenv MUTT_EDITOR'
 message-hook ~A 'unset display_filter allow_ansi'
 message-hook '~b "^diff --git"' 'set allow_ansi display_filter="awk -f ~/.local/share/mutt/hldiff.awk"'
 
-# Show Authentication-Results header for failed authentication
-message-hook ~A 'ignore authentication-results'
-message-hook '~h "^Authentication-Results: .*(dkim|spf|dmarc)=fail"' 'unignore authentication-results'
+# Show failed SPF checks
+message-hook ~A 'ignore received-spf'
+message-hook '~h "^received-spf: (soft)?fail"' 'unignore received-spf'
