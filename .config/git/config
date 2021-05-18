@@ -27,6 +27,8 @@
 	sw = switch
 [commit]
 	verbose = true
+[tag]
+	gpgsign = true
 [sendemail]
 	annotate = yes
 	confirm = auto
@@ -41,6 +43,8 @@
 	ui = auto
 [log]
 	date = local
+[push]
+	gpgSign = if-asked
 [pull]
 	rebase = true
 [filter "lfs"]
