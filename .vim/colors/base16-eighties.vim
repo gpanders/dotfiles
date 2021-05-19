@@ -20,4 +20,9 @@ call g:Base16hi('StatuslineModeInsert', g:base16_gui0D, '', g:base16_cterm0D, ''
 call g:Base16hi('StatuslineModeReplace', g:base16_gui08, '', g:base16_cterm08, '')
 call g:Base16hi('StatuslineModeVisual', g:base16_gui0E, '', g:base16_cterm0E, '')
 
+call g:Base16hi('TabLine', g:base16_gui08, '', g:base16_cterm04, g:base16_cterm01)
+call g:Base16hi('TabLineSel', g:base16_gui08, '', g:base16_cterm05, g:base16_cterm02)
+call g:Base16hi('TabLineIndex', g:base16_gui08, '', g:base16_cterm08, g:base16_cterm01)
+call g:Base16hi('TabLineIndexSel', g:base16_gui08, '', g:base16_cterm08, g:base16_cterm02)
+
 unlet g:did_user_colors

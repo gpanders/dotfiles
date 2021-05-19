@@ -1,19 +1,11 @@
 function! TabLine()
   let s = ''
   for i in range(1, tabpagenr('$'))
-    " Set the highlighting
-    if i == tabpagenr()
-      let s .= '%#TabLineSel#'
-    else
-      let s .= '%#TabLine#'
-    endif
-
-    " Set the tab page number
-    let s .= '%' . i . 'T'
-
-    " Set the tab label
-    let cwd = fnamemodify(getcwd(1, i), ':~')
-    let s .= ' ' . i . ':' . pathshorten(cwd) . ' '
+    let cur = i == tabpagenr()
+    let h = cur ? 'TabLineSel' : 'TabLine'
+    let ih = cur ? 'TabLineIndexSel' : 'TabLineIndex'
+    let cwd = fnamemodify(getcwd(1, i), ':t')
+    let s .= printf('%%#%s#%%%dT %%#%s#%d %%#%s#%s ', h, i, ih, i, h, cwd)
   endfor
 
   " After the last tab fill with TabLineFill and reset tab page nr
