@@ -2,6 +2,16 @@ function! s:invalid(opt, val) abort
     echom printf('Invalid value for option %s: %s', a:opt, a:val)
 endfunction
 
+" Modified version of glob2regpat that does not match path separators on *.
+" Basically, this replaces single instances of * with the regex pattern [^/]*.
+" However, the star in the replacement pattern also gets interpreted by
+" glob2regpat, so we insert a placeholder, pass it through glob2regpat, then
+" replace the placeholder with the actual regex pattern
+function! s:glob2regpat(glob) abort
+    let g = substitute(a:glob, '\*\@<!\*\*\@!', '@@PLACEHOLDER@@', 'g')
+    return substitute(glob2regpat(g), '@@PLACEHOLDER@@', '[^/]*', 'g')
+endfunction
+
 function! s:apply(opts) abort
     for opt in keys(a:opts)
         let val = a:opts[opt]
@@ -61,32 +71,43 @@ function! s:apply(opts) abort
     endfor
 endfunction
 
-function! s:parse(fname, config) abort
+" Parse 'config' and return a Dict of all options that match 'filepath'
+function! s:parse(filepath, config) abort
     let pat = ''
     let opts = {}
+    let confdir = fnamemodify(a:config, ':h')
     for line in readfile(a:config)
-        if empty(line) || line =~# '^\s*#'
+        if line =~# '^\s*$' || line =~# '^\s*[#;]'
             continue
         endif
 
         if line =~# '^\['
-            let pat = glob2regpat(matchstr(line, '^\[\zs.\+\ze\]$'))
+            let glob = matchstr(line, '^\s*\[\zs\%([^#;]\|\\#\|\\;\)\+\ze]')
+            if glob =~# '/'
+                if glob[0] ==# '/'
+                    let glob = glob[1:]
+                endif
+                let glob = confdir . '/' . glob
+            else
+                let glob = '**/' . glob
+            endif
+            let pat = s:glob2regpat(glob)
             continue
         endif
 
-        let m = matchlist(line, '^\(\w\+\)\s*=\s*\(.\+\)$')
+        let m = matchlist(line, '^\s*\([^:=\s][^:=]\{-}\)\s*[:=]\s*\(.\{-}\)\s*$')
         if empty(m)
             continue
         endif
 
-        let [opt, val] = m[1:2]
+        let [opt, val] = [m[1], tolower(m[2])]
 
-        if opt ==# 'root' && val ==# 'true'
-            let opts.root = 1
+        if empty(pat) && opt ==# 'root'
+            let opts.root = val ==# 'true'
             continue
         endif
 
-        if a:fname !~# pat
+        if a:filepath !~# pat
             continue
         endif
 
@@ -101,22 +122,27 @@ function! editorconfig#config() abort
 	return
     endif
 
-    let fname = expand('%:p:.')
-    if empty(fname)
+    let path = expand('%:p')
+    if empty(path)
         return
     endif
 
     let opts = {}
-    let cwd = expand('%:p:h')
-    while cwd !=# '/'
-        let config = cwd . '/.editorconfig'
+    let curdir = fnamemodify(path, ':h')
+    while 1
+        let config = curdir . '/.editorconfig'
         if filereadable(config)
-            call extend(opts, s:parse(fname, config), 'keep')
+            call extend(opts, s:parse(path, config), 'keep')
             if get(opts, 'root')
                 break
             endif
         endif
-        let cwd = fnamemodify(cwd, ':h')
+
+        let parent = fnamemodify(curdir, ':h')
+        if parent ==# curdir
+            break
+        endif
+        let curdir = parent
     endwhile
 
     call s:apply(opts)
