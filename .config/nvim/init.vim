@@ -9,7 +9,6 @@ highlight link TrailingWhitespace Error
 set breakindent
 set confirm
 set cursorline
-set expandtab
 set foldlevelstart=99
 set hidden
 set ignorecase
@@ -20,7 +19,6 @@ set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set matchpairs+=<:>
 set pumheight=10
 set scrolloff=2
-set shiftwidth=4
 set showmatch
 set sidescrolloff=5
 set smartcase
