@@ -134,6 +134,8 @@ augroup init
 
 autocmd BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
 
+autocmd TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150, on_visual=true}
+
 if argc() == 0 && filereadable('Session.vim')
   if v:vim_did_enter
     source Session.vim
