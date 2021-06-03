@@ -26,6 +26,8 @@ return require('packer').startup(function(use)
 
     use 'tpope/vim-fugitive'
 
+    use 'tpope/vim-sleuth'
+
     use 'justinmk/vim-dirvish'
 
     use 'junegunn/vim-easy-align'
