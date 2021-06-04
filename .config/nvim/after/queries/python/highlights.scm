@@ -1,3 +1,3 @@
-((identifier) @type.builtin
- (#any-of? @type.builtin
-            "int" "float" "list" "str" "dict" "tuple" "bool"))
+; Don't highlight types in import statements
+(import_from_statement
+  name: (dotted_name (identifier) @none))
