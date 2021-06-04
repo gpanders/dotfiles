@@ -19,6 +19,7 @@ set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set matchpairs+=<:>
 set pumheight=10
 set scrolloff=2
+set shell=/bin/sh
 set showmatch
 set sidescrolloff=5
 set smartcase
