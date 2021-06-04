@@ -1,5 +1,5 @@
 function! ft#go#fmt() abort
     let view = winsaveview()
-    %!gofmt
+    keepjumps %!gofmt
     call winrestview(view)
 endfunction

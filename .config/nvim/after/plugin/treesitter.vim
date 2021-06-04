@@ -9,7 +9,6 @@ require('nvim-treesitter.configs').setup {
         custom_captures = {
             -- Default treesitter highlighting is way too noisy
             ['parameter'] = 'TSNone',
-            ['type'] = 'TSNone',
             ['punctuation.bracket'] = 'TSNone',
             ['punctuation.delimiter'] = 'TSNone',
             ['field'] = 'TSNone',

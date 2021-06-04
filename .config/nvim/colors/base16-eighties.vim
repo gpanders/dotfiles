@@ -11,6 +11,9 @@ runtime! ALL colors/base16-eighties.vim
 hi link StatuslineModeNormal Normal
 hi Underlined ctermfg=NONE guifg=NONE
 
+" Make all control flow the same color
+hi! link Repeat Conditional
+
 call g:Base16hi('User1', g:base16_gui04, g:base16_gui02, g:base16_cterm04, g:base16_cterm02)
 call g:Base16hi('User2', g:base16_gui03, g:base16_gui00, g:base16_cterm03, g:base16_cterm00)
 call g:Base16hi('User3', g:base16_gui03, g:base16_gui00, g:base16_cterm03, g:base16_cterm00)
