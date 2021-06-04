@@ -33,7 +33,6 @@ require('nvim-treesitter.configs').setup {
                 goto_definition = 'gd',
                 list_definitions = '<Nop>',
                 list_definitions_toc = '<Nop>',
-                goto_definition_lsp_fallback = '<C-]>',
                 goto_next_usage = '<Nop>',
                 goto_previous_usage = '<Nop>',
             },

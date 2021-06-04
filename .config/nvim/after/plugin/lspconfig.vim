@@ -13,6 +13,7 @@ local on_attach = function(client, bufnr)
 
     local opts = { noremap = true, silent = true }
 
+    buf_set_keymap('n', '<C-]>', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
     buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
     buf_set_keymap('n', 'gR', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
     buf_set_keymap('n', 'gh', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
