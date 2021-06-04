@@ -41,15 +41,13 @@ local servers = {
 for server, settings in pairs(servers) do
     lsp[server].setup { on_attach = on_attach, settings = settings }
 end
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = function(...)
-    vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false
-    })(...)
-    vim.lsp.diagnostic.set_loclist({open_loclist = false})
-end
 EOF
 
 hi LspDiagnosticsDefaultError ctermfg=1 ctermbg=10
 hi LspDiagnosticsDefaultWarning ctermfg=3 ctermbg=10
 hi LspDiagnosticsDefaultInformation ctermfg=4 ctermbg=10
+
+augroup my_lspconfig
+  autocmd!
+  autocmd User LspDiagnosticsChanged lua vim.lsp.diagnostic.set_loclist({open_loclist=false})
+augroup END
