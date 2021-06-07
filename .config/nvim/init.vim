@@ -6,8 +6,6 @@ autocmd init ColorScheme * hi! link Repeat Conditional
 
 silent! colorscheme base16-eighties
 
-highlight link TrailingWhitespace Error
-
 set breakindent
 set confirm
 set cursorline
@@ -71,6 +69,7 @@ nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap Q <Nop>
 nnoremap gQ <Nop>
+nnoremap Y y$
 nnoremap <Space>w :w<CR>
 nnoremap <Space>b :ls<CR>:b<Space>
 nnoremap <C-W><Space>b :ls<CR>:sb<Space>
@@ -143,8 +142,9 @@ cnoremap <expr> <C-K> pumvisible() ? "\<Up>\<Tab>" : "\<C-K>"
 augroup init
 
 autocmd BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
-
 autocmd TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150, on_visual=true}
+autocmd TermOpen * setlocal statusline=%{b:term_title}
+autocmd TermOpen * startinsert
 
 if argc() == 0 && filereadable('Session.vim')
   if v:vim_did_enter
