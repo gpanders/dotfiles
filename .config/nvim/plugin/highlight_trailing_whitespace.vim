@@ -16,3 +16,5 @@ augroup highlight_trailing_whitespace
     autocmd!
     autocmd Syntax * call s:highlight_trailing_whitespace()
 augroup END
+
+highlight link TrailingWhitespace Error
