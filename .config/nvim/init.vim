@@ -1,6 +1,8 @@
 augroup init | execute 'autocmd!' | augroup END
 
-autocmd init ColorScheme * highlight Comment gui=italic cterm=italic
+autocmd init ColorScheme * hi! Comment gui=italic cterm=italic
+autocmd init ColorScheme * hi! Underlined ctermfg=NONE guifg=NONE
+autocmd init ColorScheme * hi! link Repeat Conditional
 
 silent! colorscheme base16-eighties
 
@@ -13,6 +15,7 @@ set foldlevelstart=99
 set hidden
 set ignorecase
 set inccommand=nosplit
+set laststatus=2
 set lazyredraw
 set linebreak
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
@@ -21,9 +24,11 @@ set pumheight=10
 set scrolloff=2
 set shell=/bin/sh
 set showmatch
+set showtabline=2
 set sidescrolloff=5
 set smartcase
 set noswapfile
+set tabline=%!tabline#show()
 set tagcase=match
 set undofile
 set updatetime=100
@@ -33,6 +38,7 @@ set wildignorecase
 set wildmode=longest:full,full
 
 let &colorcolumn = '+' . join(range(1, 256), ',+')
+let &statusline = ' %<%f [%{&filetype ==# "" ? "none" : &filetype}]%m%r%=%-14.{statusline#git()}%-14.(%l:%c%V%) %P '
 
 setglobal path=.,,
 setglobal include=
@@ -53,6 +59,9 @@ set diffopt+=indent-heuristic
 " Set undo points when deleting
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
+
+" Auto close braces in insert mode
+inoremap {<CR> {<CR>}<Esc>O
 
 " Make * and # work in visual mode
 xnoremap * y/\V<C-R>"<CR>
