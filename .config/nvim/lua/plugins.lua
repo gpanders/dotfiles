@@ -28,6 +28,8 @@ return require('packer').startup(function(use)
 
     use 'tpope/vim-sleuth'
 
+    use 'tpope/vim-obsession'
+
     use 'justinmk/vim-dirvish'
 
     use 'junegunn/vim-easy-align'
