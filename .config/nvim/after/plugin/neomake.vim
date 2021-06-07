@@ -2,16 +2,15 @@ if !get(g:, 'loaded_neomake')
     finish
 endif
 
-augroup neomake_init
+augroup my_neomake
     autocmd!
     " Defer configuration until first actual file is opened
-    autocmd FileType * call neomake#configure#automake({
-                \ 'TextChanged': {},
-                \ 'InsertLeave': {},
-                \ 'BufWritePost': {'delay': 0},
-                \ 'BufWinEnter': {},
-                \ }, 500) | autocmd! neomake_init
+    autocmd FileType * ++once call neomake#configure#automake('w')
+
+    " Disable Neomake for LSP buffers
+    autocmd User LspAttached silent NeomakeDisableBuffer | NeomakeClean
 augroup END
+
 
 if !exists('g:neomake')
     let g:neomake = {}

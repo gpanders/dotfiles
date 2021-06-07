@@ -20,10 +20,10 @@ local on_attach = function(client, bufnr)
 
     vim.cmd 'doautocmd User LspAttached'
 
-    -- Disable Neomake for LSP buffers
+    -- Disable diagnostics until the buffer is written
+    vim.lsp.handlers['textDocument/publishDiagnostics'] = function() end
     vim.cmd [[
-        silent call neomake#cmd#disable(b:)
-        silent call neomake#cmd#clean(1)
+      autocmd BufWrite <buffer> ++once lua vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.diagnostic.on_publish_diagnostics
     ]]
 end
 
