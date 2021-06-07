@@ -17,6 +17,7 @@ compile_commands.json
 .cquery
 .clangd/
 clangd/
+.mypy_cache/
 
 # Outputs
 *.so
