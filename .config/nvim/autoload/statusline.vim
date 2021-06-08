@@ -7,3 +7,14 @@ function! statusline#git() abort
   endif
   return ''
 endfunction
+
+function! statusline#obsession() abort
+  if get(g:, 'loaded_obsession')
+    let s = ObsessionStatus()
+    if !empty(s)
+      let s .= ' '
+    endif
+    return s
+  endif
+  return ''
+endfunction
