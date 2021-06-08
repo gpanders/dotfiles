@@ -57,7 +57,7 @@ function! s:apply(opts) abort
             endif
         elseif opt ==# 'trim_trailing_whitespace'
             if val ==# 'true' && exists(':StripTrailingWhitespace') == 2
-                autocmd editorconfig BufWritePre <buffer> StripTrailingWhitespace
+                autocmd editorconfig BufWritePre <buffer> silent StripTrailingWhitespace
             endif
         elseif opt ==# 'insert_final_newline'
             if val ==# 'false'
