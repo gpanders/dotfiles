@@ -1,11 +1,10 @@
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
-setlocal spell
 setlocal textwidth=79
 " https://github.com/tpope/vim-markdown/issues/134
 setlocal comments=n:>
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*[-*+]\\s\\+\\\|^\\[^\\ze[^\\]]\\+\\]:
-let b:undo_ftplugin .= '|setl spell< tw< com< flp<'
+let b:undo_ftplugin .= '|setl tw< com< flp<'
 
 if has('conceal')
   setlocal conceallevel=2
