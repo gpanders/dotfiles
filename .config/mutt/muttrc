@@ -124,7 +124,7 @@ set send_multipart_alternative_filter = ~/.local/share/mutt/md2html
 
 # Offer to send multipart/alternative emails when replying to a text/html email
 reply-hook . 'unset send_multipart_alternative'
-reply-hook '~M text/html' 'set send_multipart_alternative = ask-yes'
+reply-hook '~M text/html' 'set send_multipart_alternative = ask-no'
 
 # '! ~Q' means "not replied" and matches on messages that are not replies
 send-hook '! ~Q' 'unset send_multipart_alternative'
