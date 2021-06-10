@@ -9,4 +9,4 @@ augroup plugin_fugitive
 augroup END
 
 nnoremap g<Space> :Git<Space>
-nnoremap g<CR> :Git<CR>
+nnoremap g<CR> <Cmd>Git<CR>

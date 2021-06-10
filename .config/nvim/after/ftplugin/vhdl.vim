@@ -12,7 +12,7 @@ setlocal includeexpr=ft#vhdl#find_package(v:fname)
 inoreabbrev <buffer> slv std_logic_vector
 inoreabbrev <buffer> sl std_logic
 
-nnoremap <buffer> <silent> <Bslash>d :<C-U>call ft#vhdl#toggle_debug()<CR>
+nnoremap <buffer> <Bslash>d <Cmd>call ft#vhdl#toggle_debug()<CR>
 
 if executable('ghdl')
   compiler ghdl

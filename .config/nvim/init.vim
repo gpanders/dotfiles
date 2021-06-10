@@ -66,13 +66,13 @@ nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap Q <Nop>
 nnoremap gQ <Nop>
 nnoremap Y y$
-nnoremap <Space>w :w<CR>
+nnoremap <Space>w <Cmd>w<CR>
 nnoremap <Space>b :ls<CR>:b<Space>
 nnoremap <C-W><Space>b :ls<CR>:sb<Space>
 nnoremap <Space>e :e %:p:h/<Tab>
 nnoremap <C-W><Space>e :sp %:p:h/<Tab>
-nnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync minlines=50<CR><C-L>
-vnoremap <silent> <C-L> :<C-U>nohlsearch<Bar>diffupdate<Bar>syn sync minlines=50<CR>gv<C-L>
+nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<Bar>syn sync minlines=50<CR><C-L>
+vnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<Bar>syn sync minlines=50<CR><C-L>
 
 " Format whole buffer with formatprg without changing cursor position
 " See :h restore-position
@@ -93,42 +93,42 @@ nnoremap <expr> [<C-Q> ":\<C-U>" . v:count1 . "colder\<CR>"
 nnoremap <expr> ]<C-Q> ":\<C-U>" . v:count1 . "cnewer\<CR>"
 nnoremap <expr> [t ":\<C-U>" . v:count1 . "tprev\<CR>"
 nnoremap <expr> ]t ":\<C-U>" . v:count1 . "tnext\<CR>"
-nnoremap [A :<C-U>first<CR>
-nnoremap ]A :<C-U>last<CR>
-nnoremap [B :<C-U>bfirst<CR>
-nnoremap ]B :<C-U>blast<CR>
-nnoremap [L :<C-U>lfirst<CR>
-nnoremap ]L :<C-U>llast<CR>
-nnoremap [Q :<C-U>cfirst<CR>
-nnoremap ]Q :<C-U>clast<CR>
-nnoremap [T :<C-U>tfirst<CR>
-nnoremap ]T :<C-U>tlast<CR>
+nnoremap [A <Cmd>first<CR>
+nnoremap ]A <Cmd>last<CR>
+nnoremap [B <Cmd>bfirst<CR>
+nnoremap ]B <Cmd>blast<CR>
+nnoremap [L <Cmd>lfirst<CR>
+nnoremap ]L <Cmd>llast<CR>
+nnoremap [Q <Cmd>cfirst<CR>
+nnoremap ]Q <Cmd>clast<CR>
+nnoremap [T <Cmd>tfirst<CR>
+nnoremap ]T <Cmd>tlast<CR>
 nnoremap <expr> [e ":\<C-U>.move --" . v:count1 . "\<CR>"
 nnoremap <expr> ]e ":\<C-U>.move +" . v:count1 . "\<CR>"
 xnoremap <expr> [e ":move --" . v:count1 . "\<CR>gv"
 xnoremap <expr> ]e ":move +" . (v:count1 + line("'>") - line("'<")) . "\<CR>gv"
-nnoremap [<Space> :<C-U>put! =repeat(nr2char(10), v:count1)<CR><CR>:']+1<CR>
-nnoremap ]<Space> :<C-U>put =repeat(nr2char(10), v:count1)<CR><CR>:'[-1<CR>
-nnoremap <expr> yon ':setlocal ' . (&number ? 'no' : '') . "number\<CR>"
-nnoremap <expr> yor ':setlocal ' . (&relativenumber ? 'no' : '') . "relativenumber\<CR>"
-nnoremap <expr> yol ':setlocal ' . (&list ? 'no' : '') . "list\<CR>"
-nnoremap <expr> yoc ':setlocal ' . (&cursorline ? 'no' : '') . "cursorline\<CR>"
-nnoremap <expr> yo<Bar> ':setlocal ' . (&cursorcolumn ? 'no' : '') . "cursorcolumn\<CR>"
+nnoremap [<Space> <Cmd>put! =repeat(nr2char(10), v:count1)<CR><CR>:']+1<CR>
+nnoremap ]<Space> <Cmd>put =repeat(nr2char(10), v:count1)<CR><CR>:'[-1<CR>
+nnoremap yon <Cmd>setlocal number!<Bar>set nu?<CR>
+nnoremap yor <Cmd>setlocal relativenumber!<Bar>set rnu?<CR>
+nnoremap yol <Cmd>setlocal list!<Bar>set list?<CR>
+nnoremap yoc <Cmd>setlocal cursorline!<Bar>set cul?<CR>
+nnoremap yo<Bar> <Cmd>setlocal cursorcolumn!<Bar>set cuc?<CR>
 nnoremap <expr> yod ':' . (&diff ? 'diffoff' : 'diffthis') . "\<CR>"
-nnoremap <expr> yos ':setlocal ' . (&spell ? 'no' : '') . "spell\<CR>"
+nnoremap yos <Cmd>setlocal spell!<Bar>set spell?<CR>
 
-nnoremap m<CR> :make<CR>
+nnoremap m<CR> <Cmd>make<CR>
 nnoremap m<Space> :make<Space>
-nnoremap m? :set makeprg?<CR>
+nnoremap m? <Cmd>set makeprg?<CR>
 
-nnoremap <Bslash>ev :edit $MYVIMRC<CR>
+nnoremap <Bslash>ev <Cmd>edit $MYVIMRC<CR>
 
 function! Sort(type, ...) abort
     '[,']sort
     call setpos('.', getpos("''"))
 endfunction
-nnoremap <silent> gs m':set operatorfunc=Sort<CR>g@
-xnoremap <silent> gs :sort<CR>
+nnoremap gs m'<Cmd>set operatorfunc=Sort<CR>g@
+xnoremap gs <Cmd>sort<CR>
 
 cnoremap <expr> <C-P> wildmenumode() ? "\<C-P>" : "\<Up>"
 cnoremap <expr> <C-N> wildmenumode() ? "\<C-N>" : "\<Down>"
