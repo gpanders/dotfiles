@@ -1,10 +1,6 @@
 augroup init | execute 'autocmd!' | augroup END
 
-autocmd init ColorScheme * hi! Comment gui=italic cterm=italic
-autocmd init ColorScheme * hi! Underlined ctermfg=NONE guifg=NONE
-autocmd init ColorScheme * hi! link Repeat Conditional
-
-silent! colorscheme base16-eighties
+colorscheme base16-eighties
 
 set breakindent
 set confirm
