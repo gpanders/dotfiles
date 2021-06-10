@@ -14,6 +14,6 @@ nnoremap <buffer> Z: ^"zyg_:<C-R>z<CR>
 vnoremap <buffer> Z: "zy:<C-U><C-R>=substitute(@z, "\n", "<Bar>", "g")<CR><BS>
 
 " Source current file with c<Enter>
-nnoremap <silent> <buffer> c<CR> :source %<Bar>redraw!<CR>
+nnoremap <buffer> c<CR> <Cmd>source %<Bar>redraw!<CR>
 
-let b:undo_ftplugin .= '|unm <buffer> Z:|unm <buffer> c<CR>'
+let b:undo_ftplugin .= '|unm <buffer> Z:|nun <buffer> c<CR>'

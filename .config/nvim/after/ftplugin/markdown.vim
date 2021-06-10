@@ -15,9 +15,11 @@ if executable('pandoc')
   compiler pandoc
 endif
 
-nnoremap <buffer> <silent> Z! :<C-U>EvalBlock<CR>
-let b:undo_ftplugin .= '|nun <buffer> Z!'
+if exists(':EvalBlock') == 2
+  nnoremap <buffer> Z! <Cmd>EvalBlock<CR>
+  let b:undo_ftplugin .= '|nun <buffer> Z!'
+endif
 
-nnoremap <buffer> <silent> <CR> :<C-U>call ft#markdown#open('edit')<CR>
-nnoremap <buffer> <silent> <C-W><CR> :<C-U>call ft#markdown#open('split')<CR>
+nnoremap <buffer> <CR> <Cmd>call ft#markdown#open('edit')<CR>
+nnoremap <buffer> <C-W><CR> <Cmd>call ft#markdown#open('split')<CR>
 let b:undo_ftplugin .= '|nun <buffer> <CR>|nun <buffer> <C-W><CR>'
