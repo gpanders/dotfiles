@@ -9,4 +9,5 @@ augroup filetypedetect
   autocmd! BufRead,BufNewFile *.env                           setf env
   autocmd! BufRead,BufNewFile *.cl                            setf opencl
   autocmd! BufRead,BufNewFile *.fish                          setf fish
+  autocmd! BufRead,BufNewFile *.zig                           setf zig
 augroup END
