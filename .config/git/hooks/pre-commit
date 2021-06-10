@@ -1,0 +1,6 @@
+#!/bin/sh -eu
+
+hooks="$(git rev-parse --git-path hooks)"
+for hook in "$hooks"/pre-commit.d/*; do
+	sh "$hook"
+done
