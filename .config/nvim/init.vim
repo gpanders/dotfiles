@@ -5,6 +5,7 @@ colorscheme base16-eighties
 set breakindent
 set confirm
 set cursorline
+set expandtab
 set foldlevelstart=99
 set hidden
 set ignorecase
@@ -17,6 +18,7 @@ set matchpairs+=<:>
 set pumheight=10
 set scrolloff=2
 set shell=/bin/sh
+set shiftwidth=4
 set showmatch
 set showtabline=2
 set sidescrolloff=5
