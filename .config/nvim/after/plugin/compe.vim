@@ -2,36 +2,26 @@ if !get(g:, 'loaded_compe')
   finish
 endif
 
-lua <<EOF
-local compe = require('compe')
+let s:source = {'path': v:true, 'nvim_lsp': v:true, 'nvim_lua': v:true}
 
-function setupcompe()
-    local ft = vim.opt.filetype:get()
-    local buffer = true
-    for _, v in ipairs({"mail", "markdown", "text", "rst", "gitcommit"}) do
-        if ft == v then
-            buffer = false
-            break
-        end
-    end
+function! s:setup()
+  let buffer = v:true
+  for v in ['mail', 'markdown', 'text', 'rst', 'gitcommit', 'gitsendemail']
+    if v ==# &filetype
+      let buffer = v:false
+      break
+    endif
+  endfor
 
-    compe.setup({
-        source = {
-            path = true,
-            buffer = buffer,
-            nvim_lsp = true,
-            nvim_lua = true
-        },
-    }, 0)
-end
+  call compe#setup({'source': extend(s:source, {'buffer': buffer})}, 0)
+endfunction
 
-vim.opt.completeopt = { 'menuone', 'noselect' }
-vim.opt.shortmess:append('c')
-EOF
+set completeopt=menuone,noselect
+set shortmess+=c
 
 inoremap <silent> <expr> <CR> compe#confirm('<CR>')
 
 augroup my_compe
   autocmd!
-  autocmd FileType * lua setupcompe()
+  autocmd FileType * call s:setup()
 augroup END

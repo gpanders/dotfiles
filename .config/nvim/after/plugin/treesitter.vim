@@ -2,6 +2,7 @@ if !get(g:, 'loaded_nvim_treesitter')
     finish
 endif
 
+function! s:setup()
 lua <<EOF
 require('nvim-treesitter.configs').setup {
     highlight = {
@@ -48,6 +49,12 @@ require('nvim-treesitter.configs').setup {
     },
 }
 EOF
+endfunction
+
+augroup my_treesiter
+    autocmd!
+    autocmd FileType * ++once call s:setup()
+augroup END
 
 hi link TSDefinition CursorLine
 hi link TSDefinitionUsage CursorLine
