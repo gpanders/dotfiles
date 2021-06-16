@@ -23,9 +23,6 @@ set use_envelope_from
 
 set sendmail = msmtp
 
-set alias_file = ~/.local/share/mutt/aliases
-source $alias_file
-
 # Disable Mail-Followup-To header
 unset followup_to
 

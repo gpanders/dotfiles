@@ -17,3 +17,6 @@ set query_command = "khard email --parsable --search-in-source-files '%s'"
 set hostname = "gpanders.com"
 
 alternates @gpanders\\.com$
+
+set alias_file = ~/.local/share/mutt/aliases
+source $alias_file
