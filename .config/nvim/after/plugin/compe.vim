@@ -20,6 +20,7 @@ set completeopt=menuone,noselect
 set shortmess+=c
 
 inoremap <silent> <expr> <CR> compe#confirm('<CR>')
+inoremap <silent> <expr> <C-E> compe#close('<C-E>')
 
 augroup my_compe
   autocmd!
