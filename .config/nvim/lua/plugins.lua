@@ -1,14 +1,15 @@
-local fn = vim.fn
-local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 
-if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path})
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+    vim.fn.system({'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
 return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
 
     use 'gpanders/vim-medieval'
+
+    use 'gpanders/vim-oldfiles'
 
     use 'tpope/vim-surround'
 
@@ -32,7 +33,7 @@ return require('packer').startup(function(use)
 
     use 'mhinz/vim-signify'
 
-    use 'neomake/neomake'
+    use 'dense-analysis/ale'
 
     use 'ludovicchabant/vim-gutentags'
 
@@ -44,9 +45,11 @@ return require('packer').startup(function(use)
 
     use { 'tweekmonster/startuptime.vim', opt = true }
 
-    use 'neovim/nvim-lspconfig'
+    use { 'neovim/nvim-lspconfig', opt = true }
 
     use 'hrsh7th/nvim-compe'
+
+    -- use 'nvim-lua/completion-nvim'
 
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 
@@ -54,9 +57,10 @@ return require('packer').startup(function(use)
 
     use { 'nvim-treesitter/playground', opt = true }
 
-    use {
-        'nvim-telescope/telescope.nvim',
-        requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
-    }
+    use 'nvim-lua/popup.nvim'
+
+    use 'nvim-lua/plenary.nvim'
+
+    use { 'nvim-telescope/telescope.nvim', opt = true }
 
 end)

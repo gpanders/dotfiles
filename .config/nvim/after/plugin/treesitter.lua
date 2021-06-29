@@ -1,9 +1,7 @@
-if !get(g:, 'loaded_nvim_treesitter')
-    finish
-endif
+if not vim.g.loaded_nvim_treesitter then
+    return
+end
 
-function! s:setup()
-lua <<EOF
 require('nvim-treesitter.configs').setup {
     highlight = {
         enable = true,
@@ -25,7 +23,7 @@ require('nvim-treesitter.configs').setup {
         smart_rename = {
             enable = true,
             keymaps = {
-                smart_rename = 'grr',
+                smart_rename = 'gR',
             },
         },
         navigation = {
@@ -48,13 +46,8 @@ require('nvim-treesitter.configs').setup {
         lint_events = {'BufWrite', 'CursorHold'},
     },
 }
-EOF
-endfunction
 
-augroup my_treesiter
-    autocmd!
-    autocmd FileType * ++once call s:setup()
-augroup END
-
-hi link TSDefinition CursorLine
-hi link TSDefinitionUsage CursorLine
+vim.cmd [[
+    hi link TSDefinition CursorLine
+    hi link TSDefinitionUsage CursorLine
+]]

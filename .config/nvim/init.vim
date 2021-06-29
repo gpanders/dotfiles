@@ -1,7 +1,5 @@
 augroup init | execute 'autocmd!' | augroup END
 
-colorscheme base16-eighties
-
 set breakindent
 set confirm
 set cursorline
@@ -142,6 +140,8 @@ augroup init
 autocmd BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
 autocmd TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150, on_visual=true}
 autocmd TermOpen * setlocal statusline=%{b:term_title} | startinsert
+
+autocmd VimEnter * colorscheme base16-eighties
 
 if argc() == 0 && filereadable('Session.vim')
   if v:vim_did_enter
