@@ -31,7 +31,7 @@ return require('packer').startup(function(use)
 
     use 'junegunn/vim-easy-align'
 
-    use 'mhinz/vim-signify'
+    use 'lewis6991/gitsigns.nvim'
 
     use 'dense-analysis/ale'
 
