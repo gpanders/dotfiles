@@ -1,0 +1,2 @@
+--sh-kinds=-h
+--languages=-markdown,json,iniconf,yaml

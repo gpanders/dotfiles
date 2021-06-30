@@ -1,6 +1,4 @@
 --fields=-k+K
---languages=-markdown,html,iniconf,yaml,json
+--languages=-html
 --tag-relative=yes
 --exclude=build
-
---sh-kinds=-h
