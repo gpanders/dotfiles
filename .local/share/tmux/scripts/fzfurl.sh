@@ -10,7 +10,7 @@ if [ -t 0 ]; then
 	exit
 fi
 
-urls=$(grep -oE '(https?|file)://[-a-zA-Z0-9@:%_+.~#?&/=]+[-a-zA-Z0-9@%_+.~#?&/=]+')
+urls=$(grep -oE '(https?|file)://[-a-zA-Z0-9@:%_+.~#?&/=<>]+')
 if [ -z "$urls" ]; then
 	tmux display-message 'No URLs found'
 	exit
