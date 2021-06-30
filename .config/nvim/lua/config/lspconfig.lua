@@ -4,8 +4,6 @@ if not vim.g.lspconfig then
     return
 end
 
-local lsp = require('lspconfig')
-
 local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -19,7 +17,6 @@ local on_attach = function(client, bufnr)
     vim.cmd 'doautocmd User LspAttached'
 end
 
-
 local servers = {
     rust_analyzer = {},
     clangd = {},
@@ -32,8 +29,14 @@ local servers = {
 }
 
 for server, settings in pairs(servers) do
-    local config = lsp[server]
-    config.setup { on_attach = on_attach, settings = settings }
+    local config = require('lspconfig')[server]
+    config.setup {
+        on_attach = on_attach,
+        settings = settings,
+        flags = {
+            debounce_text_changes = 150,
+        },
+    }
 
     -- Start the server for the current buffer
     if vim.tbl_contains(config.filetypes, vim.bo.filetype) then
