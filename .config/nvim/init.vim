@@ -1,5 +1,3 @@
-augroup init | execute 'autocmd!' | augroup END
-
 set breakindent
 set confirm
 set cursorline
@@ -136,6 +134,7 @@ cnoremap <expr> <C-J> pumvisible() ? "\<Down>\<Tab>" : "\<C-J>"
 cnoremap <expr> <C-K> pumvisible() ? "\<Up>\<Tab>" : "\<C-K>"
 
 augroup init
+autocmd!
 
 autocmd BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
 autocmd TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150, on_visual=true}
