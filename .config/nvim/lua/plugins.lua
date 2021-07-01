@@ -37,8 +37,6 @@ return require('packer').startup(function(use)
 
     use 'ludovicchabant/vim-gutentags'
 
-    use 'romainl/vim-qlist'
-
     use 'gpanders/vim-markdown'
 
     use 'gpanders/vim-scdoc'
@@ -48,8 +46,6 @@ return require('packer').startup(function(use)
     use { 'neovim/nvim-lspconfig', opt = true }
 
     use 'hrsh7th/nvim-compe'
-
-    -- use 'nvim-lua/completion-nvim'
 
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 
