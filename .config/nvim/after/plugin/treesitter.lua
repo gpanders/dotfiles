@@ -15,6 +15,7 @@ require('nvim-treesitter.configs').setup {
             ['namespace'] = 'TSNone',
             ['constructor'] = 'TSNone',
             ['function.builtin'] = 'TSFunction',
+            ['function.macro'] = 'TSFunction',
             ['constant.builtin'] = 'TSConstant',
         },
     },
