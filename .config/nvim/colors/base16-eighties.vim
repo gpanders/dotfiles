@@ -2,158 +2,161 @@
 " Scheme: Chris Kempson (http://chriskempson.com)
 " Modified by: Gregory Anders
 
-" GUI color definitions
-let s:gui00 = '2d2d2d'
-let s:gui01 = '393939'
-let s:gui02 = '515151'
-let s:gui03 = '747369'
-let s:gui04 = 'a09f93'
-let s:gui05 = 'd3d0c8'
-let s:gui06 = 'e8e6df'
-let s:gui07 = 'f2f0ec'
-let s:gui08 = 'f2777a'
-let s:gui09 = 'f99157'
-let s:gui0A = 'ffcc66'
-let s:gui0B = '99cc99'
-let s:gui0C = '66cccc'
-let s:gui0D = '6699cc'
-let s:gui0E = 'cc99cc'
-let s:gui0F = 'd27b53'
-
-" Terminal color definitions
-let s:cterm00 = '00'
-let s:cterm03 = '08'
-let s:cterm05 = '07'
-let s:cterm07 = '15'
-let s:cterm08 = '01'
-let s:cterm0A = '03'
-let s:cterm0B = '02'
-let s:cterm0C = '06'
-let s:cterm0D = '04'
-let s:cterm0E = '05'
-let s:cterm01 = '10'
-let s:cterm02 = '11'
-let s:cterm04 = '12'
-let s:cterm06 = '13'
-let s:cterm09 = '09'
-let s:cterm0F = '14'
-
-" Theme setup
-hi clear
-if exists('syntax_on')
-  syntax reset
+if exists('g:colors_name')
+    hi clear
 endif
+
 let g:colors_name = 'base16-eighties'
 
-" Highlighting function
-fun s:hi(group, guifg, guibg, ctermfg, ctermbg, attr, guisp)
-  if a:guifg !=# ''
-    exec 'hi ' . a:group . ' guifg=#' . a:guifg
-  endif
-  if a:guibg !=# ''
-    exec 'hi ' . a:group . ' guibg=#' . a:guibg
-  endif
-  if a:ctermfg !=# ''
-    exec 'hi ' . a:group . ' ctermfg=' . a:ctermfg
-  endif
-  if a:ctermbg !=# ''
-    exec 'hi ' . a:group . ' ctermbg=' . a:ctermbg
-  endif
-  if a:attr !=# ''
-    exec 'hi ' . a:group . ' gui=' . a:attr . ' cterm=' . a:attr
-  endif
-  if a:guisp !=# ''
-    exec 'hi ' . a:group . ' guisp=#' . a:guisp
-  endif
-endfun
+let s:gui_black = '2d2d2d'
+let s:gui_red = 'f2777a'
+let s:gui_green = '99cc99'
+let s:gui_yellow = 'ffcc66'
+let s:gui_blue = '6699cc'
+let s:gui_magenta = 'cc99cc'
+let s:gui_cyan = '66cccc'
+let s:gui_white = 'd3d0c8'
+let s:gui_brblack = '747369'
+let s:gui_brred = 'f99157'
+let s:gui_bryellow = '515151'
+let s:gui_brgreen = '393939'
+let s:gui_brblue = 'a09f93'
+let s:gui_brmagenta = 'e8e6df'
+let s:gui_brcyan = 'd27b53'
+let s:gui_brwhite = 'f2f0ec'
 
-" Vim editor colors
-call s:hi('Bold',          '', '', '', '', 'bold', '')
-call s:hi('Directory',     s:gui0D, '', s:cterm0D, '', '', '')
-call s:hi('ErrorMsg',      s:gui08, s:gui00, s:cterm08, s:cterm00, '', '')
-call s:hi('FoldColumn',    s:gui0C, s:gui01, s:cterm0C, s:cterm01, '', '')
-call s:hi('Folded',        s:gui03, s:gui01, s:cterm03, s:cterm01, '', '')
-call s:hi('IncSearch',     s:gui01, s:gui09, s:cterm01, s:cterm09, 'none', '')
-call s:hi('Italic',        '', '', '', '', 'italic', '')
-call s:hi('MatchParen',    '', s:gui03, '', s:cterm03,  '', '')
-call s:hi('ModeMsg',       s:gui0B, '', s:cterm0B, '', '', '')
-call s:hi('MoreMsg',       s:gui0B, '', s:cterm0B, '', '', '')
-call s:hi('Question',      s:gui0D, '', s:cterm0D, '', '', '')
-call s:hi('Search',        s:gui01, s:gui0A, s:cterm01, s:cterm0A,  '', '')
-call s:hi('SpecialKey',    s:gui03, '', s:cterm03, '', '', '')
-call s:hi('TooLong',       s:gui08, '', s:cterm08, '', '', '')
-call s:hi('Visual',        '', s:gui02, '', s:cterm02, '', '')
-call s:hi('VisualNOS',     s:gui08, '', s:cterm08, '', '', '')
-call s:hi('WarningMsg',    s:gui0A, '', s:cterm0A, '', '', '')
-call s:hi('WildMenu',      s:gui07, s:gui02, s:cterm07, s:cterm02, '', '')
-call s:hi('Title',         s:gui0D, '', s:cterm0D, '', 'none', '')
-call s:hi('Conceal',       s:gui0D, s:gui00, s:cterm0D, s:cterm00, '', '')
-call s:hi('Cursor',        s:gui00, s:gui05, s:cterm00, s:cterm05, '', '')
-call s:hi('NonText',       s:gui03, '', s:cterm03, '', '', '')
-call s:hi('Normal',        s:gui05, s:gui00, s:cterm05, s:cterm00, '', '')
-call s:hi('LineNr',        s:gui03, s:gui01, s:cterm03, s:cterm01, '', '')
-call s:hi('SignColumn',    s:gui03, s:gui01, s:cterm03, s:cterm01, '', '')
-call s:hi('StatusLine',    s:gui04, s:gui02, s:cterm04, s:cterm02, 'none', '')
-call s:hi('StatusLineNC',  s:gui03, s:gui01, s:cterm03, s:cterm01, 'none', '')
-call s:hi('VertSplit',     s:gui02, s:gui02, s:cterm02, s:cterm02, 'none', '')
-call s:hi('ColorColumn',   '', s:gui01, '', s:cterm01, 'none', '')
-call s:hi('CursorColumn',  '', s:gui01, '', s:cterm01, 'none', '')
-call s:hi('CursorLine',    '', s:gui01, '', s:cterm01, 'none', '')
-call s:hi('CursorLineNr',  s:gui04, s:gui01, s:cterm04, s:cterm01, '', '')
-call s:hi('QuickFixLine',  '', s:gui01, '', s:cterm01, 'none', '')
-call s:hi('PMenu',         s:gui05, s:gui01, s:cterm05, s:cterm01, 'none', '')
-call s:hi('PMenuSel',      s:gui01, s:gui05, s:cterm01, s:cterm05, '', '')
-call s:hi('TabLine',       s:gui03, s:gui01, s:cterm03, s:cterm01, 'none', '')
-call s:hi('TabLineFill',   s:gui03, s:gui01, s:cterm03, s:cterm01, 'none', '')
-call s:hi('TabLineSel',    s:gui0B, s:gui01, s:cterm0B, s:cterm01, 'none', '')
+let s:cterm_black = '00'
+let s:cterm_red = '01'
+let s:cterm_green = '02'
+let s:cterm_yellow = '03'
+let s:cterm_blue = '04'
+let s:cterm_magenta = '05'
+let s:cterm_cyan = '06'
+let s:cterm_white = '07'
+let s:cterm_brblack = '08'
+let s:cterm_brred = '09'
+let s:cterm_brgreen = '10'
+let s:cterm_bryellow = '11'
+let s:cterm_brblue = '12'
+let s:cterm_brmagenta = '13'
+let s:cterm_brcyan = '14'
+let s:cterm_brwhite = '15'
 
-" Standard syntax highlighting
-call s:hi('Boolean',      s:gui09, '', s:cterm09, '', '', '')
-call s:hi('Character',    s:gui08, '', s:cterm08, '', '', '')
-call s:hi('Comment',      s:gui03, '', s:cterm03, '', 'italic', '')
-call s:hi('Conditional',  s:gui0E, '', s:cterm0E, '', '', '')
-call s:hi('Constant',     s:gui09, '', s:cterm09, '', '', '')
-call s:hi('Debug',         s:gui08, '', s:cterm08, '', '', '')
-call s:hi('Define',       s:gui0E, '', s:cterm0E, '', 'none', '')
-call s:hi('Delimiter',    s:gui0F, '', s:cterm0F, '', '', '')
-call s:hi('Error',         s:gui00, s:gui08, s:cterm00, s:cterm08, '', '')
-call s:hi('Exception',     s:gui08, '', s:cterm08, '', '', '')
-call s:hi('Float',        s:gui09, '', s:cterm09, '', '', '')
-call s:hi('Function',     s:gui0D, '', s:cterm0D, '', '', '')
-call s:hi('Identifier',   s:gui08, '', s:cterm08, '', 'none', '')
-call s:hi('Include',      s:gui0D, '', s:cterm0D, '', '', '')
-call s:hi('Keyword',      s:gui0E, '', s:cterm0E, '', '', '')
-call s:hi('Label',        s:gui0A, '', s:cterm0A, '', '', '')
-call s:hi('Macro',         s:gui08, '', s:cterm08, '', '', '')
-call s:hi('Number',       s:gui09, '', s:cterm09, '', '', '')
-call s:hi('Operator',     s:gui05, '', s:cterm05, '', 'none', '')
-call s:hi('PreProc',      s:gui0A, '', s:cterm0A, '', '', '')
-call s:hi('Repeat',       s:gui0E, '', s:cterm0E, '', '', '')
-call s:hi('Special',      s:gui0C, '', s:cterm0C, '', '', '')
-call s:hi('SpecialChar',  s:gui0F, '', s:cterm0F, '', '', '')
-call s:hi('Statement',    s:gui08, '', s:cterm08, '', '', '')
-call s:hi('StorageClass', s:gui0A, '', s:cterm0A, '', '', '')
-call s:hi('String',       s:gui0B, '', s:cterm0B, '', '', '')
-call s:hi('Structure',    s:gui0E, '', s:cterm0E, '', '', '')
-call s:hi('Tag',          s:gui0A, '', s:cterm0A, '', '', '')
-call s:hi('Todo',         s:gui0A, s:gui01, s:cterm0A, s:cterm01, '', '')
-call s:hi('Type',         s:gui0A, '', s:cterm0A, '', 'none', '')
-call s:hi('Typedef',      s:gui0A, '', s:cterm0A, '', '', '')
-call s:hi('Underlined',    'none', '', 'none', '', '', '')
+function! s:hi(group, fg, bg, attr, guisp)
+    exec 'hi clear ' . a:group
+    let s = 'hi ' . a:group
+    if a:fg !=# ''
+        let s .= ' ctermfg=' . s:cterm_{a:fg} . ' guifg=#' . s:gui_{a:fg}
+    endif
+    if a:bg !=# ''
+        let s .= ' ctermbg=' . s:cterm_{a:bg} . ' guibg=#' . s:gui_{a:bg}
+    endif
+    if a:attr !=# ''
+        let s .= ' gui=' . a:attr . ' cterm=' . a:attr
+    endif
+    if a:guisp !=# ''
+        let s .= ' guisp=#' . a:guisp
+    endif
+    exec s
+endfunction
 
-" Diff highlighting
-call s:hi('DiffAdd',      s:gui0B, s:gui01,  s:cterm0B, s:cterm01, '', '')
-call s:hi('DiffChange',   s:gui03, s:gui01,  s:cterm03, s:cterm01, '', '')
-call s:hi('DiffDelete',   s:gui08, s:gui01,  s:cterm08, s:cterm01, '', '')
-call s:hi('DiffText',     s:gui0D, s:gui01,  s:cterm0D, s:cterm01, '', '')
-call s:hi('DiffAdded',    s:gui0B, s:gui00,  s:cterm0B, s:cterm00, '', '')
-call s:hi('DiffFile',     s:gui08, s:gui00,  s:cterm08, s:cterm00, '', '')
-call s:hi('DiffNewFile',  s:gui0B, s:gui00,  s:cterm0B, s:cterm00, '', '')
-call s:hi('DiffLine',     s:gui0D, s:gui00,  s:cterm0D, s:cterm00, '', '')
-call s:hi('DiffRemoved',  s:gui08, s:gui00,  s:cterm08, s:cterm00, '', '')
+" UI Highlights (:h highlight-groups)
+call s:hi('ColorColumn',     '', 'brgreen', '', '')
+call s:hi('Conceal',         'blue', 'black', '', '')
+call s:hi('Cursor',          'black', 'white', '', '')
+call s:hi('CursorColumn',    '', 'brgreen', 'none', '')
+call s:hi('CursorLine',      '', 'brgreen', 'none', '')
+call s:hi('Directory',       'blue', '', '', '')
+call s:hi('DiffAdd',         'green', '',  '', '')
+call s:hi('DiffChange',      'brblack', '',  '', '')
+call s:hi('DiffDelete',      'red', '',  '', '')
+call s:hi('DiffText',        'blue', '',  '', '')
+call s:hi('ErrorMsg',        'red', 'black', '', '')
+call s:hi('VertSplit',       'bryellow', 'bryellow', 'none', '')
+call s:hi('Folded',          'brblack', 'brgreen', '', '')
+call s:hi('FoldColumn',      'cyan', 'brgreen', '', '')
+call s:hi('SignColumn',      'brblack', 'brgreen', '', '')
+call s:hi('IncSearch',       'brgreen', 'brred', 'none', '')
+call s:hi('LineNr',          'brblack', 'brgreen', '', '')
+call s:hi('CursorLineNr',    'brblue', 'brgreen', '', '')
+call s:hi('MatchParen',      '', 'brblack', '', '')
+call s:hi('ModeMsg',         'green', '', '', '')
+call s:hi('MoreMsg',         'green', '', '', '')
+call s:hi('NonText',         'brblack', '', '', '')
+call s:hi('PMenu',           'white', 'brgreen', 'none', '')
+call s:hi('PMenuSel',        'brgreen', 'white', '', '')
+call s:hi('Question',        'blue', '', '', '')
+call s:hi('QuickFixLine',    '', 'brgreen', 'none', '')
+call s:hi('Search',          'brgreen', 'yellow', '', '')
+call s:hi('SpecialKey',      'brblack', '', '', '')
+call s:hi('SpellBad',        'red', '', 'undercurl', 'red')
+call s:hi('SpellLocal',      'blue', '', 'undercurl', 'cyan')
+call s:hi('SpellCap',        'magenta', '', 'undercurl', 'blue')
+call s:hi('SpellRare',       'cyan', '', 'undercurl', 'magenta')
+call s:hi('StatusLine',      'brblue', 'bryellow', 'none', '')
+call s:hi('StatusLineNC',    'brblack', 'brgreen', 'none', '')
+call s:hi('TabLine',         'brblack', 'brgreen', 'none', '')
+call s:hi('TabLineFill',     'brblack', 'brgreen', 'none', '')
+call s:hi('TabLineSel',      'green', 'brgreen', 'none', '')
+call s:hi('Title',           'blue', '', 'none', '')
+call s:hi('Visual',          '', 'bryellow', '', '')
+call s:hi('VisualNOS',       'red', '', '', '')
+call s:hi('WarningMsg',      'yellow', '', '', '')
+call s:hi('WildMenu',        'brwhite', 'bryellow', '', '')
 
-" Spelling highlighting
-call s:hi('SpellBad',     '', '', s:cterm08, 'none', 'undercurl', s:gui08)
-call s:hi('SpellLocal',   '', '', s:cterm0D, 'none', 'undercurl', s:gui0C)
-call s:hi('SpellCap',     '', '', s:cterm0E, 'none', 'undercurl', s:gui0D)
-call s:hi('SpellRare',    '', '', s:cterm0C, 'none', 'undercurl', s:gui0E)
+" Syntax items (:h group-name)
+call s:hi('Comment',         'brblack', '', 'italic', '')
+
+call s:hi('Constant',        'brred', '', '', '')
+call s:hi('String',          'green', '', '', '')
+call s:hi('Character',       'red', '', '', '')
+
+call s:hi('Identifier',      'red', '', '', '')
+call s:hi('Function',        'blue', '', '', '')
+
+call s:hi('Statement',       'red', '', '', '')
+call s:hi('Conditional',     'magenta', '', '', '')
+call s:hi('Repeat',          'magenta', '', '', '')
+call s:hi('Label',           'yellow', '', '', '')
+call s:hi('Operator',        'white', '', 'none', '')
+
+call s:hi('PreProc',         'yellow', '', '', '')
+call s:hi('Include',         'blue', '', '', '')
+call s:hi('Define',          'magenta', '', 'none', '')
+call s:hi('Macro',           'red', '', '', '')
+
+call s:hi('Type',            'yellow', '', 'none', '')
+call s:hi('StorageClass',    'magenta', '', '', '')
+
+call s:hi('Special',         'cyan', '', '', '')
+call s:hi('Tag',             'red', '', '', '')
+call s:hi('Delimiter',       'brcyan', '', '', '')
+call s:hi('Debug',           'red', '', '', '')
+
+call s:hi('Underlined',      '', '', 'underline', '')
+
+call s:hi('Ignore',          'black', 'black', 'none', '')
+
+call s:hi('Error',           'black', 'red', '', '')
+
+call s:hi('Todo',            'yellow', 'brgreen', '', '')
+
+" Syntax-file specific highlighting
+call s:hi('diffAdded',       'green', '', '', '')
+call s:hi('diffRemoved',     'red', '', '', '')
+call s:hi('diffLine',        'cyan', '', '', '')
+call s:hi('diffFile',        '', '', 'bold', '')
+call s:hi('diffIndexLine',   '', '', 'bold', '')
+
+call s:hi('gitrebasePick',   'yellow', '', '', '')
+call s:hi('gitrebaseReword', 'blue', '', '', '')
+call s:hi('gitrebaseEdit',   'red', '', '', '')
+call s:hi('gitrebaseSquash', 'magenta', '', '', '')
+call s:hi('gitrebaseFixup',  'magenta', '', '', '')
+call s:hi('gitrebaseExec',   'cyan', '', '', '')
+call s:hi('gitrebaseReset',  'magenta', '', '', '')
+
+" Plugin highlighting
+call s:hi('GitSignsAdd',     'green', 'brgreen', '', '')
+call s:hi('GitSignsDelete',  'red', 'brgreen', '', '')
+call s:hi('GitSignsChange',  'brblack', 'brgreen', '', '')
