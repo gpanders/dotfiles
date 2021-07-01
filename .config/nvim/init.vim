@@ -126,7 +126,7 @@ function! Sort(type, ...) abort
     call setpos('.', getpos("''"))
 endfunction
 nnoremap gs m'<Cmd>set operatorfunc=Sort<CR>g@
-xnoremap gs <Cmd>sort<CR>
+xnoremap gs :sort<CR>
 
 cnoremap <expr> <C-P> wildmenumode() ? "\<C-P>" : "\<Up>"
 cnoremap <expr> <C-N> wildmenumode() ? "\<C-N>" : "\<Down>"
