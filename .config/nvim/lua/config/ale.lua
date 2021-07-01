@@ -1,7 +1,3 @@
-if not vim.g.loaded_ale then
-    return
-end
-
 local ale_diagnostic_severity_map = {
     [vim.lsp.protocol.DiagnosticSeverity.Error] = 'E',
     [vim.lsp.protocol.DiagnosticSeverity.Warning] = 'W',
