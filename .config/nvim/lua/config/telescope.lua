@@ -1,6 +1,8 @@
 local opts = require('telescope.themes').get_dropdown({
     previewer = false,
-    width = 100,
+    layout_config = {
+        width = 100,
+    },
 })
 
 require('telescope').setup({
