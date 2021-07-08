@@ -51,5 +51,4 @@ require('nvim-treesitter.configs').setup {
 vim.cmd [[
     hi link TSDefinition CursorLine
     hi link TSDefinitionUsage CursorLine
-    hi link TSVariable Normal
 ]]
