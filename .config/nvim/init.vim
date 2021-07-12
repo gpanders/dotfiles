@@ -9,7 +9,6 @@ set foldlevelstart=99
 set hidden
 set ignorecase
 set inccommand=nosplit
-set laststatus=2
 set lazyredraw
 set linebreak
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
@@ -34,12 +33,6 @@ set wildmode=longest:full,full
 
 let &colorcolumn = '+' . join(range(1, 256), ',+')
 let &statusline = ' %{statusline#obsession()}%<%f [%{&filetype ==# "" ? "none" : &filetype}] %m%r%=%-14.{statusline#git()}%-14.(%l:%c%V%) %P '
-
-setglobal path=.,,
-setglobal include=
-setglobal includeexpr=
-setglobal define=
-setglobal isfname+=@-@
 
 set grepformat^=%f:%l:%c:%m
 if executable('rg')
