@@ -8,5 +8,5 @@ let g:loaded_editorconfig = 1
 
 augroup editorconfig
     autocmd!
-    autocmd FileType * call editorconfig#config()
+    autocmd BufNewFile,BufReadPost,BufFilePost * lua require('editorconfig')()
 augroup END
