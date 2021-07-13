@@ -11,6 +11,8 @@ return require('packer').startup(function(use)
 
     use 'gpanders/vim-oldfiles'
 
+    use 'gpanders/editorconfig.nvim'
+
     use 'tpope/vim-surround'
 
     use 'tpope/vim-repeat'
