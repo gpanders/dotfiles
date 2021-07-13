@@ -16,7 +16,7 @@ function! s:grep(l, args, mods) abort
     let cmdpost = 'doautocmd QuickFixCmdPost ' . (a:l ? 'lgrep' : 'grep')
     silent exe 'doautocmd QuickFixCmdPre' a:l ? 'lgrep' : 'grep'
 
-    let opts = {'stdout_buffered': v:true}
+    let opts = {'stdout_buffered': v:true, 'stdin': 'null'}
     let opts.on_stdout = {j,d,e -> s:cb(a:l, grepcmd, a:mods, d)}
     let opts.on_exit = {... -> execute(cmdpost)}
 
