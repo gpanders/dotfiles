@@ -1,5 +1,5 @@
-command! -nargs=+ -complete=file_in_path Grep  call grep#grep(<q-args>, <q-mods>)
-command! -nargs=+ -complete=file_in_path LGrep call grep#lgrep(<q-args>, <q-mods>)
+command! -nargs=+ -complete=file_in_path Grep  lua require('grep')(false, <q-args>, <q-mods>)
+command! -nargs=+ -complete=file_in_path LGrep lua require('grep')(true, <q-args>, <q-mods>)
 
 cnoreabbrev <expr> gr    (getcmdtype() ==# ':' && getcmdline() ==# 'gr')    ? 'Grep'  : 'gr'
 cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'Grep'  : 'grep'
