@@ -1,4 +1,3 @@
-syntax on
 colorscheme base16-eighties
 
 set breakindent
