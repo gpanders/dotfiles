@@ -1,16 +1,16 @@
 return function(l, args, mods)
-    local args = vim.fn.expandcmd(args)
+    local eargs = vim.fn.expandcmd(args)
     local grepcmd
     if string.match(vim.o.grepprg, "%$%*") then
-        grepcmd = string.gsub(vim.o.grepprg, "%$%*", args)
+        grepcmd = string.gsub(vim.o.grepprg, "%$%*", eargs)
     else
-        grepcmd = vim.o.grepprg .. " " .. args
+        grepcmd = vim.o.grepprg .. " " .. eargs
     end
 
     local opts = {
         stdout_buffered = true,
         stdin = "null",
-        on_stdout = function(job, data, event)
+        on_stdout = function(_, data)
             if data[#data] == "" then
                 table.remove(data)
             end
