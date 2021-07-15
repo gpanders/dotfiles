@@ -43,8 +43,6 @@ return require('packer').startup(function(use)
 
     use 'gpanders/vim-scdoc'
 
-    use { 'tweekmonster/startuptime.vim', opt = true }
-
     use { 'neovim/nvim-lspconfig', opt = true }
 
     use 'hrsh7th/nvim-compe'
