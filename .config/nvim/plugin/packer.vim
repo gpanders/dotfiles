@@ -38,7 +38,7 @@ require("packer").startup(function(use)
 
     use "lewis6991/gitsigns.nvim"
 
-    use "dense-analysis/ale"
+    use "mfussenegger/nvim-lint"
 
     use "ludovicchabant/vim-gutentags"
 

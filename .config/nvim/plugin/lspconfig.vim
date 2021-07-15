@@ -54,4 +54,15 @@ endfunction
 augroup load_lspconfig
     autocmd!
     autocmd FileType go,c,cpp,rust,python ++once call s:load()
+    autocmd User LspDiagnosticsChanged lua vim.lsp.diagnostic.set_loclist({ open_loclist = false })
 augroup END
+
+hi link LspDiagnosticsDefaultError ErrorMsg
+hi link LspDiagnosticsDefaultWarning WarningMsg
+hi link LspDiagnosticsDefaultInformation Question
+hi link LspDiagnosticsDefaultHint NonText
+
+hi LspDiagnosticsSignError ctermfg=1 ctermbg=10
+hi LspDiagnosticsSignWarning ctermfg=3 ctermbg=10
+hi LspDiagnosticsSignInformation ctermfg=4 ctermbg=10
+hi LspDiagnosticsSignHint ctermfg=7 ctermbg=10
