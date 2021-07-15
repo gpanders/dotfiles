@@ -1,0 +1,5 @@
+[
+  "and"
+  "or"
+  "not"
+] @keyword
