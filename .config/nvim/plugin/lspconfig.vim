@@ -28,7 +28,7 @@ local servers = {
             nilness = true,
         },
     },
-    pyls = {
+    pylsp = {
         configurationSources = { "flake8" },
     },
 }
