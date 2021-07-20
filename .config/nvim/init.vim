@@ -134,6 +134,8 @@ autocmd!
 autocmd BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
 autocmd TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150, on_visual=true}
 autocmd TermOpen * setlocal statusline=%{b:term_title} | startinsert
+autocmd InsertEnter,WinLeave,FocusLost * setlocal nocursorline
+autocmd InsertLeave,WinEnter,FocusGained * if mode() !=# 'i' | let &l:cursorline = 1 | endif
 
 if argc() == 0 && filereadable('Session.vim')
   if v:vim_did_enter
