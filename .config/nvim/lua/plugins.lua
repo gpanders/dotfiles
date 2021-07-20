@@ -45,7 +45,7 @@ return require('packer').startup(function(use)
 
     use { 'neovim/nvim-lspconfig', opt = true }
 
-    use 'hrsh7th/nvim-compe'
+    use { 'hrsh7th/nvim-compe', opt = true }
 
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 
