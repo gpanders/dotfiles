@@ -139,7 +139,7 @@ if argc() == 0 && filereadable('Session.vim')
   if v:vim_did_enter
     source Session.vim
   else
-    autocmd VimEnter * nested source Session.vim
+    autocmd VimEnter * ++nested source Session.vim
   endif
 endif
 
