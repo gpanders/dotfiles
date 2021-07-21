@@ -6,7 +6,6 @@ nnoremap <Space>f <Cmd>Telescope find_files hidden=true follow=true<CR>
 nnoremap <Space>g <Cmd>Telescope live_grep<CR>
 nnoremap <Space>b <Cmd>Telescope buffers<CR>
 nnoremap <Space>o <Cmd>Telescope oldfiles<CR>
-nnoremap <Space>t <Cmd>Telescope tags<CR>
 nnoremap <Space>q <Cmd>Telescope quickfix<CR>
 nnoremap z= <Cmd>Telescope spell_suggest<CR>
 
