@@ -1,1 +1,1 @@
-println!("{%}");
+println!("$0");
