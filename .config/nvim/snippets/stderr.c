@@ -1,1 +1,1 @@
-fprintf(stderr, "{%}\n");
+fprintf(stderr, "$0\n");

@@ -1,1 +1,1 @@
-std.debug.warn("{%}", .{});
+std.debug.warn("$0", .{});

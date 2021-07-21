@@ -16,6 +16,8 @@ require("packer").startup(function(use)
 
     use "gpanders/editorconfig.nvim"
 
+    use "gpanders/snippets.nvim"
+
     use "gpanders/vim-surround"
 
     use "tpope/vim-commentary"
