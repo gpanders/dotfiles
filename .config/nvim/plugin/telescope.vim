@@ -24,6 +24,7 @@ require("telescope").setup({
         mappings = {
             i = {
                 ["<C-u>"] = false,
+                ["<Esc>"] = require("telescope.actions").close,
             },
         },
     },
