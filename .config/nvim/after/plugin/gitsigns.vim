@@ -1,1 +1,1 @@
-autocmd BufRead * ++once lua require('gitsigns').setup()
+autocmd User Fugitive ++once lua require("gitsigns").setup()
