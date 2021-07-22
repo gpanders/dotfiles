@@ -1,4 +1,8 @@
 function! statusline#git() abort
+  if exists('b:gitsigns_head')
+    return b:gitsigns_head
+  end
+
   if get(g:, 'loaded_fugitive')
     let branch = fugitive#head()
     if branch !=# ''
