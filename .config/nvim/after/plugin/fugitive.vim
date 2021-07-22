@@ -4,8 +4,9 @@ endif
 
 augroup plugin_fugitive
     autocmd!
-    autocmd BufReadPost fugitive://* setlocal bufhidden=delete
+    autocmd BufRead fugitive://* setlocal bufhidden=delete
     autocmd FileType fugitive,fugitiveblame nmap <silent> <buffer> q gq
+    autocmd BufRead * if getcwd() ==# $HOME && (empty('b:git_dir') || b:git_dir ==# '') | let b:git_dir = $HOME . '/.dotfiles' | endif
 augroup END
 
 nnoremap g<Space> :Git<Space>
