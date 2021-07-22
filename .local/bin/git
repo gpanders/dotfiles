@@ -4,6 +4,7 @@
 git=$(which -a git | sed -n "\:$0:!{p;q;}")
 
 case "$*" in
+"-C $HOME "* | *" -C $HOME "*) ;;
 '-C '* | *' -C '*)
 	C=1
 	;;
