@@ -3,4 +3,4 @@
 
 $0
 
-#endif // ${1|S.v:upper()}_H_
+#endif // $1_H_
