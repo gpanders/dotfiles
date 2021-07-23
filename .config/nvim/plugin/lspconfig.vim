@@ -35,13 +35,13 @@ local servers = {
 
 for server_name, settings in pairs(servers) do
     local config = require("lspconfig")[server_name]
-    config.setup {
+    config.setup({
         on_attach = on_attach,
-        settings = { server_name = settings },
+        settings = { [server_name] = settings },
         flags = {
             debounce_text_changes = 150,
         },
-    }
+    })
 
     -- Start the server for the current buffer
     if vim.tbl_contains(config.filetypes, vim.bo.filetype) then
@@ -57,10 +57,10 @@ augroup load_lspconfig
     autocmd User LspDiagnosticsChanged lua vim.lsp.diagnostic.set_loclist({ open_loclist = false })
 augroup END
 
-hi link LspDiagnosticsDefaultError ErrorMsg
-hi link LspDiagnosticsDefaultWarning WarningMsg
-hi link LspDiagnosticsDefaultInformation Question
-hi link LspDiagnosticsDefaultHint NonText
+hi LspDiagnosticsDefaultError ctermfg=1
+hi LspDiagnosticsDefaultWarning ctermfg=3
+hi LspDiagnosticsDefaultInformation ctermfg=4
+hi LspDiagnosticsDefaultHint ctermfg=7 cterm=italic
 
 hi LspDiagnosticsSignError ctermfg=1 ctermbg=10
 hi LspDiagnosticsSignWarning ctermfg=3 ctermbg=10
