@@ -178,3 +178,13 @@ call s:hi('gitrebaseReset',  'magenta', '', '', '')
 call s:hi('GitSignsAdd',    'green', 'brgreen', '', '')
 call s:hi('GitSignsDelete', 'red', 'brgreen', '', '')
 call s:hi('GitSignsChange', 'brblack', 'brgreen', '', '')
+
+" LSP Diagnostics
+call s:hi('LspDiagnosticsDefaultError', 'red', '', '', '')
+call s:hi('LspDiagnosticsDefaultWarning', 'yellow', '', '', '')
+call s:hi('LspDiagnosticsDefaultInformation', 'blue', '', '', '')
+call s:hi('LspDiagnosticsDefaultHint', 'brblack', '', '', '')
+call s:hi('LspDiagnosticsSignError', 'red', 'brgreen', '', '')
+call s:hi('LspDiagnosticsSignWarning', 'yellow', 'brgreen', '', '')
+call s:hi('LspDiagnosticsSignInformation', 'blue', 'brgreen', '', '')
+call s:hi('LspDiagnosticsSignHint', 'brblack', 'brgreen', '', '')
