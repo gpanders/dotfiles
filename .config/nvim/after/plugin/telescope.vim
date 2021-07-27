@@ -12,5 +12,8 @@ nnoremap z= <Cmd>Telescope spell_suggest<CR>
 augroup my_telescope
     autocmd!
     autocmd User LspAttached nnoremap <buffer> <Space>t <Cmd>Telescope lsp_dynamic_workspace_symbols<CR>
-    autocmd User Fugitive nnoremap <buffer> <Space>f <Cmd>Telescope git_files show_untracked=false<CR>
+
+    if exists('*FugitiveGitDir')
+        autocmd BufNewFile,BufRead * if !empty(FugitiveGitDir()) | nnoremap <buffer> <Space>f <Cmd>Telescope git_files show_untracked=false<CR> | endif
+    endif
 augroup END
