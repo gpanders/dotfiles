@@ -3,8 +3,8 @@ function! statusline#git() abort
     return b:gitsigns_head
   end
 
-  if get(g:, 'loaded_fugitive')
-    let branch = fugitive#head()
+  if exists('*FugitiveHead')
+    let branch = FugitiveHead()
     if branch !=# ''
       return branch
     endif
@@ -13,7 +13,7 @@ function! statusline#git() abort
 endfunction
 
 function! statusline#obsession() abort
-  if get(g:, 'loaded_obsession')
+  if exists('*ObsessionStatus')
     let s = ObsessionStatus()
     if !empty(s)
       let s .= ' '
