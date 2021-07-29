@@ -10,9 +10,10 @@ lint.linters_by_ft = {
     ["vim"] = { "vint" },
     ["lua"] = { "luacheck" },
     ["nix"] = { "nix" },
+    ["python"] = { "flake8" },
 }
 
-vim.cmd("autocmd! lint BufWritePost * lua require('lint').try_lint()")
+vim.api.nvim_command("autocmd! lint BufWritePost * lua require('lint').try_lint()")
 .
 endfunction
 
