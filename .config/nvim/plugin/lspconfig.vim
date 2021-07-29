@@ -5,7 +5,33 @@ function! s:load()
     endif
 
 lua <<
-local on_attach = function(client, bufnr)
+(function()
+    local ns = vim.api.nvim_create_namespace("diagnostics")
+    local clear = false
+    function vim.lsp.diagnostic.show_virtual_text()
+        if vim.fn.mode() ~= "n" then
+            return
+        end
+
+        local items = vim.lsp.diagnostic.get_line_diagnostics()
+        if clear then
+            vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
+            clear = false
+        end
+
+        if #items > 0 then
+            local pos = vim.api.nvim_win_get_cursor(0)
+            local line = pos[1] - 1
+            local chunks = vim.lsp.diagnostic.get_virtual_text_chunks_for_line(0, line, items)
+            vim.api.nvim_buf_set_extmark(0, ns, line, 0, {
+                virt_text = chunks,
+            })
+            clear = true
+        end
+    end
+end)()
+
+local function on_attach(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
     local opts = { noremap = true, silent = true }
@@ -15,7 +41,21 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<Cmd>lua vim.lsp.buf.references()<CR>", opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gR", "<Cmd>lua vim.lsp.buf.rename()<CR>", opts)
 
-    vim.cmd "doautocmd User LspAttached"
+    vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+            virtual_text = false,
+            underline = false,
+        }
+    )
+
+    vim.api.nvim_command(
+        string.format(
+            "autocmd CursorMoved,CursorHold <buffer=%d> lua vim.lsp.diagnostic.show_virtual_text()",
+            bufnr
+        )
+    )
+
+    vim.api.nvim_command("doautocmd User LspAttached")
 end
 
 local servers = {
