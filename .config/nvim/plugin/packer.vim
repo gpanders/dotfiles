@@ -64,6 +64,7 @@ require("packer").startup(function(use)
 
     use { "nvim-telescope/telescope.nvim", opt = true }
 
+    use "rktjmp/hotpot.nvim"
 end)
 
 require("packer").update()
