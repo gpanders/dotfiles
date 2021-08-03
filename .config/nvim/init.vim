@@ -59,6 +59,8 @@ nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap Q <Nop>
 nnoremap gQ <Nop>
 nnoremap Y y$
+nnoremap / ms/
+nnoremap ? ms?
 nnoremap <Space>w <Cmd>w<CR>
 nnoremap <Space>b :ls<CR>:b<Space>
 nnoremap <C-W><Space>b :ls<CR>:sb<Space>
