@@ -68,9 +68,7 @@ local servers = {
             nilness = true,
         },
     },
-    pylsp = {
-        configurationSources = { "flake8" },
-    },
+    pyright = {},
 }
 
 for server_name, settings in pairs(servers) do
