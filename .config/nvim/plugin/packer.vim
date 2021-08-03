@@ -64,7 +64,7 @@ require("packer").startup(function(use)
 
     use { "nvim-telescope/telescope.nvim", opt = true }
 
-    use "rktjmp/hotpot.nvim"
+    use { "bakpakin/fennel", tag = "0.9.2", run = "make && mkdir lua && mv fennel.lua lua" }
 end)
 
 require("packer").update()
