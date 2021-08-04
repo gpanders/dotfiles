@@ -7,7 +7,7 @@ if not ok then
     return
 end
 
-function _G.check_snippet()
+function check_snippet()
     if snippets.has_active_snippet() then
         return true
     end
@@ -16,7 +16,7 @@ function _G.check_snippet()
     return snippet ~= nil
 end
 
-function _G.split_getopts(str)
+function split_getopts(str)
     local lines = {}
     for c in str:gmatch("(%a[:]?)") do
         if c:find(":") then
@@ -39,6 +39,10 @@ local ext_ft_map = {
     ["rs"] = "rust",
 }
 
+local include = {
+    ["c"] = { "cpp" },
+}
+
 -- Read snippets from snippets directory
 local snippets_dir = vim.fn.stdpath("config") .. "/snippets"
 local function read_snippets(t)
@@ -48,9 +52,6 @@ local function read_snippets(t)
         if f then
             local name, ext = filename:match("^.+/([^/]+)%.([^.]+)$")
             local ft = ext_ft_map[ext] or ext
-            if not s[ft] then
-                s[ft] = {}
-            end
 
             local snippet = f:read("*all")
             f:close()
@@ -62,7 +63,17 @@ local function read_snippets(t)
                 snippet = U.match_indentation(snippet)
             end
 
+            if not s[ft] then
+                s[ft] = {}
+            end
             s[ft][name] = snippet
+
+            for _, v in ipairs(include[ft] or {}) do
+                if not s[v] then
+                    s[v] = {}
+                end
+                s[v][name] = snippet
+            end
         end
     end
 
