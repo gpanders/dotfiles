@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# This file is sourced by the system bash_completion file
-if [ -d "${XDG_DATA_DIR:-$HOME/.local/share}"/bash-completion/completions ]; then
-    for f in "${XDG_DATA_DIR:-$HOME/.local/share}"/bash-completion/completions/*; do
-        [ -r "$f" ] && . "$f"
-    done
-fi
