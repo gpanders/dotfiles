@@ -17,12 +17,14 @@
         grepcmd (if (string.match vim.o.grepprg "%$%*")
                     (string.gsub vim.o.grepprg "%$%*" args)
                     (.. vim.o.grepprg " " args))
-        [cmd & args] (vim.split grepcmd " ")
         stdout (vim.loop.new_pipe false)]
-    (vim.loop.spawn cmd {: args :stdio [nil stdout nil]} (vim.schedule_wrap cb))
+    (vim.loop.spawn
+      vim.o.shell
+      {:args ["-c" grepcmd] :stdio [nil stdout nil]}
+      (vim.schedule_wrap cb))
     (stdout:read_start
       (fn [err data]
         (assert (not err) err)
         (when data
-          (table.insert chunks data)))))
-  (print grepcmd))
+          (table.insert chunks data))))
+    (print grepcmd)))
