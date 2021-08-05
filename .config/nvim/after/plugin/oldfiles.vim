@@ -6,5 +6,5 @@ let g:oldfiles_blacklist = ['COMMIT_EDITMSG', 'vim/runtime/doc']
 
 augroup plugin_oldfiles
     autocmd!
-    autocmd FileType qf if w:quickfix_title =~# 'Oldfiles' | nnoremap <buffer> <CR> <CR>:cclose<CR> | endif
+    autocmd FileType qf if get(w:, 'quickfix_title') =~# 'Oldfiles' | nnoremap <buffer> <CR> <CR>:cclose<CR> | endif
 augroup END
