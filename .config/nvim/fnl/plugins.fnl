@@ -1,5 +1,5 @@
 (local install-path
-       (.. (vim.fn.stdpath :data) :/site/pack/packer/start/packer.nvim))
+       (.. (vim.fn.stdpath :data) "/site/pack/packer/start/packer.nvim"))
 
 (when (> (vim.fn.empty (vim.fn.glob install-path)) 0)
   (vim.fn.system ["git" "clone" "https://github.com/wbthomason/packer.nvim" install-path]))
@@ -41,8 +41,6 @@
   (use "nvim-lua/popup.nvim")
   (use "nvim-lua/plenary.nvim")
   (use "nvim-telescope/telescope.nvim" {:opt true})
-  (use "bakpakin/fennel" {:tag "0.9.2" :run "make && mkdir lua && mv fennel.lua lua"})
 ]])
-
 
 (packer.update)
