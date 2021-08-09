@@ -1,6 +1,7 @@
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
-setlocal comments^=:---
+setlocal comments-=:--
+setlocal comments+=:---,:--
 
 let b:undo_ftplugin .= '|setl com<'
 

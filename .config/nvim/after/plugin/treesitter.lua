@@ -48,7 +48,5 @@ require('nvim-treesitter.configs').setup {
     },
 }
 
-vim.cmd [[
-    hi link TSDefinition CursorLine
-    hi link TSDefinitionUsage CursorLine
-]]
+vim.api.nvim_command("hi link TSDefinition CursorLine")
+vim.api.nvim_command("hi link TSDefinitionUsage CursorLine")
