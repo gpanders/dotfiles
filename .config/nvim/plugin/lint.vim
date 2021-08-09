@@ -18,6 +18,5 @@ vim.api.nvim_command("autocmd! lint BufWritePost * lua require('lint').try_lint(
 endfunction
 
 augroup lint
-    autocmd!
     autocmd BufWritePre * ++once call s:load()
 augroup END
