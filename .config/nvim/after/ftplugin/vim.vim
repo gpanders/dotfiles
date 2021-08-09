@@ -1,13 +1,9 @@
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
 
-if has('folding')
-  setlocal foldmethod=marker
-  setlocal foldmarker=\ {{{,\ }}}
-  let b:undo_ftplugin .= '|setl fdm< fmr<'
-endif
-
+setlocal foldmethod=marker
+setlocal foldmarker=\ {{{,\ }}}
 setlocal formatoptions-=r
-let b:undo_ftplugin .= '|setl fo<'
+let b:undo_ftplugin .= '|setl fdm< fmr< fo<'
 
 " Z: execute current line or visually selected region in command mode
 nnoremap <buffer> Z: ^"zyg_:<C-R>z<CR>

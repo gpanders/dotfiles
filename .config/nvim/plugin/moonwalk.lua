@@ -19,8 +19,12 @@ local fennel = setmetatable({}, {
         end
         return fennel[k]
     end,
+    __newindex = function(_, k, v)
+        require("fennel")[k] = v
+    end,
 })
 
 moonwalk.add_loader("fnl", function(src)
-    return fennel.compileString(src)
+    fennel["macro-path"] = fennel["macro-path"] .. ";" .. vim.fn.stdpath("config") .. "/fnl/?.fnl"
+    return fennel.compileString(src, { compilerEnv = _G })
 end)
