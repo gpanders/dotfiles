@@ -1,6 +1,6 @@
 let g:loaded_telescope = 1
 
-function! s:load(...)
+function! s:load(args)
     delcommand Telescope
     unlet g:loaded_telescope
     packadd telescope.nvim
@@ -39,7 +39,7 @@ require("telescope").setup({
 })
 .
 
-    exec 'Telescope' join(a:000)
+    exec 'Telescope' a:args
 endfunction
 
-command -nargs=* Telescope call s:load(<f-args>)
+command -nargs=* Telescope call s:load(<q-args>)
