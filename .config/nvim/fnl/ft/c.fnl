@@ -29,26 +29,15 @@
 
     (when (or update (not (vim.loop.fs_access tagfile :R)))
       (vim.fn.mkdir (string.match tagfile "^(.+)/.-$") :p)
-      (var cmd (.. compiler " -M -Iinclude " (vim.fn.expand "%") "| awk '{for (i=1; i<=NF; i++) if ($i ~ /.h$/) print $i}' | ctags -L - -o " tagfile))
-      (if (= ft :c)
-          (set cmd (.. cmd " --c-kinds=+px --langmap=c:+.h --languages=c"))
-          (set cmd (.. cmd " --c++-kinds=+px --extras=+q --language-force=c++ --languages=c++")))
-
-      (let [stderr (vim.loop.new_pipe false)
-            chunks []]
-        (fn on-exit []
-          (let [output (table.concat chunks)]
-            (when (> (length output) 0)
-              (vim.notify output vim.log.levels.ERROR))))
-        (vim.loop.spawn
-          vim.o.shell
-          {:args ["-c" cmd] :stdio [nil nil stderr]}
-          (vim.schedule_wrap on-exit))
-        (stderr:read_start
-          (fn [err data]
-            (assert (not err) err)
-            (when data
-              (table.insert chunks data))))))))
+      (local path (vim.fn.expand "%:p"))
+      (when (vim.loop.fs_stat path)
+        (var cmd (.. compiler " -M -Iinclude " path "| awk '{for (i=1; i<=NF; i++) if ($i ~ /.h$/) print $i}' | ctags -L - -o " tagfile))
+        (if (= ft :c)
+            (set cmd (.. cmd " --c-kinds=+px --langmap=c:+.h --languages=c"))
+            (set cmd (.. cmd " --c++-kinds=+px --extras=+q --language-force=c++ --languages=c++")))
+        ; Prevent returning the output of uv.spawn (which is a userdata type)
+        ; by binding to a throwaway variable
+        (local _ (vim.loop.spawn vim.o.shell {:args ["-c" cmd]} #nil))))))
 
 (fn set-path []
   (let [ft vim.bo.filetype]

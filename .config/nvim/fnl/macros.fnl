@@ -1,5 +1,5 @@
 (fn setlocal [opt ?val]
-  (let [opt (string.format "%s" opt)]
+  (let [opt (tostring opt)]
     (if ?val
       `(set ,(sym (.. "vim.opt_local." opt)) ,?val)
       (match (string.gsub opt "&$" "")
@@ -22,23 +22,53 @@
   `(vim.api.nvim_command ,s))
 
 (fn noremap [mode from to ?opts]
-  (let [opts (or ?opts {})
-        mode (string.format "%s" mode)]
+  (assert (= (type mode) :string) "mode should be a string")
+  (assert (= (type from) :string) "from should be a string")
+  (assert (= (type to) :string) "to should be a string")
+  (assert (or (= `nil ?opts) (table? ?opts)) "opts should be a table")
+  (let [opts (or ?opts {})]
     (tset opts :noremap true)
     (if opts.buffer
-        (do
+        (let [buf (match opts.buffer
+                    true 0
+                    n n)]
           (tset opts :buffer nil)
-          `(vim.api.nvim_buf_set_keymap ,mode ,from ,to ,opts))
+          `(vim.api.nvim_buf_set_keymap ,buf ,mode ,from ,to ,opts))
         `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts))))
 
-(fn autocmd [group event pat ...]
-  ; Use timestamp as a unique identifier for a global function
-  (local ns (string.format "fnl%d" (os.time)))
-  `(do
-    (tset _G ,ns (fn [] ,...))
-    (vim.api.nvim_command ,(.. "augroup " group))
-    (vim.api.nvim_command ,(string.format "autocmd! %s %s call v:lua.%s(expand('<amatch>:p'))" event pat ns))
-    (vim.api.nvim_command "augroup END")))
+; Create a unique identifier for a global function
+(fn make-ident [...]
+  (-> (icollect [_ v (ipairs [...])]
+        (when (= (type v) :string) (v:lower)))
+      (table.concat "_")
+      (string.gsub "-" "_")
+      (->> (.. "fnl" (tostring (gensym))))))
+
+(fn autocmd [group event pat flags ...]
+  (assert (= (type group) :string) "autocmd group should be a string")
+  (assert (or (= (type event) :string) (sequence? event)) "autocmd event should be a string or list")
+  (assert (or (= (type flags) :string) (sequence? flags)) "autocmd flags should be a string or list")
+  (let [events (if (sequence? event) (table.concat event ",") event)
+        ns (make-ident :au group (string.gsub events "," "-"))
+        flags (table.concat (icollect [_ v (ipairs (if (sequence? flags) flags [flags]))]
+                              (string.format "++%s" v)) " ")]
+    `(do
+      (tset _G ,ns (fn [] ,...))
+      (exec ,(.. "augroup " group))
+      ,(let [cmd (string.format "autocmd! %s %%s %s call v:lua.%s()" events flags ns)]
+        `(exec
+          ,(if (list? pat)
+               `(string.format ,cmd ,pat)
+               (string.format cmd pat))))
+      (exec "augroup END"))))
+
+(fn command! [cmd opts func]
+  (let [ns (make-ident :comm cmd)
+        attrs (icollect [k v (pairs opts)]
+                (string.format "-%s=%s" k v))]
+    `(do
+      (tset _G ,ns ,func)
+      (exec ,(string.format "command! %s %s call v:lua.%s(<bang>0, <q-mods>, <q-args>)" (table.concat attrs " ") cmd ns)))))
 
 (fn append! [str s]
   `(set ,str (.. (or ,str "") ,s)))
@@ -51,5 +81,6 @@
   : exec
   : noremap
   : autocmd
+  : command!
   : append!
 }
