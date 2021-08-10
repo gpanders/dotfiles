@@ -1,5 +1,3 @@
-(require-macros :macros)
-
 (local {: set-path : tags} (require "ft/c"))
 
 (setlocal commentstring "//%s")
