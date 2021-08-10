@@ -1,5 +1,3 @@
-(import-macros {: exec} :macros)
-
 (fn grep [l args mods]
   (local chunks [])
 

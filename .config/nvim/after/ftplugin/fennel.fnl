@@ -1,5 +1,3 @@
-(require-macros :macros)
-
 (setlocal commentstring ";%s")
 (setlocal comments ":;")
 
