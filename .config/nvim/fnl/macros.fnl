@@ -6,11 +6,8 @@
         (where (o n) (> n 0))
           `(let [default# (. (vim.api.nvim_get_option_info ,o) :default)]
              (set ,(sym (.. "vim.opt_local." o)) default#))
-        _ (match (string.gsub opt "<$" "")
-            (where (o n) (> n 0))
-              `(set ,(sym (.. "vim.opt_local." o)) ,(sym (.. "vim.go." o)))
-            _ (match (string.gsub opt "^no" "")
-                (o n) `(set ,(sym (.. "vim.opt_local." o)) ,(= n 0))))))))
+        _ (match (string.gsub opt "^no" "")
+            (o n) `(set ,(sym (.. "vim.opt_local." o)) ,(= n 0)))))))
 
 (fn setlocal+= [opt val]
   `(,(string.format "vim.opt_local.%s:append" opt) ,val))
@@ -43,6 +40,9 @@
     (vim.api.nvim_command ,(string.format "autocmd! %s %s call v:lua.%s(expand('<amatch>:p'))" event pat ns))
     (vim.api.nvim_command "augroup END")))
 
+(fn append! [str s]
+  `(set ,str (.. (or ,str "") ,s)))
+
 {
   : setlocal
   : setlocal+=
@@ -51,4 +51,5 @@
   : exec
   : noremap
   : autocmd
+  : append!
 }
