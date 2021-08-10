@@ -21,7 +21,14 @@
 (fn exec [s]
   `(vim.api.nvim_command ,s))
 
-(fn noremap [mode from to ?opts]
+(fn keymap [mode from to ?opts]
+  "Map a key in the given mode. Defaults to non-recursive, use {:noremap false}
+in opts to use a recursive mapping.
+
+Examples:
+
+  (keymap :n \"Y\" \"y$\")
+  (keymap :n \"j\" \"(v:count == 0 ? 'gj' : 'j')\" {:expr true})"
   (assert (= (type mode) :string) "mode should be a string")
   (assert (= (type from) :string) "from should be a string")
   (assert (= (type to) :string) "to should be a string")
@@ -79,7 +86,7 @@
   : setlocal^=
   : setlocal-=
   : exec
-  : noremap
+  : keymap
   : autocmd
   : command!
   : append!
