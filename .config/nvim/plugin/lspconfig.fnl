@@ -21,10 +21,10 @@
     (fn on-attach [client bufnr]
       (vim.api.nvim_buf_set_option bufnr :omnifunc "v:lua.vim.lsp.omnifunc")
 
-      (noremap :n "<C-]>" "<Cmd>lua vim.lsp.buf.definition()<CR>" {:buffer bufnr :silent true})
-      (noremap :n "K" "<Cmd>lua vim.lsp.buf.hover()<CR>" {:buffer bufnr :silent true})
-      (noremap :n "gr" "<Cmd>lua vim.lsp.buf.references()<CR>" {:buffer bufnr :silent true})
-      (noremap :n "gR" "<Cmd>lua vim.lsp.buf.rename()<CR>" {:buffer bufnr :silent true})
+      (keymap :n "<C-]>" "<Cmd>lua vim.lsp.buf.definition()<CR>" {:buffer bufnr :silent true})
+      (keymap :n "K" "<Cmd>lua vim.lsp.buf.hover()<CR>" {:buffer bufnr :silent true})
+      (keymap :n "gr" "<Cmd>lua vim.lsp.buf.references()<CR>" {:buffer bufnr :silent true})
+      (keymap :n "gR" "<Cmd>lua vim.lsp.buf.rename()<CR>" {:buffer bufnr :silent true})
 
       (-> vim.lsp.diagnostic.on_publish_diagnostics
           (vim.lsp.with {:virtual_text false :underline false})
