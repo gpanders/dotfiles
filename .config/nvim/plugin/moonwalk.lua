@@ -5,21 +5,26 @@ end
 
 local fennel = setmetatable({}, {
     __index = function(_, k)
-        local ok, fennel = pcall(require, "fennel")
-        if not ok then
+        if not pcall(require, "fennel") then
             local install_path = vim.fn.stdpath("data") .. "/site/pack/fennel/start/fennel"
             local tag = "0.10.0"
             print("Installing fennel " .. tag .. " to " .. install_path .. "...")
-            vim.fn.system({ "git", "clone", "-b", tag, "https://git.sr.ht/~technomancy/fennel", install_path })
-            vim.fn.system({ "make", "-C", install_path })
+
+            local out
+            out = vim.fn.system({ "git", "clone", "-b", tag, "https://git.sr.ht/~technomancy/fennel", install_path })
+            assert(vim.v.shell_error == 0, out)
+
+            out = vim.fn.system({ "make", "-C", install_path })
+            assert(vim.v.shell_error == 0, out)
+
             vim.fn.system({ "mkdir", install_path .. "/lua" })
             vim.fn.system({ "mv", install_path .. "/fennel.lua", install_path .. "/lua" })
             vim.api.nvim_command("redraw")
-            fennel = require("fennel")
         end
-        return fennel[k]
+        return require("fennel")[k]
     end,
-    __newindex = function(_, k, v)
+    __newindex = function(t, k, v)
+        local _ = t[k] -- call __index to ensure fennel is installed
         require("fennel")[k] = v
     end,
 })
