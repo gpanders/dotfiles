@@ -31,7 +31,7 @@
           (->> (tset vim.lsp.handlers "textDocument/publishDiagnostics")))
 
       (var clear? false)
-      (autocmd :my-lspconfig [:CursorMoved :CursorHold] (string.format "<buffer=%d>" bufnr) []
+      (autocmd :my-lspconfig [:CursorMoved :CursorHold] (fmt "<buffer=%d>" bufnr) []
         (when (= (vim.fn.mode) :n)
           (when clear?
             (vim.api.nvim_buf_clear_namespace 0 ns 0 -1)

@@ -10,13 +10,13 @@
             (o n) `(set ,(sym (.. "vim.opt_local." o)) ,(= n 0)))))))
 
 (fn setlocal+= [opt val]
-  `(,(string.format "vim.opt_local.%s:append" opt) ,val))
+  `(,(string.format "vim.opt_local.%s:append" (tostring opt)) ,val))
 
 (fn setlocal^= [opt val]
-  `(,(string.format "vim.opt_local.%s:prepend" opt) ,val))
+  `(,(string.format "vim.opt_local.%s:prepend" (tostring opt)) ,val))
 
 (fn setlocal-= [opt val]
-  `(,(string.format "vim.opt_local.%s:remove" opt) ,val))
+  `(,(string.format "vim.opt_local.%s:remove" (tostring opt)) ,val))
 
 (fn exec [s]
   `(vim.api.nvim_command ,s))
@@ -32,7 +32,7 @@ Examples:
   (assert (= (type mode) :string) "mode should be a string")
   (assert (= (type from) :string) "from should be a string")
   (assert (= (type to) :string) "to should be a string")
-  (assert (or (= `nil ?opts) (table? ?opts)) "opts should be a table")
+  (assert (or (= nil ?opts) (= (type ?opts) :table)) "opts should be a table")
   (let [opts (or ?opts {})]
     (tset opts :noremap true)
     (if opts.buffer
@@ -43,8 +43,8 @@ Examples:
           `(vim.api.nvim_buf_set_keymap ,buf ,mode ,from ,to ,opts))
         `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts))))
 
-; Create a unique identifier for a global function
 (fn make-ident [...]
+  "Create a unique identifier for a global function"
   (-> (icollect [_ v (ipairs [...])]
         (when (= (type v) :string) (v:lower)))
       (table.concat "_")
@@ -69,7 +69,7 @@ Examples:
                (string.format cmd pat))))
       (exec "augroup END"))))
 
-(fn command! [cmd opts func]
+(fn command [cmd opts func]
   (let [ns (make-ident :comm cmd)
         attrs (icollect [k v (pairs opts)]
                 (string.format "-%s=%s" k v))]
@@ -78,7 +78,12 @@ Examples:
       (exec ,(string.format "command! %s %s call v:lua.%s(<bang>0, <q-mods>, <q-args>)" (table.concat attrs " ") cmd ns)))))
 
 (fn append! [str s]
+  "Append to a string in place"
   `(set ,str (.. (or ,str "") ,s)))
+
+(fn fmt [...]
+  "Simple convenience alias for string.format"
+  `(string.format ,...))
 
 {
   : setlocal
@@ -88,6 +93,7 @@ Examples:
   : exec
   : keymap
   : autocmd
-  : command!
+  : command
   : append!
+  : fmt
 }
