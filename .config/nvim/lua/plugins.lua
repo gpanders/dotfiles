@@ -3,9 +3,10 @@ if not ok then
     local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
     local out = vim.fn.system({ "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path })
     assert(vim.v.shell_error == 0, out)
+    packer = require("packer")
 end
 
-require("packer").startup({
+packer.startup({
     {
         "wbthomason/packer.nvim",
         "gpanders/vim-medieval",
@@ -32,10 +33,9 @@ require("packer").startup({
         { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
         "nvim-treesitter/nvim-treesitter-refactor",
         { "nvim-treesitter/playground", opt = true },
-        "nvim-lua/popup.nvim",
-        "nvim-lua/plenary.nvim",
+        "nvim-lua/plenary.nvim", -- Dependency of gitsigns and telescope
         { "nvim-telescope/telescope.nvim", opt = true },
     },
 })
 
-require("packer").update()
+packer.update()
