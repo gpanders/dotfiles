@@ -32,16 +32,16 @@
 
       (var clear? false)
       (autocmd :my-lspconfig [:CursorMoved :CursorHold] (fmt "<buffer=%d>" bufnr) []
-        (when (= (vim.fn.mode) :n)
+        (when (= (. (vim.api.nvim_get_mode) :mode) :n)
           (when clear?
-            (vim.api.nvim_buf_clear_namespace 0 ns 0 -1)
+            (vim.api.nvim_buf_clear_namespace bufnr ns 0 -1)
             (set clear? false))
           (let [items (vim.lsp.diagnostic.get_line_diagnostics)]
             (when (> (length items) 0)
               (let [pos (vim.api.nvim_win_get_cursor 0)
                     line (- (. pos 1) 1)
-                    chunks (vim.lsp.diagnostic.get_virtual_text_chunks_for_line 0 line items)]
-                (vim.api.nvim_buf_set_extmark 0 ns line 0 {:virt_text chunks})
+                    chunks (vim.lsp.diagnostic.get_virtual_text_chunks_for_line bufnr line items)]
+                (vim.api.nvim_buf_set_extmark bufnr ns line 0 {:virt_text chunks})
                 (set clear? true))))))
 
       (exec "doautocmd User LspAttached"))
