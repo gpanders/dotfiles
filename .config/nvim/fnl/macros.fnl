@@ -49,7 +49,7 @@ Examples:
         (when (= (type v) :string) (v:lower)))
       (table.concat "_")
       (string.gsub "-" "_")
-      (->> (.. "fnl" (tostring (gensym))))))
+      (->> (.. "fnl_"))))
 
 (fn autocmd [group event pat flags ...]
   (assert (= (type group) :string) "autocmd group should be a string")
