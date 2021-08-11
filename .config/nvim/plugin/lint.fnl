@@ -8,6 +8,4 @@
       :nix [ "nix" ]
       :python [ "flake8" ]
     })
-
-    (autocmd :lint :BufWritePost "*" []
-      (lint.try_lint))))
+    (autocmd :lint :BufWritePost "*" [] (lint.try_lint))))
