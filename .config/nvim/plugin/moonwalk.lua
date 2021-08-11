@@ -31,6 +31,5 @@ local fennel = setmetatable({}, {
 
 moonwalk.add_loader("fnl", function(src)
     fennel["macro-path"] = fennel["macro-path"] .. ";" .. vim.fn.stdpath("config") .. "/fnl/?.fnl"
-    src = "(require-macros :macros)" .. src
-    return fennel.compileString(src)
+    return fennel.compileString("(require-macros :macros)" .. src)
 end)
