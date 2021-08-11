@@ -13,8 +13,8 @@
     (global split_getopts (fn [str]
       (-> (icollect [c (str:gmatch "(%a[:]?)")]
                     (if (c:find ":")
-                        (string.format "\t\t%s) echo \"$OPTARG\" ;;" (c:sub 1 1))
-                        (string.format "\t\t%s) ;;" c)))
+                        (fmt "\t\t%s) echo \"$OPTARG\" ;;" (c:sub 1 1))
+                        (fmt "\t\t%s) ;;" c)))
           (table.concat "\n"))))
 
     (local U (require "snippets.utils"))
