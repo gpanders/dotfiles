@@ -2,21 +2,21 @@
   (let [opt (tostring opt)]
     (if ?val
       `(set ,(sym (.. "vim.opt_local." opt)) ,?val)
-      (match (string.gsub opt "&$" "")
+      (match (opt:gsub "&$" "")
         (where (o n) (> n 0))
           `(let [default# (. (vim.api.nvim_get_option_info ,o) :default)]
              (set ,(sym (.. "vim.opt_local." o)) default#))
-        _ (match (string.gsub opt "^no" "")
+        _ (match (opt:gsub "^no" "")
             (o n) `(set ,(sym (.. "vim.opt_local." o)) ,(= n 0)))))))
 
 (fn setlocal+= [opt val]
-  `(,(string.format "vim.opt_local.%s:append" (tostring opt)) ,val))
+  `(,(: "vim.opt_local.%s:append" :format (tostring opt)) ,val))
 
 (fn setlocal^= [opt val]
-  `(,(string.format "vim.opt_local.%s:prepend" (tostring opt)) ,val))
+  `(,(: "vim.opt_local.%s:prepend" :format (tostring opt)) ,val))
 
 (fn setlocal-= [opt val]
-  `(,(string.format "vim.opt_local.%s:remove" (tostring opt)) ,val))
+  `(,(: "vim.opt_local.%s:remove" :format (tostring opt)) ,val))
 
 (fn exec [s]
   `(vim.api.nvim_command ,s))
@@ -55,36 +55,32 @@ Examples:
 (fn autocmd [group event pat flags ...]
   (assert (= (type group) :string) "autocmd group should be a string")
   (assert (or (= (type event) :string) (sequence? event)) "autocmd event should be a string or list")
-  (assert (or (= (type flags) :string) (sequence? flags)) "autocmd flags should be a string or list")
+  (assert (or (= flags nil) (= (type flags) :string) (sequence? flags)) "autocmd flags should be a string or list")
   (let [events (if (sequence? event) (table.concat event ",") event)
-        ns (make-ident :au group (string.gsub events "," "-"))
-        flags (table.concat (icollect [_ v (ipairs (if (sequence? flags) flags [flags]))]
-                              (string.format "++%s" v)) " ")]
+        ns (make-ident :au group (events:gsub "," "-"))
+        flags (icollect [_ v (ipairs (if (sequence? flags) flags [flags]))]
+                (: "++%s" :format v))]
     `(do
       (tset _G ,ns (fn [] ,...))
       (exec ,(.. "augroup " group))
-      ,(let [cmd (string.format "autocmd! %s %%s %s call v:lua.%s()" events flags ns)]
+      ,(let [cmd (: "autocmd! %s %%s %s call v:lua.%s()" :format events (table.concat flags " ") ns)]
         `(exec
           ,(if (list? pat)
-               `(string.format ,cmd ,pat)
-               (string.format cmd pat))))
+               `(: ,cmd :format ,pat)
+               (cmd:format pat))))
       (exec "augroup END"))))
 
 (fn command [cmd opts func]
   (let [ns (make-ident :comm cmd)
         attrs (icollect [k v (pairs opts)]
-                (string.format "-%s=%s" k v))]
+                (: "-%s=%s" :format k v))]
     `(do
       (tset _G ,ns ,func)
-      (exec ,(string.format "command! %s %s call v:lua.%s(<bang>0, <q-mods>, <q-args>)" (table.concat attrs " ") cmd ns)))))
+      (exec ,(: "command! %s %s call v:lua.%s(<bang>0, <q-mods>, <q-args>)" :format (table.concat attrs " ") cmd ns)))))
 
 (fn append! [str s]
   "Append to a string in place"
   `(set ,str (.. (or ,str "") ,s)))
-
-(fn fmt [...]
-  "Simple convenience alias for string.format"
-  `(string.format ,...))
 
 {
   : setlocal
@@ -96,5 +92,4 @@ Examples:
   : autocmd
   : command
   : append!
-  : fmt
 }

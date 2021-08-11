@@ -12,7 +12,7 @@
 
   (exec (.. "doautocmd QuickFixCmdPre " (or (and l "lgrep") "grep")))
   (let [args (vim.fn.expandcmd args)
-        grepcmd (match (string.gsub vim.o.grepprg "%$%*" args)
+        grepcmd (match (vim.o.grepprg:gsub "%$%*" args)
                   (s 0) (.. s " " args)
                   s s)
         stdout (vim.loop.new_pipe false)]
