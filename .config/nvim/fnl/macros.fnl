@@ -34,7 +34,8 @@ Examples:
   (assert (= (type to) :string) "to should be a string")
   (assert (or (= nil ?opts) (= (type ?opts) :table)) "opts should be a table")
   (let [opts (or ?opts {})]
-    (tset opts :noremap true)
+    (when (= (. opts :noremap) nil)
+      (tset opts :noremap true))
     (if opts.buffer
         (let [buf (match opts.buffer
                     true 0
