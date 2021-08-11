@@ -1,7 +1,8 @@
 local ok, packer = pcall(require, "packer")
 if not ok then
     local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-    vim.fn.system({ "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path })
+    local out = vim.fn.system({ "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path })
+    assert(vim.v.shell_error == 0, out)
 end
 
 require("packer").startup({
@@ -37,4 +38,4 @@ require("packer").startup({
     },
 })
 
-packer.update()
+require("packer").update()
