@@ -27,26 +27,25 @@
 
     (fn read-snippets [t]
       (local s (or t {}))
-      (let [cms vim.bo.commentstring]
-        (each [filename (vim.gsplit (vim.fn.glob (.. snippets-dir "/*")) "\n")]
-          (with-open [f (io.open filename)]
-            (let [(name ext) (filename:match "^.+/([^/]+)%.([^.]+)$")
-                  ft (or (. ext-ft-map ext) ext)]
-              (var snippet (: (f:read "*a") :gsub "\n$" ""))
-              (when (snippet:find "\n")
-                (set snippet (U.match_indentation snippet)))
+      (each [filename (vim.gsplit (vim.fn.glob (.. snippets-dir "/*")) "\n")]
+        (with-open [f (io.open filename)]
+          (let [(name ext) (filename:match "^.+/([^/]+)%.([^.]+)$")
+                ft (or (. ext-ft-map ext) ext)]
+            (var snippet (: (f:read "*a") :gsub "\n$" ""))
 
-              (when (: (vim.api.nvim_get_current_line) :match (.. "^%s*" cms))
-                (set snippet (U.force_comment snippet)))
+            (when (= ext :txt)
+              (set snippet (U.force_comment snippet)))
 
-              (when (not (. s ft))
-                (tset s ft {}))
-              (tset (. s ft) name snippet)
+            (set snippet (U.match_indentation snippet))
 
-              (each [_ v (ipairs (or (. include-map ft) []))]
-                (when (not (. s v))
-                  (tset s v {}))
-                (tset (. s v) name snippet))))))
+            (when (not (. s ft))
+              (tset s ft {}))
+            (tset (. s ft) name snippet)
+
+            (each [_ v (ipairs (or (. include-map ft) []))]
+              (when (not (. s v))
+                (tset s v {}))
+              (tset (. s v) name snippet)))))
       s)
 
       (set snippets.snippets (read-snippets))))
