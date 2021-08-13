@@ -13,15 +13,15 @@
 (set-path)
 (tags)
 
-(append! vim.b.undo_ftplugin "|setlocal cms< def< inc< inex< path< tw< com<")
+(append! vim.b.undo_ftplugin "|setl cms< def< inc< inex< path< tw< com<")
 
 (when (. (vim.api.nvim_get_commands {:builtin false}) :Man)
   (setlocal keywordprg ":Man")
-  (append! vim.b.undo_ftplugin "|setlocal kp<"))
+  (append! vim.b.undo_ftplugin " kp<"))
 
 (when (> (vim.fn.executable "clang-format") 0)
   (setlocal formatprg "clang-format -style=file -fallback-style=none")
-  (append! vim.b.undo_ftplugin "|setlocal fp<"))
+  (append! vim.b.undo_ftplugin " fp<"))
 
 (autocmd :ftplugin_c :BufWritePost "<buffer>" [] (tags true))
 
