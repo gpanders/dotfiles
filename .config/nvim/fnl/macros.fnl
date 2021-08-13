@@ -55,7 +55,7 @@ Examples:
 (fn autocmd [group event pat flags ...]
   (assert (= (type group) :string) "autocmd group should be a string")
   (assert (or (= (type event) :string) (sequence? event)) "autocmd event should be a string or list")
-  (assert (or (= flags nil) (= (type flags) :string) (sequence? flags)) "autocmd flags should be a string or list")
+  (assert (or (= (type flags) :string) (sequence? flags)) "autocmd flags should be a string or list")
   (let [events (if (sequence? event) (table.concat event ",") event)
         ns (make-ident :au group (events:gsub "," "-"))
         flags (icollect [_ v (ipairs (if (sequence? flags) flags [flags]))]
@@ -70,6 +70,13 @@ Examples:
                (cmd:format pat))))
       (exec "augroup END"))))
 
+(fn augroup [group ...]
+  (let [form []]
+    (each [_ au (pairs [...])]
+      (table.insert au 2 group)
+      (table.insert form au))
+    form))
+
 (fn command [cmd opts func]
   (let [ns (make-ident :comm cmd)
         attrs (icollect [k v (pairs opts)]
@@ -82,6 +89,14 @@ Examples:
   "Append to a string in place"
   `(set ,str (.. (or ,str "") ,s)))
 
+(fn with-module [module-binding ...]
+  (let [[binding name] module-binding]
+  `(match (pcall require ,name)
+    (true ,binding) (do ,...))))
+
+(fn empty-or-nil? [s]
+  `(or (= ,s nil) (= (length ,s) 0)))
+
 {
   : setlocal
   : setlocal+=
@@ -90,6 +105,9 @@ Examples:
   : exec
   : keymap
   : autocmd
+  : augroup
   : command
   : append!
+  : with-module
+  : empty-or-nil?
 }

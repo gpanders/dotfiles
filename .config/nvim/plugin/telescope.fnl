@@ -1,8 +1,8 @@
-(tset vim.g :loaded_telescope 1)
+(set vim.g.loaded_telescope 1)
 
 (command :Telescope {:nargs "*"} (fn [_ _ args]
   (exec "delcommand Telescope")
-  (tset vim.g :loaded_telescope nil)
+  (set vim.g.loaded_telescope nil)
   (exec "packadd telescope.nvim")
   (if (not vim.g.loaded_telescope)
       (vim.notify "telescope.nvim is not installed" vim.log.levels.ERROR)

@@ -1,6 +1,5 @@
 (autocmd :lint :BufWritePre "*" :once
-  (local (ok lint) (pcall require "lint"))
-  (when ok
+  (with-module [lint :lint]
     (set lint.linters_by_ft {
       :sh [ "shellcheck" ]
       :vim [ "vint" ]

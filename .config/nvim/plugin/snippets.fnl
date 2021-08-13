@@ -1,6 +1,5 @@
 (autocmd :my-snippets :InsertEnter "*" :once
-  (local (ok snippets) (pcall require :snippets))
-  (when ok
+  (with-module [snippets :snippets]
     (keymap :i "<Tab>" "v:lua.check_snippet() ? '<Cmd>lua require(\"snippets\").expand_or_advance(1)<CR>' : '<Tab>'" {:expr true})
     (keymap :i "<S-Tab>" "<Cmd>lua require('snippets').advance_snippet(-1)<CR>")
 
