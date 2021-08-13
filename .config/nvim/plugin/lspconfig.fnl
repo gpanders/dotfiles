@@ -47,7 +47,7 @@
       (exec "doautocmd User LspAttached"))
 
     (each [name settings (pairs servers)]
-      (let [config (. (require "lspconfig") name)]
+      (let [config (. (require :lspconfig) name)]
         (config.setup {
           : on_attach
           :settings { name settings }
