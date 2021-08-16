@@ -1,13 +1,22 @@
+(fn t [key]
+  (vim.api.nvim_replace_termcodes key true true true))
+
 (autocmd :my-snippets :InsertEnter "*" :once
   (with-module [snippets :snippets]
-    (keymap :i "<Tab>" "v:lua.check_snippet() ? '<Cmd>lua require(\"snippets\").expand_or_advance(1)<CR>' : '<Tab>'" {:expr true})
-    (keymap :i "<S-Tab>" "<Cmd>lua require('snippets').advance_snippet(-1)<CR>")
 
-    (global check_snippet (fn []
+    (fn check-snippet []
       (if (snippets.has_active_snippet)
           true
           (let [(_ snippet) (snippets.lookup_snippet_at_cursor)]
-            (not= snippet nil)))))
+            (not= snippet nil))))
+
+    (keymap :i "<Tab>"
+            (fn []
+              (if (check-snippet)
+                  (t "<Cmd>lua require('snippets').expand_or_advance(1)<CR>")
+                  (t "<Tab>")))
+            {:expr true})
+    (keymap :i "<S-Tab>" "<Cmd>lua require('snippets').advance_snippet(-1)<CR>")
 
     (global split_getopts (fn [str]
       (-> (icollect [c (str:gmatch "(%a[:]?)")]

@@ -21,6 +21,15 @@
 (fn exec [s]
   `(vim.api.nvim_command ,s))
 
+(fn make-ident [...]
+  "Create a unique identifier for a global function"
+  (-> (icollect [_ v (pairs [...])]
+        (when (= (type v) :string) (v:lower)))
+      (table.concat "_")
+      (string.gsub "-" "_")
+      (string.gsub "[^%w_]+" "")
+      (.. (tostring (gensym)))))
+
 (fn keymap [mode from to ?opts]
   "Map a key in the given mode. Defaults to non-recursive, use {:noremap false}
 in opts to use a recursive mapping.
@@ -31,26 +40,26 @@ Examples:
   (keymap :n \"j\" \"(v:count == 0 ? 'gj' : 'j')\" {:expr true})"
   (assert (= (type mode) :string) "mode should be a string")
   (assert (= (type from) :string) "from should be a string")
-  (assert (= (type to) :string) "to should be a string")
   (assert (or (= nil ?opts) (= (type ?opts) :table)) "opts should be a table")
-  (let [opts (or ?opts {})]
-    (when (= (. opts :noremap) nil)
-      (tset opts :noremap true))
+  (let [opts (or ?opts {})
+        form `(do)
+        to (match (type to)
+             :string to
+             _ (let [ns (make-ident :keymap (if opts.buffer :buf nil) mode from)]
+                 (table.insert form `(tset _G ,ns ,to))
+                 (if opts.expr
+                     (: "v:lua.%s()" :format ns)
+                     (: "<Cmd>call v:lua.%s()<CR>" :format ns))))]
+    (when (= opts.noremap nil)
+      (set opts.noremap true))
     (if opts.buffer
         (let [buf (match opts.buffer
                     true 0
                     n n)]
-          (tset opts :buffer nil)
-          `(vim.api.nvim_buf_set_keymap ,buf ,mode ,from ,to ,opts))
-        `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts))))
-
-(fn make-ident [...]
-  "Create a unique identifier for a global function"
-  (-> (icollect [_ v (ipairs [...])]
-        (when (= (type v) :string) (v:lower)))
-      (table.concat "_")
-      (string.gsub "-" "_")
-      (.. (tostring (gensym)))))
+          (set opts.buffer nil)
+          (table.insert form `(vim.api.nvim_buf_set_keymap ,buf ,mode ,from ,to ,opts)))
+        (table.insert form `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts)))
+    form))
 
 (fn autocmd [group event pat flags ...]
   (assert (= (type group) :string) "autocmd group should be a string")
