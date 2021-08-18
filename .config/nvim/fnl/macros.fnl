@@ -50,18 +50,18 @@ Examples:
         (when (= (type v) :string) (v:lower)))
       (table.concat "_")
       (string.gsub "-" "_")
-      (->> (.. "fnl_"))))
+      (.. (tostring (gensym)))))
 
 (fn autocmd [group event pat flags ...]
   (assert (= (type group) :string) "autocmd group should be a string")
   (assert (or (= (type event) :string) (sequence? event)) "autocmd event should be a string or list")
   (assert (or (= (type flags) :string) (sequence? flags)) "autocmd flags should be a string or list")
   (let [events (if (sequence? event) (table.concat event ",") event)
-        ns (make-ident :au group (events:gsub "," "-"))
+        ns (make-ident :au group (events:gsub "," "_"))
         flags (icollect [_ v (ipairs (if (sequence? flags) flags [flags]))]
                 (: "++%s" :format v))]
     `(do
-      (tset _G ,ns (fn [] ,...))
+      (global ,(sym ns) (fn [] ,...))
       (exec ,(.. "augroup " group))
       ,(let [cmd (: "autocmd! %s %%s %s call v:lua.%s()" :format events (table.concat flags " ") ns)]
         `(exec
@@ -71,7 +71,7 @@ Examples:
       (exec "augroup END"))))
 
 (fn augroup [group ...]
-  (let [form []]
+  (let [form `(do)]
     (each [_ au (pairs [...])]
       (table.insert au 2 group)
       (table.insert form au))
@@ -82,7 +82,7 @@ Examples:
         attrs (icollect [k v (pairs opts)]
                 (: "-%s=%s" :format k v))]
     `(do
-      (tset _G ,ns ,func)
+      (global ,(sym ns) ,func)
       (exec ,(: "command! %s %s call v:lua.%s(<bang>0, <q-mods>, <q-args>)" :format (table.concat attrs " ") cmd ns)))))
 
 (fn append! [str s]
