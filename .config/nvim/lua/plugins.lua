@@ -27,7 +27,6 @@ packer.startup({
         "lewis6991/gitsigns.nvim",
         "mfussenegger/nvim-lint",
         "ludovicchabant/vim-gutentags",
-        "gpanders/vim-scdoc",
         { "neovim/nvim-lspconfig", opt = true },
         { "hrsh7th/nvim-compe", opt = true },
         { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
