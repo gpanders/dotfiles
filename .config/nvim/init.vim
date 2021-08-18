@@ -1,5 +1,3 @@
-colorscheme base16-eighties
-
 set breakindent
 set confirm
 set cursorline
@@ -134,6 +132,7 @@ autocmd! InsertEnter,WinLeave,FocusLost * setlocal nocursorline
 autocmd! InsertLeave,WinEnter,FocusGained * if mode() !=# 'i' | let &l:cursorline = 1 | endif
 autocmd! BufRead * autocmd FileType <buffer> ++once if &ft !~# 'commit\|rebase' | exec 'silent! normal! g`"' | endif
 autocmd! BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
+autocmd! UIEnter * colorscheme base16-eighties
 
 if argc() == 0 && filereadable('Session.vim')
   if v:vim_did_enter
