@@ -166,18 +166,22 @@ hi("gitcommitDiscardedType", { fg = "red" })
 hi("gitcommitDiscardedFile", { fg = "red" })
 hi("gitcommitBranch", { fg = "yellow" })
 
-hi("gitrebasePick", { fg = "white" })
+hi("gitrebaseHash", { fg = "yellow" })
+hi("gitrebaseSummary", { fg = "white" })
+hi("gitrebasePick", { fg = "green" })
 hi("gitrebaseReword", { fg = "blue" })
 hi("gitrebaseEdit", { fg = "red" })
-hi("gitrebaseSquash", { fg = "magenta" })
+hi("gitrebaseSquash", { fg = "cyan" })
 hi("gitrebaseFixup", { fg = "cyan" })
-hi("gitrebaseExec", { fg = "yellow" })
-hi("gitrebaseReset", { fg = "green" })
+hi("gitrebaseExec", { fg = "cyan" })
+hi("gitrebaseReset", { fg = "cyan" })
 
 -- Plugin highlighting
 hi("GitSignsAdd", { fg = "green", bg = "brgreen" })
 hi("GitSignsDelete", { fg = "red", bg = "brgreen" })
 hi("GitSignsChange", { fg = "brblack", bg = "brgreen" })
+
+hi("packerHash", { fg = "yellow" })
 
 -- LSP Diagnostics
 hi("LspDiagnosticsDefaultError", { fg = "red" })
