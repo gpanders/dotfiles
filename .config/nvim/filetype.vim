@@ -8,4 +8,5 @@ augroup filetypedetect
   autocmd! BufRead,BufNewFile ~/.local/share/zsh/functions/*  setf zsh
   autocmd! BufRead,BufNewFile *.env                           setf env
   autocmd! BufRead,BufNewFile *.cl                            setf opencl
+  autocmd! BufRead,BufNewFile *.csv                           setf csv
 augroup END
