@@ -6,8 +6,8 @@
       (keymap :n :q :gq {:silent true :buffer true :noremap false}))
     (autocmd :BufRead "*" []
       (let [$HOME (os.getenv :HOME)]
-        (when (and (= (vim.fn.getcwd) $HOME) (empty-or-nil? vim.b.git_dir))
-          (set vim.b.git_dir (.. $HOME "/.dotfiles"))))))
+        (when (= (vim.loop.cwd) $HOME)
+          (vim.call :FugitiveDetect (.. $HOME "/.dotfiles"))))))
   (keymap :n "g<Space>" ":Git<Space>")
   (keymap :n "g<CR>" "<Cmd>Git<CR>"))
 
