@@ -31,8 +31,7 @@
       (.. (tostring (gensym)))))
 
 (fn keymap [mode from to ?opts]
-  "Map a key in the given mode. Defaults to non-recursive, use {:noremap false}
-in opts to use a recursive mapping.
+  "Map a key in the given mode. Defaults to non-recursive and silent.
 
 Examples:
 
@@ -52,6 +51,8 @@ Examples:
                      (: "<Cmd>call v:lua.%s()<CR>" :format ns))))]
     (when (= opts.noremap nil)
       (set opts.noremap true))
+    (when (= opts.silent nil)
+      (set opts.silent true))
     (if opts.buffer
         (let [buf (match opts.buffer
                     true 0
