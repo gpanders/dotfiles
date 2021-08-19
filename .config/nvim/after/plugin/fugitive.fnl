@@ -3,7 +3,7 @@
     (autocmd :BufRead "fugitive://*" []
       (setlocal bufhidden :delete))
     (autocmd :FileType "fugitive,fugitiveblame" []
-      (keymap :n :q :gq {:silent true :buffer true :noremap false}))
+      (keymap :n :q :gq {:buffer true :noremap false}))
     (autocmd :BufRead "*" []
       (let [$HOME (os.getenv :HOME)]
         (when (= (vim.loop.cwd) $HOME)

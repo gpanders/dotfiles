@@ -14,7 +14,7 @@
     (set vim.opt.completeopt [:menuone :noselect])
     (vim.opt.shortmess:append :c)
 
-    (keymap :i "<CR>" "compe#confirm('<CR>')" {:silent true :expr true})
-    (keymap :i "<C-E>" "compe#close('<C-E>')" {:silent true :expr true})
+    (keymap :i "<CR>" "compe#confirm('<CR>')" {:expr true})
+    (keymap :i "<C-E>" "compe#close('<C-E>')" {:expr true})
 
     (exec "doautocmd <nomodeline> InsertEnter")))
