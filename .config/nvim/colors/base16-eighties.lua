@@ -176,6 +176,11 @@ hi("gitrebaseFixup", { fg = "cyan" })
 hi("gitrebaseExec", { fg = "cyan" })
 hi("gitrebaseReset", { fg = "cyan" })
 
+hi("manSubHeading", { fg = "red", attr = "bold" })
+hi("manOptionDesc", { fg = "red", attr = "bold" })
+hi("manReference", { fg = "yellow" })
+hi("manUnderline", { fg = "green", attr = "bold" })
+
 -- Plugin highlighting
 hi("GitSignsAdd", { fg = "green", bg = "brgreen" })
 hi("GitSignsDelete", { fg = "red", bg = "brgreen" })
