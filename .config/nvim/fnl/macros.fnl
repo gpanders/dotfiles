@@ -21,14 +21,14 @@
 (fn exec [s]
   `(vim.api.nvim_command ,s))
 
-(fn make-ident [...]
+(fn make-ident [key ...]
   "Create a unique identifier for a global function"
   (-> (icollect [_ v (pairs [...])]
         (when (= (type v) :string) (v:lower)))
       (table.concat "_")
       (string.gsub "-" "_")
       (string.gsub "[^%w_]+" "")
-      (.. (tostring (gensym)))))
+      (->> (.. (tostring (gensym key))))))
 
 (fn keymap [mode from to ?opts]
   "Map a key in the given mode. Defaults to non-recursive and silent.
