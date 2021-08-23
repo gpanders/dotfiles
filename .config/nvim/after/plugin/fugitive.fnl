@@ -8,6 +8,6 @@
       (let [$HOME (os.getenv :HOME)]
         (when (= (vim.loop.cwd) $HOME)
           (vim.call :FugitiveDetect (.. $HOME "/.dotfiles"))))))
-  (keymap :n "g<Space>" ":Git<Space>")
+  (keymap :n "g<Space>" ":Git<Space>" {:silent false})
   (keymap :n "g<CR>" "<Cmd>Git<CR>"))
 
