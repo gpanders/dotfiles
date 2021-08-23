@@ -30,21 +30,22 @@
       (string.gsub "[^%w_]+" "")
       (->> (.. (tostring (gensym key))))))
 
-(fn keymap [mode from to ?opts]
+(fn keymap [modes from to ?opts]
   "Map a key in the given mode. Defaults to non-recursive and silent.
 
 Examples:
 
   (keymap :n \"Y\" \"y$\")
   (keymap :n \"j\" \"(v:count == 0 ? 'gj' : 'j')\" {:expr true})"
-  (assert (= (type mode) :string) "mode should be a string")
+  (assert (or (= (type modes) :string) (sequence? modes)) "modes should be a list or string")
   (assert (= (type from) :string) "from should be a string")
   (assert (or (= nil ?opts) (= (type ?opts) :table)) "opts should be a table")
-  (let [opts (or ?opts {})
-        form `(do)
+  (let [form `(do)
+        opts (or ?opts {})
+        modes (if (sequence? modes) modes [modes])
         to (match (type to)
              :string to
-             _ (let [ns (make-ident :keymap (if opts.buffer :buf nil) mode from)]
+             _ (let [ns (make-ident :keymap (if opts.buffer :buf nil) from)]
                  (table.insert form `(tset _G ,ns ,to))
                  (if opts.expr
                      (: "v:lua.%s()" :format ns)
@@ -53,13 +54,14 @@ Examples:
       (set opts.noremap true))
     (when (= opts.silent nil)
       (set opts.silent true))
-    (if opts.buffer
-        (let [buf (match opts.buffer
-                    true 0
-                    n n)]
-          (set opts.buffer nil)
-          (table.insert form `(vim.api.nvim_buf_set_keymap ,buf ,mode ,from ,to ,opts)))
-        (table.insert form `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts)))
+    (let [buf (match opts.buffer
+                true 0
+                n n)]
+      (set opts.buffer nil)
+      (each [_ mode (pairs modes)]
+        (if buf
+            (table.insert form `(vim.api.nvim_buf_set_keymap ,buf ,mode ,from ,to ,opts)))
+            (table.insert form `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts))))
     form))
 
 (fn autocmd [group event pat flags ...]
