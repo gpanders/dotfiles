@@ -14,6 +14,18 @@
             (let [chunks (vim.lsp.diagnostic.get_virtual_text_chunks_for_line bufnr line items)]
               (vim.api.nvim_buf_set_extmark bufnr ns line 0 {: id :virt_text chunks})))))))
 
+; Fallback to tags if LSP fails to find a definition
+(let [handler (. vim.lsp.handlers "textDocument/definition")]
+  (tset vim.lsp.handlers "textDocument/definition"
+        (fn [_ method result]
+          (if (not (empty-or-nil? result))
+              (handler _ method result)
+              (do
+                (print "Falling back to tags")
+                (-> "<C-]>"
+                    (vim.api.nvim_replace_termcodes true true true)
+                    (vim.api.nvim_feedkeys "n" true)))))))
+
 (autocmd :my-lspconfig :FileType "go,c,cpp,rust,python" :once
   (exec "packadd nvim-lspconfig")
   (with-module [lspconfig :lspconfig]
@@ -22,7 +34,6 @@
       (vim.api.nvim_buf_set_option bufnr :omnifunc "v:lua.vim.lsp.omnifunc")
 
       (keymap :n "<C-]>" "<Cmd>lua vim.lsp.buf.definition()<CR>" {:buffer bufnr})
-      (keymap :n "K" "<Cmd>lua vim.lsp.buf.hover()<CR>" {:buffer bufnr})
       (keymap :n "gr" "<Cmd>lua vim.lsp.buf.references()<CR>" {:buffer bufnr})
       (keymap :n "gR" "<Cmd>lua vim.lsp.buf.rename()<CR>" {:buffer bufnr})
 
