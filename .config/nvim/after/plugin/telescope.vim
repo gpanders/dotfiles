@@ -3,7 +3,7 @@ if !get(g:, 'loaded_telescope')
 endif
 
 nnoremap <Space>f <Cmd>Telescope find_files hidden=true follow=true<CR>
-nnoremap <Space>g <Cmd>Telescope live_grep<CR>
+nnoremap <Space>g <Cmd>Telescope live_grep debounce=100<CR>
 nnoremap <Space>b <Cmd>Telescope buffers<CR>
 nnoremap <Space>o <Cmd>Telescope oldfiles<CR>
 nnoremap <Space>q <Cmd>Telescope quickfix<CR>
