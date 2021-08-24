@@ -126,6 +126,7 @@ cnoremap <expr> <C-K> pumvisible() ? '<Up><Tab>' : '<C-K>'
 augroup init
 
 autocmd! BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
+autocmd! CmdWinEnter * nnoremap <buffer> q <C-W>q
 autocmd! TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150, on_visual=true}
 autocmd! TermOpen * setlocal statusline=%{b:term_title} | startinsert
 autocmd! InsertEnter,WinLeave,FocusLost * setlocal nocursorline
