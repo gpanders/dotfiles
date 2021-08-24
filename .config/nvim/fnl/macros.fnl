@@ -92,7 +92,9 @@ Examples:
 (fn command [cmd opts func]
   (let [ns (make-ident :comm cmd)
         attrs (icollect [k v (pairs opts)]
-                (: "-%s=%s" :format k v))]
+                (if (= (type v) :boolean)
+                    (if v (.. "-" k) nil)
+                    (: "-%s=%s" :format k v)))]
     `(do
       (global ,(sym ns) ,func)
       (exec ,(: "command! %s %s call v:lua.%s(<bang>0, <q-mods>, <q-args>)" :format (table.concat attrs " ") cmd ns)))))
