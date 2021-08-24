@@ -26,7 +26,6 @@ packer.startup({
         "junegunn/vim-easy-align",
         "lewis6991/gitsigns.nvim",
         "mfussenegger/nvim-lint",
-        "ludovicchabant/vim-gutentags",
         { "neovim/nvim-lspconfig", opt = true },
         { "hrsh7th/nvim-compe", opt = true },
         { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
