@@ -47,6 +47,3 @@ require('nvim-treesitter.configs').setup {
         lint_events = {'BufWrite', 'CursorHold'},
     },
 }
-
-vim.api.nvim_command("hi link TSDefinition CursorLine")
-vim.api.nvim_command("hi link TSDefinitionUsage CursorLine")
