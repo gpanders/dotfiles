@@ -53,6 +53,9 @@
                 line (- (. pos 1) 1)]
             (show-virtual-text ns bufnr line))))
 
+      (with-module [lsp-compl (require "lsp_compl")]
+        (lsp-compl.attach client bufnr {:server_side_fuzzy_completion true :trigger_on_delete true}))
+
       (exec "doautocmd User LspAttached"))
 
     (each [name settings (pairs servers)]
