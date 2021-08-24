@@ -41,17 +41,21 @@
           (vim.lsp.with {:virtual_text false :underline false})
           (->> (tset vim.lsp.handlers "textDocument/publishDiagnostics")))
 
-      (augroup :my-lspconfig
-        (autocmd :CursorMoved (: "<buffer=%d>" :format bufnr) []
+      (vim.lsp.diagnostic.disable bufnr)
+
+      (autocmd :my-lspconfig :BufWritePost (: "<buffer=%d>" :format bufnr) []
+        (vim.lsp.diagnostic.enable bufnr)
+        (autocmd :my-lspconfig :CursorMoved (: "<buffer=%d>" :format bufnr) []
           (let [pos (vim.api.nvim_win_get_cursor 0)
                 line (- (. pos 1) 1)]
             (show-virtual-text ns bufnr line)))
 
-        (autocmd :User :LspDiagnosticsChanged []
+        (autocmd :my-lspconfig :User :LspDiagnosticsChanged []
           (vim.lsp.diagnostic.set_loclist {:open false})
           (let [pos (vim.api.nvim_win_get_cursor 0)
                 line (- (. pos 1) 1)]
             (show-virtual-text ns bufnr line))))
+
 
       (with-module [lsp-compl (require "lsp_compl")]
         (lsp-compl.attach client bufnr {:server_side_fuzzy_completion true :trigger_on_delete true}))
