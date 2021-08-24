@@ -188,6 +188,12 @@ hi("GitSignsChange", { fg = "brblack", bg = "brgreen" })
 
 hi("packerHash", { fg = "yellow" })
 
+-- Treesitter highlights
+hi("TSNone", { fg = "white" })
+hi("TSSymbol", { fg = "yellow" })
+hi("TSDefinition", { fg = "brgreen" })
+hi("TSDefinitionUsage", { fg = "brgreen" })
+
 -- LSP Diagnostics
 hi("LspDiagnosticsDefaultError", { fg = "red" })
 hi("LspDiagnosticsDefaultWarning", { fg = "yellow" })
