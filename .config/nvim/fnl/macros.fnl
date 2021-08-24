@@ -60,8 +60,8 @@ Examples:
       (set opts.buffer nil)
       (each [_ mode (pairs modes)]
         (if buf
-            (table.insert form `(vim.api.nvim_buf_set_keymap ,buf ,mode ,from ,to ,opts)))
-            (table.insert form `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts))))
+            (table.insert form `(vim.api.nvim_buf_set_keymap ,buf ,mode ,from ,to ,opts))
+            (table.insert form `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts)))))
     form))
 
 (fn autocmd [group event pat flags ...]
