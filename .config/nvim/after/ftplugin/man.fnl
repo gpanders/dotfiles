@@ -11,5 +11,8 @@
 
 (let [name (string.match (vim.api.nvim_buf_get_name 0) "man://(.+)")]
   (setlocal statusline (: " %s%%=%%14.(%%l:%%c%%V%%)%%14.P " :format name)))
+(append! vim.b.undo_ftplugin
+         (accumulate [undo "" _ key (ipairs [:q :d :u :g :f :b "<Tab>" "<S-Tab>" "<CR>" "<BS>"])]
+           (.. undo (: "|nun <buffer> %s" :format key))))
 
-(append! vim.b.undo_ftplugin "|nun <buffer> q|nun <buffer> d|nun <buffer> u|nun <buffer> g|nun <buffer> f|nun <buffer> b|nun <buffer> <Tab>|nun <buffer> <S-Tab>|nun <buffer> <CR>|nun <buffer> <BS>|setl stl<")
+(append! vim.b.undo_ftplugin "|setl stl<")
