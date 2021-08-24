@@ -6,5 +6,6 @@
       :lua [ "luacheck" ]
       :nix [ "nix" ]
       :python [ "flake8" ]
+      :fennel [ "fennel" ]
     })
     (autocmd :lint :BufWritePost "*" [] (lint.try_lint))))
