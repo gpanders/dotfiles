@@ -24,6 +24,7 @@
 	st = stash
 	ca = commit --amend
 	sw = switch
+	re = restore
 [commit]
 	verbose = true
 [tag]
@@ -31,6 +32,7 @@
 [sendemail]
 	annotate = yes
 	confirm = auto
+	sendmailCmd = msmtp
 [rebase]
 	autoSquash = true
 	autoStash = true
