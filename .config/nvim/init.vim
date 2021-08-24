@@ -14,6 +14,7 @@ set sidescrolloff=5
 set smartcase
 set noswapfile
 set tabline=%!tabline#show()
+set tags^=./.git/tags;
 set tagcase=match
 set undofile
 set updatetime=100
