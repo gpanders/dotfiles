@@ -15,7 +15,7 @@
     (setlocal+= tags tagfile)
     (-> vim.bo.tags
         (vim.split ",")
-        (vim.fn.uniq)
+        (uniq)
         (table.concat ",")
         (->> (set vim.opt_local.tags)))
 
@@ -47,7 +47,7 @@
             (vim.tbl_map paths)
             (uniq)
             (table.concat ",")
-            ( .. "," vim.go.path)
+            ( .. "," vim.o.path)
             (->> (set vim.opt_local.path)))
         (when (vim.fn.isdirectory :include)
           (setlocal^= path :include))
