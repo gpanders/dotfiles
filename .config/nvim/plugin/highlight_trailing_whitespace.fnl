@@ -6,7 +6,7 @@
                                            (exec "syn match TrailingWhitespace /\\\\\\@<!\\s\\+\\%#\\@<!$/ containedin=ALL"))
     _ (exec "syn clear TrailingWhitespace")))
 
-(autocmd :highlight-trailing-whitespace :Syntax "*" [] (highlight-trailing-whitespace))
-(autocmd :highlight-trailing-whitespace :OptionSet "readonly,modifiable" [] (highlight-trailing-whitespace))
+(autocmd :highlight-trailing-whitespace :Syntax "*" (highlight-trailing-whitespace))
+(autocmd :highlight-trailing-whitespace :OptionSet "readonly,modifiable" (highlight-trailing-whitespace))
 
 (exec "hi link TrailingWhitespace Error")

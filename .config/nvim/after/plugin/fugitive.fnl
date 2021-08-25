@@ -1,10 +1,10 @@
 (when (= vim.g.loaded_fugitive 1)
   (augroup :my-fugitive
-    (autocmd :BufRead "fugitive://*" []
+    (autocmd :BufRead "fugitive://*"
       (setlocal bufhidden :delete))
-    (autocmd :FileType "fugitive,fugitiveblame" []
+    (autocmd :FileType "fugitive,fugitiveblame"
       (keymap :n :q :gq {:buffer true :noremap false}))
-    (autocmd :BufRead "*" []
+    (autocmd :BufRead "*"
       (let [$HOME (os.getenv :HOME)]
         (when (= (vim.loop.cwd) $HOME)
           (vim.call :FugitiveDetect (.. $HOME "/.dotfiles"))))))
