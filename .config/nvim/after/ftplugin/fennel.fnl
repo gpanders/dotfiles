@@ -12,7 +12,7 @@
   (setlocal formatprg "fnlfmt -")
   (append! vim.b.undo_ftplugin " fp<"))
 
-(autocmd :ftplugin-fennel :BufWritePost "<buffer>" []
+(autocmd :ftplugin-fennel :BufWritePost "<buffer>"
   (local {: lint} (require "ft/fennel"))
   (lint (vim.api.nvim_get_current_buf)))
 

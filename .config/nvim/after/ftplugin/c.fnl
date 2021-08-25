@@ -23,6 +23,6 @@
   (setlocal formatprg "clang-format -style=file -fallback-style=none")
   (append! vim.b.undo_ftplugin " fp<"))
 
-(autocmd :ftplugin_c :BufWritePost "<buffer>" [] (tags true))
+(autocmd :ftplugin_c :BufWritePost "<buffer>" (tags true))
 
 (append! vim.b.undo_ftplugin "|au! ftplugin_c")

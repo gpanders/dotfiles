@@ -3,9 +3,8 @@
     (if ?val
       `(set ,(sym (.. "vim.opt_local." opt)) ,?val)
       (match (opt:gsub "&$" "")
-        (where (o n) (> n 0))
-          `(let [default# (. (vim.api.nvim_get_option_info ,o) :default)]
-             (set ,(sym (.. "vim.opt_local." o)) default#))
+        (where (o n) (> n 0)) `(let [default# (. (vim.api.nvim_get_option_info ,o) :default)]
+                                 (set ,(sym (.. "vim.opt_local." o)) default#))
         _ (match (opt:gsub "^no" "")
             (o n) `(set ,(sym (.. "vim.opt_local." o)) ,(= n 0)))))))
 
@@ -64,16 +63,15 @@ Examples:
             (table.insert form `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts)))))
     form))
 
-(fn autocmd [group event pat flags ...]
+(fn autocmd [group event pat ...]
   (assert (= (type group) :string) "autocmd group should be a string")
   (assert (or (= (type event) :string) (sequence? event)) "autocmd event should be a string or list")
-  (assert (or (= (type flags) :string) (sequence? flags)) "autocmd flags should be a string or list")
   (let [events (if (sequence? event) (table.concat event ",") event)
         ns (make-ident :au group (events:gsub "," "_"))
-        flags (icollect [_ v (ipairs (if (sequence? flags) flags [flags]))]
+        flags (icollect [_ v (ipairs [...]) :until (not= (type v) :string)]
                 (: "++%s" :format v))]
     `(do
-      (global ,(sym ns) (fn [] ,...))
+      (global ,(sym ns) (fn [] ,(select (+ (length flags) 1) ...)))
       (exec ,(.. "augroup " group))
       ,(let [cmd (: "autocmd! %s %%s %s call v:lua.%s()" :format events (table.concat flags " ") ns)]
         `(exec
@@ -85,7 +83,8 @@ Examples:
 (fn augroup [group ...]
   (let [form `(do)]
     (each [_ au (pairs [...])]
-      (table.insert au 2 group)
+      (when (= (tostring (. au 1)) :autocmd)
+        (table.insert au 2 group))
       (table.insert form au))
     form))
 

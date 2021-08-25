@@ -5,8 +5,11 @@
   :pyright {}
 })
 
-(fn show-virtual-text [ns bufnr line]
-  (let [id 1]
+
+(fn show-cursor-virtual-text [ns bufnr]
+  (let [pos (vim.api.nvim_win_get_cursor 0)
+        line (- (. pos 1) 1)
+        id 1]
     (when (= (. (vim.api.nvim_get_mode) :mode) :n)
       (let [items (vim.lsp.diagnostic.get_line_diagnostics bufnr line)]
         (if (empty-or-nil? items)
@@ -43,19 +46,14 @@
 
       (vim.lsp.diagnostic.disable bufnr)
 
-      (autocmd :my-lspconfig :BufWritePost (: "<buffer=%d>" :format bufnr) []
+      (autocmd :my-lspconfig :BufWritePost (: "<buffer=%d>" :format bufnr)
         (vim.lsp.diagnostic.enable bufnr)
-        (autocmd :my-lspconfig :CursorMoved (: "<buffer=%d>" :format bufnr) []
-          (let [pos (vim.api.nvim_win_get_cursor 0)
-                line (- (. pos 1) 1)]
-            (show-virtual-text ns bufnr line)))
-
-        (autocmd :my-lspconfig :User :LspDiagnosticsChanged []
-          (vim.lsp.diagnostic.set_loclist {:open false})
-          (let [pos (vim.api.nvim_win_get_cursor 0)
-                line (- (. pos 1) 1)]
-            (show-virtual-text ns bufnr line))))
-
+        (augroup :my-lspconfig
+          (autocmd :CursorMoved (: "<buffer=%d>" :format bufnr)
+            (show-cursor-virtual-text ns bufnr))
+          (autocmd :User :LspDiagnosticsChanged
+            (vim.lsp.diagnostic.set_loclist {:open false})
+            (show-cursor-virtual-text ns bufnr))))
 
       (with-module [lsp-compl (require "lsp_compl")]
         (lsp-compl.attach client bufnr {:server_side_fuzzy_completion true :trigger_on_delete true}))
