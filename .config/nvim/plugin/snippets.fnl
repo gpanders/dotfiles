@@ -19,41 +19,36 @@
     (keymap :i "<S-Tab>" "<Cmd>lua require('snippets').advance_snippet(-1)<CR>")
 
     (global split_getopts (fn [str]
-      (-> (icollect [c (str:gmatch "(%a[:]?)")]
-                    (if (c:find ":")
-                        (: "\t\t%s) echo \"$OPTARG\" ;;" :format (c:sub 1 1))
-                        (: "\t\t%s) ;;" :format c)))
-          (table.concat "\n"))))
+                            (-> (icollect [c (str:gmatch "(%a[:]?)")]
+                                  (if (c:find ":")
+                                      (: "\t\t%s) echo \"$OPTARG\" ;;" :format (c:sub 1 1))
+                                      (: "\t\t%s) ;;" :format c)))
+                                (table.concat "\n"))))
 
     (local U (require "snippets.utils"))
 
     (set snippets.ux (require "snippets.inserters.extmarks"))
 
-    (local ext-ft-map {:txt :_global :py :python :rs :rust})
+    (local ext->ft {:txt :_global
+                    :py :python
+                    :rs :rust})
     (local include-map {:c [:cpp]})
     (local snippets-dir (.. (vim.fn.stdpath "config") "/snippets"))
 
     (fn read-snippets [t]
       (local s (or t {}))
       (each [filename (vim.gsplit (vim.fn.glob (.. snippets-dir "/*")) "\n")]
-        (with-open [f (io.open filename)]
-          (let [(name ext) (filename:match "^.+/([^/]+)%.([^.]+)$")
-                ft (or (. ext-ft-map ext) ext)]
-            (var snippet (: (f:read "*a") :gsub "\n$" ""))
-
-            (when (= ext :txt)
-              (set snippet (U.force_comment snippet)))
-
-            (set snippet (U.match_indentation snippet))
-
-            (when (not (. s ft))
-              (tset s ft {}))
-            (tset (. s ft) name snippet)
-
-            (each [_ v (ipairs (or (. include-map ft) []))]
-              (when (not (. s v))
-                (tset s v {}))
-              (tset (. s v) name snippet)))))
+        (let [(name ext) (filename:match "^.+/([^/]+)%.([^.]+)$")
+              ft (or (. ext->ft ext) ext)]
+          (var snippet (with-open [f (io.open filename)]
+                         (: (f:read "*a") :gsub "\n$" "")))
+          (when (= ext :txt)
+            (set snippet (U.force_comment snippet)))
+          (set snippet (U.match_indentation snippet))
+          (each [_ v (pairs (icollect [_ v (pairs (or (. include-map ft) [])) :into [ft]] v))]
+            (when (not (. s v))
+              (tset s v {}))
+            (tset (. s v) name snippet))))
       s)
 
-      (set snippets.snippets (read-snippets))))
+    (set snippets.snippets (read-snippets))))

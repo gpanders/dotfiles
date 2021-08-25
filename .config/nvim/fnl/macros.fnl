@@ -3,7 +3,7 @@
     (if ?val
       `(set ,(sym (.. "vim.opt_local." opt)) ,?val)
       (match (opt:gsub "&$" "")
-        (where (o n) (> n 0)) `(let [default# (. (vim.api.nvim_get_option_info ,o) :default)]
+        (where (o n) (> n 0)) `(let [{:default default#} (vim.api.nvim_get_option_info ,o)]
                                  (set ,(sym (.. "vim.opt_local." o)) default#))
         _ (match (opt:gsub "^no" "")
             (o n) `(set ,(sym (.. "vim.opt_local." o)) ,(= n 0)))))))

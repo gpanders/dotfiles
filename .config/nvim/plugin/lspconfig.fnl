@@ -1,16 +1,14 @@
-(local servers {
-  :rust_analyzer {}
-  :clangd {}
-  :gopls {:analyses {:unusedparams true :unusedwrite true :nilness true}}
-  :pyright {}
-})
-
+(local servers {:rust_analyzer {}
+                :clangd {}
+                :gopls {:analyses {:unusedparams true :unusedwrite true :nilness true}}
+                :pyright {}})
 
 (fn show-cursor-virtual-text [ns bufnr]
-  (let [pos (vim.api.nvim_win_get_cursor 0)
-        line (- (. pos 1) 1)
-        id 1]
-    (when (= (. (vim.api.nvim_get_mode) :mode) :n)
+  (let [[line] (vim.api.nvim_win_get_cursor 0)
+        line (- line 1)
+        id 1
+        {: mode} (vim.api.nvim_get_mode)]
+    (when (= mode :n)
       (let [items (vim.lsp.diagnostic.get_line_diagnostics bufnr line)]
         (if (empty-or-nil? items)
             (vim.api.nvim_buf_del_extmark bufnr ns id)
@@ -23,11 +21,8 @@
         (fn [_ method result]
           (if (not (empty-or-nil? result))
               (handler _ method result)
-              (do
-                (print "Falling back to tags")
-                (-> "<C-]>"
-                    (vim.api.nvim_replace_termcodes true true true)
-                    (vim.api.nvim_feedkeys "n" true)))))))
+              (-> (vim.api.nvim_replace_termcodes "<C-]>" true true true)
+                  (vim.api.nvim_feedkeys "n" true))))))
 
 (autocmd :my-lspconfig :FileType "go,c,cpp,rust,python" :once
   (exec "packadd nvim-lspconfig")
@@ -61,13 +56,10 @@
       (exec "doautocmd User LspAttached"))
 
     (each [name settings (pairs servers)]
-      (let [config (. lspconfig name)]
-        (config.setup {
-          : on_attach
-          :settings {name settings}
-          :flags {:debounce_text_changes 150}
-        })
+      (let [{name config} lspconfig]
+        (config.setup {: on_attach
+                       :settings {name settings}
+                       :flags {:debounce_text_changes 150}})
 
         (when (vim.tbl_contains config.filetypes vim.bo.filetype)
           (config.autostart))))))
-
