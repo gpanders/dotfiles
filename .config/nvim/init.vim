@@ -136,12 +136,4 @@ autocmd! BufRead * autocmd FileType <buffer> ++once if &ft !~# 'commit\|rebase' 
 autocmd! BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
 autocmd! UIEnter * colorscheme base16-eighties
 
-if argc() == 0 && filereadable('Session.vim')
-  if v:vim_did_enter
-    source Session.vim
-  else
-    autocmd! VimEnter * ++nested source Session.vim
-  endif
-endif
-
 augroup END
