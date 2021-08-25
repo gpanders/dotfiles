@@ -104,23 +104,21 @@ Examples:
 
 (fn with-module [module-binding ...]
   (let [[binding name] module-binding]
-  `(match (pcall require ,name)
-    (true ,binding) (do ,...))))
+    `(match (pcall require ,name)
+       (true ,binding) (do ,...))))
 
 (fn empty-or-nil? [s]
   `(or (= ,s nil) (= (length ,s) 0)))
 
-{
-  : setlocal
-  : setlocal+=
-  : setlocal^=
-  : setlocal-=
-  : exec
-  : keymap
-  : autocmd
-  : augroup
-  : command
-  : append!
-  : with-module
-  : empty-or-nil?
-}
+{: setlocal
+ : setlocal+=
+ : setlocal^=
+ : setlocal-=
+ : exec
+ : keymap
+ : autocmd
+ : augroup
+ : command
+ : append!
+ : with-module
+ : empty-or-nil?}
