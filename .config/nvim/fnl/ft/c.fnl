@@ -66,7 +66,5 @@
       (stdout:read_start f)
       (stderr:read_start f))))
 
-{
-  : set-path
-  : tags
-}
+{: set-path
+ : tags}
