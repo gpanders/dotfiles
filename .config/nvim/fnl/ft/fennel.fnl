@@ -2,8 +2,9 @@
 
 (fn publish-diagnostics [bufnr diagnostics]
   (let [params {:uri (vim.uri_from_bufnr bufnr) : diagnostics}
-        method "textDocument/publishDiagnostics"]
-    ((. vim.lsp.handlers method) nil method params bufnr)))
+        method "textDocument/publishDiagnostics"
+        {method handler} vim.lsp.handlers]
+    (handler nil method params bufnr)))
 
 (fn parse [output]
   (let [lines (vim.split output "\n")
