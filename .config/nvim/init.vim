@@ -9,7 +9,6 @@ set pumheight=10
 set scrolloff=2
 set shell=/bin/sh
 set shiftwidth=4
-set showmatch
 set sidescrolloff=5
 set smartcase
 set noswapfile
