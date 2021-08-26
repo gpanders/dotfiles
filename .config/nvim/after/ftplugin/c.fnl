@@ -1,9 +1,8 @@
 (local {: set-path : tags} (require "ft/c"))
 
 (setlocal commentstring "//%s")
-(setlocal define&)
+(setlocal define "^\\s*#\\s*define")
 (setlocal include "^\\s*#\\s*include\\s*[\"<]\\@=")
-(setlocal includeexpr&)
 (setlocal textwidth 80)
 
 ; Support /// as a comment leader, used for writing Doxygen comments
@@ -13,7 +12,7 @@
 (set-path)
 (tags)
 
-(append! vim.b.undo_ftplugin "|setl cms< def< inc< inex< path< tw< com<")
+(append! vim.b.undo_ftplugin "|setl cms< def< inc< path< tw< com<")
 
 (when (. (vim.api.nvim_get_commands {:builtin false}) :Man)
   (setlocal keywordprg ":Man")

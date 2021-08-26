@@ -21,8 +21,8 @@
 
     (when (or update (not (vim.loop.fs_access tagfile :R)))
       (vim.fn.mkdir (tagfile:match "^(.+)/.-$") :p)
-      (local path (vim.fn.expand "%:p"))
-      (when (vim.loop.fs_stat path)
+      (local path (vim.api.nvim_buf_get_name 0))
+      (when (and (not (empty-or-nil? path)) (vim.loop.fs_stat path))
         (var cmd (.. compiler " -M -Iinclude " path "| awk '{for (i=1; i<=NF; i++) if ($i ~ /.h$/) print $i}' | ctags -L - -o " tagfile))
         (if (= ft :c)
             (append! cmd " --c-kinds=+px --langmap=c:+.h --languages=c")
@@ -39,10 +39,11 @@
         args ["-E" "-Wp,-v" "-x" (if (= ft :cpp) "c++" "c") "/dev/null"]
         chunks []]
     (fn on-exit []
-      (let [lines (vim.split (vim.trim (table.concat chunks)) "\n")
+      (let [lines (-> (table.concat chunks)
+                      (vim.trim)
+                      (vim.split "\n"))
             paths (icollect [_ v (ipairs lines)]
-                    (when (v:match "^ ")
-                      (v:match "%S+")))]
+                    (when (v:match "^ ") (v:match "%S+")))]
         (-> #(vim.fn.simplify $1)
             (vim.tbl_map paths)
             (uniq)
@@ -51,7 +52,6 @@
             (->> (set vim.opt_local.path)))
         (when (vim.fn.isdirectory :include)
           (setlocal^= path :include))
-
         (setlocal-= path ".")
         (setlocal^= path ".")))
 
@@ -61,10 +61,8 @@
       (vim.schedule_wrap on-exit))
     (let [f (fn [err data]
               (assert (not err) err)
-              (when data
-                (table.insert chunks data)))]
+              (table.insert chunks data))]
       (stdout:read_start f)
       (stderr:read_start f))))
 
-{: set-path
- : tags}
+{: set-path : tags}
