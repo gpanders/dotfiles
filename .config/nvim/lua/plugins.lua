@@ -14,6 +14,7 @@ packer.startup({
         "gpanders/editorconfig.nvim",
         "gpanders/snippets.nvim",
         "gpanders/nvim-moonwalk",
+        "gpanders/nvim-parinfer",
         "tpope/vim-surround",
         "tpope/vim-commentary",
         "tpope/vim-repeat",
