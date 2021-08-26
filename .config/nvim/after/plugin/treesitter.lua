@@ -31,10 +31,10 @@ require('nvim-treesitter.configs').setup {
             enable = true,
             keymaps = {
                 goto_definition = 'gd',
-                list_definitions = '<Nop>',
+                list_definitions = '<Bslash>d',
                 list_definitions_toc = '<Nop>',
-                goto_next_usage = '<Nop>',
-                goto_previous_usage = '<Nop>',
+                goto_next_usage = ']u',
+                goto_previous_usage = '[u',
             },
         },
     },
