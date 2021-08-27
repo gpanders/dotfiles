@@ -191,8 +191,8 @@ hi("packerHash", { fg = "yellow" })
 -- Treesitter highlights
 hi("TSNone", { fg = "white" })
 hi("TSSymbol", { fg = "yellow" })
-hi("TSDefinition", { fg = "brgreen" })
-hi("TSDefinitionUsage", { fg = "brgreen" })
+hi("TSDefinition", { bg = "brgreen" })
+hi("TSDefinitionUsage", { bg = "brgreen" })
 
 -- LSP Diagnostics
 hi("LspDiagnosticsDefaultError", { fg = "red" })
