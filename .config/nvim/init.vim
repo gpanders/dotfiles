@@ -2,6 +2,7 @@ set breakindent
 set confirm
 set cursorline
 set expandtab
+set foldlevelstart=99
 set ignorecase
 set lazyredraw
 set linebreak
