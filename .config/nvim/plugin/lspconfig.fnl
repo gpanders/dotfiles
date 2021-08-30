@@ -46,6 +46,7 @@
             (show-cursor-virtual-text ns bufnr))))
 
       (with-module [lsp-compl :lsp_compl]
+        (vim.opt.completeopt:append [:noselect :noinsert])
         (lsp-compl.attach client bufnr {:server_side_fuzzy_completion true :trigger_on_delete true}))
 
       (exec "doautocmd User LspAttached"))
