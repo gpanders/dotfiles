@@ -4,9 +4,12 @@
         {method handler} vim.lsp.handlers]
     (handler nil method params bufnr)))
 
-(fn make-diagnostic [line text ?severity]
-  (let [position {: line :character 0}]
-    {:range {:start position :end position}
+(fn make-diagnostic [pos text ?severity]
+  (let [[lnum start-col end-col] pos
+        line (- lnum 1)
+        start {: line :character (- start-col 1)}
+        end {: line :character (- end-col 1)}]
+    {:range {: start : end}
      :message text
      :severity (. vim.lsp.protocol.DiagnosticSeverity (or ?severity :Error))}))
 
@@ -16,21 +19,23 @@
         defined {}
         used {}]
     (each [i v (ipairs lines)]
-      (each [link (v:gmatch "%[[^]]+%]%[([^]]+)%]")] ; [foo][bar]
-        (tset used link i))
-      (each [link (v:gmatch "%[([^]]+)%]%[%]")] ; [foo][]
-        (tset used link i))
-      (each [link (v:gmatch "%[([^]]+)%][^[(]")] ; [foo]
-        (tset used link i))
-      (match (v:match "^%s*%[([^]]+)%]: ")
-        link (tset defined link i)))
+      (each [start link end (v:gmatch "%[[^]]+%]%[()([^]]+)()%]")] ; [foo][bar]
+        (tinsert used link [i start end]))
+      (each [start link end (v:gmatch "%[()([^]]+)()%]%[%]")] ; [foo][]
+        (tinsert used link [i start end]))
+      (each [start link end (v:gmatch "[^]]%[()([^]]+)()%][^[(]")] ; [foo]
+        (tinsert used link [i start end]))
+      (match (v:match "^%s*%[()([^]]+)()%]: ")
+        (start link end) (tinsert defined link [i start end])))
     (local diagnostics [])
-    (icollect [link line (pairs defined) :into diagnostics]
+    (each [link positions (pairs defined)]
       (when (not (. used link))
-        (make-diagnostic (- line 1) (.. "Unused link: " link) :Warning)))
-    (icollect [link line (pairs used) :into diagnostics]
+        (each [_ pos (ipairs positions)]
+          (table.insert diagnostics (make-diagnostic pos (.. "Unused link: " link) :Warning)))))
+    (each [link positions (pairs used)]
       (when (not (. defined link))
-        (make-diagnostic (- line 1) (.. "Undefined link: " link) :Warning)))
+        (each [_ pos (ipairs positions)]
+          (table.insert diagnostics (make-diagnostic pos (.. "Undefined link: " link) :Warning)))))
     (publish-diagnostics bufnr diagnostics)))
 
 (fn lint [bufnr]
