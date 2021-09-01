@@ -132,7 +132,6 @@ autocmd! TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150
 autocmd! TermOpen * setlocal statusline=%{b:term_title} | startinsert
 autocmd! InsertEnter,WinLeave,FocusLost * setlocal nocursorline
 autocmd! InsertLeave,WinEnter,FocusGained * if mode() !=# 'i' | let &l:cursorline = 1 | endif
-autocmd! BufRead * autocmd FileType <buffer> ++once if &ft !~# 'commit\|rebase' | exec 'silent! normal! g`"' | endif
 autocmd! BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
 autocmd! UIEnter * colorscheme base16-eighties
 
