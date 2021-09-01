@@ -1,21 +1,21 @@
 (fn setlocal [opt ?val]
   (let [opt (tostring opt)]
     (if ?val
-      `(set ,(sym (.. "vim.opt_local." opt)) ,?val)
+      `(tset vim.opt_local ,opt ,?val)
       (match (opt:gsub "&$" "")
         (where (o n) (> n 0)) `(let [{:default default#} (vim.api.nvim_get_option_info ,o)]
-                                 (set ,(sym (.. "vim.opt_local." o)) default#))
+                                 (tset vim.opt_local ,o default#))
         _ (match (opt:gsub "^no" "")
-            (o n) `(set ,(sym (.. "vim.opt_local." o)) ,(= n 0)))))))
+            (o n) `(tset vim.opt_local ,o ,(= n 0)))))))
 
 (fn setlocal+= [opt val]
-  `(,(: "vim.opt_local.%s:append" :format (tostring opt)) ,val))
+  `(: (. vim.opt_local ,(tostring opt)) :append ,val))
 
 (fn setlocal^= [opt val]
-  `(,(: "vim.opt_local.%s:prepend" :format (tostring opt)) ,val))
+  `(: (. vim.opt_local ,(tostring opt)) :prepend ,val))
 
 (fn setlocal-= [opt val]
-  `(,(: "vim.opt_local.%s:remove" :format (tostring opt)) ,val))
+  `(: (. vim.opt_local ,(tostring opt)) :remove ,val))
 
 (fn exec [s]
   `(vim.api.nvim_command ,s))
@@ -64,21 +64,22 @@ Examples:
     form))
 
 (fn autocmd [group event pat ...]
-  (assert (= (type group) :string) "autocmd group should be a string")
-  (assert (or (= (type event) :string) (sequence? event)) "autocmd event should be a string or list")
+  (assert-compile (or (= (type group) :string) (= group `nil)) "autocmd group should be a string" group)
+  (assert-compile (or (= (type event) :string) (sequence? event)) "autocmd event should be a string or list" event)
   (let [events (if (sequence? event) (table.concat event ",") event)
-        ns (make-ident :au group (events:gsub "," "_"))
+        ns (make-ident :au (or group :default) (events:gsub "," "_"))
         flags (icollect [_ v (ipairs [...]) :until (not= (type v) :string)]
                 (: "++%s" :format v))]
     `(do
       (global ,(sym ns) (fn [] ,(select (+ (length flags) 1) ...)))
-      (exec ,(.. "augroup " group))
-      ,(let [cmd (: "autocmd! %s %%s %s call v:lua.%s()" :format events (table.concat flags " ") ns)]
-        `(exec
-          ,(if (list? pat)
-               `(: ,cmd :format ,pat)
-               (cmd:format pat))))
-      (exec "augroup END"))))
+      ,(when (not= group `nil)
+         `(exec ,(.. "augroup " group)))
+      ,(let [cmd (: "autocmd%s %s %%s %s call v:lua.%s()" :format (if group "!" "") events (table.concat flags " ") ns)]
+        `(exec ,(if (list? pat)
+                    `(: ,cmd :format ,pat)
+                    (cmd:format pat))))
+      ,(when (not= group `nil)
+        `(exec "augroup END")))))
 
 (fn augroup [group ...]
   (let [form `(do)]
@@ -103,12 +104,42 @@ Examples:
   `(set ,str (.. (or ,str "") ,s)))
 
 (fn with-module [module-binding ...]
+  "Binds a module to the given name and executes the forms.
+
+Example:
+
+  (with-module [mod :mymodule]
+    (mod.func)
+    (mod.bar))
+
+The example above is equivalent to
+
+  (match (pcall require :mymodule)
+    (true mod) (do
+                 (mod.func)
+                 (mod.bar)))"
   (let [[binding name] module-binding]
     `(match (pcall require ,name)
        (true ,binding) (do ,...))))
 
 (fn empty-or-nil? [s]
   `(or (= ,s nil) (= (length ,s) 0)))
+
+(fn printf [s ...]
+  `(print (: ,s :format ,...)))
+
+(fn tinsert [t key val]
+  "Like tset, but uses table.insert to add val to the table at t[key].
+
+Example:
+
+  (local t {})
+  (tinsert t :l \"foo\") => t = { l = {'foo'} }
+"
+  `(do
+     (when (not (. ,t ,key))
+      (tset ,t ,key []))
+    (table.insert (. ,t ,key) ,val)))
 
 {: setlocal
  : setlocal+=
@@ -121,4 +152,6 @@ Examples:
  : command
  : append!
  : with-module
- : empty-or-nil?}
+ : empty-or-nil?
+ : printf
+ : tinsert}
