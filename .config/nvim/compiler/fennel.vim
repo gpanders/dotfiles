@@ -1,2 +1,2 @@
-setlocal errorformat=%EParse\ error\ in\ %f:%l,%ECompile\ error\ in\ %f:%l,%C%m,%-C%p^,%-G%.%#
+setlocal errorformat=%C%[%^^]%#,%E%>Parse\ error\ in\ %f:%l,%E%>Compile\ error\ in\ %f:%l,%-Z%p^%.%#,%C%m,%-G*\ %.%#
 setlocal makeprg=fennel\ --compile\ %
