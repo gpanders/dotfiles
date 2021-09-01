@@ -3,6 +3,7 @@ if exists('g:loaded_wildignorecase')
 endif
 let g:loaded_wildignorecase = 1
 
+set nofileignorecase
 set wildcharm=<Tab>
 
 function! s:CmdlineTab() abort
