@@ -1,7 +1,7 @@
 (fn t [key]
   (vim.api.nvim_replace_termcodes key true true true))
 
-(autocmd :my-snippets :InsertEnter "*" :once
+(autocmd snippets :InsertEnter "*" :once
   (with-module [snippets :snippets]
 
     (fn check-snippet []

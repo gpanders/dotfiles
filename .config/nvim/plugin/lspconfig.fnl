@@ -15,9 +15,13 @@
    (vim.lsp.with {:virtual_text false :underline false})
    (->> (tset vim.lsp.handlers "textDocument/publishDiagnostics")))
 
-(augroup :my-lspconfig
-  (autocmd :CursorMoved "*" (print-diagnostics))
-  (autocmd :User :LspDiagnosticsChanged (print-diagnostics))
+(augroup lspconfig#
+  (autocmd :BufWinEnter "*"
+    (autocmd lspconfig# :BufWritePost "<buffer>" :once
+      (vim.lsp.diagnostic.enable)
+      (autocmd lspconfig# [:CursorHold :CursorMoved] "<buffer>" (print-diagnostics))))
+  (autocmd :User :LspDiagnosticsChanged
+    (vim.lsp.diagnostic.set_loclist {:open false}))
   (autocmd :FileType "go,c,cpp,rust,python" :once
     (exec "packadd nvim-lspconfig")
     (with-module [lspconfig :lspconfig]
@@ -37,9 +41,8 @@
         (keymap :n "gr" "<Cmd>lua vim.lsp.buf.references()<CR>" {:buffer bufnr})
         (keymap :n "gR" "<Cmd>lua vim.lsp.buf.rename()<CR>" {:buffer bufnr})
 
+        ; Disable when attached, re-enable on BufWrite
         (vim.lsp.diagnostic.disable bufnr)
-        (autocmd :my-lspconfig :BufWritePost (: "<buffer=%d>" :format bufnr)
-          (vim.lsp.diagnostic.enable bufnr))
 
         (with-module [lsp-compl :lsp_compl]
           (vim.opt.completeopt:append [:noselect :noinsert])

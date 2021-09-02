@@ -63,23 +63,27 @@ Examples:
             (table.insert form `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts)))))
     form))
 
-(fn autocmd [group event pat ...]
-  (assert-compile (or (= (type group) :string) (= group `nil)) "autocmd group should be a string" group)
-  (assert-compile (or (= (type event) :string) (sequence? event)) "autocmd event should be a string or list" event)
-  (let [events (if (sequence? event) (table.concat event ",") event)
+(fn autocmd [...]
+  (let [args [...]
+        group (if (sym? (. args 1)) (tostring (table.remove args 1)))
+        [events pat & args] args
+        events (if (sequence? events) (table.concat events ",") events)
+        flags (icollect [_ v (ipairs args) :until (not= (type v) :string)]
+                (do
+                  (table.remove args 1)
+                  (: "++%s" :format v)))
         ns (make-ident :au (or group :default) (events:gsub "," "_"))
-        flags (icollect [_ v (ipairs [...]) :until (not= (type v) :string)]
-                (: "++%s" :format v))]
-    `(do
-      (global ,(sym ns) (fn [] ,(select (+ (length flags) 1) ...)))
-      ,(when (not= group `nil)
-         `(exec ,(.. "augroup " group)))
-      ,(let [cmd (: "autocmd%s %s %%s %s call v:lua.%s()" :format (if group "!" "") events (table.concat flags " ") ns)]
-        `(exec ,(if (list? pat)
-                    `(: ,cmd :format ,pat)
-                    (cmd:format pat))))
-      ,(when (not= group `nil)
-        `(exec "augroup END")))))
+        form `(do
+                (global ,(sym ns) (fn [] ,(unpack args))))]
+    (when group
+      (table.insert form `(exec ,(.. "augroup " group))))
+    (let [cmd (: "autocmd %s %%s %s call v:lua.%s()" :format events (table.concat flags " ") ns)]
+      (table.insert form `(exec ,(if (list? pat)
+                                     `(: ,cmd :format ,pat)
+                                     (cmd:format pat)))))
+    (when group
+      (table.insert form `(exec "augroup END")))
+    form))
 
 (fn augroup [group ...]
   (let [form `(do)]
