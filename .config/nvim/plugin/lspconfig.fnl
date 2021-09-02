@@ -12,7 +12,7 @@
           (vim.api.nvim_buf_set_extmark 0 ns line 0 {:id 1 :virt_text chunks :hl_mode :combine})))))
 
 (-> vim.lsp.diagnostic.on_publish_diagnostics
-   (vim.lsp.with {:virtual_text false :underline false})
+   (vim.lsp.with {:virtual_text false :underline false :severity_sort true})
    (->> (tset vim.lsp.handlers "textDocument/publishDiagnostics")))
 
 (augroup lspconfig#
