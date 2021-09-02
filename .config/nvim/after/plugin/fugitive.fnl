@@ -1,5 +1,5 @@
 (when (= vim.g.loaded_fugitive 1)
-  (augroup :my-fugitive
+  (augroup fugitive#
     (autocmd :BufRead "fugitive://*"
       (setlocal bufhidden :delete))
     (autocmd :FileType "fugitive,fugitiveblame"

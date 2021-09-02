@@ -16,7 +16,7 @@
 (keymap :n "<C-W><CR>" "<Cmd>call ft#markdown#open('split')<CR>" {:buffer true})
 (append! vim.b.undo_ftplugin "|nun <buffer> <CR>|nun <buffer> <C-W><CR>")
 
-(autocmd :ft-markdown :BufWritePost "<buffer>"
+(autocmd ft-markdown :BufWritePost "<buffer>"
   (local {: lint} (require "ft/markdown"))
   (lint (vim.api.nvim_get_current_buf)))
 (append! vim.b.undo_ftplugin "|au! ft-markdown")
