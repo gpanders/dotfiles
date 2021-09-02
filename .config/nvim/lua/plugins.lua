@@ -34,6 +34,7 @@ packer.startup({
         { "nvim-treesitter/playground", opt = true },
         "nvim-lua/plenary.nvim", -- Dependency of gitsigns and telescope
         { "nvim-telescope/telescope.nvim", opt = true },
+        "andymass/vim-matchup",
     },
 })
 
