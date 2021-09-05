@@ -9,12 +9,15 @@
             (o n) `(tset vim.opt_local ,o ,(= n 0)))))))
 
 (fn setlocal+= [opt val]
+  (assert-compile (sym? opt) "opt should be a plain symbol" opt)
   `(: (. vim.opt_local ,(tostring opt)) :append ,val))
 
 (fn setlocal^= [opt val]
+  (assert-compile (sym? opt) "opt should be a plain symbol" opt)
   `(: (. vim.opt_local ,(tostring opt)) :prepend ,val))
 
 (fn setlocal-= [opt val]
+  (assert-compile (sym? opt) "opt should be a plain symbol" opt)
   `(: (. vim.opt_local ,(tostring opt)) :remove ,val))
 
 (fn exec [s]
@@ -36,9 +39,9 @@ Examples:
 
   (keymap :n \"Y\" \"y$\")
   (keymap :n \"j\" \"(v:count == 0 ? 'gj' : 'j')\" {:expr true})"
-  (assert (or (= (type modes) :string) (sequence? modes)) "modes should be a list or string")
-  (assert (= (type from) :string) "from should be a string")
-  (assert (or (= nil ?opts) (= (type ?opts) :table)) "opts should be a table")
+  (assert-compile (or (= (type modes) :string) (sequence? modes)) "modes should be a list or string" modes)
+  (assert-compile (= (type from) :string) "from should be a string" from)
+  (assert-compile (or (= nil ?opts) (table? ?opts)) "opts should be a table" ?opts)
   (let [form `(do)
         opts (or ?opts {})
         modes (if (sequence? modes) modes [modes])
@@ -94,6 +97,7 @@ Examples:
     form))
 
 (fn command [cmd opts func]
+  (assert-compile (table? opts) "opts should be a table" opts)
   (let [ns (make-ident :comm cmd)
         attrs (icollect [k v (pairs opts)]
                 (if (= (type v) :boolean)
@@ -105,6 +109,7 @@ Examples:
 
 (fn append! [str s]
   "Append to a string in place"
+  (assert-compile (sym? str) "expected symbol name for str" str)
   `(set ,str (.. (or ,str "") ,s)))
 
 (fn with-module [module-binding ...]
