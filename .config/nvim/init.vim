@@ -54,17 +54,6 @@ nnoremap <C-W><Space>e :sp %:p:h/<Tab>
 nnoremap <Space>t :tjump /
 nnoremap <C-W><Space>t :stjump /
 
-" TODO Remove in nvim 0.6
-set hidden
-set nojoinspaces
-set inccommand=nosplit
-set viewoptions-=options
-inoremap <C-U> <C-G>u<C-U>
-inoremap <C-W> <C-G>u<C-W>
-nnoremap Q gq
-nnoremap Y y$
-nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<Bar>syn sync minlines=50<CR><C-L>
-
 " Format whole buffer with formatprg without changing cursor position
 " See :h restore-position
 nnoremap gq<CR> mzHmygggqG`yzt`z
