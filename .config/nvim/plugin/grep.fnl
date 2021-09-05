@@ -1,24 +1,25 @@
+(fn on-exit [l title mods chunks]
+  (let [lines (vim.split (vim.trim (table.concat chunks)) "\n")
+        what {: title :efm vim.o.grepformat :nr "$" : lines}]
+    (if l
+        (vim.fn.setloclist 0 {} " " what)
+        (vim.fn.setqflist {} " " what)))
+  (exec (.. mods " " (or (and l "lopen") "copen")))
+  (exec (.. "doautocmd QuickFixCmdPost " (or (and l "lgrep") "grep"))))
+
 (fn grep [l mods args]
-  (local chunks [])
   (let [args (vim.fn.expandcmd args)
         grepcmd (match (vim.o.grepprg:gsub "%$%*" args)
-                  (s 0) (.. s " " args)
-                  s s)
-        stdout (vim.loop.new_pipe false)]
-    (fn on-exit []
-      (let [lines (vim.split (vim.trim (table.concat chunks)) "\n")
-            what {:title grepcmd :efm vim.o.grepformat :nr "$" : lines}]
-        (if l
-            (vim.fn.setloclist 0 {} " " what)
-            (vim.fn.setqflist {} " " what)))
-      (exec (.. mods " " (or (and l "lopen") "copen")))
-      (exec (.. "doautocmd QuickFixCmdPost " (or (and l "lgrep") "grep"))))
-
+                  (s n) (if (= n 0)
+                            (.. s " " args)
+                            s))
+        stdout (vim.loop.new_pipe false)
+        chunks []]
     (exec (.. "doautocmd QuickFixCmdPre " (or (and l "lgrep") "grep")))
     (vim.loop.spawn
       vim.o.shell
       {:args ["-c" grepcmd] :stdio [nil stdout nil]}
-      (vim.schedule_wrap on-exit))
+      (vim.schedule_wrap #(on-exit l grepcmd mods chunks)))
     (stdout:read_start
       (fn [err data]
         (assert (not err) err)
