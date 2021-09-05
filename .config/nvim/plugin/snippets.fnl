@@ -1,5 +1,5 @@
-(fn t [key]
-  (vim.api.nvim_replace_termcodes key true true true))
+(macro t [key]
+  `(vim.api.nvim_replace_termcodes ,key true true true))
 
 (autocmd snippets :InsertEnter "*" :once
   (with-module [snippets :snippets]
@@ -35,8 +35,8 @@
     (local include-map {:c [:cpp]})
     (local snippets-dir (.. (vim.fn.stdpath "config") "/snippets"))
 
-    (fn read-snippets [t]
-      (local s (or t {}))
+    (fn read-snippets []
+      (local s {})
       (each [filename (vim.gsplit (vim.fn.glob (.. snippets-dir "/*")) "\n")]
         (let [(name ext) (filename:match "^.+/([^/]+)%.([^.]+)$")
               ft (or (. ext->ft ext) ext)]
