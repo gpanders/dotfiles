@@ -28,9 +28,9 @@
       ; Fallback to tags if LSP fails to find a definition
       (let [handler (. vim.lsp.handlers "textDocument/definition")]
         (tset vim.lsp.handlers "textDocument/definition"
-              (fn [_ method result]
+              (fn [_ result ...]
                 (if (not (empty-or-nil? result))
-                    (handler _ method result)
+                    (handler _ result ...)
                     (-> (vim.api.nvim_replace_termcodes "<C-]>" true true true)
                         (vim.api.nvim_feedkeys "n" true))))))
 
