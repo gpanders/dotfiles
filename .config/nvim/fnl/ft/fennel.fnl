@@ -10,10 +10,11 @@
     name))
 
 (fn publish-diagnostics [bufnr diagnostics]
-  (let [params {:uri (vim.uri_from_bufnr bufnr) : diagnostics}
+  (let [client-id 1441
+        params {:uri (vim.uri_from_bufnr bufnr) : diagnostics}
         method "textDocument/publishDiagnostics"
         {method handler} vim.lsp.handlers]
-    (handler nil method params bufnr)))
+    (handler nil params {: method :client_id client-id})))
 
 (fn parse [output]
   (let [lines (vim.split output "\n")
