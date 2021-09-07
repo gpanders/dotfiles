@@ -24,4 +24,4 @@
 
 (autocmd ft-c :BufWritePost "<buffer>" (tags true))
 
-(append! vim.b.undo_ftplugin "|au! ftplugin_c")
+(append! vim.b.undo_ftplugin "|au! ft-c")
