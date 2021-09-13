@@ -16,4 +16,4 @@
   (local {: lint} (require "ft/fennel"))
   (lint (vim.api.nvim_get_current_buf)))
 
-(append! vim.b.undo_ftplugin "|au! ftplugin-fennel")
+(append! vim.b.undo_ftplugin "|au! ft-fennel")
