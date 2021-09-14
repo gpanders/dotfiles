@@ -1,6 +1,7 @@
-(local globals [:vim])
-(each [name (pairs _G)]
-  (table.insert globals name))
+(local efm "%C%[%^^]%#,%E%>Parse error in %f:%l,%E%>Compile error in %f:%l,%-Z%p^%.%#,%C%m,%-G* %.%#")
+
+(local globals (icollect [name (pairs _G)] name))
+(table.insert globals :vim)
 
 (fn make-temp-file [text]
   (let [name (vim.fn.tempname)]
@@ -16,16 +17,18 @@
     (handler nil params {: method :client_id client-id})))
 
 (fn parse [output]
-  (match (output:match "^%w+ error in .+:(%d+)[\n\r]%s+([^\n\r]+)\n.*\n(%s+)^+[\n\r]")
-    (lnum message s) (let [lnum (- lnum 2)
-                           col (length s)
-                           position {:line lnum :character col}]
-                       [{:range {:start position :end position} : message}])))
+  (let [lines (vim.split output "\n")
+        qflist (vim.fn.getqflist {: efm : lines})]
+    (icollect [_ item (pairs qflist.items)]
+      (when (= item.valid 1)
+        (let [col (if (> item.col 0) (- item.col 1) 0)
+              position {:line (- item.lnum 2) :character col}]
+          {:range {:start position :end position} :message item.text})))))
 
 (fn compile-buffer [bufnr]
   (let [fennel (require :fennel)
         macro-path fennel.macro-path
-        lines (vim.api.nvim_buf_get_lines bufnr 0 -1 false)
+        lines (vim.api.nvim_buf_get_lines bufnr 0 -1 true)
         _ (table.insert lines 1 "(require-macros :macros)")
         text (table.concat lines "\n")
         temp (make-temp-file text)]
