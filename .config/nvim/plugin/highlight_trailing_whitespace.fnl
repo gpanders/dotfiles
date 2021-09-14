@@ -9,5 +9,3 @@
 (augroup highlight-trailing-whitespace
   (autocmd :Syntax "*" (highlight-trailing-whitespace))
   (autocmd :OptionSet "readonly,modifiable" (highlight-trailing-whitespace)))
-
-(exec "hi link TrailingWhitespace Error")

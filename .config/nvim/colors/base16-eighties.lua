@@ -147,7 +147,7 @@ hi("Underlined", { attr = "underline" })
 
 hi("Ignore", { fg = "black" })
 
-hi("Error", { fg = "black", bg = "red" })
+hi("Error", { fg = "red" })
 
 hi("Todo", { fg = "yellow", bg = "brgreen" })
 
@@ -165,6 +165,7 @@ hi("gitcommitSelectedType", { fg = "green" })
 hi("gitcommitSelectedFile", { fg = "green" })
 hi("gitcommitDiscardedType", { fg = "red" })
 hi("gitcommitDiscardedFile", { fg = "red" })
+hi("gitcommitUntrackedFile", { fg = "red" })
 hi("gitcommitBranch", { fg = "yellow" })
 
 hi("gitrebaseHash", { fg = "yellow" })
@@ -183,6 +184,8 @@ hi("manReference", { fg = "yellow" })
 hi("manUnderline", { fg = "green", attr = "bold" })
 
 -- Plugin highlighting
+hi("TrailingWhitespace", { bg = "red" })
+
 hi("GitSignsAdd", { fg = "green", bg = "brgreen" })
 hi("GitSignsDelete", { fg = "red", bg = "brgreen" })
 hi("GitSignsChange", { fg = "brblack", bg = "brgreen" })
