@@ -35,8 +35,9 @@
       (set fennel.macro-path macro-path)
       output)))
 
-(fn lint [bufnr]
-  (let [results (match (pcall compile-buffer bufnr)
+(fn lint []
+  (let [bufnr (vim.api.nvim_get_current_buf)
+        results (match (pcall compile-buffer bufnr)
                     (false output) (parse output)
                     _ [])]
     (publish-diagnostics bufnr results)))
