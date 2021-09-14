@@ -4,7 +4,7 @@
 (setlocal lispwords [:accumulate :collect :do :doto :each :fn :for :icollect :lambda :let :macro :macros :match :when :while :with-open])
 
 ; Custom macros for Neovim
-(setlocal+= lispwords [:augroup :with-module])
+(setlocal+= lispwords [:augroup :autocmd :with-module])
 
 (append! vim.b.undo_ftplugin "|setl cms< com< lisp< lw<")
 
@@ -14,6 +14,7 @@
 
 (autocmd ft-fennel :BufWritePost "<buffer>"
   (local {: lint} (require "ft/fennel"))
-  (lint (vim.api.nvim_get_current_buf)))
+  (lint)
+  (autocmd ft-fennel :TextChanged "<buffer>" (lint)))
 
 (append! vim.b.undo_ftplugin "|au! ft-fennel")
