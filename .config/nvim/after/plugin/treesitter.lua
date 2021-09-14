@@ -49,4 +49,23 @@ require('nvim-treesitter.configs').setup {
     matchup = {
         enable = true,
     },
+    textobjects = {
+        select = {
+            enable = true,
+            lookahead = true,
+            keymaps = {
+                ["af"] = "@function.outer",
+                ["if"] = "@function.inner",
+            }
+        },
+        swap = {
+            enable = true,
+            swap_next = {
+                [">a"] = "@parameter.inner",
+            },
+            swap_previous = {
+                ["<a"] = "@parameter.inner",
+            }
+        }
+    }
 }
