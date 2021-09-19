@@ -189,18 +189,16 @@ hi("GitSignsChange", { fg = "brblack", bg = "brgreen" })
 
 hi("packerHash", { fg = "yellow" })
 
--- Treesitter highlights
 hi("TSNone", { fg = "white" })
 hi("TSSymbol", { fg = "yellow" })
 hi("TSDefinition", { bg = "brgreen" })
 hi("TSDefinitionUsage", { bg = "brgreen" })
 
--- LSP Diagnostics
-hi("LspDiagnosticsDefaultError", { fg = "red" })
-hi("LspDiagnosticsDefaultWarning", { fg = "yellow" })
-hi("LspDiagnosticsDefaultInformation", { fg = "blue" })
-hi("LspDiagnosticsDefaultHint", { fg = "brblack" })
-hi("LspDiagnosticsSignError", { fg = "red", bg = "brgreen" })
-hi("LspDiagnosticsSignWarning", { fg = "yellow", bg = "brgreen" })
-hi("LspDiagnosticsSignInformation", { fg = "blue", bg = "brgreen" })
-hi("LspDiagnosticsSignHint", { fg = "brblack", bg = "brgreen" })
+hi("DiagnosticError", { fg = "red" })
+hi("DiagnosticWarn", { fg = "yellow" })
+hi("DiagnosticInfo", { fg = "blue" })
+hi("DiagnosticHint", { fg = "brblack" })
+hi("DiagnosticSignError", { fg = "red", bg = "brgreen" })
+hi("DiagnosticSignWarn", { fg = "yellow", bg = "brgreen" })
+hi("DiagnosticSignInfo", { fg = "blue", bg = "brgreen" })
+hi("DiagnosticSignHint", { fg = "brblack", bg = "brgreen" })
