@@ -1,4 +1,4 @@
-(local blacklist [:markdown :text :mail :gitsendemail])
+(local blacklist [:markdown :text :mail :gitsendemail :man])
 
 (fn highlight-trailing-whitespace []
   (match [vim.o.readonly vim.o.modifiable vim.bo.filetype]
