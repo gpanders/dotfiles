@@ -17,6 +17,13 @@
       (keymap :n "gr" "<Cmd>lua vim.lsp.buf.references()<CR>" {:buffer bufnr})
       (keymap :n "gR" "<Cmd>lua vim.lsp.buf.rename()<CR>" {:buffer bufnr})
 
+      (with-module [ts-config :nvim-treesitter.configs]
+        (ts-config.detach_module :refactor.highlight_definitions bufnr))
+
+      (augroup lsp
+        (autocmd :CursorHold "<buffer>" (vim.lsp.buf.document_highlight))
+        (autocmd [:InsertEnter :CursorMoved] "<buffer>" (vim.lsp.buf.clear_references)))
+
       (with-module [lsp-compl :lsp_compl]
         (vim.opt.completeopt:append [:noselect :noinsert])
         (lsp-compl.attach client bufnr {:server_side_fuzzy_completion true :trigger_on_delete true}))

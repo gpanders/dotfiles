@@ -197,6 +197,10 @@ hi("TSSymbol", { fg = "yellow" })
 hi("TSDefinition", { bg = "brgreen" })
 hi("TSDefinitionUsage", { bg = "brgreen" })
 
+hi("LspReferenceText", { bg = "brgreen" })
+hi("LspReferenceRead", { bg = "brgreen" })
+hi("LspReferenceWrite", { bg = "brgreen" })
+
 hi("DiagnosticError", { fg = "red" })
 hi("DiagnosticWarn", { fg = "yellow" })
 hi("DiagnosticInfo", { fg = "blue" })
