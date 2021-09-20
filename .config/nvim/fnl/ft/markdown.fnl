@@ -1,17 +1,20 @@
-(fn publish-diagnostics [bufnr diagnostics]
-  (let [params {:uri (vim.uri_from_bufnr bufnr) : diagnostics}
-        method "textDocument/publishDiagnostics"
-        {method handler} vim.lsp.handlers]
-    (handler nil method params bufnr)))
+(local ns (vim.api.nvim_create_namespace "ft/markdown"))
 
-(fn make-diagnostic [pos text ?severity]
-  (let [[lnum start-col end-col] pos
-        line (- lnum 1)
-        start {: line :character (- start-col 1)}
-        end {: line :character (- end-col 1)}]
-    {:range {: start : end}
-     :message text
-     :severity (. vim.lsp.protocol.DiagnosticSeverity (or ?severity :Error))}))
+(fn tinsert [t key val]
+  (do
+    (when (not (. t key))
+      (tset t key []))
+    (table.insert (. t key) val)))
+
+(fn set-diagnostics [bufnr diagnostics]
+  (vim.diagnostic.set ns bufnr diagnostics))
+
+(fn make-diagnostic [pos message ?severity]
+  (let [[lnum col end-col] pos
+        lnum (- lnum 1)
+        col (- col 1)
+        end-col (- end-col 1)]
+    {: lnum : col :end_col end-col :severity (or ?severity :ERROR) : message}))
 
 (fn check-for-bad-links [bufnr]
   (let [lines (vim.api.nvim_buf_get_lines bufnr 0 -1 true)
@@ -36,7 +39,7 @@
       (when (not (. defined link))
         (each [_ pos (ipairs positions)]
           (table.insert diagnostics (make-diagnostic pos (.. "Undefined link: " link) :Warning)))))
-    (publish-diagnostics bufnr diagnostics)))
+    (set-diagnostics bufnr diagnostics)))
 
 (fn lint [bufnr]
   (check-for-bad-links bufnr))

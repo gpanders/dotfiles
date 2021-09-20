@@ -1,4 +1,5 @@
 (local efm "%C%[%^^]%#,%E%>Parse error in %f:%l,%E%>Compile error in %f:%l,%-Z%p^%.%#,%C%m,%-G* %.%#")
+(local ns (vim.api.nvim_create_namespace "ft/fennel"))
 
 (local globals (icollect [name (pairs _G)] name))
 (table.insert globals :vim)
@@ -9,21 +10,15 @@
       (f:write text))
     name))
 
-(fn publish-diagnostics [bufnr diagnostics]
-  (let [client-id 1441
-        params {:uri (vim.uri_from_bufnr bufnr) : diagnostics}
-        method "textDocument/publishDiagnostics"
-        {method handler} vim.lsp.handlers]
-    (handler nil params {: method :client_id client-id})))
+(fn set-diagnostics [bufnr diagnostics]
+  (each [_ d (pairs diagnostics)]
+    (set d.lnum (- d.lnum 1)))
+  (vim.diagnostic.set ns bufnr diagnostics))
 
 (fn parse [output]
   (let [lines (vim.split output "\n")
         qflist (vim.fn.getqflist {: efm : lines})]
-    (icollect [_ item (pairs qflist.items)]
-      (when (= item.valid 1)
-        (let [col (if (> item.col 0) (- item.col 1) 0)
-              position {:line (- item.lnum 2) :character col}]
-          {:range {:start position :end position} :message item.text})))))
+    (vim.diagnostic.fromqflist qflist.items)))
 
 (fn compile-buffer [bufnr]
   (let [fennel (require :fennel)
@@ -43,6 +38,6 @@
         results (match (pcall compile-buffer bufnr)
                     (false output) (parse output)
                     _ [])]
-    (publish-diagnostics bufnr results)))
+    (set-diagnostics bufnr results)))
 
 {: lint}

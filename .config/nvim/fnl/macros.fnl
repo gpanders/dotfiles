@@ -137,19 +137,6 @@ The example above is equivalent to
 (fn printf [s ...]
   `(print (: ,s :format ,...)))
 
-(fn tinsert [t key val]
-  "Like tset, but uses table.insert to add val to the table at t[key].
-
-Example:
-
-  (local t {})
-  (tinsert t :l \"foo\") => t = { l = {'foo'} }
-"
-  `(do
-     (when (not (. ,t ,key))
-      (tset ,t ,key []))
-    (table.insert (. ,t ,key) ,val)))
-
 {: setlocal
  : setlocal+=
  : setlocal^=
@@ -162,5 +149,4 @@ Example:
  : append!
  : with-module
  : empty-or-nil?
- : printf
- : tinsert}
+ : printf}
