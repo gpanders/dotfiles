@@ -4,7 +4,7 @@
   (match [vim.o.readonly vim.o.modifiable vim.bo.filetype]
     (where [false true ft] (not= ft "")) (when (not (vim.tbl_contains blacklist ft))
                                            (exec "syn match TrailingWhitespace /\\\\\\@<!\\s\\+\\%#\\@<!$/ containedin=ALL"))
-    _ (exec "syn clear TrailingWhitespace")))
+    _ (exec "silent! syn clear TrailingWhitespace")))
 
 (augroup highlight-trailing-whitespace
   (autocmd :Syntax "*" (highlight-trailing-whitespace))
