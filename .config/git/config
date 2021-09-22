@@ -55,10 +55,9 @@
 	smudge = git-lfs smudge -- %f
 [init]
 	defaultBranch = master
+	templateDir = ~/.config/git/template
 [status]
 	showStash = true
-[core]
-	hooksPath = ~/.config/git/hooks
 [mergetool "fugitive"]
 	cmd = nvim -c \"Gvdiffsplit!\" \"$MERGED\"
 [merge]
