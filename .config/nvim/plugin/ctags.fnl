@@ -1,23 +1,13 @@
-(local uv vim.loop)
+(fn on-exit [_ code]
+  (when (> code 0)
+    (vim.notify (: "ctags failed with code %d" :format code) vim.log.levels.WARN)))
 
 (fn generate-tags [args]
-  (let [stderr (uv.new_pipe false)
-        chunks []]
-    (fn on-exit [code]
-      (when (> (length chunks) 0)
-        (let [msg (: "ctags finished with exit code %d\n%s" :format code (table.concat chunks))]
-          (vim.notify msg vim.log.levels.ERROR))))
-    (local args ["ctags" "-R" args])
-    (when (uv.fs_stat ".git")
-      (table.insert args "-o .git/tags"))
-    (uv.spawn
-      vim.o.shell
-      {:args ["-c" (table.concat args " ")] :stdio [nil nil stderr]}
-      (vim.schedule_wrap on-exit))
-    (stderr:read_start
-      (fn [err data]
-        (assert (not err) err)
-        (when data
-          (table.insert chunks data))))))
+  (let [git-dir (or (os.getenv :GIT_DIR) ".git")
+        output (match (?. (vim.loop.fs_stat git-dir) :type)
+                 :directory (.. git-dir "/tags")
+                 _ "tags")
+        cmd (: "ctags -R -o %s %s" :format output args)]
+    (vim.fn.jobstart cmd {:on_exit on-exit})))
 
 (command :Tags {:nargs :*} #(generate-tags $3))
