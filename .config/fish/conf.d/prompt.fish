@@ -140,7 +140,7 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
         end
 
         set -l dirty
-        if not command git diff-index --no-ext-diff --quiet HEAD
+        if not command git diff-index --no-ext-diff --quiet HEAD 2>/dev/null
             set dirty '*'
         end
 
