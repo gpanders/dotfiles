@@ -139,7 +139,7 @@ The example above is equivalent to
        (true ,binding) (do ,...))))
 
 (fn empty-or-nil? [s]
-  `(or (= ,s nil) (= (length ,s) 0)))
+  `(or (= ,s nil) (= (next ,s) nil)))
 
 (fn printf [s ...]
   `(print (: ,s :format ,...)))

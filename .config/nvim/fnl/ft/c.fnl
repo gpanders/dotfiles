@@ -22,7 +22,7 @@
     (when (or update (not (vim.loop.fs_access tagfile :R)))
       (vim.fn.mkdir (tagfile:match "^(.+)/.-$") :p)
       (local path (vim.api.nvim_buf_get_name 0))
-      (when (and (not (empty-or-nil? path)) (vim.loop.fs_stat path))
+      (when (and (not= path "") (= (?. (vim.loop.fs_stat path) :type) :file))
         (var cmd (.. compiler " -M -Iinclude " path "| awk '{for (i=1; i<=NF; i++) if ($i ~ /.h$/) print $i}' | ctags -L - -o " tagfile))
         (if (= ft :c)
             (append! cmd " --c-kinds=+px --langmap=c:+.h --languages=c")
