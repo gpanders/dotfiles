@@ -3,20 +3,9 @@
 
 (autocmd snippets :InsertEnter "*" :once
   (with-module [snippets :snippets]
+    (local U (require "snippets.utils"))
 
-    (fn check-snippet []
-      (if (snippets.has_active_snippet)
-          true
-          (let [(_ snippet) (snippets.lookup_snippet_at_cursor)]
-            (not= snippet nil))))
-
-    (keymap :i "<Tab>"
-            (fn []
-              (if (check-snippet)
-                  (t "<Cmd>lua require('snippets').expand_or_advance(1)<CR>")
-                  (t "<Tab>")))
-            {:expr true})
-    (keymap :i "<S-Tab>" "<Cmd>lua require('snippets').advance_snippet(-1)<CR>")
+    (set snippets.ux (require "snippets.inserters.extmarks"))
 
     (global split_getopts (fn [str]
                             (-> (icollect [c (str:gmatch "(%a[:]?)")]
@@ -25,30 +14,55 @@
                                       (: "\t\t%s) ;;" :format c)))
                                 (table.concat "\n"))))
 
-    (local U (require "snippets.utils"))
-
-    (set snippets.ux (require "snippets.inserters.extmarks"))
-
-    (local ext->ft {:txt :_global
-                    :py :python
-                    :rs :rust})
-    (local include-map {:c [:cpp]})
+    (local my-snippets {})
+    (local ft->ext {:_global :txt
+                    :python :py
+                    :rust :rs})
+    (local include-map {:cpp [:c]})
     (local snippets-dir (.. (vim.fn.stdpath "config") "/snippets"))
 
-    (fn read-snippets []
+    (fn read-snippets [ft]
       (local s {})
-      (each [filename (vim.gsplit (vim.fn.glob (.. snippets-dir "/*")) "\n")]
-        (let [(name ext) (filename:match "^.+/([^/]+)%.([^.]+)$")
-              ft (or (. ext->ft ext) ext)]
-          (var snippet (with-open [f (io.open filename)]
-                         (: (f:read "*a") :gsub "\n$" "")))
-          (when (= ext :txt)
-            (set snippet (U.force_comment snippet)))
-          (set snippet (U.match_indentation snippet))
-          (each [_ v (pairs (icollect [_ v (pairs (or (. include-map ft) [])) :into [ft]] v))]
-            (when (not (. s v))
-              (tset s v {}))
-            (tset (. s v) name snippet))))
+      (let [ext (or (. ft->ext ft) ft)
+            handle (vim.loop.fs_scandir snippets-dir)]
+        (each [fname type #(vim.loop.fs_scandir_next handle)]
+          (match (fname:match "^([^/]+)%.([^.]+)$")
+            (name ext) (when (= type :file)
+                         (var snippet (with-open [f (io.open (.. snippets-dir "/" fname))]
+                                        (: (f:read "*a") :gsub "\n$" "")))
+                         (when (= ext :txt)
+                           (set snippet (U.force_comment snippet)))
+                         (set snippet (U.match_indentation snippet))
+                         (tset s name snippet)))))
+      (each [_ v (ipairs (or (. include-map ft) []))]
+        (each [name snippet (pairs (read-snippets v))]
+          (when (not (. s name))
+            (tset s name snippet))))
       s)
 
-    (set snippets.snippets (read-snippets))))
+    (fn check-snippet []
+      (or (snippets.has_active_snippet)
+          (let [(_ snippet) (snippets.lookup_snippet_at_cursor)]
+            (not= snippet nil))))
+
+    (fn setup-buffer []
+      (let [ft vim.bo.filetype]
+        (when (not (. my-snippets ft))
+          (tset my-snippets ft (read-snippets ft))
+          (set snippets.snippets my-snippets))
+        (when (not (empty-or-nil? (. my-snippets ft)))
+          (keymap :i "<Tab>"
+                  (fn []
+                    (if (check-snippet)
+                        (t "<Cmd>lua require('snippets').expand_or_advance(1)<CR>")
+                        (t "<Tab>")))
+                  {:expr true :buffer true})
+          (keymap :i "<S-Tab>" "<Cmd>lua require('snippets').advance_snippet(-1)<CR>" {:buffer true})
+          (autocmd snippets :InsertLeave "<buffer>"
+            (snippets.cancel)))))
+
+    (tset my-snippets :_global (read-snippets :_global))
+    (set snippets.snippets my-snippets)
+
+    (setup-buffer)
+    (autocmd snippets :FileType "*" (setup-buffer))))
