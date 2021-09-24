@@ -18,9 +18,13 @@
   (setlocal keywordprg ":Man")
   (append! vim.b.undo_ftplugin " kp<"))
 
-(when (> (vim.fn.executable "clang-format") 0)
-  (setlocal formatprg "clang-format -style=file -fallback-style=none")
-  (append! vim.b.undo_ftplugin " fp<"))
+(if (and (> (vim.fn.executable "uncrustify") 0) (os.getenv :UNCRUSTIFY_CONFIG))
+    (setlocal formatprg "uncrustify -q -l c")
+    (> (vim.fn.executable "clang-format") 0)
+    (setlocal formatprg "clang-format -style=file -fallback-style=none"))
+
+(match (pcall #vim.bo.formatprg)
+  true (append! vim.b.undo_ftplugin " fp<"))
 
 (autocmd ft-c :BufWritePost "<buffer>" (tags true))
 
