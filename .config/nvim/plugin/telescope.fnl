@@ -6,7 +6,7 @@
     (set vim.g.loaded_telescope nil)
     (exec "packadd telescope.nvim")
     (if (not vim.g.loaded_telescope)
-        (vim.notify "telescope.nvim is not installed" vim.log.levels.ERROR)
+        (echo "telescope.nvim is not installed" :WarningMsg)
         (let [telescope (require "telescope")
               themes (require "telescope.themes")
               opts (themes.get_dropdown {:previewer false :layout_config {:width 100}})]
