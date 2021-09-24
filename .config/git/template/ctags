@@ -1,7 +1,6 @@
 #!/bin/sh
 set -e
-dir="$(git rev-parse --git-dir)"
-mkdir "$dir/tags.lock" 2>/dev/null || exit 0
-trap 'rmdir "$dir/tags.lock"; rm -f "$$.tags"' EXIT
-git ls-files | ctags --tag-relative -L - -o "$dir/$$.tags"
-mv "$dir/$$.tags" "$dir/tags"
+mkdir ".tags.lock" 2>/dev/null || exit 0
+trap 'rmdir ".tags.lock"; rm -f "$$.tags"' EXIT
+git ls-files | ctags --tag-relative -L - -o "$$.tags"
+mv "$$.tags" tags
