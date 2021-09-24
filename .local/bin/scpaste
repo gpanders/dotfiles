@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+
+import subprocess
+from pathlib import Path
+import sys
+import tempfile
+
+SSH_SERVER = "p.gpanders.com:scpaste"
+HTTP_SERVER = "https://p.gpanders.com"
+THEME = "github"
+
+
+def main(name, extra):
+    if name is None:
+        for arg in extra:
+            p = Path(arg)
+            if p.exists():
+                name = p.name
+                break
+
+        if name is None:
+            name = input("Name: ")
+            if name == "":
+                sys.stderr.write("Name is required\n")
+                sys.exit(1)
+
+    args = ["highlight", "-a", "-I", "-O", "html", "-s", THEME, "-T", name]
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        args += ["-o", tmp.name] + extra
+        try:
+            proc = subprocess.run(args, stdin=sys.stdin, capture_output=True)
+            if proc.returncode != 0:
+                sys.stderr.write(proc.stderr.decode())
+                sys.exit(1)
+            subprocess.run(
+                ["scp", tmp.name, f"{SSH_SERVER}/{name}.html"],
+                check=True,
+                capture_output=True,
+            )
+
+            print(f"{HTTP_SERVER}/{name}.html")
+        except FileNotFoundError:
+            sys.stderr.write("highlight must be installed\n")
+            sys.exit(1)
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-n",
+        dest="name",
+        required=(not sys.stdin.isatty()),
+        help="Name of the paste. Required if reading from stdin",
+    )
+    args, extra = parser.parse_known_args()
+    main(args.name, extra)
