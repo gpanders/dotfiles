@@ -6,7 +6,7 @@
           [lnum _] (vim.api.nvim_win_get_cursor 0)
           lnum (- lnum 1)
           diagnostics (vim.diagnostic.get bufnr {: lnum})]
-      (vim.diagnostic.show ns bufnr diagnostics {:virtual_text {:source :if_many}})))
+      (vim.diagnostic.show ns bufnr diagnostics {:signs false :virtual_text {:source :if_many}})))
   (autocmd diagnostics :BufWinEnter "*"
     (vim.diagnostic.disable)
     (autocmd diagnostics :BufWritePost "<buffer=abuf>"
