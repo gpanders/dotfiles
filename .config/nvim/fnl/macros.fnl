@@ -23,6 +23,13 @@
 (fn exec [s]
   `(vim.api.nvim_command ,s))
 
+(fn echo [msg ?hl ?history]
+  (let [history (not (not ?history))]
+    `(vim.api.nvim_echo [[,msg ,?hl]] ,history {})))
+
+(fn echom [msg ?hl]
+  `(echo ,msg ,?hl true))
+
 (fn make-ident [key ...]
   "Create a unique identifier for a global function"
   (-> (icollect [_ v (pairs [...])]
@@ -142,6 +149,8 @@ The example above is equivalent to
  : setlocal^=
  : setlocal-=
  : exec
+ : echo
+ : echom
  : keymap
  : autocmd
  : augroup

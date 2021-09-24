@@ -1,6 +1,6 @@
 (fn on-exit [_ code]
   (when (> code 0)
-    (vim.notify (: "ctags failed with code %d" :format code) vim.log.levels.WARN)))
+    (echo (: "ctags failed with code %d" :format code) :WarningMsg)))
 
 (fn generate-tags [args]
   (let [git-dir (or (os.getenv :GIT_DIR) ".git")
