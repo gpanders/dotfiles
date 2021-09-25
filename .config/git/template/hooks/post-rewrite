@@ -1,5 +1,5 @@
-#!/bin/sh
-dir="$(git rev-parse --git-dir)"
+#!/bin/sh -eu
+hooks="$(git rev-parse --git-path hooks)"
 case "$1" in
-	rebase) exec "$dir"/hooks/post-merge ;;
+	rebase) exec "$hooks"/post-merge ;;
 esac
