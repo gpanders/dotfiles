@@ -7,7 +7,7 @@
           lnum (- lnum 1)
           diagnostics (vim.diagnostic.get bufnr {: lnum})]
       (vim.diagnostic.show ns bufnr diagnostics {:signs false :virtual_text {:source :if_many}})))
-  (autocmd diagnostics :BufWinEnter "*"
+  (autocmd diagnostics :BufRead "*"
     (vim.diagnostic.disable)
     (autocmd diagnostics :BufWritePost "<buffer=abuf>"
       (vim.diagnostic.enable)
