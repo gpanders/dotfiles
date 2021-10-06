@@ -19,7 +19,7 @@
   (append! vim.b.undo_ftplugin " kp<"))
 
 (if (and (> (vim.fn.executable "uncrustify") 0) (os.getenv :UNCRUSTIFY_CONFIG))
-    (setlocal formatprg "uncrustify -q -l c")
+    (setlocal formatprg "uncrustify -l c 2>/dev/null")
     (> (vim.fn.executable "clang-format") 0)
     (setlocal formatprg "clang-format -style=file -fallback-style=none"))
 
