@@ -25,6 +25,7 @@
 	ca = commit --amend
 	sw = switch
 	re = restore
+	ctags = !.git/ctags
 [commit]
 	verbose = true
 [tag]
