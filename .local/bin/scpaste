@@ -21,7 +21,7 @@ def main(name, extra):
         if name is None:
             name = input("Name: ")
             if name == "":
-                sys.stderr.write("Name is required\n")
+                print("Name is required", file=sys.stderr)
                 sys.exit(1)
 
     args = ["highlight", "-a", "-I", "-O", "html", "-s", THEME, "-T", name]
@@ -41,7 +41,7 @@ def main(name, extra):
 
             print(f"{HTTP_SERVER}/{name}.html")
         except FileNotFoundError:
-            sys.stderr.write("highlight must be installed\n")
+            print("highlight must be installed", file=sys.stderr)
             sys.exit(1)
 
 
