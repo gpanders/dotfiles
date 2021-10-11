@@ -34,11 +34,11 @@
     (each [link positions (pairs defined)]
       (when (not (. used link))
         (each [_ pos (ipairs positions)]
-          (table.insert diagnostics (make-diagnostic pos (.. "Unused link: " link) :Warning)))))
+          (table.insert diagnostics (make-diagnostic pos (.. "Unused link: " link) :WARN)))))
     (each [link positions (pairs used)]
       (when (not (. defined link))
         (each [_ pos (ipairs positions)]
-          (table.insert diagnostics (make-diagnostic pos (.. "Undefined link: " link) :Warning)))))
+          (table.insert diagnostics (make-diagnostic pos (.. "Undefined link: " link) :WARN)))))
     (set-diagnostics bufnr diagnostics)))
 
 (fn lint [bufnr]
