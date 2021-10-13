@@ -25,8 +25,9 @@
         (autocmd [:InsertEnter :CursorMoved] "<buffer>" (vim.lsp.buf.clear_references)))
 
       (with-module [lsp-compl :lsp_compl]
-        (vim.opt.completeopt:append [:noselect :noinsert])
-        (lsp-compl.attach client bufnr {:server_side_fuzzy_completion true :trigger_on_delete true}))
+        (vim.opt.completeopt:append [:noinsert])
+        (lsp-compl.attach client bufnr {:server_side_fuzzy_completion true
+                                        :trigger_on_delete true}))
 
       (exec "doautocmd User LspAttached"))
 
