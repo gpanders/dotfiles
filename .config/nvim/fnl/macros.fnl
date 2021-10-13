@@ -1,4 +1,5 @@
 (fn setlocal [opt ?val]
+  (assert-compile (sym? opt) "opt should be a plain symbol" opt)
   (let [opt (tostring opt)]
     (if ?val
       `(tset vim.opt_local ,opt ,?val)
@@ -55,7 +56,7 @@ Examples:
         to (match (type to)
              :string to
              _ (let [ns (make-ident :keymap (if opts.buffer :buf nil) from)]
-                 (table.insert form `(tset _G ,ns ,to))
+                 (table.insert form `(global ,(sym ns) ,to))
                  (if opts.expr
                      (: "v:lua.%s()" :format ns)
                      (: "<Cmd>call v:lua.%s()<CR>" :format ns))))]

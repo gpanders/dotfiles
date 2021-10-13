@@ -1,4 +1,5 @@
 set breakindent
+set completeopt=menu,menuone
 set confirm
 set cursorline
 set expandtab
@@ -10,6 +11,7 @@ set pumheight=10
 set scrolloff=2
 set shell=/bin/sh
 set shiftwidth=4
+set shortmess+=c
 set sidescrolloff=5
 set smartcase
 set noswapfile
