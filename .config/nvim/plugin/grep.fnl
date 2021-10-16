@@ -1,6 +1,9 @@
 (fn on-exit [l title mods chunks]
-  (let [lines (-> (table.concat chunks) (vim.split "\n" {:trimempty true}))
-        what {: title :efm vim.o.grepformat :nr "$" : lines}]
+  (let [lines (-> chunks table.concat (vim.split "\n" {:trimempty true}))
+        items (icollect [_ line (ipairs lines)]
+                (let [(filename lnum col text) (line:match "^([^:]+):(%d+):(%d+):(.*)$")]
+                  {: filename : lnum : col : text}))
+        what {: title : items :nr "$"}]
     (if l
         (vim.fn.setloclist 0 {} " " what)
         (vim.fn.setqflist {} " " what)))
