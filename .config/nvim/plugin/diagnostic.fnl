@@ -9,7 +9,7 @@
       (vim.diagnostic.show ns bufnr diagnostics {:signs false :virtual_text {:source :if_many}})))
   (autocmd diagnostics [:BufRead :BufNewFile] "*"
     (vim.diagnostic.disable)
-    (autocmd diagnostics :BufWritePost "<buffer=abuf>"
+    (autocmd diagnostics :BufWritePost "<buffer=abuf>" :once
       (vim.diagnostic.enable)
       (autocmd diagnostics [:CursorMoved :CursorHold :InsertLeave] "<buffer=abuf>" (print-diagnostics))))
   (autocmd diagnostics :User :DiagnosticsChanged (vim.diagnostic.setloclist {:open false}))
