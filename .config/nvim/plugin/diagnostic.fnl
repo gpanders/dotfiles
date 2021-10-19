@@ -14,5 +14,5 @@
       (autocmd diagnostics [:CursorMoved :CursorHold :InsertLeave] "<buffer=abuf>" (print-diagnostics))))
   (autocmd diagnostics :User :DiagnosticsChanged (vim.diagnostic.setloclist {:open false}))
 
-  (keymap :n "]g" "<Cmd>lua vim.diagnostic.goto_next { enable_popup = false }<CR>")
-  (keymap :n "[g" "<Cmd>lua vim.diagnostic.goto_prev { enable_popup = false }<CR>"))
+  (keymap :n "]g" "<Cmd>lua vim.diagnostic.goto_next { float = false }<CR>")
+  (keymap :n "[g" "<Cmd>lua vim.diagnostic.goto_prev { float = false }<CR>"))
