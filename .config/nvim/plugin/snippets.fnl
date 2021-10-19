@@ -50,16 +50,15 @@
         (when (not (. my-snippets ft))
           (tset my-snippets ft (read-snippets ft))
           (set snippets.snippets my-snippets))
-        (when (not (empty-or-nil? (. my-snippets ft)))
-          (keymap :i "<Tab>"
-                  (fn []
-                    (if (check-snippet)
-                        (t "<Cmd>lua require('snippets').expand_or_advance(1)<CR>")
-                        (t "<Tab>")))
-                  {:expr true :buffer true})
-          (keymap :i "<S-Tab>" "<Cmd>lua require('snippets').advance_snippet(-1)<CR>" {:buffer true})
-          (autocmd snippets :InsertLeave "<buffer>"
-            (snippets.cancel)))))
+        (keymap :i "<Tab>"
+                (fn []
+                  (if (check-snippet)
+                      (t "<Cmd>lua require('snippets').expand_or_advance(1)<CR>")
+                      (t "<Tab>")))
+                {:expr true :buffer true})
+        (keymap :i "<S-Tab>" "<Cmd>lua require('snippets').advance_snippet(-1)<CR>" {:buffer true})
+        (autocmd snippets :InsertLeave "<buffer>"
+          (snippets.cancel))))
 
     (tset my-snippets :_global (read-snippets :_global))
     (set snippets.snippets my-snippets)
