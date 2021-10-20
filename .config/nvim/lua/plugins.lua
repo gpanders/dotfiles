@@ -29,6 +29,8 @@ packer.startup({
         "lewis6991/gitsigns.nvim",
         "mfussenegger/nvim-lint",
         "mfussenegger/nvim-lsp-compl",
+        { "mfussenegger/nvim-dap", opt = true },
+        "mfussenegger/nvim-dap-python",
         { "neovim/nvim-lspconfig", opt = true },
         { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
         "nvim-treesitter/nvim-treesitter-refactor",
