@@ -1,0 +1,18 @@
+[submodule "nvim-moonwalk"]
+	path = .local/share/nvim/site/pack/gpanders/start/nvim-moonwalk
+	url = https://github.com/gpanders/nvim-moonwalk
+[submodule "editorconfig.nvim"]
+	path = .local/share/nvim/site/pack/gpanders/start/editorconfig.nvim
+	url = https://github.com/gpanders/editorconfig.nvim
+[submodule "vim-medieval"]
+	path = .local/share/nvim/site/pack/gpanders/start/vim-medieval
+	url = https://github.com/gpanders/vim-medieval
+[submodule "vim-oldfiles"]
+	path = .local/share/nvim/site/pack/gpanders/start/vim-oldfiles
+	url = https://github.com/gpanders/vim-oldfiles
+[submodule "nvim-parinfer"]
+	path = .local/share/nvim/site/pack/gpanders/start/nvim-parinfer
+	url = https://github.com/gpanders/nvim-parinfer
+[submodule "fennel-repl.nvim"]
+	path = .local/share/nvim/site/pack/gpanders/start/fennel-repl.nvim
+	url = https://github.com/gpanders/fennel-repl.nvim
