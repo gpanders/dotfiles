@@ -215,3 +215,5 @@ hi("DapBreakpointCondition", { fg = "cyan", bg = "brgreen" })
 hi("DapLogPoint", { fg = "cyan", bg = "brgreen" })
 hi("DapStopped", { fg = "brwhite", bg = "brgreen" })
 hi("DapBreakpointRejected", { fg = "red", bg = "brgreen" })
+
+hi("Sneak", { fg = "brgreen", bg = "brred" })
