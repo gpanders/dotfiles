@@ -25,7 +25,7 @@ lua<<
         "lewis6991/gitsigns.nvim",
         "mfussenegger/nvim-lint",
         "mfussenegger/nvim-lsp-compl",
-        { "mfussenegger/nvim-dap", opt = true },
+        "mfussenegger/nvim-dap",
         "mfussenegger/nvim-dap-python",
         { "neovim/nvim-lspconfig", opt = true },
         { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
@@ -36,6 +36,7 @@ lua<<
         { "nvim-telescope/telescope.nvim", opt = true },
         "andymass/vim-matchup",
         "nathom/filetype.nvim",
+        "justinmk/vim-sneak",
     }}
     packer.update()
 .
