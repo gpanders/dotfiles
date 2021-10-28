@@ -20,9 +20,10 @@
       (with-module [ts-config :nvim-treesitter.configs]
         (ts-config.detach_module :refactor.highlight_definitions bufnr))
 
-      (augroup lsp
-        (autocmd :CursorHold "<buffer>" (vim.lsp.buf.document_highlight))
-        (autocmd [:InsertEnter :CursorMoved] "<buffer>" (vim.lsp.buf.clear_references)))
+      (when (?. client :capabilities :textDocument :documentHighlight)
+        (augroup lsp
+          (autocmd :CursorHold "<buffer>" (vim.lsp.buf.document_highlight))
+          (autocmd [:InsertEnter :CursorMoved] "<buffer>" (vim.lsp.buf.clear_references))))
 
       (with-module [lsp-compl :lsp_compl]
         (vim.opt.completeopt:append [:noinsert])
