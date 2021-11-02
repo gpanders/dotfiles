@@ -31,7 +31,7 @@
           (set item.kind (or (. vim.lsp.protocol.SymbolKind symbol.kind) :Unknown))
           item)))))
 
-(autocmd lsp :FileType "go,c,cpp,rust,python" :once
+(autocmd lsp :FileType "go,c,cpp,rust,python,zig" :once
   (exec "packadd nvim-lspconfig")
   (with-module [lspconfig :lspconfig]
     (fn on-attach [client bufnr]
@@ -69,7 +69,8 @@
     (let [servers {:rust_analyzer {}
                    :clangd {}
                    :gopls {:analyses {:unusedparams true :unusedwrite true :nilness true}}
-                   :pyright {}}]
+                   :pyright {}
+                   :zls {}}]
       (each [name settings (pairs servers)]
         (let [{name config} lspconfig]
           (config.setup {:on_attach on-attach
