@@ -78,4 +78,4 @@
                          :flags {:debounce_text_changes 150}})
 
           (when (vim.tbl_contains config.filetypes vim.bo.filetype)
-            (config.autostart)))))))
+            (config.manager.try_add)))))))
