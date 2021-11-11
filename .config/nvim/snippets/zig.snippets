@@ -1,0 +1,29 @@
+snippet for
+	for ($1) |$2| {
+	    $0
+	}
+snippet print
+	std.debug.print("$1", .{$2});
+snippet while
+	var ${1:i}: ${2:usize} = ${3:0};
+	while ($1 < $4) : (${4:$1 += 1}) {
+	    $0
+	}
+snippet struct
+	const ${1:$VISUAL} = struct {
+	    $0
+	};
+snippet test
+	test "$1" {
+	    $0
+	}
+snippet expect
+	try std.testing.expect($1, $2);
+snippet import
+	const $1 = @import("${2:$1}");
+	$0
+snippet std
+	const std = @import("std");
+	$0
+snippet cu
+	catch unreachable;
