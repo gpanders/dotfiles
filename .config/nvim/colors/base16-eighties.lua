@@ -193,8 +193,6 @@ hi("manReference", { fg = "yellow" })
 hi("manUnderline", { fg = "green", attr = "bold" })
 
 -- Plugin highlighting
-hi("TrailingWhitespace", { bg = "red" })
-
 hi("GitSignsAdd", { fg = "green", bg = "brgreen" })
 hi("GitSignsDelete", { fg = "red", bg = "brgreen" })
 hi("GitSignsChange", { fg = "brblack", bg = "brgreen" })

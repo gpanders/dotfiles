@@ -7,6 +7,7 @@ set foldlevelstart=99
 set ignorecase
 set lazyredraw
 set linebreak
+set list
 set pumheight=10
 set scrolloff=2
 set shell=/bin/sh
