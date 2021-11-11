@@ -29,6 +29,6 @@ augroup init
   autocmd BufRead * if &ft !~# 'commit\|rebase' | exec 'silent! normal! g`"' | endif
 
   " Don't show trailing spaces in insert mode
-  autocmd InsertEnter * set listchars-=trail:-
-  autocmd InsertLeave * set listchars+=trail:-
+  autocmd InsertEnter * setlocal listchars-=trail:-
+  autocmd InsertLeave * setlocal listchars+=trail:-
 augroup END
