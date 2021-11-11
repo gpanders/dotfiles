@@ -12,6 +12,12 @@ lua<<
     packer.startup {{
         "wbthomason/packer.nvim",
         "gpanders/snippets.nvim",
+        "gpanders/editorconfig.nvim",
+        "gpanders/fennel-repl.nvim",
+        "gpanders/nvim-moonwalk",
+        "gpanders/nvim-parinfer",
+        "gpanders/vim-medieval",
+        "gpanders/vim-oldfiles",
         "tpope/vim-surround",
         "tpope/vim-commentary",
         "tpope/vim-repeat",
@@ -21,6 +27,7 @@ lua<<
         "tpope/vim-sleuth",
         "tpope/vim-obsession",
         "justinmk/vim-dirvish",
+        "justinmk/vim-sneak",
         "junegunn/vim-easy-align",
         "lewis6991/gitsigns.nvim",
         "mfussenegger/nvim-lint",
@@ -42,7 +49,6 @@ lua<<
         { "nvim-telescope/telescope.nvim", opt = true },
         "andymass/vim-matchup",
         "nathom/filetype.nvim",
-        "justinmk/vim-sneak",
     }}
     packer.update()
 .
