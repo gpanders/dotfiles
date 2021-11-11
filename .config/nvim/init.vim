@@ -113,16 +113,3 @@ cnoremap <expr> <C-P> wildmenumode() ? '<C-P>' : '<Up>'
 cnoremap <expr> <C-N> wildmenumode() ? '<C-N>' : '<Down>'
 cnoremap <expr> <C-J> pumvisible() ? '<Down><Tab>' : '<C-J>'
 cnoremap <expr> <C-K> pumvisible() ? '<Up><Tab>' : '<C-K>'
-
-augroup init
-
-autocmd! BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
-autocmd! CmdWinEnter * nnoremap <buffer> q <C-W>q
-autocmd! TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150, on_visual=true}
-autocmd! TermOpen * setlocal statusline=%{b:term_title} | startinsert
-autocmd! InsertEnter,WinLeave,FocusLost * setlocal nocursorline
-autocmd! InsertLeave,WinEnter,FocusGained * if mode() !=# 'i' | let &l:cursorline = 1 | endif
-autocmd! BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
-autocmd! UIEnter * colorscheme base16-eighties
-
-augroup END
