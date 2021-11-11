@@ -35,7 +35,7 @@ function! s:normalize()
     " Optional character indicating cell should be right-aligned
     let ralign = submatch(4)
 
-    " Number of delimeters to fill into header
+    " Number of delimiters to fill into header
     let nchars = strlen(contents) - strlen(lalign . ralign) - 2*strlen(pad)
     let str = repeat(delim, nchars)
     return pad . lalign . str . ralign . pad
