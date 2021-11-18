@@ -144,6 +144,7 @@ hi("SpecialComment", { fg = "cyan" })
 hi("Debug", { fg = "cyan" })
 
 hi("Underlined", { attr = "underline" })
+hi("Bold", { attr = "bold" })
 
 hi("Ignore", { fg = "black" })
 

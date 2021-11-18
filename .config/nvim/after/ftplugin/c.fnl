@@ -15,7 +15,7 @@
 (append! vim.b.undo_ftplugin "|setl cms< def< inc< path< tw< com<")
 
 (when (. (vim.api.nvim_get_commands {:builtin false}) :Man)
-  (setlocal keywordprg ":Man")
+  (setlocal keywordprg ":vert Man")
   (append! vim.b.undo_ftplugin " kp<"))
 
 (if (and (> (vim.fn.executable "uncrustify") 0) (os.getenv :UNCRUSTIFY_CONFIG))
