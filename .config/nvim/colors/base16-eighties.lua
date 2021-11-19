@@ -43,17 +43,22 @@ local cterm = {
 }
 
 local function hi(group, opts)
-    local s = string.format(
-        "hi %s ctermfg=%s ctermbg=%s guifg=%s guibg=%s cterm=%s gui=%s guisp=%s",
-        group,
-        cterm[opts.fg] or "NONE",
-        cterm[opts.bg] or "NONE",
-        gui[opts.fg] or "NONE",
-        gui[opts.bg] or "NONE",
-        opts.attr or "NONE",
-        opts.attr or "NONE",
-        gui[opts.guisp] or "NONE"
-    )
+    local s
+    if opts.link then
+        s = string.format("hi link %s %s", group, opts.link)
+    else
+        s = string.format(
+            "hi %s ctermfg=%s ctermbg=%s guifg=%s guibg=%s cterm=%s gui=%s guisp=%s",
+            group,
+            cterm[opts.fg] or "NONE",
+            cterm[opts.bg] or "NONE",
+            gui[opts.fg] or "NONE",
+            gui[opts.bg] or "NONE",
+            opts.attr or "NONE",
+            opts.attr or "NONE",
+            gui[opts.guisp] or "NONE"
+        )
+    end
     vim.api.nvim_command(s)
 end
 
@@ -202,12 +207,12 @@ hi("packerHash", { fg = "yellow" })
 
 hi("TSNone", { fg = "white" })
 hi("TSSymbol", { fg = "yellow" })
-hi("TSDefinition", { bg = "brgreen" })
-hi("TSDefinitionUsage", { bg = "brgreen" })
+hi("TSDefinition", { link = "MatchWord" })
+hi("TSDefinitionUsage", { link = "MatchWord" })
 
-hi("LspReferenceText", { bg = "brgreen" })
-hi("LspReferenceRead", { bg = "brgreen" })
-hi("LspReferenceWrite", { bg = "brgreen" })
+hi("LspReferenceText", { link = "MatchWord" })
+hi("LspReferenceRead", { link = "MatchWord" })
+hi("LspReferenceWrite", { link = "MatchWord" })
 
 hi("DapBreakpoint", { fg = "cyan", bg = "brgreen" })
 hi("DapBreakpointCondition", { fg = "cyan", bg = "brgreen" })
@@ -215,4 +220,4 @@ hi("DapLogPoint", { fg = "cyan", bg = "brgreen" })
 hi("DapStopped", { fg = "brwhite", bg = "brgreen" })
 hi("DapBreakpointRejected", { fg = "red", bg = "brgreen" })
 
-hi("Sneak", { fg = "brgreen", bg = "brred" })
+hi("Sneak", { link = "IncSearch" })
