@@ -1,4 +1,4 @@
-(autocmd lsp :FileType "go,c,cpp,rust,python,zig" :once
+(autocmd lsp :FileType "go,c,cpp,rust,python,zig,lua" :once
   (exec "packadd nvim-lspconfig")
   (with-module [lspconfig :lspconfig]
     (fn on-attach [client bufnr]
@@ -26,12 +26,14 @@
 
     (let [servers {:rust_analyzer {}
                    :clangd {}
-                   :gopls {:analyses {:unusedparams true :unusedwrite true :nilness true}}
+                   :gopls {:settings {:analyses {:unusedparams true :unusedwrite true :nilness true}}}
                    :pyright {}
-                   :zls {}}]
-      (each [name settings (pairs servers)]
+                   :zls {}
+                   :sumneko_lua {:cmd [:lua-language-server]}}]
+      (each [name {: cmd : settings} (pairs servers)]
         (let [{name config} lspconfig]
           (config.setup {:on_attach on-attach
+                         : cmd
                          :settings {name settings}
                          :flags {:debounce_text_changes 150}})
 
