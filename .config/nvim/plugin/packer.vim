@@ -49,6 +49,9 @@ lua<<
         { "nvim-telescope/telescope.nvim", opt = true },
         "andymass/vim-matchup",
         "nathom/filetype.nvim",
+
+        -- Language specific
+        "ziglang/zig.vim",
     }}
     packer.update()
 .
