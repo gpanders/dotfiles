@@ -9,5 +9,7 @@ let g:vimtex_compiler_latexmk_engines = { '_' : '-lualatex' }
 
 augroup plugin_vimtex
   autocmd!
-  autocmd BufWritePost *.tex call vimtex#toc#refresh()
+  autocmd BufRead *.tex ++once if get(g:, 'loaded_vimtex')
+        \ | exe 'autocmd plugin_vimtex BufWritePost *.tex call vimtex#toc#refresh()'
+        \ | endif
 augroup END
