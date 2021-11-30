@@ -1,26 +1,34 @@
-snippet main
-	int
-	main(int argc, char *argv[])
-	{
-		$0
-		return 0;
-	}
-snippet inc
-	#include <${1:stdio}.h>
-snippet Inc
-	#include "$1.h"
 snippet for
-	for (${1:size_t} ${2:i} = ${3:0}; $2 < $4; $2++) {
+	for (${1:size_t} ${2:i} = ${3:0}; $2 < ${4}; $2++) {
 		$0
 	}
+
 snippet ifndef
 	#ifndef $1_H_
 	#define $1_H_
 
 	$0
 
-	#endif  // $1_H_
+	#endif // $1_H_
+
+snippet inc
+	#include "$0.h"
+
+snippet sinc
+	#include <$0.h>
+
 snippet print
 	printf("$0\n");
+
 snippet fprint
 	fprintf(${1:stderr}, "$0\n");
+
+snippet main
+	#include <stdio.h>
+
+	int
+	main(int argc, char **argv)
+	{
+		$0
+		return 0;
+	}
