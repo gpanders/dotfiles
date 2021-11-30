@@ -16,3 +16,8 @@ end
 
 set -gx FZF_DEFAULT_COMMAND "$FZF_CTRL_T_COMMAND"
 set -gx FZF_DEFAULT_OPTS '--color=16,fg:-1,fg+:-1,hl:3,hl+:3,pointer:4,marker:-1,prompt:-1,info:-1,border:11'
+
+# Export options to tmux for fzfurl script
+if test -n "$TMUX"
+    tmux set-env -g FZF_DEFAULT_OPTS "$FZF_DEFAULT_OPTS"
+end
