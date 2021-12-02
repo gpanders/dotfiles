@@ -12,6 +12,15 @@ augroup init
   " the terminal title)
   autocmd TermOpen * setlocal statusline=%{b:term_title} | startinsert
 
+  " Auto close shell terminals (#15440)
+  autocmd TermClose *
+        \ if !v:event.status |
+        \   let info = nvim_get_chan_info(&channel) |
+        \   if get(info, 'argv', []) ==# [&shell] |
+        \     exec 'bdelete! ' .. expand('<abuf>') |
+        \   endif |
+        \ endif
+
   " Hide cursorline in insert mode and when the current window doesn't have
   " focus
   autocmd InsertEnter,WinLeave,FocusLost * setlocal nocursorline
