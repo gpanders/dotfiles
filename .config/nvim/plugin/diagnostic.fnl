@@ -13,7 +13,10 @@
       (vim.diagnostic.enable 0)
       (autocmd diagnostics [:CursorMoved :CursorHold :InsertLeave] "<buffer=abuf>" (print-diagnostics)))))
 
-(autocmd diagnostics :User :DiagnosticsChanged (vim.diagnostic.setloclist {:open false}))
+(autocmd diagnostics :DiagnosticChanged "*"
+  (let [bufnr (vim.fn.expand "<abuf>")]
+    (each [_ winid (ipairs (vim.fn.win_findbuf bufnr))]
+      (vim.diagnostic.setloclist {: winid :open false}))))
 
 (keymap :n "]g" "<Cmd>lua vim.diagnostic.goto_next { float = false }<CR>")
 (keymap :n "[g" "<Cmd>lua vim.diagnostic.goto_prev { float = false }<CR>")
