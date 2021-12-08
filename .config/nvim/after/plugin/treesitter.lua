@@ -19,6 +19,14 @@ require('nvim-treesitter.configs').setup {
             ['constant.builtin'] = 'TSConstant',
         },
     },
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = "gV",
+            node_incremental = "<CR>",
+            node_decremental = "<BS>",
+        },
+    },
     refactor = {
         highlight_definitions = { enable = true },
         smart_rename = {
