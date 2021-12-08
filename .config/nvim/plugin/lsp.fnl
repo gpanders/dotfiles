@@ -15,9 +15,9 @@
           (autocmd :CursorHold "<buffer>" (vim.lsp.buf.document_highlight))
           (autocmd [:InsertEnter :CursorMoved] "<buffer>" (vim.lsp.buf.clear_references))))
       (when client.resolved_capabilities.signature_help
-        (keymap :i "<C-S>" "<Cmd>Lsp signature_help<CR>" {:buffer bufnr}))
+        (keymap :i "<C-S>" "<Cmd>lua vim.lsp.buf.signature_help()<CR>" {:buffer bufnr}))
       (when client.resolved_capabilities.find_references
-        (keymap :n "<Bslash>r" "<Cmd>Lsp references<CR>" {:buffer bufnr}))
+        (keymap :n "<Bslash>r" "<Cmd>lua vim.lsp.buf.references()<CR>" {:buffer bufnr}))
 
       (with-module [lsp-compl :lsp_compl]
         (vim.opt.completeopt:append [:noinsert])
