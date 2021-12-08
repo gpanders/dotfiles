@@ -20,4 +20,4 @@
 
 (keymap :n "]g" "<Cmd>lua vim.diagnostic.goto_next { float = false }<CR>")
 (keymap :n "[g" "<Cmd>lua vim.diagnostic.goto_prev { float = false }<CR>")
-(keymap :n "gh" "<Cmd>lua vim.diagnostic.open_float(0, { scope = \"cursor\" })<CR>")
+(keymap :n "gh" "<Cmd>lua vim.diagnostic.open_float(0, { scope = \"line\" })<CR>")
