@@ -74,7 +74,7 @@ Examples:
             (table.insert form `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts)))))
     form))
 
-(fn autocmd [...]
+(fn autocmd* [bang ...]
   (let [args [...]
         group (if (sym? (. args 1)) (tostring (table.remove args 1)))
         [events pat & args] args
@@ -88,7 +88,12 @@ Examples:
                 (global ,(sym ns) (fn [] ,(unpack args))))]
     (when group
       (table.insert form `(exec ,(.. "augroup " group))))
-    (let [cmd (: "autocmd %s %%s %s call v:lua.%s()" :format events (table.concat flags " ") ns)]
+    (let [cmd (: "autocmd%s %s %%s %s call v:lua.%s()"
+                 :format
+                 (if bang :! "")
+                 events
+                 (table.concat flags " ")
+                 ns)]
       (table.insert form `(exec ,(if (list? pat)
                                      `(: ,cmd :format ,pat)
                                      (cmd:format pat)))))
@@ -96,10 +101,16 @@ Examples:
       (table.insert form `(exec "augroup END")))
     form))
 
+(fn autocmd [...]
+  (autocmd* false ...))
+
+(fn autocmd! [...]
+  (autocmd* true ...))
+
 (fn augroup [group ...]
   (let [form `(do)]
     (each [_ au (pairs [...])]
-      (when (= (tostring (. au 1)) :autocmd)
+      (when (= :autocmd (string.sub (tostring (. au 1)) 1 7))
         (table.insert au 2 group))
       (table.insert form au))
     form))
@@ -154,6 +165,7 @@ The example above is equivalent to
  : echom
  : keymap
  : autocmd
+ : autocmd!
  : augroup
  : command
  : append!
