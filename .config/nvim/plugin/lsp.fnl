@@ -6,18 +6,17 @@
         (tset vim.bo bufnr :omnifunc "v:lua.vim.lsp.omnifunc"))
       (when client.resolved_capabilities.goto_definition
         (tset vim.bo bufnr :tagfunc "v:lua.vim.lsp.tagfunc"))
-      (when client.resolved_capabilities.hover
-        (tset vim.bo bufnr :keywordprg ":Lsp hover"))
       (when client.resolved_capabilities.document_highlight
         (with-module [ts-config :nvim-treesitter.configs]
           (ts-config.detach_module :refactor.highlight_definitions bufnr))
         (augroup lsp
           (autocmd :CursorHold "<buffer>" (vim.lsp.buf.document_highlight))
           (autocmd [:InsertEnter :CursorMoved] "<buffer>" (vim.lsp.buf.clear_references))))
-      (when client.resolved_capabilities.signature_help
-        (keymap :i "<C-S>" "<Cmd>lua vim.lsp.buf.signature_help()<CR>" {:buffer bufnr}))
-      (when client.resolved_capabilities.find_references
-        (keymap :n "<Bslash>r" "<Cmd>lua vim.lsp.buf.references()<CR>" {:buffer bufnr}))
+      (keymap :i "<C-S>" "<Cmd>lua vim.lsp.buf.signature_help()<CR>" {:buffer bufnr})
+      (keymap :n "<Bslash>lr" "<Cmd>lua vim.lsp.buf.references()<CR>" {:buffer bufnr})
+      (keymap :n "<Bslash>lR" "<Cmd>lua vim.lsp.buf.rename()<CR>" {:buffer bufnr})
+      (keymap :n "<Bslash>lh" "<Cmd>lua vim.lsp.buf.hover()<CR>" {:buffer bufnr})
+      (keymap :n "<Bslash>lc" "<Cmd>lua vim.lsp.buf.code_action()<CR>" {:buffer bufnr})
 
       (with-module [lsp-compl :lsp_compl]
         (vim.opt.completeopt:append [:noinsert])
