@@ -26,7 +26,7 @@ set wildignorecase
 set wildmode=longest:full,full
 
 let &colorcolumn = '+' . join(range(1, 256), ',+')
-let &statusline = ' %{statusline#obsession()}%<%f [%{&filetype ==# "" ? "none" : &filetype}] %m%r%=%{statusline#git()}%14.(%l:%c%V%)%14.P '
+let &statusline = ' %{statusline#obsession()}%<%f [%{&filetype ==# "" ? "none" : &filetype}]%{statusline#lsp()} %m%r%=%{statusline#git()}%10.(%l:%c%V%)%6.P '
 
 set grepformat^=%f:%l:%c:%m
 if executable('rg')

@@ -6,7 +6,7 @@ function! statusline#git() abort
   if exists('*FugitiveHead')
     let branch = FugitiveHead()
     if branch !=# ''
-      return branch
+      return branch . ' '
     endif
   endif
   return ''
@@ -19,6 +19,13 @@ function! statusline#obsession() abort
       let s .= ' '
     endif
     return s
+  endif
+  return ''
+endfunction
+
+function! statusline#lsp() abort
+  if exists('b:lsp')
+    return printf(' (%s/%d)', b:lsp.name, b:lsp.client_id)
   endif
   return ''
 endfunction

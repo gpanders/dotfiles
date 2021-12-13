@@ -34,7 +34,6 @@ lua<<
         "mfussenegger/nvim-lsp-compl",
         "mfussenegger/nvim-dap",
         "mfussenegger/nvim-dap-python",
-        { "neovim/nvim-lspconfig", opt = true },
         { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
         "nvim-treesitter/nvim-treesitter-refactor",
         "nvim-treesitter/nvim-treesitter-textobjects",
