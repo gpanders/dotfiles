@@ -1,4 +1,4 @@
-(vim.diagnostic.config {:virtual_text false :underline false :severity_sort true})
+(vim.diagnostic.config {:virtual_text false :underline false :severity_sort true :float {:source :if_many}})
 
 (let [ns (vim.api.nvim_create_namespace :diagnostics)]
   (fn print-diagnostics []
