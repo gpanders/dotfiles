@@ -27,3 +27,8 @@ snippet std
 	$0
 snippet cu
 	catch unreachable;
+snippet arena
+	var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+	defer arena.deinit();
+
+	var allocator = arena.allocator();
