@@ -12,6 +12,8 @@
   (let [ft vim.bo.filetype
         compiler (if (= ft :cpp) cxx cc)
         tagfile (: "%s/tags/%s.tags" :format (vim.fn.stdpath :cache) (: (vim.fn.expand "%:p") :gsub "/" "%%"))]
+    (when (= vim.bo.tags "")
+      (setlocal tags vim.go.tags))
     (setlocal+= tags tagfile)
     (-> vim.bo.tags
         (vim.split ",")
