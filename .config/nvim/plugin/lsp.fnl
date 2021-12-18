@@ -3,6 +3,13 @@
 
 (var enable-logging false)
 
+(let [orig vim.uri_from_bufnr]
+  (fn vim.uri_from_bufnr [bufnr]
+    (let [fname (vim.api.nvim_buf_get_name bufnr)]
+      (if (fname:find "^fugitive://")
+          (vim.uri_from_fname (vim.call :FugitiveReal fname))
+          (orig bufnr)))))
+
 (fn log [format ...]
   (when enable-logging
     (let [log# (require :vim.lsp.log)]
@@ -127,7 +134,7 @@
 (lsp-setup
   [:c :cpp] {:cmd ["clangd" "--background-index"]
              :root ["compile_commands.json" "compile_flags.txt"]
-             :offset_encoding :utf-8}
+             :offset_encoding :utf-16}
   [:go :gomod] {:cmd [:gopls]
                 :root ["go.mod"]
                 :settings {:gopls {:analyses {:unusedparams true
@@ -155,10 +162,12 @@
                          level (set-log-level (string.upper level))
                          nil (vim.api.nvim_err_writeln "Missing required argument")
                          _ (vim.api.nvim_err_writeln "Invalid argument"))
-                 :stop #(vim.lsp.stop_client (vim.lsp.buf_get_clients))
-                 :start #(let [ft vim.bo.filetype]
+                 :stop #(each [client-id (pairs (vim.lsp.buf_get_clients))]
+                          (vim.lsp.stop_client client-id))
+                 :start #(let [bufnr (vim.api.nvim_get_current_buf)
+                               ft (. vim.bo bufnr :filetype)]
                            (match (. configs ft)
-                             f (f)))
+                             f (f bufnr)))
                  :find #(match $1
                           nil (vim.lsp.buf.definition)
                           q (vim.lsp.buf.workspace_symbol q))
