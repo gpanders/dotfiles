@@ -32,8 +32,6 @@ lua<<
         "lewis6991/gitsigns.nvim",
         "mfussenegger/nvim-lint",
         "mfussenegger/nvim-lsp-compl",
-        "mfussenegger/nvim-dap",
-        "mfussenegger/nvim-dap-python",
         { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
         "nvim-treesitter/nvim-treesitter-refactor",
         "nvim-treesitter/nvim-treesitter-textobjects",
