@@ -81,7 +81,7 @@
                      (setlocal omnifunc nil)
                      (exec (: "autocmd! lsp * <buffer=%d>" :format bufnr))))))
 
-(fn mk-config [cmd root-dir ?opts]
+(fn mk-config [cmd ?root-dir ?opts]
   (let [capabilities (vim.lsp.protocol.make_client_capabilities)]
     (set capabilities.workspace.configuration true)
     (vim.tbl_deep_extend :keep (or ?opts {})
@@ -94,7 +94,7 @@
        :on_init on-init
        :on_attach on-attach
        :on_exit on-exit
-       :root_dir root-dir})))
+       :root_dir ?root-dir})))
 
 (fn start-client [bufnr {: cmd &as opts}]
   (when (and (not= opts.enabled false) (= (vim.fn.executable (. cmd 1)) 1))
@@ -103,7 +103,7 @@
                    (table.insert root v))
                  root)
           root-dir (let [dir (dirname (vim.api.nvim_buf_get_name bufnr))]
-                     (or (find-root dir root) dir))
+                     (find-root dir root))
           ft (. vim.bo bufnr :filetype)]
       (var client-id (?. clients ft root-dir))
       (when (not client-id)
@@ -112,7 +112,8 @@
           (set client-id (vim.lsp.start_client config))
           (when (not (. clients ft))
             (tset clients ft {}))
-          (tset clients ft root-dir client-id)))
+          (when root-dir
+            (tset clients ft root-dir client-id))))
       (log "Attaching client %d to buffer %d" client-id bufnr)
       (vim.lsp.buf_attach_client bufnr client-id))))
 
