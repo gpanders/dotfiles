@@ -1,3 +1,7 @@
+snippet main
+	pub fn main() !void {
+	    $0
+	}
 snippet for
 	for ($1) |$2| {
 	    $0
@@ -32,3 +36,23 @@ snippet arena
 	defer arena.deinit();
 
 	var allocator = arena.allocator();
+snippet gpa
+	var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+	defer if (gpa.deinit()) std.debug.print("Memory leak detected\n", .{});
+
+	var allocator = gpa.allocator();
+snippet arraylist
+	var $1 = std.ArrayList($2).init(allocator);
+	defer $1.deinit();
+snippet ahash
+	var $1 = std.AutoHashMap($2, $3).init(allocator);
+	defer $1.deinit();
+snippet shash
+	var $1 = std.StringHashMap($2).init(allocator);
+	defer $1.deinit();
+snippet mmap
+	var $1 = try std.os.mmap(null, try file.getEndPos(), std.os.PROT.READ, std.os.MAP.SHARED, file.handle, 0);
+	defer std.os.munmap($1);
+snippet openfile
+	var $1 = try std.fs.cwd().openFile($2, .{});
+	defer $1.close();
