@@ -12,7 +12,6 @@ lua<<
     packer.startup {{
         "wbthomason/packer.nvim",
         "dcampos/nvim-snippy",
-        "gpanders/editorconfig.nvim",
         "gpanders/fennel-repl.nvim",
         "gpanders/nvim-moonwalk",
         "gpanders/nvim-parinfer",
