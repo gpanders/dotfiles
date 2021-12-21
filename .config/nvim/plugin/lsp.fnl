@@ -165,7 +165,7 @@
       ""))
 
 (command :Lsp {:nargs "*" :complete "custom,v:lua.lspcomplete"}
-         (fn [bang mods args]
+         (fn [{: args}]
            (let [[cmd & args] (vim.split args " ")]
              (match (. commands cmd)
                f (f (unpack args))

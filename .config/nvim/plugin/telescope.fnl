@@ -1,7 +1,7 @@
 (set vim.g.loaded_telescope 1)
 
 (command :Telescope {:nargs "*"}
-  (fn [_ _ args]
+  (fn [{: args}]
     (exec "delcommand Telescope")
     (set vim.g.loaded_telescope nil)
     (exec "packadd telescope.nvim")

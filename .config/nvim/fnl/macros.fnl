@@ -124,7 +124,7 @@ Examples:
                     (: "-%s=%s" :format k v)))]
     `(do
       (global ,(sym ns) ,func)
-      (exec ,(: "command! %s %s call v:lua.%s(<bang>0, <q-mods>, <q-args>)" :format (table.concat attrs " ") cmd ns)))))
+      (exec ,(: "command! %s %s call v:lua.%s(#{bang: <bang>0, mods: <q-mods>, args: <q-args>})" :format (table.concat attrs " ") cmd ns)))))
 
 (fn append! [str s]
   "Append to a string in place"

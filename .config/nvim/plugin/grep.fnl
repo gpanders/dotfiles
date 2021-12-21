@@ -10,7 +10,7 @@
   (exec (.. mods " " (if l "lopen" "copen")))
   (exec (.. "doautocmd QuickFixCmdPost " (if l "lgrep" "grep"))))
 
-(fn grep [l mods args]
+(fn grep [l {: mods : args}]
   (let [args (vim.fn.expandcmd args)
         mods (if (= mods "") :botright mods)
         grepcmd (match (vim.o.grepprg:gsub "%$%*" args)
@@ -31,8 +31,8 @@
           (table.insert chunks data))))
     (print grepcmd)))
 
-(command :Grep {:nargs :+ :complete :file_in_path} #(grep false $2 $3))
-(command :LGrep {:nargs :+ :complete :file_in_path} #(grep true $2 $3))
+(command :Grep {:nargs :+ :complete :file_in_path} (partial grep false))
+(command :LGrep {:nargs :+ :complete :file_in_path} (partial grep true))
 
 (vim.cmd "
 cnoreabbrev <expr> gr    (getcmdtype() ==# ':' && getcmdline() ==# 'gr')    ? 'Grep'  : 'gr'

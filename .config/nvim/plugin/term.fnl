@@ -21,9 +21,9 @@
   (vim.api.nvim_command "startinsert"))
 
 (command :Term {:nargs "*"}
-  (fn [_ _ ?args]
-    (let [args (if (= "" ?args) default-command ?args)
-          cmd (vim.split args " " {:trimempty true})]
+  (fn [{: args}]
+    (let [args (if (= "" args) default-command args)
+          cmd (vim.split args " " {})]
       (open-term-win cmd))))
 
 (keymap :n "<Bslash>t" "<Cmd>Term<CR>")
