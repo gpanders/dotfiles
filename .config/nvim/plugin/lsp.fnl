@@ -1,24 +1,12 @@
 (local configs {})
 (local clients {})
 
-(var enable-logging false)
-
 (let [orig vim.uri_from_bufnr]
   (fn vim.uri_from_bufnr [bufnr]
     (let [fname (vim.api.nvim_buf_get_name bufnr)]
       (if (fname:find "^fugitive://")
           (vim.uri_from_fname (vim.call :FugitiveReal fname))
           (orig bufnr)))))
-
-(fn log [format ...]
-  (when enable-logging
-    (let [log# (require :vim.lsp.log)]
-      (when (log#.debug)
-        (log#.debug (: format :format ...))))))
-
-(fn set-log-level [level]
-  (let [log* (require :vim.lsp.log)]
-    (log*.set_level (. log*.levels level))))
 
 (fn dirname [path]
   (vim.fn.fnamemodify path ":h"))
@@ -108,13 +96,11 @@
       (var client-id (?. clients ft root-dir))
       (when (not client-id)
         (let [config (mk-config cmd root-dir opts)]
-          (log "Starting new LSP client with config: %s" (vim.inspect config))
           (set client-id (vim.lsp.start_client config))
           (when (not (. clients ft))
             (tset clients ft {}))
           (when root-dir
             (tset clients ft root-dir client-id))))
-      (log "Attaching client %d to buffer %d" client-id bufnr)
       (vim.lsp.buf_attach_client bufnr client-id))))
 
 (macro lsp-setup [...]
@@ -157,13 +143,7 @@
     (match (. configs ft)
       f (f bufnr))))
 
-(local commands {:log #(match $1
-                         :on (set enable-logging true)
-                         :off (set enable-logging false)
-                         level (set-log-level (string.upper level))
-                         nil (vim.api.nvim_err_writeln "Missing required argument")
-                         _ (vim.api.nvim_err_writeln "Invalid argument"))
-                 :stop #(each [client-id (pairs (vim.lsp.buf_get_clients))]
+(local commands {:stop #(each [client-id (pairs (vim.lsp.buf_get_clients))]
                           (vim.lsp.stop_client client-id))
                  :start #(let [bufnr (vim.api.nvim_get_current_buf)
                                ft (. vim.bo bufnr :filetype)]
