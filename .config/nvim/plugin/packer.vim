@@ -27,7 +27,7 @@ lua<<
         "tpope/vim-sleuth",
         "tpope/vim-obsession",
         "justinmk/vim-dirvish",
-        "justinmk/vim-sneak",
+        "phaazon/hop.nvim",
         "junegunn/vim-easy-align",
         "lewis6991/gitsigns.nvim",
         "mfussenegger/nvim-lint",
