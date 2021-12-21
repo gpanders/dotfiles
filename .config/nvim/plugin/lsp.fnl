@@ -145,6 +145,8 @@
 
 (local commands {:stop #(each [client-id (pairs (vim.lsp.buf_get_clients))]
                           (vim.lsp.stop_client client-id))
+                 :detach #(each [client-id (pairs (vim.lsp.buf_get_clients))]
+                            (vim.lsp.buf_detach_client 0 client-id))
                  :start #(let [bufnr (vim.api.nvim_get_current_buf)
                                ft (. vim.bo bufnr :filetype)]
                            (match (. configs ft)
