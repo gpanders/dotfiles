@@ -13,7 +13,6 @@ lua<<
         "wbthomason/packer.nvim",
         "dcampos/nvim-snippy",
         "gpanders/fennel-repl.nvim",
-        "gpanders/nvim-moonwalk",
         "gpanders/nvim-parinfer",
         "gpanders/vim-medieval",
         "gpanders/vim-oldfiles",

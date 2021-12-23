@@ -1,41 +1,28 @@
-local ok, moonwalk = pcall(require, "moonwalk")
-if not ok then
-    return
-end
+vim.cmd(string.format([[
+augroup fennel
+  autocmd!
+  autocmd BufWritePost %s/*.fnl lua require("moonwalk").compile(vim.fn.expand("<afile>:p"))
+augroup END]], vim.fn.stdpath("config")))
 
-local fennel = setmetatable({}, {
-    __index = function(_, k)
-        if not pcall(require, "fennel") then
-            local install_path = vim.fn.stdpath("data") .. "/site/pack/fennel/start/fennel"
-            local tag = "0.10.0"
-            print("Installing fennel " .. tag .. " to " .. install_path .. "...")
-
-            local out
-            out = vim.fn.system({ "git", "clone", "-b", tag, "https://git.sr.ht/~technomancy/fennel", install_path })
-            assert(vim.v.shell_error == 0, out)
-
-            out = vim.fn.system({ "make", "-C", install_path })
-            assert(vim.v.shell_error == 0, out)
-
-            vim.fn.system({ "mkdir", install_path .. "/lua" })
-            vim.fn.system({ "mv", install_path .. "/fennel.lua", install_path .. "/lua" })
-            vim.api.nvim_command("redraw")
+vim.api.nvim_add_user_command("Moonwalk", nil, {luaref = function()
+    local compile = require("moonwalk").compile
+    for _, path in ipairs({vim.fn.stdpath("config"), vim.fn.stdpath("config") .. "/after"}) do
+        for _, subpath in ipairs({"plugin", "indent", "ftplugin", "fnl"}) do
+            for _, v in ipairs(vim.fn.globpath(path, subpath .. "/*.fnl", false, true)) do
+                compile(v)
+            end
+            for _, v in ipairs(vim.fn.globpath(path, subpath .. "/*/*.fnl", false, true)) do
+                compile(v)
+            end
         end
-        return require("fennel")[k]
-    end,
-    __newindex = function(t, k, v)
-        local _ = t[k] -- call __index to ensure fennel is installed
-        require("fennel")[k] = v
-    end,
-})
+    end
 
-moonwalk.add_loader("fnl", function(src, path)
-    local macro_path = fennel["macro-path"]
-    fennel["macro-path"] = macro_path .. ";" .. vim.fn.stdpath("config") .. "/fnl/?.fnl"
-    local preamble = [[
-        (require-macros :macros)
-    ]]
-    local out = fennel.compileString(preamble .. src, { filename = path })
-    fennel["macro-path"] = macro_path
-    return out
-end)
+    local f = io.open(vim.fn.stdpath("cache") .. "/.compiled", "w")
+    f:write("")
+    f:close()
+end})
+
+-- Using a filesystem marker to do this seems hacky, but I don't now of a better way
+if not vim.loop.fs_stat(vim.fn.stdpath("cache") .. "/.compiled") then
+    vim.api.nvim_command("Moonwalk")
+end
