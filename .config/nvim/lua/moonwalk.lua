@@ -42,9 +42,7 @@ local function compile(path)
 
     local macro_path = fennel["macro-path"]
     fennel["macro-path"] = macro_path .. ";" .. vim.fn.stdpath("config") .. "/fnl/?.fnl"
-    local preamble = [[
-        (require-macros :macros)
-    ]]
+    local preamble = [[(require-macros :macros)]]
     local compiled = fennel.compileString(preamble .. src, { filename = path })
     fennel["macro-path"] = macro_path
 
