@@ -117,14 +117,15 @@ Examples:
 
 (fn command [cmd opts func]
   (assert-compile (table? opts) "opts should be a table" opts)
-  (let [ns (make-ident :comm cmd)
-        attrs (icollect [k v (pairs opts)]
-                (if (= (type v) :boolean)
-                    (if v (.. "-" k) nil)
-                    (: "-%s=%s" :format k v)))]
-    `(do
-      (global ,(sym ns) ,func)
-      (exec ,(: "command! %s %s call v:lua.%s(#{bang: <bang>0, mods: <q-mods>, args: <q-args>})" :format (table.concat attrs " ") cmd ns)))))
+  (let [opts (collect [k v (pairs opts)]
+               (values k v))
+        bufnr (match opts.buffer
+                n n
+                true 0)]
+    (set opts.bufnr nil)
+    (if bufnr
+        `(vim.api.nvim_buf_add_user_command ,bufnr ,cmd ,func ,opts)
+        `(vim.api.nvim_add_user_command ,cmd ,func ,opts))))
 
 (fn append! [str s]
   "Append to a string in place"

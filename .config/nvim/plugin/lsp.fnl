@@ -1,3 +1,4 @@
+(var enabled true)
 (local configs {})
 (local clients {})
 
@@ -12,11 +13,12 @@
   (vim.fn.fnamemodify path ":h"))
 
 (fn find-root [start patterns]
-  (let [pattern-map (collect [_ v (ipairs patterns)] (values v true))]
+  (let [pattern-map (collect [_ v (ipairs patterns)] (values v true))
+        test (partial . pattern-map)]
     (var done? false)
     (var curdir start)
     (while (not done?)
-      (match (length (vim.fn.readdir curdir #(. pattern-map $1)))
+      (match (length (vim.fn.readdir curdir test))
         0 (let [parent (dirname curdir)]
             (if (= parent curdir)
                 (do
@@ -85,7 +87,7 @@
        :root_dir ?root-dir})))
 
 (fn start-client [bufnr {: cmd &as opts}]
-  (when (and (not= opts.enabled false) (= (vim.fn.executable (. cmd 1)) 1))
+  (when (= (vim.fn.executable (. cmd 1)) 1)
     (let [root (let [root (or (. opts :root) [])]
                  (each [_ v (ipairs [".git" ".hg" ".svn"])]
                    (table.insert root v))
@@ -112,10 +114,9 @@
       (let [filetypes (match (. args i)
                         [& fts] fts
                         ft [ft])
-            opts (. args (+ i 1))
-            func `#(start-client $1 ,opts)]
+            opts (. args (+ i 1))]
         (each [_ ft (ipairs filetypes)]
-          (table.insert form `(tset configs ,ft ,func)))))
+          (table.insert form `(tset configs ,ft ,opts)))))
     form))
 
 (lsp-setup
@@ -137,46 +138,55 @@
   :rust {:cmd [:rust-analyzer]
          :root ["Cargo.toml"]})
 
-(autocmd lsp :FileType "*"
-  (let [bufnr (-> "<abuf>" vim.fn.expand tonumber)
-        ft (. vim.bo bufnr :filetype)]
+(fn lsp-start [bufnr]
+  (let [ft (. vim.bo bufnr :filetype)]
     (match (. configs ft)
-      f (f bufnr))))
+      opts (start-client bufnr opts))))
 
-(local commands {:stop #(each [client-id (pairs (vim.lsp.buf_get_clients))]
-                          (vim.lsp.stop_client client-id))
-                 :detach #(each [client-id (pairs (vim.lsp.buf_get_clients))]
-                            (vim.lsp.buf_detach_client 0 client-id))
-                 :start #(let [bufnr (vim.api.nvim_get_current_buf)
-                               ft (. vim.bo bufnr :filetype)]
-                           (match (. configs ft)
-                             f (f bufnr)))
-                 :find #(match $1
-                          nil (vim.lsp.buf.definition)
-                          q (vim.lsp.buf.workspace_symbol q))
-                 :code_action #(vim.lsp.buf.code_action)
-                 :hover #(vim.lsp.buf.hover)
-                 :format #(vim.lsp.buf.formatting)
-                 :references #(vim.lsp.buf.references)
-                 :rename #(vim.lsp.buf.rename $1)
-                 :signature_help #(vim.lsp.buf.signature_help)})
+(autocmd lsp :FileType "*"
+  (when enabled
+    (let [bufnr (-> "<abuf>" vim.fn.expand tonumber)]
+      (lsp-start bufnr))))
 
-(fn _G.lspcomplete [arg line pos]
-  (if (= 1 (vim.fn.count (string.sub line 1 pos) " "))
-      (table.concat (vim.tbl_keys commands) "\n")
-      ""))
+(let [commands {:stop #(each [client-id (pairs (vim.lsp.buf_get_clients))]
+                         (vim.lsp.stop_client client-id))
+                :detach #(each [client-id (pairs (vim.lsp.buf_get_clients))]
+                           (on-exit nil nil client-id)
+                           (vim.lsp.buf_detach_client 0 client-id))
+                :disable #(do
+                            (set enabled false)
+                            (each [client-id (pairs (vim.lsp.get_active_clients))]
+                              (vim.lsp.stop_client client-id)))
+                :enable #(do
+                           (set enabled true)
+                           (each [_ bufnr (ipairs (vim.api.nvim_list_bufs))]
+                             (lsp-start bufnr)))
+                :start #(let [bufnr (vim.api.nvim_get_current_buf)]
+                          (lsp-start bufnr))
+                :find #(match $1
+                         nil (vim.lsp.buf.definition)
+                         q (vim.lsp.buf.workspace_symbol q))
+                :code_action #(vim.lsp.buf.code_action)
+                :hover #(vim.lsp.buf.hover)
+                :format #(vim.lsp.buf.formatting)
+                :references #(vim.lsp.buf.references)
+                :rename #(vim.lsp.buf.rename $1)
+                :signature_help #(vim.lsp.buf.signature_help)}
+      complete (fn [arg line pos]
+                 (icollect [cmd (pairs commands)]
+                   (if (= arg (string.sub cmd 1 (length arg)))
+                       cmd)))]
+  (command :Lsp {:nargs "*" : complete}
+           (fn [{: args}]
+             (let [[cmd & args] (vim.split args " ")]
+               (match (. commands cmd)
+                 f (f (unpack args))
+                 _ (let [matches (icollect [k (pairs commands)]
+                                   (when (= cmd (string.sub k 1 (length cmd)))
+                                     k))]
+                     (match (length matches)
+                       1 ((. commands (. matches 1)) (unpack args))
+                       0 (vim.api.nvim_err_writeln (: "Invalid command: %s" :format cmd))
+                       _ (vim.api.nvim_err_writeln (: "Ambiguous command: %s can match any of %s" :format cmd (table.concat matches ", ")))))))))
 
-(command :Lsp {:nargs "*" :complete "custom,v:lua.lspcomplete"}
-         (fn [{: args}]
-           (let [[cmd & args] (vim.split args " ")]
-             (match (. commands cmd)
-               f (f (unpack args))
-               _ (let [matches (icollect [k (pairs commands)]
-                                 (when (= cmd (string.sub k 1 (length cmd)))
-                                   k))]
-                   (match (length matches)
-                     1 ((. commands (. matches 1)) (unpack args))
-                     0 (vim.api.nvim_err_writeln (: "Invalid command: %s" :format cmd))
-                     _ (vim.api.nvim_err_writeln (: "Ambiguous command: %s can match any of %s" :format cmd (table.concat matches ", ")))))))))
-
-(exec "cnoreabbrev <expr> lsp (getcmdtype() ==# ':' && getcmdline() ==# 'lsp') ? 'Lsp' : 'lsp'")
+  (exec "cnoreabbrev <expr> lsp (getcmdtype() ==# ':' && getcmdline() ==# 'lsp') ? 'Lsp' : 'lsp'"))

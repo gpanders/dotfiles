@@ -51,6 +51,8 @@ local function compile(path)
     local outf = io.open(out, "w")
     outf:write(compiled)
     outf:close()
+
+    return out
 end
 
 return {
