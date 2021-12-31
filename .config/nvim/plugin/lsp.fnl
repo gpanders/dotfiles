@@ -47,8 +47,7 @@
 
   (with-module [lsp-compl :lsp_compl]
     (vim.opt.completeopt:append [:noinsert])
-    (lsp-compl.attach client bufnr {:server_side_fuzzy_completion true
-                                    :trigger_on_delete true}))
+    (lsp-compl.attach client bufnr {}))
 
   (tset vim.b bufnr :lsp {:name client.name :client_id client.id})
 
