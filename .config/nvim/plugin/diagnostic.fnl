@@ -19,6 +19,6 @@
       (each [_ winid (ipairs (vim.fn.win_findbuf bufnr))]
         (vim.diagnostic.setloclist {: winid :open false})))))
 
-(keymap :n "]g" "<Cmd>lua vim.diagnostic.goto_next { float = false }<CR>")
-(keymap :n "[g" "<Cmd>lua vim.diagnostic.goto_prev { float = false }<CR>")
-(keymap :n "gh" "<Cmd>lua vim.diagnostic.open_float({ scope = \"l\" })<CR>")
+(keymap :n "]g" #(vim.diagnostic.goto_next {:float false}))
+(keymap :n "[g" #(vim.diagnostic.goto_prev {:float false}))
+(keymap :n "gh" #(vim.diagnostic.open_float {:scope :l}))

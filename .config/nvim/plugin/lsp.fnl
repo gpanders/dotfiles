@@ -39,11 +39,11 @@
     (augroup lsp
       (autocmd :CursorHold "<buffer>" (vim.lsp.buf.document_highlight))
       (autocmd [:InsertEnter :CursorMoved] "<buffer>" (vim.lsp.buf.clear_references))))
-  (keymap :i "<C-S>" "<Cmd>lua vim.lsp.buf.signature_help()<CR>" {:buffer bufnr})
-  (keymap :n "[R" "<Cmd>lua vim.lsp.buf.references()<CR>" {:buffer bufnr})
-  (keymap :n "crr" "<Cmd>lua vim.lsp.buf.rename()<CR>" {:buffer bufnr})
-  (keymap :n "<Bslash>lh" "<Cmd>lua vim.lsp.buf.hover()<CR>" {:buffer bufnr})
-  (keymap :n "<Bslash>lc" "<Cmd>lua vim.lsp.buf.code_action()<CR>" {:buffer bufnr})
+  (keymap :i "<C-S>" #(vim.lsp.buf.signature_help) {:buffer bufnr})
+  (keymap :n "[R" #(vim.lsp.buf.references) {:buffer bufnr})
+  (keymap :n "crr" #(vim.lsp.buf.rename) {:buffer bufnr})
+  (keymap :n "<Bslash>lh" #(vim.lsp.buf.hover) {:buffer bufnr})
+  (keymap :n "<Bslash>lc" #(vim.lsp.buf.code_action) {:buffer bufnr})
 
   (with-module [lsp-compl :lsp_compl]
     (vim.opt.completeopt:append [:noinsert])

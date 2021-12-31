@@ -1,2 +1,2 @@
-(keymap :n "=" "<Cmd>lua require(\"packer.display\").toggle_info()<CR>" {:buffer true})
-(keymap :n "<CR>" "<Cmd>lua require(\"packer.display\").diff()<CR>" {:buffer true})
+(keymap :n "=" #((. (require "packer.display") "toggle_info")) {:buffer true})
+(keymap :n "<CR>" #((. (require "packer.display") "diff")) {:buffer true})

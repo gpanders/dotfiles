@@ -51,15 +51,15 @@ Examples:
   (assert-compile (= (type from) :string) "from should be a string" from)
   (assert-compile (or (= nil ?opts) (table? ?opts)) "opts should be a table" ?opts)
   (let [form `(do)
-        opts (or ?opts {})
+        opts (collect [k v (pairs (or ?opts {}))]
+               (values k v))
         modes (if (sequence? modes) modes [modes])
         to (match (type to)
              :string to
-             _ (let [ns (make-ident :keymap (if opts.buffer :buf nil) from)]
-                 (table.insert form `(global ,(sym ns) ,to))
-                 (if opts.expr
-                     (: "v:lua.%s()" :format ns)
-                     (: "<Cmd>call v:lua.%s()<CR>" :format ns))))]
+             _ (do
+                 (set opts.desc (tostring (. to 2)))
+                 (set opts.callback to)
+                 ""))]
     (when (= opts.noremap nil)
       (set opts.noremap true))
     (when (= opts.silent nil)
