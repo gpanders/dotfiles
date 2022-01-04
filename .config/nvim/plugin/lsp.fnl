@@ -42,8 +42,8 @@
   (keymap :i "<C-S>" #(vim.lsp.buf.signature_help) {:buffer bufnr})
   (keymap :n "[R" #(vim.lsp.buf.references) {:buffer bufnr})
   (keymap :n "crr" #(vim.lsp.buf.rename) {:buffer bufnr})
-  (keymap :n "<Bslash>lh" #(vim.lsp.buf.hover) {:buffer bufnr})
-  (keymap :n "<Bslash>lc" #(vim.lsp.buf.code_action) {:buffer bufnr})
+  (keymap :n "<Bslash>K" #(vim.lsp.buf.hover) {:buffer bufnr})
+  (keymap :n "cac" #(vim.lsp.buf.code_action) {:buffer bufnr})
 
   (with-module [lsp-compl :lsp_compl]
     (vim.opt.completeopt:append [:noinsert])
