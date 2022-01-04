@@ -8,7 +8,7 @@ augroup END]], vim.fn.stdpath("config")))
 vim.api.nvim_add_user_command("Moonwalk", function()
     local compile = require("moonwalk").compile
     for _, path in ipairs({vim.fn.stdpath("config"), vim.fn.stdpath("config") .. "/after"}) do
-        for _, subpath in ipairs({"plugin", "indent", "ftplugin", "fnl"}) do
+        for _, subpath in ipairs({"plugin", "indent", "ftplugin", "fnl", "colors"}) do
             for _, v in ipairs(vim.fn.globpath(path, subpath .. "/*.fnl", false, true)) do
                 compile(v)
             end
