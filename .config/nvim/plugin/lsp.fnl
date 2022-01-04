@@ -1,6 +1,5 @@
 (var enabled true)
 (local configs {})
-(local clients {})
 
 (let [orig vim.uri_from_bufnr]
   (fn vim.uri_from_bufnr [bufnr]
@@ -93,29 +92,30 @@
                  root)
           root-dir (let [dir (dirname (vim.api.nvim_buf_get_name bufnr))]
                      (find-root dir root))
-          ft (. vim.bo bufnr :filetype)]
-      (var client-id (?. clients ft root-dir))
+          ft (. vim.bo bufnr :filetype)
+          clients (. configs ft :clients)]
+      (var client-id (. clients root-dir))
       (when (not client-id)
         (let [config (mk-config cmd root-dir opts)]
           (set client-id (vim.lsp.start_client config))
-          (when (not (. clients ft))
-            (tset clients ft {}))
           (when root-dir
-            (tset clients ft root-dir client-id))))
+            (tset clients root-dir client-id))))
       (vim.lsp.buf_attach_client bufnr client-id))))
 
 (macro lsp-setup [...]
   (assert-compile (= 0 (math.fmod (select :# ...) 2))
                   "expected even number of filetype/config pairs")
-  (let [args [...]
-        form `(do)]
-    (for [i 1 (length args) 2]
-      (let [filetypes (match (. args i)
-                        [& fts] fts
-                        ft [ft])
-            opts (. args (+ i 1))]
-        (each [_ ft (ipairs filetypes)]
-          (table.insert form `(tset configs ,ft ,opts)))))
+  (let [form `(do)]
+    (for [i 1 (select :# ...) 2]
+      (let [(filetypes opts) (select i ...)
+            opts (collect [k v (pairs opts) :into {:clients {}}]
+                   (values k v))
+            (first rest) (match filetypes
+                           [first & rest] (values first rest)
+                           _ (values filetypes []))]
+        (table.insert form `(tset configs ,first ,opts))
+        (each [_ ft (ipairs rest)]
+          (table.insert form `(tset configs ,ft (. configs ,first))))))
     form))
 
 (lsp-setup
