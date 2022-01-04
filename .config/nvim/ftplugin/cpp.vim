@@ -1,1 +1,0 @@
-doautocmd FileType c

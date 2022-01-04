@@ -11,12 +11,13 @@
   (api.nvim_buf_clear_namespace bufnr ns 0 -1)
   (let [[lnum] (api.nvim_win_get_cursor 0)
         lnum (- lnum 1)
-        diagnostics (vim.diagnostic.get bufnr {: lnum})]
+        diagnostics (vim.diagnostic.get bufnr {: lnum})
+        line-length (length (api.nvim_get_current_line))]
     (var diagnostic nil)
     (each [_ v (ipairs diagnostics)]
       (if (or (= nil diagnostic) (< v.severity diagnostic.severity))
           (set diagnostic v)))
-    (when diagnostic
+    (when (and diagnostic (<= diagnostic.col diagnostic.end_col line-length))
       (let [{: message : source : severity : col : end_col} diagnostic
             width (api.nvim_win_get_width 0)
             severity (. vim.diagnostic.severity severity)
@@ -33,6 +34,7 @@
             indent (string.rep " " virtcol)
             needs-wrap (< (- width virtcol 3) max-line-length)
             wrap-width (- width virtcol 3)
+            break-pat (.. "[" vim.o.breakat "]")
             virt-lines []]
         (var first-line true)
         (each [v (vim.gsplit message "\n")]
@@ -40,8 +42,10 @@
           (var text v)
           (while (< 0 (length text))
             (set w (math.min (length text) wrap-width))
-            (while (and (< 0 w (length text)) (not (string.find (text:sub w w) (.. "[" vim.o.breakat "]"))))
+            (while (and (< 0 w (length text)) (not (string.find (text:sub w w) break-pat)))
               (set w (- w 1)))
+            (when (<= w 0)
+              (set w (length text)))
             (table.insert virt-lines [[(: "%s%s %s" :format
                                           indent
                                           (if first-line "└" " ")
