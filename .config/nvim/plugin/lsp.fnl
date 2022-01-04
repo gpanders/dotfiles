@@ -84,12 +84,10 @@
        :on_exit on-exit
        :root_dir ?root-dir})))
 
-(fn start-client [bufnr {: cmd &as opts}]
+(fn start-client [bufnr {: cmd : root &as opts}]
   (when (= (vim.fn.executable (. cmd 1)) 1)
-    (let [root (let [root (or (. opts :root) [])]
-                 (each [_ v (ipairs [".git" ".hg" ".svn"])]
-                   (table.insert root v))
-                 root)
+    (let [root (icollect [_ v (ipairs [".git" ".hg" ".svn"]) :into root]
+                 v)
           root-dir (let [dir (dirname (vim.api.nvim_buf_get_name bufnr))]
                      (find-root dir root))
           ft (. vim.bo bufnr :filetype)
