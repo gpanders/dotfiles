@@ -73,8 +73,7 @@
   (let [capabilities (vim.lsp.protocol.make_client_capabilities)]
     (set capabilities.workspace.configuration true)
     (vim.tbl_deep_extend :keep (or ?opts {})
-      {:flags {:debounce_text_changes 80
-               :allow_incremental_sync true}
+      {:flags {:allow_incremental_sync true}
        : cmd
        :name (. cmd 1)
        :handlers {}
@@ -119,6 +118,7 @@
 (lsp-setup
   [:c :cpp] {:cmd ["clangd" "--background-index"]
              :root ["compile_commands.json" "compile_flags.txt"]
+             :flags {:debounce_text_changes 20}
              :offset_encoding :utf-16}
   [:go :gomod] {:cmd [:gopls]
                 :root ["go.mod"]
