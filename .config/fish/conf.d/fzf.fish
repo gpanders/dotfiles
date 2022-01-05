@@ -19,5 +19,5 @@ set -gx FZF_DEFAULT_OPTS '--color=16,fg:-1,fg+:-1,hl:3,hl+:3,pointer:4,marker:-1
 
 # Export options to tmux for fzfurl script
 if test -n "$TMUX"
-    tmux set-env -g FZF_DEFAULT_OPTS "$FZF_DEFAULT_OPTS"
+    command tmux set-env -g FZF_DEFAULT_OPTS "$FZF_DEFAULT_OPTS"
 end
