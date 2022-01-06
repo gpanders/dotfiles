@@ -13,15 +13,15 @@
              :blue "#6699cc"
              :magenta "#cc99cc"
              :cyan "#66cccc"
-             :white "#d3d0c8"
-             :brblack "#747369"
-             :brred "#f99157"
-             :bryellow "#515151"
-             :brgreen "#393939"
-             :brblue "#a09f93"
+             :normal "#d3d0c8"
+             :lightgray "#747369"
+             :orange "#f99157"
+             :gray "#515151"
+             :darkgray "#393939"
+             :lightergray "#a09f93"
              :brmagenta "#e8e6df"
-             :brcyan "#d27b53"
-             :brwhite "#f2f0ec"}
+             :darkorange "#d27b53"
+             :white "#f2f0ec"}
         cterm {:black 0
                :red 1
                :green 2
@@ -29,15 +29,15 @@
                :blue 4
                :magenta 5
                :cyan 6
-               :white 7
-               :brblack 8
-               :brred 9
-               :brgreen 10
-               :bryellow 11
-               :brblue 12
+               :normal 7
+               :lightgray 8
+               :orange 9
+               :darkgray 10
+               :gray 11
+               :lightergray 12
                :brmagenta 13
-               :brcyan 14
-               :brwhite 15}
+               :darkorange 14
+               :white 15}
         highlights []]
     (for [i 1 (select :# ...) 2]
       (let [(group opts) (select i ...)
@@ -57,113 +57,113 @@
     `(vim.cmd ,(table.concat highlights "\n"))))
 
 (make-colors
-  Normal {:fg "white" :bg "black"}
+  Normal {:fg "normal" :bg "black"}
 
   ; UI Highlights (:h highlight-groups)
-  ColorColumn {:bg "brgreen"}
+  ColorColumn {:bg "darkgray"}
   Conceal {:fg "blue"}
-  Cursor {:fg "black" :bg "white"}
-  CursorColumn {:bg "brgreen"}
-  CursorLine {:bg "brgreen"}
+  Cursor {:fg "black" :bg "normal"}
+  CursorColumn {:bg "darkgray"}
+  CursorLine {:bg "darkgray"}
   Directory {:fg "blue"}
   DiffAdd {:fg "green"}
-  DiffChange {:fg "brblack"}
+  DiffChange {:fg "lightgray"}
   DiffDelete {:fg "red"}
   DiffText {:fg "blue"}
   ErrorMsg {:fg "red"}
-  VertSplit {:fg "bryellow" :bg "bryellow"}
-  Folded {:fg "brblack" :bg "brgreen"}
-  FoldColumn {:fg "cyan" :bg "brgreen"}
-  SignColumn {:fg "brblack" :bg "brgreen"}
-  IncSearch {:fg "brgreen" :bg "brred"}
-  LineNr {:fg "brblack" :bg "brgreen"}
-  CursorLineNr {:fg "brblue" :bg "brgreen"}
-  MatchParen {:bg "brblack"}
-  MatchWord {:bg "brgreen"}
+  VertSplit {:fg "gray" :bg "gray"}
+  Folded {:fg "lightgray" :bg "darkgray"}
+  FoldColumn {:fg "cyan" :bg "darkgray"}
+  SignColumn {:fg "lightgray" :bg "darkgray"}
+  IncSearch {:fg "darkgray" :bg "orange"}
+  LineNr {:fg "lightgray" :bg "darkgray"}
+  CursorLineNr {:fg "lightergray" :bg "darkgray"}
+  MatchParen {:bg "lightgray"}
+  MatchWord {:bg "darkgray"}
   ModeMsg {:fg "green"}
   MoreMsg {:fg "green"}
-  NonText {:fg "brblack"}
-  PMenu {:bg "brgreen"}
-  PMenuSel {:fg "brgreen" :bg "white"}
+  NonText {:fg "lightgray"}
+  PMenu {:bg "darkgray"}
+  PMenuSel {:fg "darkgray" :bg "normal"}
   Question {:fg "blue"}
-  QuickFixLine {:bg "brgreen"}
-  Search {:fg "brgreen" :bg "yellow"}
-  SpecialKey {:fg "brblack"}
+  QuickFixLine {:bg "darkgray"}
+  Search {:fg "darkgray" :bg "yellow"}
+  SpecialKey {:fg "green"}
   SpellBad {:fg "red" :attr "undercurl" :guisp "red"}
   SpellLocal {:fg "blue" :attr "undercurl" :guisp "cyan"}
   SpellCap {:fg "magenta" :attr "undercurl" :guisp "blue"}
   SpellRare {:fg "cyan" :attr "undercurl" :guisp "magenta"}
-  StatusLine {:fg "brblue" :bg "bryellow"}
-  StatusLineNC {:fg "brblack" :bg "brgreen"}
-  TabLine {:fg "brblack" :bg "brgreen"}
-  TabLineFill {:fg "brblack" :bg "brgreen"}
-  TabLineSel {:fg "green" :bg "brgreen"}
+  StatusLine {:fg "lightergray" :bg "gray"}
+  StatusLineNC {:fg "lightgray" :bg "darkgray"}
+  TabLine {:fg "lightgray" :bg "darkgray"}
+  TabLineFill {:fg "lightgray" :bg "darkgray"}
+  TabLineSel {:fg "green" :bg "darkgray"}
   Title {:fg "blue"}
-  Visual {:bg "bryellow"}
+  Visual {:bg "gray"}
   VisualNOS {:fg "red"}
   WarningMsg {:fg "yellow"}
-  WildMenu {:fg "brwhite" :bg "bryellow"}
+  WildMenu {:fg "white" :bg "gray"}
 
   ; Syntax items (:h group-name)
-  Comment {:fg "brblack"}
+  Comment {:fg "lightgray"}
 
-  Constant {:fg "brred"}
+  Constant {:fg "normal"}
   String {:fg "green"}
-  Character {:fg "red"}
-  Number {:fg "white"}
-  Boolean {:fg "white"}
-  Float {:fg "white"}
+  Character {:link :Constant}
+  Number {:link :Constant}
+  Boolean {:link :Constant}
+  Float {:link :Constant}
 
   Identifier {:fg "red"}
   Function {:fg "blue"}
 
   Statement {:fg "red"}
-  Operator {:fg "white"}
-  Repeat {:fg "red"}
-  Conditional {:fg "red"}
-  Label {:fg "white"}
-  Keyword {:fg "red"}
-  Exception {:fg "red"}
+  Operator {:fg "normal" :attr :bold}
+  Repeat {:link :Statement}
+  Conditional {:link :Statement}
+  Label {:link :Statement}
+  Keyword {:link :Statement}
+  Exception {:link :Statement}
 
-  PreProc {:fg "yellow"}
-  Include {:fg "blue"}
-  Define {:fg "magenta"}
-  Macro {:fg "magenta"}
-  PreCondit {:fg "magenta"}
+  PreProc {:fg "lightgray"}
+  Include {:link :PreProc}
+  Define {:link :PreProc}
+  Macro {:link :PreProc}
+  PreCondit {:link :PreProc}
 
   Type {:fg "yellow"}
-  StorageClass {:fg "yellow"}
-  Structure {:fg "NONE"}
-  Typedef {:fg "yellow"}
+  StorageClass {:link :Type}
+  Structure {:link :Type}
+  Typedef {:link :Type}
 
   Special {:fg "cyan"}
-  SpecialChar {:fg "cyan"}
-  Tag {:fg "red"}
-  Delimiter {:fg "brcyan"}
-  SpecialComment {:fg "cyan"}
-  Debug {:fg "cyan"}
+  SpecialChar {:link :Special}
+  Tag {:link :Special}
+  Delimiter {}
+  SpecialComment {:link :Special}
+  Debug {:link :Special}
 
-  Underlined {:attr "underline"}
+  Underlined {:fg "normal" :attr "underline"}
   Bold {:attr "bold"}
 
   Ignore {:fg "black"}
 
   Error {:fg "red"}
 
-  Todo {:fg "yellow" :bg "brgreen"}
+  Todo {:fg "yellow" :bg "darkgray"}
 
   DiagnosticError {:fg "red"}
   DiagnosticWarn {:fg "yellow"}
   DiagnosticInfo {:fg "blue"}
-  DiagnosticHint {:fg "brblack"}
-  DiagnosticSignError {:fg "red" :bg "brgreen"}
-  DiagnosticSignWarn {:fg "yellow" :bg "brgreen"}
-  DiagnosticSignInfo {:fg "blue" :bg "brgreen"}
-  DiagnosticSignHint {:fg "brblack" :bg "brgreen"}
+  DiagnosticHint {:fg "lightgray"}
+  DiagnosticSignError {:fg "red" :bg "darkgray"}
+  DiagnosticSignWarn {:fg "yellow" :bg "darkgray"}
+  DiagnosticSignInfo {:fg "blue" :bg "darkgray"}
+  DiagnosticSignHint {:fg "lightgray" :bg "darkgray"}
   DiagnosticUnderlineError {:fg "red" :attr "undercurl" :guisp "red"}
   DiagnosticUnderlineWarn {:fg "yellow" :attr "undercurl" :guisp "yellow"}
   DiagnosticUnderlineInfo {:fg "blue" :attr "undercurl" :guisp "blue"}
-  DiagnosticUnderlineHint {:fg "brblack" :attr "undercurl" :guisp "brblack"}
+  DiagnosticUnderlineHint {:fg "lightgray" :attr "undercurl" :guisp "lightgray"}
 
   ; Syntax-file specific highlighting
   diffAdded {:fg "green"}
@@ -171,9 +171,9 @@
   diffLine {:fg "cyan"}
   diffFile {:attr "bold"}
   diffIndexLine {:attr "bold"}
-  diffSubname {:fg "white"}
+  diffSubname {:fg "normal"}
 
-  gitcommitHeader {:fg "white"}
+  gitcommitHeader {:fg "normal"}
   gitcommitSummary {:attr "bold"}
   gitcommitSelectedType {:fg "green"}
   gitcommitSelectedFile {:fg "green"}
@@ -183,7 +183,7 @@
   gitcommitBranch {:fg "yellow"}
 
   gitrebaseHash {:fg "yellow"}
-  gitrebaseSummary {:fg "white"}
+  gitrebaseSummary {:fg "normal"}
   gitrebasePick {:fg "green"}
   gitrebaseReword {:fg "blue"}
   gitrebaseEdit {:fg "red"}
@@ -197,14 +197,25 @@
   manReference {:fg "yellow"}
   manUnderline {:fg "green" :attr "bold"}
 
+  helpOption {:fg "yellow"}
+  helpHyperTextJump {:fg "red"}
+
+  luaTable {}
+
+  vimOption {:fg "normal"}
+  vimEnvvar {}
+  vimVar {}
+  vimFuncvar {}
+  vimSpecial {}
+
   ; Plugin highlighting
-  GitSignsAdd {:fg "green" :bg "brgreen"}
-  GitSignsDelete {:fg "red" :bg "brgreen"}
-  GitSignsChange {:fg "brblack" :bg "brgreen"}
+  GitSignsAdd {:fg "green" :bg "darkgray"}
+  GitSignsDelete {:fg "red" :bg "darkgray"}
+  GitSignsChange {:fg "lightgray" :bg "darkgray"}
 
   packerHash {:fg "yellow"}
 
-  TSNone {:fg "white"}
+  TSNone {:fg "normal"}
   TSSymbol {:fg "yellow"}
   TSDefinition {:link "MatchWord"}
   TSDefinitionUsage {:link "MatchWord"}
@@ -213,10 +224,12 @@
   LspReferenceRead {:link "MatchWord"}
   LspReferenceWrite {:link "MatchWord"}
 
-  DapBreakpoint {:fg "cyan" :bg "brgreen"}
-  DapBreakpointCondition {:fg "cyan" :bg "brgreen"}
-  DapLogPoint {:fg "cyan" :bg "brgreen"}
-  DapStopped {:fg "brwhite" :bg "brgreen"}
-  DapBreakpointRejected {:fg "red" :bg "brgreen"}
+  DapBreakpoint {:fg "cyan" :bg "darkgray"}
+  DapBreakpointCondition {:fg "cyan" :bg "darkgray"}
+  DapLogPoint {:fg "cyan" :bg "darkgray"}
+  DapStopped {:fg "white" :bg "darkgray"}
+  DapBreakpointRejected {:fg "red" :bg "darkgray"}
 
-  Sneak {:link "IncSearch"})
+  Sneak {:link "IncSearch"}
+
+  TelescopeMatching {:fg "yellow"})
