@@ -60,12 +60,16 @@
   (vim.diagnostic.disable 0)
   (autocmd diagnostics :BufWritePost "<buffer=abuf>" :once
     (vim.diagnostic.enable 0)
-    (autocmd diagnostics [:CursorMoved :CursorHold :InsertLeave :DiagnosticChanged] "<buffer=abuf>"
-      (when diagnostics-enabled?
-        (let [bufnr (tonumber (vim.fn.expand "<abuf>"))
-              {: mode} (api.nvim_get_mode)]
-          (when (not= :i (mode:sub 1 1))
-            (show-cursor-diagnostics bufnr)))))))
+    (augroup diagnostics
+      (autocmd [:CursorMoved :InsertLeave :DiagnosticChanged] "<buffer=abuf>"
+        (when diagnostics-enabled?
+          (let [bufnr (tonumber (vim.fn.expand "<abuf>"))
+                {: mode} (api.nvim_get_mode)]
+            (when (not= :i (mode:sub 1 1))
+              (show-cursor-diagnostics bufnr)))))
+      (autocmd :InsertEnter "<buffer=abuf>"
+        (let [bufnr (tonumber (vim.fn.expand "<abuf>"))]
+          (api.nvim_buf_clear_namespace bufnr ns 0 -1))))))
 
 (keymap :n "yog" (fn []
                    (set diagnostics-enabled? (not diagnostics-enabled?))
