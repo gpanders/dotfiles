@@ -30,7 +30,7 @@ augroup init
   autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
 
   " Defer setting the colorscheme until the UI loads (micro optimization)
-  autocmd UIEnter * colorscheme anders
+  autocmd UIEnter * colorscheme dark
 
   " Restore cursor position (except for git commits and rebases). This
   " autocommand can't be defined in init.vim since it needs to be created

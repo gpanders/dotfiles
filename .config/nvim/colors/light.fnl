@@ -71,7 +71,7 @@
 
 (make-colors
   Normal {:bg "brwhite" :fg "black"}
-  Visual {:bg "black" :fg "brwhite"}
+  Visual {:bg "white"}
   Search {:attr "underline,bold" :bg "white" :fg "black"}
   IncSearch {:attr "underline,bold" :bg "brblack" :fg "brwhite"}
 
@@ -93,7 +93,10 @@
   Error {:bg "red" :fg "brwhite"}
   ErrorMsg {:bg "red" :fg "brwhite"}
 
-  MatchParen {:attr "underline,bold" :bg "white" :fg "brblack"}
+  MatchParen {:attr "bold" :bg "white" :fg "brblack"}
+  MatchWord {:link :MatchParen}
+
+  QuickFixLine {:bg "black" :fg "brwhite"}
 
   ToolbarLine {:bg "brblack" :fg "brwhite"}
   ToolbarButton {:attr "bold" :bg "brblack" :fg "brwhite"}
