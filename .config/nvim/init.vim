@@ -1,4 +1,5 @@
 set breakindent
+set colorcolumn=+1
 set completeopt=menu,menuone
 set confirm
 set cursorline
@@ -24,7 +25,6 @@ set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#
 set wildignorecase
 set wildmode=longest:full,full
 
-let &colorcolumn = '+' . join(range(1, 256), ',+')
 let &statusline = ' %{statusline#obsession()}%<%f [%{&filetype ==# "" ? "none" : &filetype}]%{statusline#lsp()} %m%r%=%{statusline#git()}%10.(%l:%c%V%)%6.P '
 
 set grepformat^=%f:%l:%c:%m

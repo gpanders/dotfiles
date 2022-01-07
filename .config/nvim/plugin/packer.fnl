@@ -28,13 +28,9 @@
       (use
         "wbthomason/packer.nvim"
         "dcampos/nvim-snippy"
-        "gpanders/fennel-repl.nvim"
         "gpanders/nvim-parinfer"
-        "gpanders/vim-medieval"
-        "gpanders/vim-oldfiles"
         "tpope/vim-surround"
         "tpope/vim-commentary"
-        "tpope/vim-repeat"
         "tpope/vim-rsi"
         "tpope/vim-scriptease" {:opt true}
         "tpope/vim-fugitive"
@@ -47,7 +43,7 @@
         "mfussenegger/nvim-lint"
         "mfussenegger/nvim-lsp-compl"
         "nvim-lua/plenary.nvim" ; Dependency of gitsigns and telescope
-        "nvim-telescope/telescope.nvim" {:opt true}
+        "nvim-telescope/telescope.nvim"
         "andymass/vim-matchup"
 
         ; Language specific
