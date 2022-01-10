@@ -1,9 +1,9 @@
 (when vim.g.loaded_telescope
-  (keymap :n "<Space>f" "<Cmd>Telescope find_files hidden=true follow=true<CR>")
+  (keymap :n "<Space>f" "<Cmd>Telescope find_files previewer=false hidden=true follow=true<CR>")
   (keymap :n "<Space>g" "<Cmd>Telescope live_grep<CR>")
   (keymap :n "<Space>/" "<Cmd>Telescope current_buffer_fuzzy_find<CR>")
-  (keymap :n "<Space>b" "<Cmd>Telescope buffers<CR>")
-  (keymap :n "<Space>o" "<Cmd>Telescope oldfiles<CR>")
+  (keymap :n "<Space>b" "<Cmd>Telescope buffers previewer=false<CR>")
+  (keymap :n "<Space>o" "<Cmd>Telescope oldfiles previewer=false<CR>")
   (keymap :n "<Space>q" "<Cmd>Telescope quickfix<CR>")
   (keymap :n "z=" "<Cmd>Telescope spell_suggest<CR>")
 
