@@ -37,11 +37,11 @@
         "tpope/vim-sleuth"
         "tpope/vim-obsession"
         "justinmk/vim-dirvish"
-        "phaazon/hop.nvim"
         "junegunn/vim-easy-align"
         "lewis6991/gitsigns.nvim"
         "mfussenegger/nvim-lint"
         "mfussenegger/nvim-lsp-compl"
+        "mfussenegger/nvim-dap"
         "nvim-lua/plenary.nvim" ; Dependency of gitsigns and telescope
         "nvim-telescope/telescope.nvim"
         "andymass/vim-matchup"

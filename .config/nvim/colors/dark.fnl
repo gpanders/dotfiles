@@ -224,11 +224,8 @@
   LspReferenceRead {:link "MatchWord"}
   LspReferenceWrite {:link "MatchWord"}
 
-  DapBreakpoint {:fg "cyan" :bg "darkgray"}
-  DapBreakpointCondition {:fg "cyan" :bg "darkgray"}
-  DapLogPoint {:fg "cyan" :bg "darkgray"}
-  DapStopped {:fg "white" :bg "darkgray"}
-  DapBreakpointRejected {:fg "red" :bg "darkgray"}
+  debugPC {:fg "cyan" :bg "darkgray"}
+  debugBreakpoint {:fg "red" :bg "darkgray"}
 
   Sneak {:link "IncSearch"}
 
