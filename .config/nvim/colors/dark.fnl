@@ -19,9 +19,9 @@
              :gray "#515151"
              :darkgray "#393939"
              :lightergray "#a09f93"
-             :brmagenta "#e8e6df"
+             :white "#e8e6df"
              :darkorange "#d27b53"
-             :white "#f2f0ec"}
+             :brwhite "#f2f0ec"}
         cterm {:black 0
                :red 1
                :green 2
@@ -35,9 +35,9 @@
                :darkgray 10
                :gray 11
                :lightergray 12
-               :brmagenta 13
+               :white 13
                :darkorange 14
-               :white 15}
+               :brwhite 15}
         highlights []]
     (for [i 1 (select :# ...) 2]
       (let [(group opts) (select i ...)
@@ -65,33 +65,34 @@
   Cursor {:fg "black" :bg "normal"}
   CursorColumn {:bg "darkgray"}
   CursorLine {:bg "darkgray"}
-  Directory {:fg "blue"}
+  CursorLineNr {:fg "lightergray" :bg "darkgray"}
   DiffAdd {:fg "green"}
   DiffChange {:fg "lightgray"}
   DiffDelete {:fg "red"}
   DiffText {:fg "blue"}
+  Directory {:fg "blue"}
   ErrorMsg {:fg "red"}
-  VertSplit {:fg "gray" :bg "gray"}
-  Folded {:fg "lightgray" :bg "darkgray"}
+  FloatBorder {:bg "black"}
   FoldColumn {:fg "cyan" :bg "darkgray"}
-  SignColumn {:fg "lightgray" :bg "darkgray"}
+  Folded {:fg "lightgray" :bg "darkgray"}
   IncSearch {:fg "darkgray" :bg "orange"}
   LineNr {:fg "lightgray" :bg "darkgray"}
-  CursorLineNr {:fg "lightergray" :bg "darkgray"}
   MatchParen {:bg "lightgray"}
   MatchWord {:bg "darkgray"}
   ModeMsg {:fg "green"}
   MoreMsg {:fg "green"}
   NonText {:fg "lightgray"}
+  NormalFloat {:link :Normal}
   PMenu {:bg "darkgray"}
   PMenuSel {:fg "darkgray" :bg "normal"}
   Question {:fg "blue"}
   QuickFixLine {:bg "darkgray"}
   Search {:fg "darkgray" :bg "yellow"}
+  SignColumn {:fg "lightgray" :bg "darkgray"}
   SpecialKey {:fg "green"}
   SpellBad {:fg "red" :attr "undercurl" :guisp "red"}
-  SpellLocal {:fg "blue" :attr "undercurl" :guisp "cyan"}
   SpellCap {:fg "magenta" :attr "undercurl" :guisp "blue"}
+  SpellLocal {:fg "blue" :attr "undercurl" :guisp "cyan"}
   SpellRare {:fg "cyan" :attr "undercurl" :guisp "magenta"}
   StatusLine {:fg "lightergray" :bg "gray"}
   StatusLineNC {:fg "lightgray" :bg "darkgray"}
@@ -99,10 +100,11 @@
   TabLineFill {:fg "lightgray" :bg "darkgray"}
   TabLineSel {:fg "green" :bg "darkgray"}
   Title {:fg "blue"}
+  VertSplit {:fg "gray" :bg "gray"}
   Visual {:bg "gray"}
   VisualNOS {:fg "red"}
   WarningMsg {:fg "yellow"}
-  WildMenu {:fg "white" :bg "gray"}
+  WildMenu {:fg "brwhite" :bg "gray"}
 
   ; Syntax items (:h group-name)
   Comment {:fg "lightgray"}
@@ -126,9 +128,9 @@
   Exception {:link :Statement}
 
   PreProc {:fg "lightgray"}
-  Include {:link :PreProc}
+  Include {:fg "blue"}
   Define {:link :PreProc}
-  Macro {:link :PreProc}
+  Macro {:fg "magenta"}
   PreCondit {:link :PreProc}
 
   Type {:fg "yellow"}
