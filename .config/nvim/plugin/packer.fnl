@@ -42,8 +42,9 @@
         "mfussenegger/nvim-lint"
         "mfussenegger/nvim-lsp-compl"
         "mfussenegger/nvim-dap"
+        "mfussenegger/nvim-fzy"
         "nvim-lua/plenary.nvim" ; Dependency of gitsigns and telescope
-        "nvim-telescope/telescope.nvim"
+        "nvim-telescope/telescope.nvim" {:opt true}
         "andymass/vim-matchup"
 
         ; Language specific
