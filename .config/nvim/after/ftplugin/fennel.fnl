@@ -8,13 +8,9 @@
 
 (append! vim.b.undo_ftplugin "|setl cms< com< lisp< lw<")
 
-(when (> (vim.fn.executable "fnlfmt") 0)
-  (setlocal formatprg "fnlfmt -")
-  (append! vim.b.undo_ftplugin " fp<"))
-
-(autocmd ft-fennel :BufWritePost "<buffer>"
+(autocmd ft/fennel :BufWritePost "<buffer>"
   (local {: lint} (require "ft/fennel"))
   (lint)
-  (autocmd! ft-fennel :TextChanged "<buffer>" (lint)))
+  (autocmd! ft/fennel :TextChanged "<buffer>" (lint)))
 
-(append! vim.b.undo_ftplugin "|au! ft-fennel")
+(append! vim.b.undo_ftplugin "|au! ft/fennel")

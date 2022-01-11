@@ -5,10 +5,10 @@
 (setlocal conceallevel 2)
 (append! vim.b.undo_ftplugin "|setl tw< com< flp< cole<")
 
-(when (> (vim.fn.executable :pandoc) 0)
+(when (= 1 (vim.fn.executable :pandoc))
   (exec "compiler pandoc"))
 
-(when (= (vim.fn.exists ":EvalBlock") 2)
+(when (= 2 (vim.fn.exists ":EvalBlock"))
   (keymap :n "Z!" "<Cmd>EvalBlock<CR>" {:buffer true})
   (append! vim.b.undo_ftplugin "|nun <buffer> Z!"))
 
@@ -16,7 +16,7 @@
 (keymap :n "<C-W><CR>" "<Cmd>call ft#markdown#open('split')<CR>" {:buffer true})
 (append! vim.b.undo_ftplugin "|nun <buffer> <CR>|nun <buffer> <C-W><CR>")
 
-(autocmd ft-markdown :BufWritePost "<buffer>"
+(autocmd ft/markdown :BufWritePost "<buffer>"
   (local {: lint} (require "ft/markdown"))
   (lint (vim.api.nvim_get_current_buf)))
-(append! vim.b.undo_ftplugin "|au! ft-markdown")
+(append! vim.b.undo_ftplugin "|au! ft/markdown")
