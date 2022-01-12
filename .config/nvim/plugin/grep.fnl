@@ -40,3 +40,6 @@ cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'G
 cnoreabbrev <expr> lgr   (getcmdtype() ==# ':' && getcmdline() ==# 'lgr')   ? 'LGrep' : 'lgr'
 cnoreabbrev <expr> lgrep (getcmdtype() ==# ':' && getcmdline() ==# 'lgrep') ? 'LGrep' : 'lgrep'
 ")
+
+(keymap :n "g/" ":Grep " {:silent false})
+(keymap :x "g/" "y:<C-U>Grep <C-R>\"" {:silent false})
