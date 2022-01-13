@@ -53,8 +53,7 @@ nnoremap <Space>b :ls<CR>:b<Space>
 nnoremap <C-W><Space>b :ls<CR>:sb<Space>
 nnoremap <Space>e :e %:p:h/<Tab>
 nnoremap <C-W><Space>e :sp %:p:h/<Tab>
-nnoremap <Space>t :tjump /
-nnoremap <C-W><Space>t :stjump /
+nnoremap <Space>t :Tjump /
 
 " Format whole buffer with formatprg without changing cursor position
 " See :h restore-position
