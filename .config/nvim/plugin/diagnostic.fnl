@@ -84,6 +84,6 @@
 
 (keymap :n "]g" #(diagnostic.goto_next {:float false}))
 (keymap :n "[g" #(diagnostic.goto_prev {:float false}))
-(keymap :n "gd" (fn []
-                  (set show-virtlines? (not show-virtlines?))
-                  (show-cursor-diagnostics 0)))
+(keymap :n "yog" (fn []
+                   (set show-virtlines? (not show-virtlines?))
+                   (show-cursor-diagnostics 0)))
