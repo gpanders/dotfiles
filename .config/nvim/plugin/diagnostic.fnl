@@ -7,16 +7,38 @@
                     :underline false
                     :severity_sort true})
 
+(fn cursor-diagnostic [diagnostics]
+  "Find the diagnostic closest to the cursor"
+  (let [[lnum curcol] (vim.api.nvim_win_get_cursor 0)
+        lnum (- lnum 1)]
+    (var score math.huge)
+    (var diag nil)
+    (var done? false)
+    (each [_ v (ipairs diagnostics) :until done?]
+      (match v
+        {: lnum : col : end_col}
+        (if (<= col curcol end_col)
+            (do
+              (set diag v)
+              (set done? true))
+            (let [scr (math.min (math.abs (- curcol col)) (math.abs (- curcol end_col)))]
+              (when (< scr score)
+                (set diag v)
+                (set score scr))))))
+    diag))
+
 (set diagnostic.handlers.virtlines {})
 
 (fn diagnostic.handlers.virtlines.show [ns bufnr diagnostics opts]
   (let [ns (diagnostic.get_namespace ns)]
     (when (not ns.user_data.virtlines_ns)
       (tset ns :user_data :virtlines_ns (api.nvim_create_namespace "")))
-    (let [virtlines-ns ns.user_data.virtlines_ns]
-      (each [_ v (ipairs diagnostics)]
-        (let [{: lnum : message : source : severity : col} v
-              width (api.nvim_win_get_width 0)
+    (let [virtlines-ns ns.user_data.virtlines_ns
+          diag (cursor-diagnostic diagnostics)
+          virt-lines {}]
+      (match diag
+        {: lnum : message : source : severity : col}
+        (let [width (api.nvim_win_get_width 0)
               severity (. diagnostic.severity severity)
               virt-text-hl (.. :DiagnosticVirtualText severity)
               message (if source
@@ -30,8 +52,9 @@
               indent (string.rep " " virtcol)
               needs-wrap (< (- width virtcol 3) max-line-length)
               wrap-width (- width virtcol 3)
-              break-pat (.. "[" vim.o.breakat "]")
-              virt-lines []]
+              break-pat (.. "[" vim.o.breakat "]")]
+          (when (not (. virt-lines lnum))
+            (tset virt-lines lnum []))
           (var first-line true)
           (each [v (vim.gsplit message "\n")]
             (var w nil)
@@ -42,14 +65,15 @@
                 (set w (- w 1)))
               (when (<= w 0)
                 (set w (length text)))
-              (table.insert virt-lines [[(: "%s%s %s" :format
-                                            indent
-                                            (if first-line "└" " ")
-                                            (text:sub 1 w))
-                                         virt-text-hl]])
+              (table.insert (. virt-lines lnum) [[(: "%s%s %s" :format
+                                                      indent
+                                                      (if first-line "└" " ")
+                                                      (text:sub 1 w))
+                                                  virt-text-hl]])
               (set first-line false)
-              (set text (text:sub (+ w 1)))))
-          (api.nvim_buf_set_extmark bufnr virtlines-ns lnum col {:virt_lines virt-lines}))))))
+              (set text (text:sub (+ w 1)))))))
+      (each [lnum lines (pairs virt-lines)]
+        (api.nvim_buf_set_extmark bufnr virtlines-ns lnum 0 {:virt_lines lines})))))
 
 (fn diagnostic.handlers.virtlines.hide [ns bufnr]
   (match (diagnostic.get_namespace ns)
