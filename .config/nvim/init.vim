@@ -113,3 +113,45 @@ cnoremap <expr> <C-P> wildmenumode() ? '<C-P>' : '<Up>'
 cnoremap <expr> <C-N> wildmenumode() ? '<C-N>' : '<Down>'
 cnoremap <expr> <C-J> pumvisible() ? '<Down><Tab>' : '<C-J>'
 cnoremap <expr> <C-K> pumvisible() ? '<Up><Tab>' : '<C-K>'
+
+augroup init
+  autocmd!
+
+  " Close preview and command windows with q
+  autocmd BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
+  autocmd CmdWinEnter * nnoremap <buffer> q <C-W>q
+
+  " Highlight yanked text
+  autocmd TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150, on_visual=true}
+
+  " Start insert mode in terminals automatically (and set the statusline to
+  " the terminal title)
+  autocmd TermOpen * setlocal statusline=%{b:term_title} | startinsert
+
+  " Auto close shell terminals (#15440)
+  autocmd TermClose *
+        \ if !v:event.status |
+        \   let info = nvim_get_chan_info(&channel) |
+        \   if get(info, 'argv', []) ==# [&shell] |
+        \     exec 'bdelete! ' .. expand('<abuf>') |
+        \   endif |
+        \ endif
+
+  " Hide cursorline in insert mode and when the current window doesn't have
+  " focus
+  autocmd InsertEnter,WinLeave,FocusLost * setlocal nocursorline
+  autocmd InsertLeave,WinEnter,FocusGained * if mode() !=# 'i' | let &l:cursorline = 1 | endif
+
+  " Create missing parent directories automatically
+  autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
+
+  " Defer setting the colorscheme until the UI loads (micro optimization)
+  autocmd UIEnter * silent! colorscheme dark
+
+  " Restore cursor position (except for git commits and rebases)
+  autocmd BufRead * if &ft !~# 'commit\|rebase' | exec 'silent! normal! g`"' | endif
+
+  " Don't show trailing spaces in insert mode
+  autocmd InsertEnter * setlocal listchars-=trail:-
+  autocmd InsertLeave * setlocal listchars+=trail:-
+augroup END
