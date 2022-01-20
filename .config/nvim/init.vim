@@ -43,6 +43,8 @@ set diffopt+=indent-heuristic
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>O
 
+inoremap <C-Space> <C-X><C-O>
+
 " Make * and # work in visual mode
 xnoremap * y/\V<C-R>"<CR>
 xnoremap # y?\V<C-R>"<CR>
