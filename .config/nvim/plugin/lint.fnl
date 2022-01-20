@@ -4,6 +4,7 @@
                                         :vim ["vint"]
                                         :lua ["luacheck"]
                                         :nix ["nix"]
+                                        :zig ["zig"]
                                         :python ["flake8"]})]
                     (values k (icollect [_ v (ipairs v)]
                                 (if (= 1 (vim.fn.executable v))
