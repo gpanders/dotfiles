@@ -14,5 +14,9 @@ vim.filetype.add({
         csv = "csv",
         cl = "opencl",
         env = "env",
+        plist = "xml",
+    },
+    pattern = {
+        ["~/%.config/mutt/.*"] = "muttrc",
     },
 })
