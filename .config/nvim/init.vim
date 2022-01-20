@@ -98,10 +98,6 @@ nnoremap yo<Bar> <Cmd>setlocal cursorcolumn!<Bar>set cuc?<CR>
 nnoremap <expr> yod '<Cmd>' . (&diff ? 'diffoff' : 'diffthis') . '<CR>'
 nnoremap yos <Cmd>setlocal spell!<Bar>set spell?<CR>
 
-nnoremap m<CR> <Cmd>make<CR>
-nnoremap m<Space> :make<Space>
-nnoremap m? <Cmd>set makeprg?<CR>
-
 function! Sort(type, ...) abort
     '[,']sort
     call setpos('.', getpos("''"))

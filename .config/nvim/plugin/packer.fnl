@@ -36,6 +36,7 @@
         "tpope/vim-fugitive"
         "tpope/vim-sleuth"
         "tpope/vim-obsession"
+        "tpope/vim-dispatch"
         "justinmk/vim-dirvish"
         "junegunn/vim-easy-align"
         "lewis6991/gitsigns.nvim"
