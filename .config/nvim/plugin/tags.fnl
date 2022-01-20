@@ -28,8 +28,8 @@
     (when (= 1 (length tags))
       (exec (: "tjump %s" :format (. tags 1 :name))))))
 
-(command :Tselect {:nargs 1} (fn [{: args}] (tselect args)))
-(command :Tjump {:nargs 1} (fn [{: args}] (tjump args)))
+(command :Tselect {:nargs 1 :complete :tag} (fn [{: args}] (tselect args)))
+(command :Tjump {:nargs 1 :complete :tag} (fn [{: args}] (tjump args)))
 
 (vim.cmd "
 cnoreabbrev <expr> ts      (getcmdtype() ==# ':' && getcmdline() ==# 'ts')      ? 'Tselect' : 'ts'
