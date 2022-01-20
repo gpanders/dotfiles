@@ -26,6 +26,7 @@
 
   (keymap :n "dgb" #(dap.toggle_breakpoint))
   (keymap :n "drr" #(dap.continue))
+  (keymap :n "drl" #(dap.run_last))
 
   (macro sign [name text hl]
     `(vim.fn.sign_define ,name {:text ,text :texthl ,hl}))

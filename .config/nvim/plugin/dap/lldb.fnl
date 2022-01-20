@@ -8,7 +8,7 @@
                                 :program #(vim.fn.input "Path to executable: " (.. (vim.loop.cwd) "/") :file)
                                 :cwd "${workspaceFolder}"
                                 :stopOnEntry false
-                                :args []}
+                                :args #(vim.split (vim.fn.input "Args: ") " ")}
                                {:name "Attach to process"
                                 :type :lldb
                                 :request :attach
