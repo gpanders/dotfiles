@@ -2,6 +2,8 @@
 (local diagnostic vim.diagnostic)
 (local ns (api.nvim_create_namespace :diagnostics))
 
+(var show-virtlines? true)
+
 (diagnostic.config {:virtual_text false
                     :virtlines false
                     :underline false
@@ -79,7 +81,6 @@
   (match (diagnostic.get_namespace ns)
     {:user_data {: virtlines_ns}} (api.nvim_buf_clear_namespace bufnr virtlines_ns 0 -1)))
 
-(var show-virtlines? false)
 (fn show-cursor-diagnostics [bufnr]
   (let [[lnum] (api.nvim_win_get_cursor 0)
         lnum (- lnum 1)
@@ -103,8 +104,9 @@
 (autocmd diagnostics :DiagnosticChanged "*"
   (let [bufnr (tonumber (vim.fn.expand "<abuf>"))]
     (when (api.nvim_buf_is_loaded bufnr)
-      (each [_ winid (ipairs (vim.fn.win_findbuf bufnr))]
-        (diagnostic.setloclist {: winid :open false})))))
+      (let [diagnostics (diagnostic.toqflist (diagnostic.get bufnr))]
+        (each [_ winid (ipairs (vim.fn.win_findbuf bufnr))]
+          (vim.fn.setloclist 0 diagnostics))))))
 
 (keymap :n "]g" #(diagnostic.goto_next {:float false}))
 (keymap :n "[g" #(diagnostic.goto_prev {:float false}))
