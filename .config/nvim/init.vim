@@ -1,3 +1,6 @@
+" Ensure filetype autocommands are created first
+filetype on
+
 set breakindent
 set colorcolumn=+1
 set completeopt=menu,menuone
