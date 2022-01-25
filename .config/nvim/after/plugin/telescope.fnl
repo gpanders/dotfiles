@@ -10,7 +10,7 @@
     (autocmd [:VimEnter :BufRead :BufNewFile] "*"
       (let [(ok? result) (pcall vim.call :FugitiveGitDir)]
         (when (and ok? (not= result ""))
-          (keymap :n "<Space>f" "<Cmd>Telescope git_files previewer=false show_untracked=false<CR>" {:buffer true})
+          (keymap :n "<Space>f" "<Cmd>Telescope git_files previewer=false show_untracked=false use_git_root=false<CR>" {:buffer true})
           (keymap :n "<Space>F" "<Cmd>Telescope find_files previewer=false hidden=true follow=true<CR>" {:buffer true}))))
     (autocmd :User :LspAttached
       (keymap :n "<Space>t" "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>" {:buffer true}))))
