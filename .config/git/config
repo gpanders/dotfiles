@@ -17,6 +17,7 @@
 	f = fetch
 	m = merge
 	p = push
+	pf = push --force-with-lease
 	snapshot = !git stash && git stash apply -q
 	t = tag
 	s = -p status
