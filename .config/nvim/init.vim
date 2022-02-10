@@ -103,6 +103,9 @@ nnoremap yo<Bar> <Cmd>setlocal cursorcolumn!<Bar>set cuc?<CR>
 nnoremap <expr> yod '<Cmd>' . (&diff ? 'diffoff' : 'diffthis') . '<CR>'
 nnoremap yos <Cmd>setlocal spell!<Bar>set spell?<CR>
 
+nnoremap <expr> <Space>q getqflist(#{winid: 1}).winid ? '<Cmd>cclose<CR>' : '<Cmd>copen<CR><C-W>p'
+nnoremap <expr> <Space>l getloclist(0, #{winid: 1}).winid ? '<Cmd>lclose<CR>' : '<Cmd>lopen<CR><C-W>p'
+
 function! Sort(type, ...) abort
     '[,']sort
     call setpos('.', getpos("''"))

@@ -5,5 +5,4 @@
                      :hl_group :Visual
                      :mappings {:is {:<Tab> :expand_or_advance
                                      :<S-Tab> :previous}
-                                :x {:<Tab> :cut_text}
-                                :n {:g<Tab> :cut_text}}}))))
+                                :x {:<Tab> :cut_text}}}))))

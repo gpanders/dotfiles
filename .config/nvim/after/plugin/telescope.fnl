@@ -3,7 +3,6 @@
   (keymap :n "<Space>g" "<Cmd>Telescope live_grep<CR>")
   (keymap :n "<Space>b" "<Cmd>Telescope buffers previewer=false<CR>")
   (keymap :n "<Space>o" "<Cmd>Telescope oldfiles previewer=false<CR>")
-  (keymap :n "<Space>q" "<Cmd>Telescope quickfix previewer=false<CR>")
   (keymap :n "z=" "<Cmd>Telescope spell_suggest<CR>")
 
   (augroup telescope#
