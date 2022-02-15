@@ -1,6 +1,6 @@
 (let [items [" "
              "%{luaeval(\"require'statusline'.obsession()\")}"
-             "%<%f [%{&filetype ==# '' ? 'none' : &filetype}]"
+             "%<%f %{&filetype !=# '' ? '[' . &filetype . '] ' : ''}"
              "%{luaeval(\"require'statusline'.lsp()\")}"
              "%m%r%="
              "%{luaeval(\"require'statusline'.dap()\")} %="

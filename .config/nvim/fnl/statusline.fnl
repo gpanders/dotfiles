@@ -27,8 +27,8 @@
                                              (: "%s [%02d]" :format (table.concat messages ", ") percentage)
                                              (table.concat messages ", "))]
                              (match (length msg-str)
-                               0 (: " (%s/%d)" :format name client_id)
-                               _ (: " (%s/%d %s)" :format name client_id msg-str))))
+                               0 (: "(%s/%d) " :format name client_id)
+                               _ (: "(%s/%d %s) " :format name client_id msg-str))))
     _ ""))
 
 (fn dap []
