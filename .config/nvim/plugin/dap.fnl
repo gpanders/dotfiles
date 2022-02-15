@@ -2,6 +2,7 @@
   (let [widgets (require "dap.ui.widgets")
         scopes (widgets.sidebar widgets.scopes)]
     (fn dap.listeners.after.event_initialized.me []
+      (set vim.b.dap true)
       (keymap :n "K" #((. (require "dap.ui.widgets") :hover)))
       (keymap :n "dq" #(dap.close))
       (keymap :n "d[f" #(dap.up))
@@ -13,6 +14,7 @@
       (scopes.open)
       (dap.repl.open))
     (fn dap.listeners.after.event_terminated.me []
+      (set vim.b.dap false)
       (vim.api.nvim_del_keymap :n "K")
       (vim.api.nvim_del_keymap :n "dq")
       (vim.api.nvim_del_keymap :n "d[f")
