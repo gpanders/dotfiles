@@ -1,62 +1,28 @@
+(import-macros {: make-colors} :colors)
+
 (when vim.g.colors_name
   (exec "hi clear"))
 
 (set vim.g.colors_name :base16-eighties)
 
-(macro make-colors [...]
-  (assert-compile (= 0 (math.fmod (select :# ...) 2))
-                  "expected even number of group/option pairs")
-  (let [gui {:black "#2d2d2d"
-             :red "#f2777a"
-             :green "#99cc99"
-             :yellow "#ffcc66"
-             :blue "#6699cc"
-             :magenta "#cc99cc"
-             :cyan "#66cccc"
-             :normal "#d3d0c8"
-             :lightgray "#747369"
-             :orange "#f99157"
-             :gray "#515151"
-             :darkgray "#393939"
-             :lightergray "#a09f93"
-             :white "#e8e6df"
-             :darkorange "#d27b53"
-             :brwhite "#f2f0ec"}
-        cterm {:black 0
-               :red 1
-               :green 2
-               :yellow 3
-               :blue 4
-               :magenta 5
-               :cyan 6
-               :normal 7
-               :lightgray 8
-               :orange 9
-               :darkgray 10
-               :gray 11
-               :lightergray 12
-               :white 13
-               :darkorange 14
-               :brwhite 15}
-        highlights []]
-    (for [i 1 (select :# ...) 2]
-      (let [(group opts) (select i ...)
-            group (tostring group)
-            s (if opts.link
-                  (: "hi link %s %s" :format group opts.link)
-                  (: "hi %s ctermfg=%s ctermbg=%s guifg=%s guibg=%s cterm=%s gui=%s guisp=%s" :format
-                     group
-                     (or (. cterm opts.fg) :NONE)
-                     (or (. cterm opts.bg) :NONE)
-                     (or (. gui opts.fg) :NONE)
-                     (or (. gui opts.bg) :NONE)
-                     (or opts.attr :NONE)
-                     (or opts.attr :NONE)
-                     (or (. gui opts.guisp) :NONE)))]
-        (table.insert highlights s)))
-    `(vim.cmd ,(table.concat highlights "\n"))))
-
 (make-colors
+  {:black       {:gui "#2d2d2d" :cterm 0}
+   :red         {:gui "#f2777a" :cterm 1}
+   :green       {:gui "#99cc99" :cterm 2}
+   :yellow      {:gui "#ffcc66" :cterm 3}
+   :blue        {:gui "#6699cc" :cterm 4}
+   :magenta     {:gui "#cc99cc" :cterm 5}
+   :cyan        {:gui "#66cccc" :cterm 6}
+   :normal      {:gui "#d3d0c8" :cterm 7}
+   :lightgray   {:gui "#747369" :cterm 8}
+   :orange      {:gui "#f99157" :cterm 9}
+   :darkgray    {:gui "#393939" :cterm 10}
+   :gray        {:gui "#515151" :cterm 11}
+   :lightergray {:gui "#a09f93" :cterm 12}
+   :white       {:gui "#e8e6df" :cterm 13}
+   :darkorange  {:gui "#d27b53" :cterm 14}
+   :brwhite     {:gui "#f2f0ec" :cterm 15}}
+
   Normal {:fg "normal" :bg "black"}
 
   ; UI Highlights (:h highlight-groups)
