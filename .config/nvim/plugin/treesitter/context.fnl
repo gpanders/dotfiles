@@ -1,4 +1,4 @@
-(local {: node-at-cursor : containing-function-node} (require :treesitter))
+(local {: node-at-cursor : context} (require :treesitter))
 
 (local state {})
 
@@ -8,31 +8,40 @@
   (set state.winid nil)
   (set state.node nil))
 
-(fn show-function-scope []
+(fn show-context []
   (let [bufnr (vim.api.nvim_get_current_buf)
-        winid (vim.api.nvim_get_current_win)]
-    (match (containing-function-node bufnr)
-      (node text)
-      (let [start-row (node:range)
+        winid (vim.api.nvim_get_current_win)
+        [{: textoff}] (vim.fn.getwininfo winid)
+        width (- (vim.api.nvim_win_get_width winid) textoff)]
+    (match (context bufnr)
+      ([ctx] text)
+      (let [start-row (ctx:start)
             {:row screen-row} (vim.fn.screenpos winid (+ start-row 1) 1)]
         (if (= screen-row 0)
-            (when (not= (node:id) state.node)
-              (clear)
-              (let [tmpbuf (vim.api.nvim_create_buf false true)
-                    floatwin (vim.api.nvim_open_win tmpbuf false {:relative :win
-                                                                  :win winid
-                                                                  :row 0
-                                                                  :col 0
-                                                                  :width (vim.fn.winwidth winid)
-                                                                  :height 1
-                                                                  :focusable false
-                                                                  :style :minimal
-                                                                  :noautocmd true})]
-                (vim.api.nvim_buf_set_lines tmpbuf 0 -1 true [text])
-                (tset vim.bo tmpbuf :filetype (. vim.bo bufnr :filetype))
-                (tset vim.wo floatwin :winhighlight "NormalFloat:TreesitterScope")
-                (set state.node (node:id))
-                (set state.winid floatwin)))
+            (if (not= (ctx:id) state.node)
+                (do
+                  (clear)
+                  (let [tmpbuf (vim.api.nvim_create_buf false true)
+                        floatwin (vim.api.nvim_open_win tmpbuf false {:relative :win
+                                                                      :win winid
+                                                                      :row 0
+                                                                      :col textoff
+                                                                      : width
+                                                                      :height 1
+                                                                      :focusable false
+                                                                      :style :minimal
+                                                                      :noautocmd true})]
+                    (vim.api.nvim_buf_set_lines tmpbuf 0 -1 true [text])
+                    (tset vim.bo tmpbuf :modifiable false)
+                    (tset vim.bo tmpbuf :readonly true)
+                    (tset vim.bo tmpbuf :filetype (. vim.bo bufnr :filetype))
+                    (tset vim.wo floatwin :winhighlight "NormalFloat:TreesitterContext")
+                    (set state.node (ctx:id))
+                    (set state.winid floatwin)))
+                (vim.api.nvim_win_set_config state.winid {:relative :win
+                                                          :row 0
+                                                          :col textoff
+                                                          : width}))
             (clear)))
       _ (clear))))
 
@@ -40,4 +49,4 @@
   (let [bufnr (tonumber (vim.fn.expand "<abuf>"))
         lang (. vim.bo bufnr :filetype)]
     (when (vim.treesitter.language.require_language lang nil true)
-      (autocmd treesitter# [:WinScrolled :CursorMoved] "<buffer=abuf>" (show-function-scope)))))
+      (autocmd treesitter# [:WinScrolled :CursorMoved] "<buffer=abuf>" (show-context)))))

@@ -16,32 +16,28 @@
           (set cur parent)
           parent))))
 
-(fn containing-function-node [bufnr]
-  (var function-node nil)
-  (var text nil)
+(fn context [bufnr]
+  (local scopes [])
+  (local lines [])
   (let [lang (. vim.bo bufnr :filetype)]
-    (match (vim.treesitter.query.get_query lang :function)
+    (match (vim.treesitter.query.get_query lang :context)
       query
       (do
-        (var child (node-at-cursor))
-        (each [parent (parents child) :until function-node]
-          (each [id node (query:iter_captures parent)]
-            (when (and (= (node:id) (child:id)) (= (. query.captures id) :function))
-              (set function-node node)))
-          (set child parent))
-
-        (when function-node
-          (var start nil)
-          (var end nil)
-          (each [id node (query:iter_captures function-node)]
-            (match (. query.captures id)
-              :function.start (set start (node:start))
-              :function.end (set end (node:end_))))
-          (let [start-row (or start (function-node:start))
-                end-row (or end start-row)]
-            (set text (table.concat (vim.api.nvim_buf_get_lines bufnr start-row (+ end-row 1) true) " ")))))))
-
-  (values function-node text))
+        (var node (: (node-at-cursor) :parent))
+        (while node
+          (var done? false)
+          (each [id subnode (query:iter_captures node) :until done?]
+            (when (= (subnode:id) (node:id))
+              (set done? true)
+              (table.insert scopes node)
+              (let [start-row (node:start)
+                    [text] (vim.api.nvim_buf_get_lines bufnr start-row (+ start-row 1) true)]
+                (table.insert lines 1 (-> text
+                                          (vim.trim)
+                                          (string.gsub "%s*[%[%(%{]*%s*$" "")
+                                          (->> (pick-values 1)))))))
+          (set node (node:parent))))))
+  (values scopes (table.concat lines " -> ")))
 
 (fn highlight-node [bufnr ns node]
   (let [(start-row start-col end-row end-col) (node:range)]
@@ -49,6 +45,14 @@
                                                                 :end_col end-col
                                                                 :hl_group :Visual})))
 
+(fn goto-node [node end?]
+  (let [(start-row start-col end-row end-col) (node:range)
+        (row col) (if end?
+                      (values end-row end-col)
+                      (values start-row start-col))]
+    (vim.api.nvim_win_set_cursor 0 [(+ row 1) col])))
+
 {: node-at-cursor
- : containing-function-node
- : highlight-node}
+ : context
+ : highlight-node
+ : goto-node}

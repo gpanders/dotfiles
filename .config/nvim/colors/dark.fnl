@@ -197,4 +197,6 @@
 
   Sneak {:link "IncSearch"}
 
-  TelescopeMatching {:fg "yellow"})
+  TelescopeMatching {:fg "yellow"}
+
+  TreesitterContext {:bg "darkgray"})
