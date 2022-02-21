@@ -1,8 +1,14 @@
+(local parse-line (match ((vim.gsplit vim.o.grepformat ","))
+                    "%f:%l:%c:%m" (fn [line]
+                                    (let [(filename lnum col text) (line:match "^([^:]+):(%d+):(%d+):(.*)$")]
+                                      {: filename : lnum : col : text}))
+                    "%f:%l:%m" (fn [line]
+                                 (let [(filename lnum text) (line:match "^([^:]+):(%d+):(.*)$")]
+                                   {: filename : lnum : text}))))
+
 (fn on-exit [l title mods chunks]
   (let [lines (-> chunks table.concat (vim.split "\n" {:trimempty true}))
-        items (icollect [_ line (ipairs lines)]
-                (let [(filename lnum col text) (line:match "^([^:]+):(%d+):(%d+):(.*)$")]
-                  {: filename : lnum : col : text}))
+        items (icollect [_ line (ipairs lines)] (parse-line line))
         what {: title : items :nr "$"}]
     (if l
         (vim.fn.setloclist 0 {} " " what)
