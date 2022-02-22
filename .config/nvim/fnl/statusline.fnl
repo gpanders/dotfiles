@@ -12,24 +12,35 @@
     (true s) (.. s " ")
     _ ""))
 
+(fn lsp-progress-messages []
+  (let [messages []]
+    (each [client-id client (pairs (vim.lsp.buf_get_clients))]
+      (each [k v (pairs client.messages.progress)]
+        (when (not v.done)
+          (let [msg (if v.message
+                        (: "%s: %s" :format v.title v.message)
+                        v.title)]
+            (table.insert messages (if v.percentage
+                                       (: "%s (%%%d)" :format msg v.percentage)
+                                       msg)))))
+      (each [_ v (ipairs client.messages.messages)]
+        (when (and v.show_once (= v.shown 0))
+          (table.insert messages v.content))
+        (set v.shown (+ v.shown 1)))
+      (each [k v (pairs client.messages.status)]
+        (assert false (.. k ": " (vim.inspect v)))))
+    messages))
+
 (fn lsp []
-  (match vim.b.lsp
-    {: name : client_id} (do
-                           (var percentage nil)
-                           (let [messages (icollect [_ v (ipairs (vim.lsp.util.get_progress_messages))]
-                                            (do
-                                              (when v.percentage
-                                                (set percentage (math.max (or percentage 0) v.percentage)))
-                                              (if v.message
-                                                  (: "%s: %s" :format v.title v.message)
-                                                  v.title)))
-                                 msg-str (if percentage
-                                             (: "%s [%02d]" :format (table.concat messages ", ") percentage)
-                                             (table.concat messages ", "))]
-                             (match (length msg-str)
-                               0 (: "(%s/%d) " :format name client_id)
-                               _ (: "(%s/%d %s) " :format name client_id msg-str))))
-    _ ""))
+  (let [clients (icollect [client-id client (pairs (vim.lsp.buf_get_clients))]
+                  (: "%s/%d" :format client.config.name client-id))]
+    (match (length clients)
+      0 ""
+      _ (let [clients (table.concat clients ", ")
+              messages (lsp-progress-messages)]
+          (match (length messages)
+            0 (: "(%s) " :format clients)
+            _ (: "(%s) %s " :format clients (table.concat messages ", ")))))))
 
 (fn dap []
   (match vim.b.dap
@@ -46,9 +57,9 @@
         num-warnings (- (length diags) num-errors)]
     (match (values num-errors num-warnings)
       (0 0) ""
-      (e 0) (: "E: %d " :format e)
-      (0 w) (: "W: %d " :format w)
-      (e w) (: "E: %d, W: %d " :format e w))))
+      (e 0) (: "E:%d" :format e)
+      (0 w) (: "W:%d" :format w)
+      (e w) (: "E:%d, W:%d" :format e w))))
 
 {: git
  : lsp

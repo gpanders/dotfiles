@@ -48,8 +48,6 @@
     (vim.opt.completeopt:append [:noinsert])
     (lsp-compl.attach client bufnr {}))
 
-  (tset vim.b bufnr :lsp {:name client.name :client_id client.id})
-
   (exec "doautocmd User LspAttached"))
 
 (fn on-init [client result]
