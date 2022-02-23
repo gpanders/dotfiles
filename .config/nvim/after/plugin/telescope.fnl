@@ -6,9 +6,9 @@
   (keymap :n "z=" "<Cmd>Telescope spell_suggest<CR>")
 
   (augroup telescope#
-    (autocmd [:VimEnter :BufRead :BufNewFile] "*"
+    (autocmd [:VimEnter :BufRead :BufNewFile :DirChanged] "*"
       (let [(ok? result) (pcall vim.call :FugitiveGitDir)]
-        (when (and ok? (not= result ""))
+        (when (and ok? (not= result "") (<= (length (vim.fn.fnamemodify result ":h")) (length (vim.loop.cwd))))
           (keymap :n "<Space>f" "<Cmd>Telescope git_files previewer=false show_untracked=false use_git_root=false<CR>" {:buffer true})
           (keymap :n "<Space>F" "<Cmd>Telescope find_files previewer=false hidden=true follow=true<CR>" {:buffer true}))))
     (autocmd :User :LspAttached
