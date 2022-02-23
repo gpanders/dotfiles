@@ -110,7 +110,7 @@
   (keymap :i "<C-S>" #(vim.lsp.buf.signature_help) {:buffer bufnr})
   (keymap :n "[R" #(vim.lsp.buf.references) {:buffer bufnr})
   (keymap :n "crr" #(vim.lsp.buf.rename) {:buffer bufnr})
-  (keymap :n "<Bslash>K" #(vim.lsp.buf.hover) {:buffer bufnr})
+  (keymap :n "gK" #(vim.lsp.buf.hover) {:buffer bufnr})
   (keymap :n "cac" #(vim.lsp.buf.code_action) {:buffer bufnr})
 
   (with-module [lsp-compl :lsp_compl]
@@ -145,6 +145,10 @@
                                     messages (update-progress client)]
                                 (each [_ bufnr (ipairs bufnrs)]
                                     (draw-progress-window bufnr client.config.name messages)))))
+
+(tset handlers "textDocument/hover" (vim.lsp.with (. vim.lsp.handlers "textDocument/hover")
+                                                  {:border :rounded
+                                                   :focusable false}))
 
 (fn mk-config [cmd ?root-dir ?opts]
   (let [capabilities (vim.lsp.protocol.make_client_capabilities)]
