@@ -31,6 +31,7 @@
         "gpanders/nvim-parinfer"
         "tpope/vim-surround"
         "tpope/vim-commentary"
+        "tpope/vim-repeat"
         "tpope/vim-rsi"
         "tpope/vim-scriptease" {:opt true}
         "tpope/vim-fugitive"
