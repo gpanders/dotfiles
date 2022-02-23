@@ -17,9 +17,9 @@
           parent))))
 
 (fn context [bufnr]
-  (local scopes [])
-  (local lines [])
-  (let [lang (. vim.bo bufnr :filetype)]
+  (let [scopes []
+        lines []
+        lang (. vim.bo bufnr :filetype)]
     (match (vim.treesitter.query.get_query lang :context)
       query
       (do
@@ -32,12 +32,18 @@
               (table.insert scopes node)
               (let [start-row (node:start)
                     [text] (vim.api.nvim_buf_get_lines bufnr start-row (+ start-row 1) true)]
-                (table.insert lines 1 (-> text
-                                          (vim.trim)
-                                          (string.gsub "%s*[%[%(%{]*%s*$" "")
-                                          (->> (pick-values 1)))))))
-          (set node (node:parent))))))
-  (values scopes (table.concat lines " -> ")))
+                (table.insert lines 1 text))))
+          (set node (node:parent)))))
+    (let [lines (if (< 1 (length lines))
+                    ; When there is more than one level of context, trim
+                    ; whitespace and join them with a separator
+                    (icollect [_ line (ipairs lines)]
+                      (-> line
+                          (vim.trim)
+                          (string.gsub "%s*[%[%(%{]*%s*$" "")
+                          (->> (pick-values 1))))
+                    lines)]
+      (values scopes (table.concat lines " -> ")))))
 
 (fn highlight-node [bufnr ns node]
   (let [(start-row start-col end-row end-col) (node:range)]

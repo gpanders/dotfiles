@@ -4,7 +4,8 @@
 (local parser-src {:python (github "tree-sitter/tree-sitter-python")
                    :lua (github "MunifTanjim/tree-sitter-lua")
                    :rust (github "tree-sitter/tree-sitter-rust")
-                   :fennel (github "travonted/tree-sitter-fennel")})
+                   :fennel (github "travonted/tree-sitter-fennel")
+                   :zig (github "maxxnino/tree-sitter-zig")})
 
 (local temp-dir (.. (vim.fn.stdpath :cache) "/treesitter"))
 (local parser-dir (.. (vim.fn.stdpath :data) "/site/parser/"))
