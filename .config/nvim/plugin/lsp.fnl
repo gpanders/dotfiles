@@ -1,5 +1,6 @@
 (var enabled true)
 (local configs {})
+(local state {:ns (vim.api.nvim_create_namespace "")})
 
 (let [orig vim.uri_from_bufnr]
   (fn vim.uri_from_bufnr [bufnr]
@@ -26,6 +27,74 @@
                 (set curdir parent)))
         _ (set done? true)))
     curdir))
+
+(fn update-progress [client]
+  (let [messages []]
+    (each [k v (pairs client.messages.progress)]
+      (when (not v.done)
+        (let [msg (if v.message
+                      (: "%s: %s" :format v.title v.message)
+                      v.title)]
+          (table.insert messages (if v.percentage
+                                     (: "%s [%%%d]" :format msg v.percentage)
+                                     msg)))))
+    (each [i v (ipairs client.messages.messages)]
+      (when (= v.shown 0)
+        (table.insert messages v.content))
+      (when v.show_once
+        (set v.shown (+ v.shown 1))))
+    (each [k v (pairs client.messages.status)]
+      (assert false (.. k ": " (vim.inspect v))))
+    messages))
+
+(fn draw-progress-window [bufnr name messages]
+  (when (and (vim.api.nvim_buf_is_valid bufnr) (vim.api.nvim_buf_is_loaded bufnr))
+    (let [b (match (?. state bufnr :progress)
+              nil (let [b (vim.api.nvim_create_buf false true)]
+                    (when (not (. state bufnr))
+                      (tset state bufnr {}))
+                    (tset state bufnr :progress b)
+                    (vim.api.nvim_buf_set_lines b 0 0 true [""])
+                    (vim.api.nvim_buf_set_extmark b state.ns 0 0 {:virt_text [[name :Title]]
+                                                                  :virt_text_pos :right_align
+                                                                  :hl_mode :combine})
+                    b)
+              n n)
+          text []]
+      (var max-line-length (length name))
+      (each [_ msg (ipairs messages)]
+        (table.insert text msg)
+        (set max-line-length (math.max max-line-length (length msg))))
+      (vim.api.nvim_buf_set_lines b 1 -1 true (icollect [_ v (ipairs text)]
+                                                (.. (string.rep " " (- max-line-length (length v))) v)))
+      (each [_ winid (ipairs (vim.fn.win_findbuf bufnr))]
+        (if (= 0 (length messages))
+            (match (?. state bufnr :windows winid)
+              w (do
+                  (vim.api.nvim_win_close w true)
+                  (tset state bufnr :windows winid nil)))
+            (let [[{: width : height}] (vim.fn.getwininfo winid)]
+              (match (?. state bufnr :windows winid)
+                nil (let [w (vim.api.nvim_open_win b false {:relative :win
+                                                            :win winid
+                                                            :anchor :SE
+                                                            :width max-line-length
+                                                            :height (+ (length text) 1)
+                                                            :row (- height 1)
+                                                            :col (- width 1)
+                                                            :style :minimal
+                                                            :focusable false
+                                                            :noautocmd true})]
+                      (when (not (. state bufnr :windows))
+                        (tset state bufnr :windows {}))
+                      (tset state bufnr :windows winid w)
+                      (vim.api.nvim_win_set_option w :winhighlight "Normal:Comment")
+                      w)
+                w (vim.api.nvim_win_set_config w {:relative :win
+                                                  :width max-line-length
+                                                  :height (+ (length text) 1)
+                                                  :row (- height 1)
+                                                  :col (- width 1)}))))))))
 
 (fn on-attach [client bufnr]
   (when client.resolved_capabilities.completion
@@ -67,6 +136,16 @@
                      (setlocal omnifunc nil)
                      (exec (: "autocmd! lsp * <buffer=%d>" :format bufnr))))))
 
+(local handlers {})
+
+(tset handlers "$/progress" (fn [_ result ctx]
+                              ((. vim.lsp.handlers "$/progress") _ result ctx)
+                              (let [client (vim.lsp.get_client_by_id ctx.client_id)
+                                    bufnrs (vim.lsp.get_buffers_by_client_id ctx.client_id)
+                                    messages (update-progress client)]
+                                (each [_ bufnr (ipairs bufnrs)]
+                                    (draw-progress-window bufnr client.config.name messages)))))
+
 (fn mk-config [cmd ?root-dir ?opts]
   (let [capabilities (vim.lsp.protocol.make_client_capabilities)]
     (set capabilities.workspace.configuration true)
@@ -74,7 +153,7 @@
       {:flags {:allow_incremental_sync true}
        : cmd
        :name (. cmd 1)
-       :handlers {}
+       : handlers
        : capabilities
        :on_init on-init
        :on_attach on-attach
