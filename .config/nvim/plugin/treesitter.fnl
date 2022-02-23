@@ -1,12 +1,19 @@
-(local {: node-at-cursor : highlight-node} (require :treesitter))
+(fn complete [arg line pos]
+  (let [commands (. (require :treesitter) :commands)]
+    (icollect [cmd (pairs commands)]
+      (if (= arg (string.sub cmd 1 (length arg)))
+          cmd))))
 
-(local ns (vim.api.nvim_create_namespace ""))
-
-(fn ts-cursor []
-  (let [bufnr (vim.api.nvim_get_current_buf)
-        node (node-at-cursor)]
-    (highlight-node bufnr ns node)
-    (autocmd :CursorMoved "<buffer>" :once (vim.api.nvim_buf_clear_namespace bufnr ns 0 -1))
-    (print (node:sexpr))))
-
-(command :TSCursor {} ts-cursor)
+(command :Treesitter {:nargs "+" : complete}
+         (fn [{: args}]
+           (let [commands (. (require :treesitter) :commands)
+                 [cmd & args] (vim.split args " ")]
+             (match (. commands cmd)
+               f (f (unpack args))
+               _ (let [matches (icollect [k (pairs commands)]
+                                 (when (= cmd (string.sub k 1 (length cmd)))
+                                   k))]
+                   (match (length matches)
+                     1 ((. commands (. matches 1)) (unpack args))
+                     0 (vim.api.nvim_err_writeln (: "Invalid command: %s" :format cmd))
+                     _ (vim.api.nvim_err_writeln (: "Ambiguous command: %s can match any of %s" :format cmd (table.concat matches ", ")))))))))
