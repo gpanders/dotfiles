@@ -128,10 +128,10 @@
   DiagnosticSignWarn {:fg "yellow" :bg "darkgray"}
   DiagnosticSignInfo {:fg "blue" :bg "darkgray"}
   DiagnosticSignHint {:fg "lightgray" :bg "darkgray"}
-  DiagnosticUnderlineError {:fg "red" :attr "undercurl" :guisp "red"}
-  DiagnosticUnderlineWarn {:fg "yellow" :attr "undercurl" :guisp "yellow"}
-  DiagnosticUnderlineInfo {:fg "blue" :attr "undercurl" :guisp "blue"}
-  DiagnosticUnderlineHint {:fg "lightgray" :attr "undercurl" :guisp "lightgray"}
+  DiagnosticUnderlineError {:fg "red" :attr "underline"}
+  DiagnosticUnderlineWarn {:fg "yellow" :attr "underline"}
+  DiagnosticUnderlineInfo {:fg "blue" :attr "underline"}
+  DiagnosticUnderlineHint {:fg "lightgray" :attr "underline"}
 
   ; Syntax-file specific highlighting
   diffAdded {:fg "green"}
