@@ -12,9 +12,16 @@
 (local temp-dir (.. (vim.fn.stdpath :cache) "/treesitter"))
 (local parser-dir (.. (vim.fn.stdpath :data) "/site/parser/"))
 
+(fn run-in-dir [dir cmd]
+  "Run cmd in the directory given by dir"
+  (let [curdir (vim.fn.chdir dir)
+        out (vim.fn.system cmd)
+        _ (vim.fn.chdir curdir)]
+    out))
+
 (fn generate [src-dir]
   (let [abi-version vim.treesitter.language_version
-        out (vim.fn.system ["tree-sitter" "generate" "--abi" abi-version (.. src-dir "/grammar.js")])]
+        out (run-in-dir src-dir ["tree-sitter" "generate" "--abi" abi-version (.. src-dir "/grammar.js")])]
     (assert (= 0 vim.v.shell_error) out)
     (icollect [_ v (ipairs (vim.fn.globpath (.. src-dir "/src") "*" false true))]
       (let [ext (vim.fn.fnamemodify v ":e")]
@@ -41,7 +48,7 @@
       (table.insert args source))
     (table.insert args "-o")
     (table.insert args parser)
-    (let [out (vim.fn.system args)]
+    (let [out (run-in-dir src-dir args)]
       (assert (= 0 vim.v.shell_error) out))))
 
 (fn clone [lang]
@@ -52,11 +59,11 @@
                  (assert (= 0 vim.v.shell_error) out))
              _ (let [out (vim.fn.system ["git" "clone" "--depth" "1" "--quiet" repo dir])]
                  (assert (= 0 vim.v.shell_error) out)))
-           dir)
-    nil (vim.api.nvim_err_writeln (: "No source is known for language %s" :format lang))))
+           dir)))
 
 (fn commands.install [lang]
-  (let [src-dir (clone lang)
-        srcs (generate src-dir)]
-    (compile lang src-dir parser-dir srcs)
-    (vim.api.nvim_echo [[(: "Successfully installed parser for %s" :format lang)]] false {})))
+  (match (clone lang)
+    src-dir (let [srcs (generate src-dir)]
+              (compile lang src-dir parser-dir srcs)
+              (vim.api.nvim_echo [[(: "Successfully installed parser for %s" :format lang)]] false {}))
+    nil (vim.api.nvim_err_writeln (: "No source is known for language %s" :format lang))))
