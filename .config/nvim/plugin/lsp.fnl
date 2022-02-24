@@ -107,11 +107,11 @@
     (augroup lsp
       (autocmd :CursorHold "<buffer>" (vim.lsp.buf.document_highlight))
       (autocmd [:InsertEnter :CursorMoved] "<buffer>" (vim.lsp.buf.clear_references))))
-  (keymap :i "<C-S>" #(vim.lsp.buf.signature_help) {:buffer bufnr})
-  (keymap :n "[R" #(vim.lsp.buf.references) {:buffer bufnr})
-  (keymap :n "crr" #(vim.lsp.buf.rename) {:buffer bufnr})
-  (keymap :n "gK" #(vim.lsp.buf.hover) {:buffer bufnr})
-  (keymap :n "cac" #(vim.lsp.buf.code_action) {:buffer bufnr})
+  (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer bufnr})
+  (keymap :n "[R" vim.lsp.buf.references {:buffer bufnr})
+  (keymap :n "crr" vim.lsp.buf.rename {:buffer bufnr})
+  (keymap :n "gK" vim.lsp.buf.hover {:buffer bufnr})
+  (keymap :n "cac" vim.lsp.buf.code_action {:buffer bufnr})
 
   (with-module [lsp-compl :lsp_compl]
     (vim.opt.completeopt:append [:noinsert])
