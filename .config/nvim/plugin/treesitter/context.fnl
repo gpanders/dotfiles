@@ -4,11 +4,10 @@
                                           (tset t k {})
                                           (. t k))}))
 
-(fn clear [bufnr]
+(fn close [bufnr]
   (when (?. state bufnr :winid)
-    (vim.api.nvim_win_close (. state bufnr :winid) true))
-  (tset state bufnr :winid nil)
-  (tset state bufnr :node nil))
+    (vim.api.nvim_win_close (. state bufnr :winid) true)
+    (tset state bufnr :winid nil)))
 
 (fn show-context []
   (let [bufnr (vim.api.nvim_get_current_buf)
@@ -18,12 +17,10 @@
     (match (context bufnr)
       contexts (let [lines []]
                  (each [_ ctx (ipairs contexts)]
-                   (let [start-row (ctx:start)
-                         {:row screen-row} (vim.fn.screenpos winid start-row 1)]
-                     (when (= screen-row 0)
-                       (let [start-row (ctx:start)
-                             [text] (vim.api.nvim_buf_get_lines bufnr start-row (+ start-row 1) true)]
-                         (table.insert lines text)))))
+                   (let [start-row (ctx:start)]
+                     (match (vim.fn.screenpos winid (+ start-row 1) 1)
+                       {:row 0} (let [[text] (vim.api.nvim_buf_get_lines bufnr start-row (+ start-row 1) true)]
+                                  (table.insert lines text)))))
                  (if (< 0 (length lines))
                      (let [b (match (?. state bufnr :bufnr)
                                nil (let [b (vim.api.nvim_create_buf false true)]
@@ -59,8 +56,8 @@
                                            (->> (pick-values 1))))
                                      lines)]
                        (vim.api.nvim_buf_set_lines b 0 -1 true [(table.concat lines " -> ")]))
-                     (clear bufnr)))
-      _ (clear bufnr))))
+                     (close bufnr)))
+      _ (close bufnr))))
 
 (autocmd treesitter# :FileType "*"
   (let [bufnr (tonumber (vim.fn.expand "<abuf>"))

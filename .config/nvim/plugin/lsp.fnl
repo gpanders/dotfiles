@@ -49,11 +49,11 @@
 
 (fn draw-progress-window [bufnr name messages]
   (when (and (vim.api.nvim_buf_is_valid bufnr) (vim.api.nvim_buf_is_loaded bufnr))
-    (let [b (match (?. state bufnr :progress)
+    (let [b (match (?. state bufnr :bufnr)
               nil (let [b (vim.api.nvim_create_buf false true)]
                     (when (not (. state bufnr))
                       (tset state bufnr {}))
-                    (tset state bufnr :progress b)
+                    (tset state bufnr :bufnr b)
                     (vim.api.nvim_buf_set_lines b 0 0 true [""])
                     (vim.api.nvim_buf_set_extmark b state.ns 0 0 {:virt_text [[name :Title]]
                                                                   :virt_text_pos :right_align
@@ -88,7 +88,7 @@
                       (when (not (. state bufnr :windows))
                         (tset state bufnr :windows {}))
                       (tset state bufnr :windows winid w)
-                      (vim.api.nvim_win_set_option w :winhighlight "Normal:Comment")
+                      (vim.api.nvim_win_set_option w :winhighlight "NormalFloat:Comment")
                       w)
                 w (vim.api.nvim_win_set_config w {:relative :win
                                                   :width max-line-length
