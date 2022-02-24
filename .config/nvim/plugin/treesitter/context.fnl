@@ -1,13 +1,12 @@
 (local {: node-at-cursor : context} (require :treesitter))
 
-(local state (setmetatable {} {:__index (fn [t k]
-                                          (tset t k {})
-                                          (. t k))}))
+(local state {})
 
 (fn close [winid]
-  (when (?. state winid :winid)
-    (vim.api.nvim_win_close (. state winid :winid) true)
-    (tset state winid :winid nil)))
+  (match (?. state winid :winid)
+    w (do
+        (vim.api.nvim_win_close w true)
+        (tset state winid :winid nil))))
 
 (fn show-context []
   (let [bufnr (vim.api.nvim_get_current_buf)
@@ -26,6 +25,8 @@
                                nil (let [b (vim.api.nvim_create_buf false true)]
                                      (tset vim.bo b :readonly true)
                                      (tset vim.bo b :filetype (. vim.bo bufnr :filetype))
+                                     (when (not (. state bufnr))
+                                       (tset state bufnr {}))
                                      (tset state bufnr :bufnr b)
                                      b)
                                n n)
@@ -40,6 +41,8 @@
                                                                            :style :minimal
                                                                            :noautocmd true})]
                                      (tset vim.wo w :winhighlight "NormalFloat:TreesitterContext")
+                                     (when (not (. state winid))
+                                       (tset state winid {}))
                                      (tset state winid :winid w)
                                      w)
                                n (do

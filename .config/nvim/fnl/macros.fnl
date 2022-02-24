@@ -157,6 +157,10 @@ The example above is equivalent to
 (fn printf [s ...]
   `(print (: ,s :format ,...)))
 
+(fn lazy-require [mod]
+  `(setmetatable {} {:__index (fn [_# k#]
+                                (. (require ,(tostring mod)) k#))}))
+
 {: setlocal
  : setlocal+=
  : setlocal^=
@@ -172,4 +176,5 @@ The example above is equivalent to
  : append!
  : with-module
  : empty-or-nil?
- : printf}
+ : printf
+ : lazy-require}
