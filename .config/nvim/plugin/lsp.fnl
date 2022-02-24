@@ -146,9 +146,9 @@
                                 (each [_ bufnr (ipairs bufnrs)]
                                     (draw-progress-window bufnr client.config.name messages)))))
 
-(tset handlers "textDocument/hover" (vim.lsp.with (. vim.lsp.handlers "textDocument/hover")
-                                                  {:border :rounded
-                                                   :focusable false}))
+(tset handlers "textDocument/hover" (fn [_ result ctx]
+                                      ((. vim.lsp.handlers "textDocument/hover") _ result ctx {:border :rounded
+                                                                                               :focusable false})))
 
 (fn mk-config [cmd ?root-dir ?opts]
   (let [capabilities (vim.lsp.protocol.make_client_capabilities)]
