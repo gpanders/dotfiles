@@ -18,7 +18,6 @@
 
 (fn context [bufnr]
   (let [scopes []
-        lines []
         lang (. vim.bo bufnr :filetype)]
     (match (vim.treesitter.query.get_query lang :context)
       query
@@ -29,21 +28,9 @@
           (each [id subnode (query:iter_captures node) :until done?]
             (when (= (subnode:id) (node:id))
               (set done? true)
-              (table.insert scopes node)
-              (let [start-row (node:start)
-                    [text] (vim.api.nvim_buf_get_lines bufnr start-row (+ start-row 1) true)]
-                (table.insert lines 1 text))))
+              (table.insert scopes 1 node)))
           (set node (node:parent)))))
-    (let [lines (if (< 1 (length lines))
-                    ; When there is more than one level of context, trim
-                    ; whitespace and join them with a separator
-                    (icollect [_ line (ipairs lines)]
-                      (-> line
-                          (vim.trim)
-                          (string.gsub "%s*[%[%(%{]*%s*$" "")
-                          (->> (pick-values 1))))
-                    lines)]
-      (values scopes (table.concat lines " -> ")))))
+    scopes))
 
 (fn highlight-node [bufnr ns node]
   (let [(start-row start-col end-row end-col) (node:range)]
@@ -65,11 +52,12 @@
   (fn commands.cursor []
     (let [bufnr (vim.api.nvim_get_current_buf)
           highlight-cursor-node (fn []
-                                  (let [node (node-at-cursor)]
-                                    (vim.api.nvim_buf_clear_namespace bufnr ns 0 -1)
-                                    (highlight-node bufnr ns node)
-                                    (vim.api.nvim_buf_set_extmark bufnr ns (node:end_) 0 {:virt_text [[(: "(%s)" :format (node:type)) "Comment"]]
-                                                                                          :hl_mode :combine})))]
+                                  (match (node-at-cursor)
+                                    node (do
+                                           (vim.api.nvim_buf_clear_namespace bufnr ns 0 -1)
+                                           (highlight-node bufnr ns node)
+                                           (vim.api.nvim_buf_set_extmark bufnr ns (node:end_) 0 {:virt_text [[(: "(%s)" :format (node:type)) "Comment"]]
+                                                                                                 :hl_mode :combine}))))]
       (set state.cursor (not state.cursor))
       (if state.cursor
           (do

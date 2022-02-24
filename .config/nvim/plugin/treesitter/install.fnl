@@ -1,3 +1,5 @@
+(local {: commands} (require :treesitter))
+
 (macro github [path]
   `,(: "https://github.com/%s" :format path))
 
@@ -53,11 +55,8 @@
            dir)
     nil (vim.api.nvim_err_writeln (: "No source is known for language %s" :format lang))))
 
-(fn install [lang]
+(fn commands.install [lang]
   (let [src-dir (clone lang)
         srcs (generate src-dir)]
     (compile lang src-dir parser-dir srcs)
     (vim.api.nvim_echo [[(: "Successfully installed parser for %s" :format lang)]] false {})))
-
-(command :TSInstall {:nargs 1} (fn [{: args}]
-                                 (install args)))
