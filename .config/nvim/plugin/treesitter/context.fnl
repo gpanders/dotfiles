@@ -4,10 +4,10 @@
                                           (tset t k {})
                                           (. t k))}))
 
-(fn close [bufnr]
-  (when (?. state bufnr :winid)
-    (vim.api.nvim_win_close (. state bufnr :winid) true)
-    (tset state bufnr :winid nil)))
+(fn close [winid]
+  (when (?. state winid :winid)
+    (vim.api.nvim_win_close (. state winid :winid) true)
+    (tset state winid :winid nil)))
 
 (fn show-context []
   (let [bufnr (vim.api.nvim_get_current_buf)
@@ -29,7 +29,7 @@
                                      (tset state bufnr :bufnr b)
                                      b)
                                n n)
-                           w (match (?. state bufnr :winid)
+                           w (match (?. state winid :winid)
                                nil (let [w (vim.api.nvim_open_win b false {:relative :win
                                                                            :win winid
                                                                            :row 0
@@ -40,7 +40,7 @@
                                                                            :style :minimal
                                                                            :noautocmd true})]
                                      (tset vim.wo w :winhighlight "NormalFloat:TreesitterContext")
-                                     (tset state bufnr :winid w)
+                                     (tset state winid :winid w)
                                      w)
                                n (do
                                    (vim.api.nvim_win_set_config n {:relative :win
@@ -56,8 +56,8 @@
                                            (->> (pick-values 1))))
                                      lines)]
                        (vim.api.nvim_buf_set_lines b 0 -1 true [(table.concat lines " -> ")]))
-                     (close bufnr)))
-      _ (close bufnr))))
+                     (close winid)))
+      _ (close winid))))
 
 (autocmd treesitter# :FileType "*"
   (let [bufnr (tonumber (vim.fn.expand "<abuf>"))
