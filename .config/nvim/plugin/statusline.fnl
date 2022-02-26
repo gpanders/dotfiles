@@ -3,8 +3,6 @@
              "%<%f %{&filetype !=# '' ? '[' . &filetype . '] ' : ''}"
              "%{luaeval(\"require'statusline'.lsp()\")}"
              "%m%r%="
-             ; TODO: Move dap status to winbar once https://github.com/neovim/neovim/pull/17336 is merged
-             "%{luaeval(\"require'statusline'.dap()\")} %="
              "%{luaeval(\"require'statusline'.diagnostics()\")}"
              "%{&fileformat != 'unix' ? '[' . &fileformat . '] ' : ''}"
              "%{&fileencoding != 'utf-8' && &fileencoding != '' ? '[' . &fileencoding . '] ' : ''}"

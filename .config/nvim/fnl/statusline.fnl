@@ -19,12 +19,6 @@
       0 ""
       _ (: "(%s) " :format (table.concat clients ", ")))))
 
-(fn dap []
-  (match vim.b.dap
-    true (with-module [dap* :dap]
-           (dap*.status))
-    _ ""))
-
 (fn diagnostics []
   (let [diags (vim.diagnostic.get 0 {:severity {:min vim.diagnostic.severity.WARN}})
         num-errors (accumulate [sum 0 _ v (ipairs diags)]
@@ -40,6 +34,5 @@
 
 {: git
  : lsp
- : dap
  : obsession
  : diagnostics}
