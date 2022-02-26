@@ -12,9 +12,11 @@
         what {: title : items :nr "$"}]
     (if l
         (vim.fn.setloclist 0 {} " " what)
-        (vim.fn.setqflist {} " " what)))
-  (exec (.. mods " " (if l "lopen" "copen")))
-  (exec (.. "doautocmd QuickFixCmdPost " (if l "lgrep" "grep"))))
+        (vim.fn.setqflist {} " " what))
+    (exec (.. mods " " (if l "lopen" "copen") (match (length items)
+                                                0 nil
+                                                n (.. " " (math.min n 10)))))
+    (exec (.. "doautocmd QuickFixCmdPost " (if l "lgrep" "grep")))))
 
 (fn grep [l {: mods : args}]
   (let [args (vim.fn.expandcmd args)
