@@ -20,27 +20,24 @@ local function walk(dir, ext, f)
     end
 end
 
-vim.api.nvim_add_user_command("Moonwalk", function(opts)
-    if opts.bang then
-        -- Clean existing files
-        walk(vim.fn.stdpath("data") .. "/site", "lua", function(path)
-            if vim.fn.fnamemodify(path, ":t") == "fennel.lua" then
-                return
-            end
-            os.remove(path)
-        end)
-    end
+vim.api.nvim_add_user_command("Moonwalk", function()
+    -- Clean existing files
+    walk(vim.fn.stdpath("data") .. "/site", "lua", function(path)
+        if vim.fn.fnamemodify(path, ":t") == "fennel.lua" then
+            return
+        end
+        os.remove(path)
+    end)
 
     walk(vim.fn.stdpath("config"), "fnl", require("moonwalk").compile)
     local f = io.open(vim.fn.stdpath("cache") .. "/.compiled", "w")
     f:write("")
     f:close()
 end, {
-    bang = true,
     desc = "Compile all Fennel runtime files to Lua",
 })
 
 -- Using a filesystem marker to do this seems hacky, but I don't now of a better way
 if not vim.loop.fs_stat(vim.fn.stdpath("cache") .. "/.compiled") then
-    vim.api.nvim_command("Moonwalk!")
+    vim.api.nvim_command("Moonwalk")
 end
