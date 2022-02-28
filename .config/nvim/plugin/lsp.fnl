@@ -117,7 +117,7 @@
     (vim.opt.completeopt:append [:noinsert])
     (lsp-compl.attach client bufnr {}))
 
-  (vim.api.nvim_do_autocmd {:event :User :pattern :LspAttached}))
+  (vim.api.nvim_do_autocmd :User {:pattern :LspAttached}))
 
 (fn on-init [client result]
   (with-module [lsp-compl :lsp_compl]
@@ -134,7 +134,7 @@
     (vim.schedule #(do
                      (setlocal tagfunc nil)
                      (setlocal omnifunc nil)
-                     (exec (: "autocmd! lsp * <buffer=%d>" :format bufnr))))))
+                     (exec (: "autocmd! lsp# * <buffer=%d>" :format bufnr))))))
 
 (local handlers {})
 

@@ -80,20 +80,19 @@ Examples:
                      `(fn [] ,(unpack args)))
         form `(do)]
     (when opts.group
-      (table.insert form `(vim.api.nvim_create_augroup {:name ,opts.group :clear false})))
-    (table.insert form `(vim.api.nvim_create_autocmd {:group ,(or opts.group _G.augroup)
-                                                      :event ,event
-                                                      :pattern ,pattern
-                                                      :callback ,callback
-                                                      :buffer ,opts.buffer
-                                                      :once ,opts.once
-                                                      :nested ,opts.nested}))
+      (table.insert form `(vim.api.nvim_create_augroup ,opts.group {:clear false})))
+    (table.insert form `(vim.api.nvim_create_autocmd ,event {:group ,(or opts.group _G.augroup)
+                                                             :pattern ,pattern
+                                                             :callback ,callback
+                                                             :buffer ,opts.buffer
+                                                             :once ,opts.once
+                                                             :nested ,opts.nested}))
     form))
 
 (fn augroup [group ...]
   (set _G.augroup (tostring group))
   `(do
-    (vim.api.nvim_create_augroup {:name ,(tostring group) :clear true})
+    (vim.api.nvim_create_augroup ,(tostring group) {:clear true})
     ,...))
 
 (fn command [cmd opts func]
