@@ -1,4 +1,4 @@
-(autocmd lint# :BufWritePre "*" :once
+(autocmd lint# :BufWritePre "*" {:once true}
   (with-module [lint :lint]
     (let [linters (collect [k v (pairs {:sh ["shellcheck"]
                                         :vim ["vint"]

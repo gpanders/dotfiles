@@ -8,9 +8,9 @@
 
 (append! vim.b.undo_ftplugin "|setl cms< com< lisp< lw<")
 
-(autocmd ft/fennel :BufWritePost "<buffer>"
+(autocmd ft/fennel :BufWritePost "<buffer>" {:once true}
   (local {: lint} (require "ft/fennel"))
   (lint)
-  (autocmd! ft/fennel :TextChanged "<buffer>" (lint)))
+  (autocmd ft/fennel :TextChanged "<buffer>" (lint)))
 
 (append! vim.b.undo_ftplugin "|au! ft/fennel")

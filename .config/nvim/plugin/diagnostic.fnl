@@ -31,23 +31,23 @@
         diagnostic (cursor-diagnostic (vim.diagnostic.get bufnr {: lnum}))]
     (vim.diagnostic.show ns bufnr [diagnostic] {:virtual_text true :underline true})))
 
-(autocmd diagnostics [:BufRead :BufNewFile] "*"
-  (vim.diagnostic.disable 0)
-  (autocmd diagnostics :BufWritePost "<buffer=abuf>" :once
-    (vim.diagnostic.enable 0)
-    (augroup diagnostics
+(augroup diagnostics
+  (autocmd [:BufRead :BufNewFile] "*"
+    (vim.diagnostic.disable 0)
+    (autocmd :BufWritePost "<buffer=abuf>" {:once true}
+      (vim.diagnostic.enable 0)
       (autocmd [:CursorMoved :InsertLeave :DiagnosticChanged] "<buffer=abuf>"
         (let [bufnr (tonumber (vim.fn.expand "<abuf>"))
               {: mode} (api.nvim_get_mode)]
           (when (not= :i (mode:sub 1 1))
-            (show-cursor-diagnostics bufnr)))))))
+            (show-cursor-diagnostics bufnr))))))
 
-(autocmd diagnostics :DiagnosticChanged "*"
-  (let [bufnr (tonumber (vim.fn.expand "<abuf>"))]
-    (when (api.nvim_buf_is_loaded bufnr)
-      (let [diagnostics (vim.diagnostic.toqflist (vim.diagnostic.get bufnr))]
-        (each [_ winid (ipairs (vim.fn.win_findbuf bufnr))]
-          (vim.fn.setloclist 0 diagnostics))))))
+  (autocmd :DiagnosticChanged "*"
+    (let [bufnr (tonumber (vim.fn.expand "<abuf>"))]
+      (when (api.nvim_buf_is_loaded bufnr)
+        (let [diagnostics (vim.diagnostic.toqflist (vim.diagnostic.get bufnr))]
+          (each [_ winid (ipairs (vim.fn.win_findbuf bufnr))]
+            (vim.fn.setloclist 0 diagnostics)))))))
 
 (keymap :n "]g" #(vim.diagnostic.goto_next {:float false}))
 (keymap :n "[g" #(vim.diagnostic.goto_prev {:float false}))

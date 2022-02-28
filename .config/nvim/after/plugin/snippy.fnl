@@ -1,5 +1,5 @@
 (when vim.g.loaded_snippy
-  (autocmd snippy :InsertEnter "*" :once
+  (autocmd snippy# :InsertEnter "*" {:once true}
     (let [snippy (require :snippy)]
       (snippy.setup {:snippet_dirs (.. (vim.fn.stdpath :config) "/snippets")
                      :hl_group :Visual

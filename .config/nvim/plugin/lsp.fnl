@@ -104,9 +104,9 @@
   (when client.resolved_capabilities.document_highlight
     (with-module [ts-config :nvim-treesitter.configs]
       (ts-config.detach_module :refactor.highlight_definitions bufnr))
-    (augroup lsp
-      (autocmd :CursorHold "<buffer>" (vim.lsp.buf.document_highlight))
-      (autocmd [:InsertEnter :CursorMoved] "<buffer>" (vim.lsp.buf.clear_references))))
+    (augroup lsp#
+      (autocmd :CursorHold "<buffer>" vim.lsp.buf.document_highlight)
+      (autocmd [:InsertEnter :CursorMoved] "<buffer>" vim.lsp.buf.clear_references)))
   (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer bufnr})
   (keymap :n "[R" vim.lsp.buf.references {:buffer bufnr})
   (keymap :n "crr" vim.lsp.buf.rename {:buffer bufnr})
@@ -117,7 +117,7 @@
     (vim.opt.completeopt:append [:noinsert])
     (lsp-compl.attach client bufnr {}))
 
-  (exec "doautocmd User LspAttached"))
+  (vim.api.nvim_do_autocmd {:event :User :pattern :LspAttached}))
 
 (fn on-init [client result]
   (with-module [lsp-compl :lsp_compl]
@@ -221,7 +221,7 @@
     (match (. configs ft)
       opts (start-client bufnr opts))))
 
-(autocmd lsp :FileType "*"
+(autocmd lsp# :FileType "*"
   (when enabled
     (let [bufnr (-> "<abuf>" vim.fn.expand tonumber)]
       (lsp-start bufnr))))

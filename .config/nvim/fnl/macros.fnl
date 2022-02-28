@@ -31,15 +31,6 @@
 (fn echom [msg ?hl]
   `(echo ,msg ,?hl true))
 
-(fn make-ident [key ...]
-  "Create a unique identifier for a global function"
-  (-> (icollect [_ v (pairs [...])]
-        (when (= (type v) :string) (v:lower)))
-      (table.concat "_")
-      (string.gsub "-" "_")
-      (string.gsub "[^%w_]+" "")
-      (->> (.. (tostring (gensym key))))))
-
 (fn keymap [modes from to ?opts]
   "Map a key in the given mode. Defaults to non-recursive and silent.
 
@@ -74,46 +65,36 @@ Examples:
             (table.insert form `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts)))))
     form))
 
-(fn autocmd* [bang ...]
+(fn autocmd [...]
   (let [args [...]
         group (if (sym? (. args 1)) (tostring (table.remove args 1)))
-        [events pat & args] args
-        events (if (sequence? events) (table.concat events ",") events)
-        flags (icollect [_ v (ipairs args) :until (not= (type v) :string)]
-                (do
-                  (table.remove args 1)
-                  (: "++%s" :format v)))
-        ns (make-ident :au (or group :default) (events:gsub "," "_"))
-        form `(do
-                (global ,(sym ns) (fn [] ,(unpack args))))]
-    (when group
-      (table.insert form `(exec ,(.. "augroup " group))))
-    (let [cmd (: "autocmd%s %s %%s %s call v:lua.%s()"
-                 :format
-                 (if bang :! "")
-                 events
-                 (table.concat flags " ")
-                 ns)]
-      (table.insert form `(exec ,(if (list? pat)
-                                     `(: ,cmd :format ,pat)
-                                     (cmd:format pat)))))
-    (when group
-      (table.insert form `(exec "augroup END")))
+        event (table.remove args 1)
+        pattern (if (or (= (type (. args 1)) :string) (sequence? (. args 1)))
+                    (table.remove args 1))
+        opts (if (table? (. args 1))
+                 (collect [k v (pairs (table.remove args 1)) :into {: group}]
+                   (values k v))
+                 {: group})
+        callback (if (and (= 1 (length args)) (not (list? (. args 1))))
+                     (. args 1)
+                     `(fn [] ,(unpack args)))
+        form `(do)]
+    (when opts.group
+      (table.insert form `(vim.api.nvim_create_augroup {:name ,opts.group :clear false})))
+    (table.insert form `(vim.api.nvim_create_autocmd {:group ,(or opts.group _G.augroup)
+                                                      :event ,event
+                                                      :pattern ,pattern
+                                                      :callback ,callback
+                                                      :buffer ,opts.buffer
+                                                      :once ,opts.once
+                                                      :nested ,opts.nested}))
     form))
-
-(fn autocmd [...]
-  (autocmd* false ...))
-
-(fn autocmd! [...]
-  (autocmd* true ...))
 
 (fn augroup [group ...]
-  (let [form `(do)]
-    (each [_ au (pairs [...])]
-      (when (= :autocmd (string.sub (tostring (. au 1)) 1 7))
-        (table.insert au 2 group))
-      (table.insert form au))
-    form))
+  (set _G.augroup (tostring group))
+  `(do
+    (vim.api.nvim_create_augroup {:name ,(tostring group) :clear true})
+    ,...))
 
 (fn command [cmd opts func]
   (assert-compile (table? opts) "opts should be a table" opts)
@@ -170,7 +151,6 @@ The example above is equivalent to
  : echom
  : keymap
  : autocmd
- : autocmd!
  : augroup
  : command
  : append!

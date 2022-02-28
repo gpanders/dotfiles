@@ -65,19 +65,17 @@
             (autocmd treesitter#cursor :CursorMoved "<buffer>" (highlight-cursor-node)))
           (do
             (commands.clear)
-            (exec "autocmd! treesitter#cursor")
-            (exec "augroup! treesitter#cursor")))))
+            (vim.api.nvim_del_augroup_by_name "treesitter#cursor")))))
 
   (fn commands.context []
     (let [bufnr (vim.api.nvim_get_current_buf)]
       (vim.api.nvim_buf_clear_namespace bufnr ns 0 -1)
       (match (context bufnr)
         ([ctx] _) (let [clear #(do (commands.clear)
-                                   (exec "autocmd! treesitter#context")
-                                   (exec "augroup! treesitter#context"))]
+                                   (vim.api.nvim_del_augroup_by_name "treesitter#context"))]
                     (highlight-node bufnr ns ctx)
                     (augroup treesitter#context
-                      (autocmd :BufLeave "<buffer>" :once (clear))
+                      (autocmd :BufLeave "<buffer>" {:once true} clear)
                       (autocmd :CursorMoved "<buffer>"
                         (match (vim.api.nvim_get_current_buf)
                           bufnr (let [[lnum] (vim.api.nvim_win_get_cursor 0)
