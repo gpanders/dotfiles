@@ -14,9 +14,11 @@
                                                         :ctermbg ,(or (?. colors opts.bg :cterm) `nil)
                                                         :fg ,(or (?. colors opts.fg :gui) `nil)
                                                         :bg ,(or (?. colors opts.bg :gui) `nil)
+                                                        :sp ,(or (?. colors opts.guisp :gui) `nil)
                                                         :bold ,(if (= opts.attr :bold) 1 0)
                                                         :italic ,(if (= opts.attr :italic) 1 0)
-                                                        :underline ,(if (= opts.attr :underline) 1 0)})))))
+                                                        :underline ,(if (= opts.attr :underline) 1 0)
+                                                        :undercurl ,(if (= opts.attr :undercurl) 1 0)})))))
    form))
 
 {: make-colors}

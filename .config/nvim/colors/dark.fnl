@@ -56,10 +56,10 @@
   Search {:fg "darkgray" :bg "yellow"}
   SignColumn {:fg "lightgray" :bg "darkgray"}
   SpecialKey {:fg "green"}
-  SpellBad {:fg "red" :attr "undercurl" :guisp "red"}
-  SpellCap {:fg "magenta" :attr "undercurl" :guisp "blue"}
-  SpellLocal {:fg "blue" :attr "undercurl" :guisp "cyan"}
-  SpellRare {:fg "cyan" :attr "undercurl" :guisp "magenta"}
+  SpellBad {:attr "undercurl" :guisp "red"}
+  SpellCap {:attr "undercurl" :guisp "magenta"}
+  SpellLocal {:attr "undercurl" :guisp "blue"}
+  SpellRare {:attr "undercurl" :guisp "cyan"}
   StatusLine {:fg "lightergray" :bg "gray"}
   StatusLineNC {:fg "lightgray" :bg "darkgray"}
   TabLine {:fg "lightgray" :bg "darkgray"}
@@ -128,10 +128,10 @@
   DiagnosticSignWarn {:fg "yellow" :bg "darkgray"}
   DiagnosticSignInfo {:fg "blue" :bg "darkgray"}
   DiagnosticSignHint {:fg "lightgray" :bg "darkgray"}
-  DiagnosticUnderlineError {:fg "red" :attr "underline"}
-  DiagnosticUnderlineWarn {:fg "yellow" :attr "underline"}
-  DiagnosticUnderlineInfo {:fg "blue" :attr "underline"}
-  DiagnosticUnderlineHint {:fg "lightgray" :attr "underline"}
+  DiagnosticUnderlineError {:attr "undercurl" :guisp "red"}
+  DiagnosticUnderlineWarn {:attr "undercurl" :guisp "yellow"}
+  DiagnosticUnderlineInfo {:attr "undercurl" :guisp "blue"}
+  DiagnosticUnderlineHint {:attr "undercurl" :guisp "lightgray"}
 
   ; Syntax-file specific highlighting
   diffAdded {:fg "green"}

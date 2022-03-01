@@ -2,7 +2,7 @@
 (local ns (api.nvim_create_namespace :diagnostics))
 
 (vim.diagnostic.config {:virtual_text false
-                        :underline false
+                        :underline true
                         :severity_sort true})
 
 (fn cursor-diagnostic [diagnostics]
@@ -29,7 +29,7 @@
   (let [[lnum] (api.nvim_win_get_cursor 0)
         lnum (- lnum 1)
         diagnostic (cursor-diagnostic (vim.diagnostic.get bufnr {: lnum}))]
-    (vim.diagnostic.show ns bufnr [diagnostic] {:virtual_text true :underline true})))
+    (vim.diagnostic.show ns bufnr [diagnostic] {:virtual_text true})))
 
 (augroup diagnostics
   (autocmd [:BufRead :BufNewFile] "*"
