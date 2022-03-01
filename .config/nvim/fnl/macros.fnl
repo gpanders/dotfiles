@@ -92,7 +92,7 @@ Examples:
 (fn augroup [group ...]
   (set _G.augroup (tostring group))
   `(do
-    (vim.api.nvim_create_augroup ,(tostring group) {:clear true})
+    (vim.api.nvim_create_augroup ,(tostring group) {:clear false})
     ,...))
 
 (fn command [cmd opts func]
