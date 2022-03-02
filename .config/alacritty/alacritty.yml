@@ -2,10 +2,6 @@ import:
     - ~/.config/alacritty/colors/base16-eighties.yml
     - ~/.config/alacritty/keys.yml
 
-env:
-  # alacritty-direct is like alacritty, but advertises 24-bit color support
-  TERM: alacritty-direct
-
 font:
   normal:
     family: Iosevka Fixed SS05
