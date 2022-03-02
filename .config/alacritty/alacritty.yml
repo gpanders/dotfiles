@@ -1,0 +1,20 @@
+import:
+    - ~/.config/alacritty/colors/base16-eighties.yml
+    - ~/.config/alacritty/keys.yml
+
+font:
+  normal:
+    family: Iosevka Fixed SS05
+    style: Regular
+  bold:
+    family: Iosevka Fixed SS05
+    style: Bold
+  italic:
+    family: Iosevka Fixed SS05
+    style: Italic
+  bold_italic:
+    family: Iosevka Fixed SS05
+    style: Bold Italic
+  size: 16.0
+
+draw_bold_text_with_bright_colors: false
