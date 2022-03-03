@@ -65,7 +65,7 @@ Examples:
             (table.insert form `(vim.api.nvim_set_keymap ,mode ,from ,to ,opts)))))
     form))
 
-(fn autocmd [...]
+(fn autocmd* [clear ...]
   (let [args [...]
         group (if (sym? (. args 1)) (tostring (table.remove args 1)))
         event (table.remove args 1)
@@ -81,19 +81,38 @@ Examples:
         form `(do)]
     (when opts.group
       (table.insert form `(vim.api.nvim_create_augroup ,opts.group {:clear false})))
-    (table.insert form `(vim.api.nvim_create_autocmd ,event {:group ,(or opts.group _G.augroup)
-                                                             :pattern ,pattern
-                                                             :callback ,callback
-                                                             :buffer ,opts.buffer
-                                                             :once ,opts.once
-                                                             :nested ,opts.nested}))
+    (when clear
+      (table.insert form `(each [_# {:id id#} (ipairs (vim.api.nvim_get_autocmds {:event ,event
+                                                                                  :group ,(or opts.group _G.augroup)
+                                                                                  :pattern ,pattern
+                                                                                  :buffer ,opts.buffer}))]
+                            (vim.api.nvim_del_autocmd id#))))
+    (when (< 0 (length args))
+      (table.insert form `(vim.api.nvim_create_autocmd ,event {:group ,(or opts.group _G.augroup)
+                                                               :pattern ,pattern
+                                                               :callback ,callback
+                                                               :buffer ,opts.buffer
+                                                               :once ,opts.once
+                                                               :nested ,opts.nested})))
     form))
 
-(fn augroup [group ...]
+(fn autocmd [...]
+  (autocmd* false ...))
+
+(fn autocmd! [...]
+  (autocmd* true ...))
+
+(fn augroup* [clear group ...]
   (set _G.augroup (tostring group))
   `(do
-    (vim.api.nvim_create_augroup ,(tostring group) {:clear false})
+    (vim.api.nvim_create_augroup ,(tostring group) {:clear ,clear})
     ,...))
+
+(fn augroup [group ...]
+  (augroup* false group ...))
+
+(fn augroup! [group ...]
+  (augroup* true group ...))
 
 (fn command [cmd opts func]
   (assert-compile (table? opts) "opts should be a table" opts)
@@ -150,7 +169,9 @@ The example above is equivalent to
  : echom
  : keymap
  : autocmd
+ : autocmd!
  : augroup
+ : augroup!
  : command
  : append!
  : with-module

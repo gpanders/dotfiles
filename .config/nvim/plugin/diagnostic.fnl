@@ -31,7 +31,7 @@
         diagnostic (cursor-diagnostic (vim.diagnostic.get bufnr {: lnum}))]
     (vim.diagnostic.show ns bufnr [diagnostic] {:virtual_text true})))
 
-(augroup diagnostics
+(augroup diagnostics#
   (autocmd [:BufRead :BufNewFile] "*"
     (vim.diagnostic.disable 0)
     (autocmd :BufWritePost "<buffer=abuf>" {:once true}

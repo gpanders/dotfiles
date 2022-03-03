@@ -62,7 +62,7 @@
       (if state.cursor
           (do
             (highlight-cursor-node)
-            (autocmd treesitter#cursor :CursorMoved "<buffer>" (highlight-cursor-node)))
+            (autocmd! treesitter#cursor :CursorMoved "<buffer>" (highlight-cursor-node)))
           (do
             (commands.clear)
             (vim.api.nvim_del_augroup_by_name "treesitter#cursor")))))
@@ -75,6 +75,7 @@
                                    (vim.api.nvim_del_augroup_by_name "treesitter#context"))]
                     (highlight-node bufnr ns ctx)
                     (augroup treesitter#context
+                      (autocmd! [:BufLeave :CursorMoved] "<buffer>")
                       (autocmd :BufLeave "<buffer>" {:once true} clear)
                       (autocmd :CursorMoved "<buffer>"
                         (match (vim.api.nvim_get_current_buf)
