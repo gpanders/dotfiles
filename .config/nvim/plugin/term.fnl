@@ -5,9 +5,16 @@
     (vim.api.nvim_buf_call bufnr #(vim.fn.termopen cmd))
     (when ?tag
       (vim.api.nvim_buf_set_var bufnr ?tag true))
-    (autocmd term# :BufWinLeave {:buffer bufnr}
-      (tset vim.b bufnr :winheight (vim.api.nvim_win_get_height (. vim.b bufnr :winid)))
-      (tset vim.b bufnr :winid nil))
+    (augroup term#
+      (autocmd :BufWinLeave {:buffer bufnr}
+        (match (. vim.b bufnr :winid)
+          (where winid (vim.api.nvim_win_is_valid winid)) (tset vim.b bufnr :winheight (vim.api.nvim_win_get_height winid)))
+        (tset vim.b bufnr :winid nil))
+      (autocmd :BufWinEnter {:buffer bufnr}
+        (let [winid (vim.api.nvim_get_current_win)]
+          (tset vim.b bufnr :winid winid)
+          (match (. vim.b bufnr :winheight)
+            height (vim.api.nvim_win_set_height winid height)))))
     bufnr))
 
 (fn open-term-win [cmd ?tag]
@@ -19,14 +26,10 @@
   (when (not bufnr)
     (set bufnr (create-term-buf cmd ?tag)))
   (match (. vim.b bufnr :winid)
-    winid (vim.api.nvim_set_current_win winid)
+    (where winid (vim.api.nvim_win_is_valid winid)) (vim.api.nvim_set_current_win winid)
     _ (do
         (vim.api.nvim_command "botright new")
-        (let [winid (vim.api.nvim_get_current_win)]
-          (vim.api.nvim_win_set_buf winid bufnr)
-          (tset vim.b bufnr :winid winid)
-          (match (. vim.b bufnr :winheight)
-            height (vim.api.nvim_win_set_height winid height)))))
+        (vim.api.nvim_win_set_buf 0 bufnr)))
   (vim.api.nvim_command "startinsert"))
 
 (command :Term {:nargs "*"}
