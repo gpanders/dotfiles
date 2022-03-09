@@ -67,7 +67,7 @@
     (vim.schedule #(do
                      (setlocal tagfunc nil)
                      (setlocal omnifunc nil)
-                     (exec (: "autocmd! lsp# * <buffer=%d>" :format bufnr))))))
+                     (autocmd! lsp# "*" {:buffer bufnr})))))
 
 (local handlers {})
 

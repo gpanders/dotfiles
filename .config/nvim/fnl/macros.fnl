@@ -79,15 +79,15 @@ Examples:
                      (. args 1)
                      `(fn [] ,(unpack args)))
         form `(do)]
-    (when opts.group
-      (table.insert form `(vim.api.nvim_create_augroup ,opts.group {:clear false})))
     (when clear
-      (table.insert form `(each [_# {:id id#} (ipairs (vim.api.nvim_get_autocmds {:event ,event
+      (table.insert form `(each [_# {:id id#} (ipairs (vim.api.nvim_get_autocmds {:event ,(if (not= event "*") event)
                                                                                   :group ,(or opts.group _G.augroup)
                                                                                   :pattern ,pattern
                                                                                   :buffer ,opts.buffer}))]
                             (vim.api.nvim_del_autocmd id#))))
     (when (< 0 (length args))
+      (when opts.group
+        (table.insert form `(vim.api.nvim_create_augroup ,opts.group {:clear false})))
       (table.insert form `(vim.api.nvim_create_autocmd ,event {:group ,(or opts.group _G.augroup)
                                                                :pattern ,pattern
                                                                :callback ,callback
@@ -104,9 +104,11 @@ Examples:
 
 (fn augroup* [clear group ...]
   (set _G.augroup (tostring group))
-  `(do
-    (vim.api.nvim_create_augroup ,(tostring group) {:clear ,clear})
-    ,...))
+  (if (and clear (= 0 (select :# ...)))
+      `(vim.api.nvim_del_augroup_by_name ,(tostring group))
+      `(do
+        (vim.api.nvim_create_augroup ,(tostring group) {:clear ,clear})
+        ,...)))
 
 (fn augroup [group ...]
   (augroup* false group ...))
