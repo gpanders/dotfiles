@@ -5,19 +5,6 @@ end
 require('nvim-treesitter.configs').setup {
     highlight = {
         enable = true,
-        custom_captures = {
-            -- Default treesitter highlighting is way too noisy
-            ['parameter'] = 'TSNone',
-            ['punctuation.bracket'] = 'TSNone',
-            ['punctuation.delimiter'] = 'TSNone',
-            ['field'] = 'TSNone',
-            ['property'] = 'TSNone',
-            ['namespace'] = 'TSNone',
-            ['constructor'] = 'TSNone',
-            ['function.builtin'] = 'TSFunction',
-            ['function.macro'] = 'TSFunction',
-            ['constant.builtin'] = 'TSConstant',
-        },
     },
     incremental_selection = {
         enable = true,

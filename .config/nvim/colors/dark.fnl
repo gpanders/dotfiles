@@ -187,6 +187,16 @@
   TSSymbol {:fg "yellow"}
   TSDefinition {:link "MatchWord"}
   TSDefinitionUsage {:link "MatchWord"}
+  TSParameter {}
+  TSPunctBrakcet {}
+  TSPunctDelimiter {}
+  TSField {}
+  TSProperty {}
+  TSNamespace {}
+  TSConstructor {}
+  TSFuncBuiltin {:link "Function"}
+  TSFuncMacro {:link "Function"}
+  TSConstBuiltin {:link "Constant"}
 
   LspReferenceText {:link "MatchWord"}
   LspReferenceRead {:link "MatchWord"}
