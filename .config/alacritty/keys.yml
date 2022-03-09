@@ -81,3 +81,10 @@ key_bindings:
   - { key: Semicolon, mods: Alt,       chars: "\x1b;" }
   - { key: Semicolon, mods: Alt|Shift, chars: "\x1b:" }
 
+  # Search
+  - { key: G, mods: Control, mode: Search, action: SearchFocusNext     }
+  - { key: T, mods: Control, mode: Search, action: SearchFocusPrevious }
+
+  # macOS
+  - { key: N,         mods: Command,         action: CreateNewWindow  }
+  - { key: N,         mods: Shift | Command, action: SpawnNewInstance }

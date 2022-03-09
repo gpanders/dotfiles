@@ -23,3 +23,17 @@ colors:
     magenta: '#e8e6df'
     cyan:    '#d27b53'
     white:   '#f2f0ec'
+  search:
+    matches:
+      foreground: '#393939'
+      background: '#ffcc66'
+    focused_match:
+      foreground: '#393939'
+      background: '#f99157'
+  hints:
+    start:
+      foreground: '#393939'
+      background: '#f99157'
+    end:
+      foreground: '#393939'
+      background: '#f99157'
