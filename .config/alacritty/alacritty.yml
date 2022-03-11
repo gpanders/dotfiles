@@ -1,7 +1,6 @@
 import:
     - ~/.config/alacritty/colors/base16-eighties.yml
     - ~/.config/alacritty/keys.yml
-
 font:
   normal:
     family: Iosevka Fixed SS05
@@ -16,7 +15,6 @@ font:
     family: Iosevka Fixed SS05
     style: Bold Italic
   size: 16.0
-
 hints:
   alphabet: "jfkdls;ahgurieowpq"
   enabled:
