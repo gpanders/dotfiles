@@ -1,4 +1,4 @@
-(local {: node-at-cursor : context} (require :treesitter))
+(local {: node-at-cursor : context : lang-has-parser} (require :treesitter))
 
 (local state {})
 
@@ -55,13 +55,14 @@
                                          (string.gsub "%s*[%[%(%{]*%s*$" "")
                                          (->> (pick-values 1))))
                                    lines)]
+                     (vim.api.nvim_win_set_buf w b)
                      (vim.api.nvim_buf_set_lines b 0 -1 true [(table.concat lines " -> ")]))
                    (close)))
     _ (close)))
 
-(autocmd treesitter# [:WinEnter :BufWinEnter] "*"
+(autocmd treesitter# [:WinScrolled :CursorMoved :CursorMovedI]
   (let [bufnr (tonumber (vim.fn.expand "<abuf>"))
         lang (. vim.bo bufnr :filetype)]
-    (if (vim.treesitter.language.require_language lang nil true)
-        (autocmd treesitter# [:WinScrolled :CursorMoved :CursorMovedI] {:buffer bufnr} (show-context bufnr))
+    (if (lang-has-parser lang)
+        (show-context bufnr)
         (close))))

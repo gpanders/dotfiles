@@ -1,3 +1,12 @@
+(local lang-has-parser
+       (let [lut {}]
+         (fn [lang]
+           (match (. lut lang)
+             nil (let [has-parser (vim.treesitter.language.require_language lang nil true)]
+                   (tset lut lang has-parser)
+                   has-parser)
+             v v))))
+
 (fn node-at-cursor []
   (let [bufnr (vim.api.nvim_get_current_buf)]
     (match (pcall vim.treesitter.get_parser bufnr)
@@ -94,4 +103,5 @@
  : context
  : highlight-node
  : goto-node
- : commands}
+ : commands
+ : lang-has-parser}
