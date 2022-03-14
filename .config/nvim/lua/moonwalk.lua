@@ -25,7 +25,7 @@ local function compile(path)
         })
 
         local success = vim.wait(10000, function()
-            return vim.fn.jobwait({jobid}, 0)[1] ~= -1
+            return vim.fn.jobwait({ jobid }, 0)[1] ~= -1
         end)
 
         assert(success, stderr)
@@ -56,6 +56,22 @@ local function compile(path)
     return out
 end
 
+local function walk(dir, ext, f)
+    local subdirs = { "plugin", "indent", "ftplugin", "colors" }
+    table.insert(subdirs, ext)
+    for _, path in ipairs({ dir, dir .. "/after" }) do
+        for _, subpath in ipairs(subdirs) do
+            for _, v in ipairs(vim.fn.globpath(path, subpath .. "/*." .. ext, false, true)) do
+                f(v)
+            end
+            for _, v in ipairs(vim.fn.globpath(path, subpath .. "/*/*." .. ext, false, true)) do
+                f(v)
+            end
+        end
+    end
+end
+
 return {
     compile = compile,
+    walk = walk,
 }
