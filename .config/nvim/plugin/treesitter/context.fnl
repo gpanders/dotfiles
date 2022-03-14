@@ -11,14 +11,28 @@
 (fn show-context [bufnr]
   (match (context bufnr)
     contexts (let [lines []
+                   lang (. vim.bo bufnr :filetype)
                    winid (vim.api.nvim_get_current_win)
                    [{: textoff : topline}] (vim.fn.getwininfo winid)
                    width (- (vim.api.nvim_win_get_width winid) textoff)]
                (each [_ ctx (ipairs contexts)]
                  (let [start-row (ctx:start)]
                    (if (< (+ start-row 1) topline)
-                       (let [[text] (vim.api.nvim_buf_get_lines bufnr start-row (+ start-row 1) true)]
-                         (table.insert lines text)))))
+                       (let [query (vim.treesitter.get_query lang :context)
+                             ; If the query specifies a @context.text capture
+                             ; group, use that. Otherwise just use the first line
+                             ; of the node
+                             text (if (< 1 (length query.captures))
+                                      (icollect [id node (query:iter_captures ctx)]
+                                        (if (= (. query.captures id) :context.text)
+                                            (-> (vim.treesitter.query.get_node_text node bufnr)
+                                                (string.gsub "\n" " ")
+                                                (->> (pick-values 1)))))
+                                      [])
+                             text (if (< 0 (length text))
+                                      text
+                                      (vim.api.nvim_buf_get_lines bufnr start-row (+ start-row 1) true))]
+                         (table.insert lines (table.concat text " "))))))
                (if (< 0 (length lines))
                    (let [b (match (?. state bufnr :bufnr)
                              nil (let [b (vim.api.nvim_create_buf false true)]

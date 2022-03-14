@@ -30,12 +30,14 @@
         lang (. vim.bo bufnr :filetype)]
     (match (vim.treesitter.query.get_query lang :context)
       query
-      (do
-        (var node (: (node-at-cursor) :parent))
+      (let [cursor-node (node-at-cursor)
+            [context-id] (icollect [i v (ipairs query.captures)]
+                           (if (= v :context) i))]
+        (var node (cursor-node:parent))
         (while node
           (var done? false)
           (each [id subnode (query:iter_captures node) :until done?]
-            (when (= (subnode:id) (node:id))
+            (when (and (= id context-id) (= (subnode:id) (node:id)))
               (set done? true)
               (table.insert scopes 1 node)))
           (set node (node:parent)))))
@@ -71,10 +73,11 @@
       (if state.cursor
           (do
             (highlight-cursor-node)
-            (autocmd! treesitter#cursor :CursorMoved "<buffer>" (highlight-cursor-node)))
+            (augroup treesitter#cursor
+              (autocmd! :CursorMoved "<buffer>" (highlight-cursor-node))))
           (do
             (commands.clear)
-            (vim.api.nvim_del_augroup_by_name "treesitter#cursor")))))
+            (augroup! treesitter#cursor)))))
 
   (fn commands.context []
     (let [bufnr (vim.api.nvim_get_current_buf)]
