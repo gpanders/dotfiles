@@ -24,7 +24,7 @@ set noswapfile
 set tabline=%!tabline#show()
 set tagcase=match
 set undofile
-set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#
+set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#,*.o
 set wildignorecase
 set wildmode=longest:full,full
 
