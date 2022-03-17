@@ -77,7 +77,7 @@
 
   Constant {:fg "normal"}
   String {:fg "green"}
-  Character {:link :Constant}
+  Character {:fg "darkorange"}
   Number {:link :Constant}
   Boolean {:link :Constant}
   Float {:link :Constant}
@@ -93,10 +93,10 @@
   Keyword {:link :Statement}
   Exception {:link :Statement}
 
-  PreProc {:fg "lightgray"}
+  PreProc {:fg "darkorange"}
   Include {:fg "blue"}
   Define {:link :PreProc}
-  Macro {:fg "magenta"}
+  Macro {:link :PreProc}
   PreCondit {:link :PreProc}
 
   Type {:fg "yellow"}
