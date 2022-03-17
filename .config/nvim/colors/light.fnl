@@ -1,55 +1,35 @@
-; Name: Tempus Dawn
-; Description: Light theme with a soft, slightly desaturated palette (WCAG AA compliant)
+; Name: Tempus Day
+; Description: Light theme with warm colors (WCAG AA compliant)
 ; Author: Protesilaos Stavrou (https://protesilaos.com)
-; Meta: Created with the Tempus Themes Generator
-; URL: https://gitlab.com/protesilaos/tempus-themes-generator
+; URL: https://gitlab.com/protesilaos/tempus-themes
 ; Modified by: Gregory Anders
 
 (when vim.g.colors_name
   (exec "hi clear"))
 
-(set vim.g.colors_name :anders)
+(set vim.o.termguicolors true)
+(set vim.g.colors_name :light)
 (set vim.o.background :light)
-
-; Terminal
-; --------
-
-(set vim.g.terminal_color_0 :black)
-(set vim.g.terminal_color_1 :red)
-(set vim.g.terminal_color_2 :green)
-(set vim.g.terminal_color_3 :yellow)
-(set vim.g.terminal_color_4 :blue)
-(set vim.g.terminal_color_5 :magenta)
-(set vim.g.terminal_color_6 :cyan)
-(set vim.g.terminal_color_7 :white)
-(set vim.g.terminal_color_8 :brblack)
-(set vim.g.terminal_color_9 :brred)
-(set vim.g.terminal_color_10 :brgreen)
-(set vim.g.terminal_color_11 :bryellow)
-(set vim.g.terminal_color_12 :brblue)
-(set vim.g.terminal_color_13 :brmagenta)
-(set vim.g.terminal_color_14 :brcyan)
-(set vim.g.terminal_color_15 :brwhite)
 
 (macro make-colors [...]
   (assert-compile (= 0 (math.fmod (select :# ...) 2))
                   "expected even number of group/option pairs")
-  (let [colors {:black     {:gui "#4a4b4e" :cterm 0}
-                :red       {:gui "#a32a3a" :cterm 1}
-                :green     {:gui "#206620" :cterm 2}
-                :yellow    {:gui "#745300" :cterm 3}
-                :blue      {:gui "#4b529a" :cterm 4}
-                :magenta   {:gui "#8d377e" :cterm 5}
-                :cyan      {:gui "#086784" :cterm 6}
-                :white     {:gui "#dee2e0" :cterm 7}
-                :brblack   {:gui "#676364" :cterm 8}
-                :brred     {:gui "#a64822" :cterm 9}
-                :brgreen   {:gui "#187408" :cterm 10}
-                :bryellow  {:gui "#8b590a" :cterm 11}
-                :brblue    {:gui "#5c59b2" :cterm 12}
-                :brmagenta {:gui "#8e45a8" :cterm 13}
-                :brcyan    {:gui "#3f649c" :cterm 14}
-                :brwhite   {:gui "#eff0f2" :cterm 15}}
+  (let [colors {:black     {:gui "#4a484d" :cterm 0}
+                :red       {:gui "#a50000" :cterm 1}
+                :green     {:gui "#005d26" :cterm 2}
+                :yellow    {:gui "#714700" :cterm 3}
+                :blue      {:gui "#1d3ccf" :cterm 4}
+                :magenta   {:gui "#88267a" :cterm 5}
+                :cyan      {:gui "#185570" :cterm 6}
+                :white     {:gui "#efefef" :cterm 7}
+                :brblack   {:gui "#5e4b4f" :cterm 8}
+                :brred     {:gui "#992030" :cterm 9}
+                :brgreen   {:gui "#4a5500" :cterm 10}
+                :bryellow  {:gui "#8a3600" :cterm 11}
+                :brblue    {:gui "#2d45b0" :cterm 12}
+                :brmagenta {:gui "#700dc9" :cterm 13}
+                :brcyan    {:gui "#005289" :cterm 14}
+                :brwhite   {:gui "#ffffff" :cterm 15}}
         highlights []]
     (for [i 1 (select :# ...) 2]
       (let [(group opts) (select i ...)
@@ -71,7 +51,7 @@
 
 (make-colors
   Normal {:bg "brwhite" :fg "black"}
-  Visual {:bg "white"}
+  Visual {:bg "black" :fg "brwhite"}
   Search {:attr "underline,bold" :bg "white" :fg "black"}
   IncSearch {:attr "underline,bold" :bg "brblack" :fg "brwhite"}
 
@@ -85,12 +65,12 @@
   TabLineSel {:bg "cyan" :fg "brwhite"}
   TabLineFill {}
 
-  Comment {:attr "italic" :fg "brblack"}
+  Comment {:fg "brblack"}
   Todo {:attr "bold" :bg "white" :fg "bryellow"}
 
   Warning {:bg "yellow" :fg "brwhite"}
   WarningMsg {:bg "yellow" :fg "brwhite"}
-  Error {:bg "red" :fg "brwhite"}
+  Error {:guisp "red" :attr "undercurl"}
   ErrorMsg {:bg "red" :fg "brwhite"}
 
   MatchParen {:attr "bold" :bg "white" :fg "brblack"}
@@ -105,8 +85,6 @@
 
   Terminal {:bg "brwhite" :fg "black"}
 
-  ; Constructs
-  ; ----------
   Constant {:fg "blue"}
   Number {:fg "blue"}
   Float {:fg "blue"}
@@ -145,8 +123,6 @@
 
   Debug {:fg "brmagenta"}
 
-  ; Other
-  ; -----
   LineNr {:bg "white" :fg "brblack"}
   Cursor {:bg "black" :fg "brwhite"}
   CursorLine {:bg "white"}
@@ -181,13 +157,11 @@
   SpellRare {:bg "brmagenta" :fg "brwhite"}
   SpellLocal {:bg "brcyan" :fg "brwhite"}
 
-  Pmenu {:attr "italic" :bg "white" :fg "black"}
+  Pmenu {:bg "white" :fg "black"}
   PmenuSel {:attr "none,bold" :bg "brblack" :fg "brwhite"}
   PmenuSbar {:bg "white"}
   PmenuThumb {:bg "brblack"}
 
-  ; Diffs
-  ; -----
   DiffAdd {:attr "bold" :bg "green" :fg "brwhite"}
   DiffDelete {:bg "red" :fg "brwhite"}
   DiffChange {:attr "bold" :bg "white" :fg "brblack"}
@@ -198,8 +172,6 @@
   diffNewFile {:fg "blue"}
   diffFile {:fg "yellow"}
 
-  ; Markdown
-  ; --------
   MarkdownRule {:attr "bold" :bg "white" :fg "brgreen"}
 
   MarkdownHeading {:attr "bold" :fg "black"}
@@ -231,8 +203,6 @@
   MarkdownListMarker {:fg "green"}
   MarkdownOrderedListMarker {:link :MarkdownListMarker}
 
-  ; Linting
-  ; -------
   DiagnosticError {:fg "red"}
   DiagnosticWarn {:fg "yellow"}
   DiagnosticInfo {:fg "blue"}
@@ -241,10 +211,10 @@
   DiagnosticSignWarn {:fg "yellow" :bg "white"}
   DiagnosticSignInfo {:fg "blue" :bg "white"}
   DiagnosticSignHint {:fg "brblack" :bg "white"}
-  DiagnosticUnderlineError {:fg "red" :attr "underline"}
-  DiagnosticUnderlineWarn {:fg "yellow" :attr "underline"}
-  DiagnosticUnderlineInfo {:fg "blue" :attr "underline"}
-  DiagnosticUnderlineHint {:fg "brblack" :attr "underline"}
+  DiagnosticUnderlineError {:guisp "red" :attr "undercurl"}
+  DiagnosticUnderlineWarn {:guisp "yellow" :attr "undercurl"}
+  DiagnosticUnderlineInfo {:guisp "blue" :attr "undercurl"}
+  DiagnosticUnderlineHint {:guisp "brblack" :attr "undercurl"}
 
   ; Syntax-file specific highlighting
   diffAdded {:fg "green"}
