@@ -35,33 +35,33 @@
                          (table.insert lines (table.concat text " "))))))
                (if (< 0 (length lines))
                    (let [b (match (?. state bufnr :bufnr)
-                             nil (let [b (vim.api.nvim_create_buf false true)]
-                                   (tset vim.bo b :readonly true)
-                                   (tset vim.bo b :filetype (. vim.bo bufnr :filetype))
-                                   (when (not (. state bufnr))
-                                     (tset state bufnr {}))
-                                   (tset state bufnr :bufnr b)
-                                   b)
-                             n n)
+                             (where n (vim.api.nvim_buf_is_valid n)) n
+                             _ (let [b (vim.api.nvim_create_buf false true)]
+                                 (tset vim.bo b :readonly true)
+                                 (tset vim.bo b :filetype (. vim.bo bufnr :filetype))
+                                 (when (not (. state bufnr))
+                                   (tset state bufnr {}))
+                                 (tset state bufnr :bufnr b)
+                                 b))
                          w (match state.winid
-                             nil (let [w (vim.api.nvim_open_win b false {:relative :win
-                                                                         :win winid
-                                                                         :row 0
-                                                                         :col textoff
-                                                                         : width
-                                                                         :height 1
-                                                                         :focusable false
-                                                                         :style :minimal
-                                                                         :noautocmd true})]
-                                   (tset vim.wo w :winhighlight "NormalFloat:TreesitterContext")
-                                   (set state.winid w)
-                                   w)
-                             n (do
-                                 (vim.api.nvim_win_set_config n {:relative :win
-                                                                 :row 0
-                                                                 :col textoff
-                                                                 : width})
-                                 n))
+                             (where n (vim.api.nvim_win_is_valid n)) (do
+                                                                       (vim.api.nvim_win_set_config n {:relative :win
+                                                                                                       :row 0
+                                                                                                       :col textoff
+                                                                                                       : width})
+                                                                       n)
+                             _ (let [w (vim.api.nvim_open_win b false {:relative :win
+                                                                       :win winid
+                                                                       :row 0
+                                                                       :col textoff
+                                                                       : width
+                                                                       :height 1
+                                                                       :focusable false
+                                                                       :style :minimal
+                                                                       :noautocmd true})]
+                                 (tset vim.wo w :winhighlight "NormalFloat:TreesitterContext")
+                                 (set state.winid w)
+                                 w))
                          lines (if (< 1 (length lines))
                                    (icollect [_ line (ipairs lines)]
                                      (-> line
