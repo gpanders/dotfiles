@@ -162,6 +162,9 @@ The example above is equivalent to
   `(setmetatable {} {:__index (fn [_# k#]
                                 (. (require ,(tostring mod)) k#))}))
 
+(fn dirname [path]
+  `(vim.fn.fnamemodify ,path ":p:h"))
+
 {: setlocal
  : setlocal+=
  : setlocal^=
@@ -179,4 +182,5 @@ The example above is equivalent to
  : with-module
  : empty-or-nil?
  : printf
- : lazy-require}
+ : lazy-require
+ : dirname}

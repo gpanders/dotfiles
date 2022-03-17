@@ -9,9 +9,6 @@
           (vim.uri_from_fname (vim.call :FugitiveReal fname))
           (orig bufnr)))))
 
-(fn dirname [path]
-  (vim.fn.fnamemodify path ":h"))
-
 (fn find-root [start patterns]
   (let [pattern-map (collect [_ v (ipairs patterns)] (values v true))
         test (partial . pattern-map)]
