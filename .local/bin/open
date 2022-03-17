@@ -3,7 +3,7 @@
 if [ "$(uname)" = Darwin ] && [ -x /usr/bin/open ]; then
 	exec /usr/bin/open "$@"
 elif command -v xdg-open >/dev/null 2>/dev/null; then
-	exec /usr/bin/xdg-open "$@" & disown
+	exec /usr/bin/xdg-open "$@" >/dev/null 2>&1 & disown
 else
 	case "${1%%:*}" in
 	http | https | *.pdf)
