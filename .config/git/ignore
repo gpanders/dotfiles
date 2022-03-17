@@ -18,6 +18,7 @@ compile_commands.json
 .clangd/
 clangd/
 .mypy_cache/
+.nvimrc
 
 # Outputs
 *.so
