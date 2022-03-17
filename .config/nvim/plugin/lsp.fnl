@@ -1,4 +1,6 @@
-(var enabled true)
+(when (= nil vim.g.lsp_enabled)
+  (set vim.g.lsp_enabled true))
+
 (local configs {})
 (local state {:ns (vim.api.nvim_create_namespace "")})
 
@@ -144,9 +146,10 @@
       opts (start-client bufnr opts))))
 
 (autocmd lsp# :FileType "*"
-  (when enabled
+  (when vim.g.lsp_enabled
     (let [bufnr (-> "<abuf>" vim.fn.expand tonumber)]
-      (lsp-start bufnr))))
+      (when (and (vim.api.nvim_buf_is_valid bufnr) (vim.api.nvim_buf_is_loaded bufnr))
+        (lsp-start bufnr)))))
 
 (let [commands {:stop #(each [client-id (pairs (vim.lsp.buf_get_clients))]
                          (vim.lsp.stop_client client-id))
@@ -154,11 +157,11 @@
                            (on-exit nil nil client-id)
                            (vim.lsp.buf_detach_client 0 client-id))
                 :disable #(do
-                            (set enabled false)
+                            (set vim.g.lsp_enabled false)
                             (each [client-id (pairs (vim.lsp.get_active_clients))]
                               (vim.lsp.stop_client client-id)))
                 :enable #(do
-                           (set enabled true)
+                           (set vim.g.lsp_enabled true)
                            (each [_ bufnr (ipairs (vim.api.nvim_list_bufs))]
                              (lsp-start bufnr)))
                 :start #(let [bufnr (vim.api.nvim_get_current_buf)]
