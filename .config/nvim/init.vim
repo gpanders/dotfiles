@@ -163,3 +163,5 @@ augroup init
   autocmd InsertEnter * setlocal listchars-=trail:-
   autocmd InsertLeave * setlocal listchars+=trail:-
 augroup END
+
+lua require 'init'
