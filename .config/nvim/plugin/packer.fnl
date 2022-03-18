@@ -17,7 +17,7 @@
 
 (command :PackerUpdate {:force true}
   (fn []
-    (vim.api.nvim_del_user_command :PackerUpdate)
+    (nvim.del_user_command :PackerUpdate)
     (let [packer (match (pcall require :packer)
                    (true packer) packer
                    false (let [install-path (.. (vim.fn.stdpath :data) "/site/pack/packer/start/packer.nvim")

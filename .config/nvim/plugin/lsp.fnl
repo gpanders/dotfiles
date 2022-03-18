@@ -2,11 +2,11 @@
   (set vim.g.lsp_enabled true))
 
 (local configs {})
-(local state {:ns (vim.api.nvim_create_namespace "")})
+(local state {:ns (nvim.create_namespace "")})
 
 (let [orig vim.uri_from_bufnr]
   (fn vim.uri_from_bufnr [bufnr]
-    (let [fname (vim.api.nvim_buf_get_name bufnr)]
+    (let [fname (nvim.buf.get_name bufnr)]
       (if (fname:find "^fugitive://")
           (vim.uri_from_fname (vim.call :FugitiveReal fname))
           (orig bufnr)))))
@@ -49,7 +49,7 @@
     (vim.opt.completeopt:append [:noinsert])
     (lsp-compl.attach client bufnr {}))
 
-  (vim.api.nvim_do_autocmd :User {:pattern :LspAttached}))
+  (nvim.do_autocmd :User {:pattern :LspAttached}))
 
 (fn on-init [client result]
   (with-module [lsp-compl :lsp_compl]
@@ -92,7 +92,7 @@
   (when (= (vim.fn.executable (. cmd 1)) 1)
     (let [root (icollect [_ v (ipairs [".git" ".hg" ".svn"]) :into root]
                  v)
-          root-dir (let [dir (dirname (vim.api.nvim_buf_get_name bufnr))]
+          root-dir (let [dir (dirname (nvim.buf.get_name bufnr))]
                      (find-root dir root))
           ft (. vim.bo bufnr :filetype)
           clients (. configs ft :clients)]
@@ -162,9 +162,9 @@
                               (vim.lsp.stop_client client-id)))
                 :enable #(do
                            (set vim.g.lsp_enabled true)
-                           (each [_ bufnr (ipairs (vim.api.nvim_list_bufs))]
+                           (each [_ bufnr (ipairs (nvim.list_bufs))]
                              (lsp-start bufnr)))
-                :start #(let [bufnr (vim.api.nvim_get_current_buf)]
+                :start #(let [bufnr nvim.current.buf]
                           (lsp-start bufnr))
                 :find #(match $1
                          nil (vim.lsp.buf.definition)
@@ -189,7 +189,7 @@
                                      k))]
                      (match (length matches)
                        1 ((. commands (. matches 1)) (unpack args))
-                       0 (vim.api.nvim_err_writeln (: "Invalid command: %s" :format cmd))
-                       _ (vim.api.nvim_err_writeln (: "Ambiguous command: %s can match any of %s" :format cmd (table.concat matches ", ")))))))))
+                       0 (nvim.err_writeln (: "Invalid command: %s" :format cmd))
+                       _ (nvim.err_writeln (: "Ambiguous command: %s can match any of %s" :format cmd (table.concat matches ", ")))))))))
 
   (exec "cnoreabbrev <expr> lsp (getcmdtype() ==# ':' && getcmdline() ==# 'lsp') ? 'Lsp' : 'lsp'"))

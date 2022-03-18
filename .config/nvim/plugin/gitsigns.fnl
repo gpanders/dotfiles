@@ -1,5 +1,5 @@
 (autocmd gitsigns# [:BufNewFile :BufRead] "*"
-  (let [(ok? result) (pcall vim.api.nvim_call_function :FugitiveGitDir)]
+  (let [(ok? result) (pcall vim.call :FugitiveGitDir)]
     (when (or (not ok?) (not= result ""))
       (with-module [gitsigns :gitsigns]
         (gitsigns.setup)

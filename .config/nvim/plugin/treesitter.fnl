@@ -15,5 +15,5 @@
                                    k))]
                    (match (length matches)
                      1 ((. commands (. matches 1)) (unpack args))
-                     0 (vim.api.nvim_err_writeln (: "Invalid command: %s" :format cmd))
-                     _ (vim.api.nvim_err_writeln (: "Ambiguous command: %s can match any of %s" :format cmd (table.concat matches ", ")))))))))
+                     0 (nvim.err_writeln (: "Invalid command: %s" :format cmd))
+                     _ (nvim.err_writeln (: "Ambiguous command: %s can match any of %s" :format cmd (table.concat matches ", ")))))))))

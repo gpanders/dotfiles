@@ -5,16 +5,16 @@
 (fn close []
   (match state.winid
     w (do
-        (vim.api.nvim_win_close w true)
+        (nvim.win.close w true)
         (set state.winid nil))))
 
 (fn show-context [bufnr]
   (match (context bufnr)
     contexts (let [lines []
                    lang (. vim.bo bufnr :filetype)
-                   winid (vim.api.nvim_get_current_win)
+                   winid nvim.current.win
                    [{: textoff : topline}] (vim.fn.getwininfo winid)
-                   width (- (vim.api.nvim_win_get_width winid) textoff)]
+                   width (- (nvim.win.get_width winid) textoff)]
                (each [_ ctx (ipairs contexts)]
                  (let [start-row (ctx:start)]
                    (if (< (+ start-row 1) topline)
@@ -31,7 +31,7 @@
                                       [])
                              text (if (< 0 (length text))
                                       text
-                                      (vim.api.nvim_buf_get_lines bufnr start-row (+ start-row 1) true))]
+                                      (nvim.buf.get_lines bufnr start-row (+ start-row 1) true))]
                          (table.insert lines (table.concat text " "))))))
                (if (< 0 (length lines))
                    (let [b (match (?. state bufnr :bufnr)
@@ -69,8 +69,8 @@
                                          (string.gsub "%s*[%[%(%{]*%s*$" "")
                                          (->> (pick-values 1))))
                                    lines)]
-                     (vim.api.nvim_win_set_buf w b)
-                     (vim.api.nvim_buf_set_lines b 0 -1 true [(table.concat lines " -> ")]))
+                     (nvim.win.set_buf w b)
+                     (nvim.buf.set_lines b 0 -1 true [(table.concat lines " -> ")]))
                    (close)))
     _ (close)))
 

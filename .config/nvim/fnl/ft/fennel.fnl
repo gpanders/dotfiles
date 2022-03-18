@@ -1,5 +1,5 @@
 (local efm "%C%[%^^]%#,%E%>Parse error in %f:%l,%E%>Compile error in %f:%l,%-Z%p^%.%#,%C%\\s%#%m,%-G* %.%#")
-(local ns (vim.api.nvim_create_namespace "ft/fennel"))
+(local ns (nvim.create_namespace "ft/fennel"))
 
 (local globals (icollect [name (pairs _G)] name))
 (table.insert globals :vim)
@@ -20,7 +20,7 @@
 (fn compile-buffer [bufnr]
   (let [fennel (require :fennel)
         macro-path fennel.macro-path
-        lines (vim.api.nvim_buf_get_lines bufnr 0 -1 true)
+        lines (nvim.buf.get_lines bufnr 0 -1 true)
         text (.. "(require-macros :macros)" (table.concat lines "\n"))
         temp (make-temp-file text)]
     (set fennel.macro-path (.. macro-path ";" (vim.fn.stdpath :config) "/fnl/?.fnl"))
@@ -30,7 +30,7 @@
       (values ok? output))))
 
 (fn lint []
-  (let [bufnr (vim.api.nvim_get_current_buf)
+  (let [bufnr nvim.current.buf
         results (match (compile-buffer bufnr)
                     (false output) (parse output)
                     _ [])]

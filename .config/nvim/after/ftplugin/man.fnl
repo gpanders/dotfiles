@@ -8,7 +8,7 @@
 (keymap :n "<CR>" "<C-]>" {:buffer true})
 (keymap :n "<BS>" "<C-T>" {:buffer true})
 
-(let [name (string.match (vim.api.nvim_buf_get_name 0) "man://(.+)")]
+(let [name (string.match (nvim.buf.get_name 0) "man://(.+)")]
   (setlocal statusline (: " %s%%=%%14.(%%l:%%c%%V%%)%%14.P " :format name)))
 (append! vim.b.undo_ftplugin
          (accumulate [undo "" _ key (ipairs [:q :d :u :f :b "<Tab>" "<S-Tab>" "<CR>" "<BS>"])]

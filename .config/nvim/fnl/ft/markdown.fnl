@@ -1,4 +1,4 @@
-(local ns (vim.api.nvim_create_namespace "ft/markdown"))
+(local ns (nvim.create_namespace "ft/markdown"))
 
 (fn tinsert [t key val]
   (do
@@ -17,7 +17,7 @@
     {: lnum : col :end_col end-col :severity (or ?severity :ERROR) : message}))
 
 (fn check-for-bad-links [bufnr]
-  (let [lines (vim.api.nvim_buf_get_lines bufnr 0 -1 true)
+  (let [lines (nvim.buf.get_lines bufnr 0 -1 true)
         text (table.concat lines "\n")
         defined {}
         used {}]

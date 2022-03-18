@@ -2,7 +2,7 @@
   `(vim.api.nvim_replace_termcodes ,s true true true))
 
 (fn jump [forward?]
-  (let [bufnr (vim.api.nvim_get_current_buf)
+  (let [bufnr nvim.current.buf
         [jumplist index] (vim.fn.getjumplist)
         (start stop step) (if forward?
                               (values (+ index 2) (length jumplist) 1)

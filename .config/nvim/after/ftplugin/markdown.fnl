@@ -18,5 +18,5 @@
 
 (autocmd ft/markdown :BufWritePost "<buffer>"
   (local {: lint} (require "ft/markdown"))
-  (lint (vim.api.nvim_get_current_buf)))
+  (lint nvim.current.buf))
 (append! vim.b.undo_ftplugin "|au! ft/markdown")

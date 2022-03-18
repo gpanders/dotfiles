@@ -65,5 +65,5 @@
   (match (clone lang)
     src-dir (let [srcs (generate src-dir)]
               (compile lang src-dir parser-dir srcs)
-              (vim.api.nvim_echo [[(: "Successfully installed parser for %s" :format lang)]] false {}))
-    nil (vim.api.nvim_err_writeln (: "No source is known for language %s" :format lang))))
+              (nvim.echo [[(: "Successfully installed parser for %s" :format lang)]] false {}))
+    nil (nvim.err_writeln (: "No source is known for language %s" :format lang))))

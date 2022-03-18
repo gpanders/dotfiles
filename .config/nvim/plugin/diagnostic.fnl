@@ -1,5 +1,4 @@
-(local api vim.api)
-(local ns (api.nvim_create_namespace :diagnostics))
+(local ns (nvim.create_namespace :diagnostics))
 
 (vim.diagnostic.config {:virtual_text false
                         :underline true
@@ -7,7 +6,7 @@
 
 (fn cursor-diagnostic [diagnostics]
   "Find the diagnostic closest to the cursor"
-  (let [[lnum curcol] (vim.api.nvim_win_get_cursor 0)
+  (let [[lnum curcol] (nvim.win.get_cursor 0)
         lnum (- lnum 1)]
     (var score math.huge)
     (var diag nil)
@@ -26,7 +25,7 @@
     diag))
 
 (fn show-cursor-diagnostics [bufnr]
-  (let [[lnum] (api.nvim_win_get_cursor 0)
+  (let [[lnum] (nvim.win.get_cursor 0)
         lnum (- lnum 1)
         diagnostic (cursor-diagnostic (vim.diagnostic.get bufnr {: lnum}))]
     (vim.diagnostic.show ns bufnr [diagnostic] {:virtual_text true})))
@@ -38,13 +37,13 @@
       (vim.diagnostic.enable 0)
       (autocmd [:CursorMoved :InsertLeave :DiagnosticChanged] "<buffer=abuf>"
         (let [bufnr (tonumber (vim.fn.expand "<abuf>"))
-              {: mode} (api.nvim_get_mode)]
+              {: mode} (nvim.get_mode)]
           (when (not= :i (mode:sub 1 1))
             (show-cursor-diagnostics bufnr))))))
 
   (autocmd :DiagnosticChanged "*"
     (let [bufnr (tonumber (vim.fn.expand "<abuf>"))]
-      (when (api.nvim_buf_is_loaded bufnr)
+      (when (nvim.buf.is_loaded bufnr)
         (let [diagnostics (vim.diagnostic.toqflist (vim.diagnostic.get bufnr))]
           (each [_ winid (ipairs (vim.fn.win_findbuf bufnr))]
             (vim.fn.setloclist 0 diagnostics)))))))

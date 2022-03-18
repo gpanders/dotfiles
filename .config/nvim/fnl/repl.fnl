@@ -35,7 +35,7 @@ endfunction")
       (vim.api.nvim_win_set_height 0 opts.height))
     (when opts.width
       (vim.api.nvim_win_set_width 0 opts.width))
-    (vim.api.nvim_get_current_win)))
+    nvim.current.win))
 
 (fn find-repl-win [bufnr]
   (. (icollect [_ win (ipairs (vim.api.nvim_list_wins))]
