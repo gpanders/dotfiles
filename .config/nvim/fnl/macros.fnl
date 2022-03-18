@@ -165,6 +165,6 @@ The example above is equivalent to
                                 (. (require ,(tostring mod)) k#))}))
 
 (fn M.dirname [path]
-  `(vim.fn.fnamemodify ,path ":p:h"))
+  `(vim.fn.fnamemodify ,path ":h"))
 
 M

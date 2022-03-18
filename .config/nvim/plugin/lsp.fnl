@@ -12,21 +12,19 @@
           (orig bufnr)))))
 
 (fn find-root [start patterns]
-  (let [pattern-map (collect [_ v (ipairs patterns)] (values v true))
-        test (partial . pattern-map)]
-    (var done? false)
-    (var curdir start)
-    (while (not done?)
-      (each [_ pattern (ipairs patterns) :until done?]
-        (set done? (not= "" (vim.fn.globpath curdir pattern))))
-      (when (not done?)
-        (let [parent (dirname curdir)]
-          (if (= parent curdir)
-              (do
-                (set curdir nil)
-                (set done? true))
-              (set curdir parent)))))
-    curdir))
+  (var done? false)
+  (var curdir start)
+  (while (not done?)
+    (each [_ pattern (ipairs patterns) :until done?]
+      (set done? (not= "" (vim.fn.globpath curdir pattern))))
+    (when (not done?)
+      (let [parent (dirname curdir)]
+        (if (= parent curdir)
+            (do
+              (set curdir nil)
+              (set done? true))
+            (set curdir parent)))))
+  curdir)
 
 (fn on-attach [client bufnr]
   (when client.resolved_capabilities.completion
