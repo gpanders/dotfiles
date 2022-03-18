@@ -52,9 +52,9 @@
         num-warnings (- (length diags) num-errors)]
     (match (values num-errors num-warnings)
       (0 0) ""
-      (e 0) (: "E:%d" :format e)
-      (0 w) (: "W:%d" :format w)
-      (e w) (: "E:%d, W:%d" :format e w))))
+      (e 0) (: "E:%-4d" :format e)
+      (0 w) (: "W:%-4d" :format w)
+      (e w) (: "E:%-4d W:%-4d" :format e w))))
 
 {: git
  : lsp
