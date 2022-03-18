@@ -1,4 +1,6 @@
-(fn setlocal [opt ?val]
+(local M {})
+
+(fn M.setlocal [opt ?val]
   (assert-compile (sym? opt) "opt should be a plain symbol" opt)
   (let [opt (tostring opt)]
     (if ?val
@@ -9,29 +11,29 @@
         _ (match (opt:gsub "^no" "")
             (o n) `(tset vim.opt_local ,o ,(= n 0)))))))
 
-(fn setlocal+= [opt val]
+(fn M.setlocal+= [opt val]
   (assert-compile (sym? opt) "opt should be a plain symbol" opt)
   `(: (. vim.opt_local ,(tostring opt)) :append ,val))
 
-(fn setlocal^= [opt val]
+(fn M.setlocal^= [opt val]
   (assert-compile (sym? opt) "opt should be a plain symbol" opt)
   `(: (. vim.opt_local ,(tostring opt)) :prepend ,val))
 
-(fn setlocal-= [opt val]
+(fn M.setlocal-= [opt val]
   (assert-compile (sym? opt) "opt should be a plain symbol" opt)
   `(: (. vim.opt_local ,(tostring opt)) :remove ,val))
 
-(fn exec [s]
+(fn M.exec [s]
   `(vim.api.nvim_command ,s))
 
-(fn echo [msg ?hl ?history]
+(fn M.echo [msg ?hl ?history]
   (let [history (not (not ?history))]
     `(vim.api.nvim_echo [[,msg ,?hl]] ,history {})))
 
-(fn echom [msg ?hl]
+(fn M.echom [msg ?hl]
   `(echo ,msg ,?hl true))
 
-(fn keymap [modes from to ?opts]
+(fn M.keymap [modes from to ?opts]
   "Map a key in the given mode. Defaults to non-recursive and silent.
 
 Examples:
@@ -96,10 +98,10 @@ Examples:
                                                                :nested ,opts.nested})))
     form))
 
-(fn autocmd [...]
+(fn M.autocmd [...]
   (autocmd* false ...))
 
-(fn autocmd! [...]
+(fn M.autocmd! [...]
   (autocmd* true ...))
 
 (fn augroup* [clear group ...]
@@ -110,13 +112,13 @@ Examples:
         (vim.api.nvim_create_augroup ,(tostring group) {:clear ,clear})
         ,...)))
 
-(fn augroup [group ...]
+(fn M.augroup [group ...]
   (augroup* false group ...))
 
-(fn augroup! [group ...]
+(fn M.augroup! [group ...]
   (augroup* true group ...))
 
-(fn command [cmd opts func]
+(fn M.command [cmd opts func]
   (assert-compile (table? opts) "opts should be a table" opts)
   (let [opts (collect [k v (pairs opts)]
                (values k v))
@@ -128,12 +130,12 @@ Examples:
         `(vim.api.nvim_buf_add_user_command ,bufnr ,cmd ,func ,opts)
         `(vim.api.nvim_add_user_command ,cmd ,func ,opts))))
 
-(fn append! [str s]
+(fn M.append! [str s]
   "Append to a string in place"
   (assert-compile (sym? str) "expected symbol name for str" str)
   `(set ,str (.. (or ,str "") ,s)))
 
-(fn with-module [module-binding ...]
+(fn M.with-module [module-binding ...]
   "Binds a module to the given name and executes the forms.
 
 Example:
@@ -152,35 +154,17 @@ The example above is equivalent to
     `(match (pcall require ,name)
        (true ,binding) (do ,...))))
 
-(fn empty-or-nil? [s]
+(fn M.empty-or-nil? [s]
   `(or (= ,s nil) (= (next ,s) nil)))
 
-(fn printf [s ...]
+(fn M.printf [s ...]
   `(print (: ,s :format ,...)))
 
-(fn lazy-require [mod]
+(fn M.lazy-require [mod]
   `(setmetatable {} {:__index (fn [_# k#]
                                 (. (require ,(tostring mod)) k#))}))
 
-(fn dirname [path]
+(fn M.dirname [path]
   `(vim.fn.fnamemodify ,path ":p:h"))
 
-{: setlocal
- : setlocal+=
- : setlocal^=
- : setlocal-=
- : exec
- : echo
- : echom
- : keymap
- : autocmd
- : autocmd!
- : augroup
- : augroup!
- : command
- : append!
- : with-module
- : empty-or-nil?
- : printf
- : lazy-require
- : dirname}
+M
