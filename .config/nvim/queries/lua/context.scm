@@ -1,4 +1,4 @@
 [
  (function_declaration)
- (function_definition)]
-@context
+ (function_definition)
+] @context

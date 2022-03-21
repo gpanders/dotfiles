@@ -7,15 +7,48 @@
                    has-parser)
              v v))))
 
+(fn root [bufnr]
+  (let [bufnr (or bufnr nvim.current.buf)]
+    (match (pcall vim.treesitter.get_parser bufnr)
+      (true parser) (let [[tree] (parser:parse)]
+                      (tree:root))
+      _ nil)))
+
+(fn named-children [node]
+  (let [count (node:named_child_count)]
+    (var i 1)
+    (fn []
+      (if (< count i)
+          nil
+          (let [child (node:named_child i)]
+            (set i (+ i 1))
+            child)))))
+
+(fn contains-node? [node other]
+  (let [(start-row start-col end-row end-col) (node:range)
+        (other-start-row other-start-col other-end-row other-end-col) (other:range)]
+    (if (< start-row other-start-row)
+        (or (< other-end-row end-row)
+            (and (= end-row other-end-row) (<= other-end-col end-col)))
+        (and (= start-row other-start-row) (<= other-end-col end-col)))))
+
+(fn find-node [start type]
+  (var node nil)
+  (each [child (named-children start) :until node]
+    (if (= (child:type) type)
+        (set node child)))
+  (when (not node)
+    (each [child (named-children start) :until node]
+      (match (find-node child type)
+        grandchild (set node grandchild))))
+  node)
+
 (fn node-at-cursor []
   (let [bufnr nvim.current.buf]
-    (match (pcall vim.treesitter.get_parser bufnr)
-      (true parser) (let [[tree] (parser:parse)
-                          root (tree:root)
-                          [lnum col] (nvim.win.get_cursor 0)
-                          lnum (- lnum 1)]
-                      (root:named_descendant_for_range lnum col lnum col))
-      _ nil)))
+    (match (root bufnr)
+      root-node (let [[lnum col] (nvim.win.get_cursor 0)
+                      lnum (- lnum 1)]
+                  (root-node:named_descendant_for_range lnum col lnum col)))))
 
 (fn parents [node]
   (var cur node)
@@ -31,17 +64,30 @@
     (match (vim.treesitter.query.get_query lang :context)
       query
       (let [cursor-node (node-at-cursor)
+            (end-row end-col) (cursor-node:end_)
             [context-id] (icollect [i v (ipairs query.captures)]
                            (if (= v :context) i))]
-        (var node (cursor-node:parent))
-        (while node
-          (var done? false)
-          (each [id subnode (query:iter_captures node) :until done?]
-            (when (and (= id context-id) (= (subnode:id) (node:id)))
-              (set done? true)
-              (table.insert scopes 1 node)))
-          (set node (node:parent)))))
+        (var done? false)
+        (each [id node (query:iter_captures (root bufnr)) :until done?]
+          (when (and (= id context-id) (contains-node? node cursor-node))
+            (table.insert scopes node))
+          (let [(start-row start-col) (node:start)]
+            (set done? (or (< end-row start-row)
+                           (and (= end-row start-row) (< end-col start-col))))))))
     scopes))
+
+(fn context-text [bufnr node ?query]
+  (let [query (or ?query (vim.treesitter.get_query (. vim.bo bufnr :filetype) :context))
+        (start-row start-col) (node:start)
+        (end-row end-col) (if (< 1 (length query.captures))
+                              (let [[end-node] (icollect [id subnode (query:iter_captures node)]
+                                                 (if (= (. query.captures id) :context.end) subnode))]
+                                (end-node:end_))
+                              (values (+ start-row 1) 0))]
+    (-> (nvim.buf.get_text bufnr start-row 0 end-row end-col {})
+        (table.concat " ")
+        (string.gsub "%s+" " ")
+        (->> (pick-values 1)))))
 
 (fn highlight-node [bufnr ns node]
   (let [(start-row start-col end-row end-col) (node:range)]
@@ -104,7 +150,9 @@
 
 {: node-at-cursor
  : context
+ : context-text
  : highlight-node
  : goto-node
+ : root
  : commands
  : lang-has-parser}

@@ -1,1 +1,1 @@
-(TopLevelDecl (FnProto function: (IDENTIFIER))) @context
+(TopLevelDecl (FnProto function: (IDENTIFIER) (ErrorUnionExpr) @context.end)) @context

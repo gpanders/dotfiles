@@ -1,4 +1,4 @@
-(local {: node-at-cursor : context : lang-has-parser} (require :treesitter))
+(local {: node-at-cursor : context : context-text : lang-has-parser} (require :treesitter))
 
 (local state {})
 
@@ -17,22 +17,8 @@
                    width (- (nvim.win.get_width winid) textoff)]
                (each [_ ctx (ipairs contexts)]
                  (let [start-row (ctx:start)]
-                   (if (< (+ start-row 1) topline)
-                       (let [query (vim.treesitter.get_query lang :context)
-                             ; If the query specifies a @context.text capture
-                             ; group, use that. Otherwise just use the first line
-                             ; of the node
-                             text (if (< 1 (length query.captures))
-                                      (icollect [id node (query:iter_captures ctx)]
-                                        (if (= (. query.captures id) :context.text)
-                                            (-> (vim.treesitter.query.get_node_text node bufnr)
-                                                (string.gsub "\n" " ")
-                                                (->> (pick-values 1)))))
-                                      [])
-                             text (if (< 0 (length text))
-                                      text
-                                      (nvim.buf.get_lines bufnr start-row (+ start-row 1) true))]
-                         (table.insert lines (table.concat text " "))))))
+                   (if (< start-row (- topline 1))
+                       (table.insert lines (context-text bufnr ctx)))))
                (if (< 0 (length lines))
                    (let [b (match (?. state bufnr :bufnr)
                              (where n (vim.api.nvim_buf_is_valid n)) n
