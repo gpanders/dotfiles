@@ -122,6 +122,8 @@ cnoremap <expr> <C-N> wildmenumode() ? '<C-N>' : '<Down>'
 cnoremap <expr> <C-J> pumvisible() ? '<Down><Tab>' : '<C-J>'
 cnoremap <expr> <C-K> pumvisible() ? '<Up><Tab>' : '<C-K>'
 
+iabbrev sizse size
+
 augroup init
   autocmd!
 
