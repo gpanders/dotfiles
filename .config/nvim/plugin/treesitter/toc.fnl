@@ -6,12 +6,11 @@
     (match (vim.treesitter.query.get_query lang :context)
       query
       (let [root-node (root bufnr)
-            root-id (root-node:id)
             items []
             [context-id] (icollect [i v (ipairs query.captures)]
                            (if (= v :context) i))]
         (each [id subnode (query:iter_captures root-node)]
-          (when (and (= id context-id) (= (: (subnode:parent) :id) root-id))
+          (when (= id context-id)
             (let [(lnum _ end-lnum _) (subnode:range)]
               (table.insert items {:text (context-text bufnr subnode query)
                                    : bufnr
