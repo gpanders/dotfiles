@@ -5,15 +5,20 @@ status is-interactive; or exit
 
 set -q fish_prompt_delim; or set -g fish_prompt_delim '❯'
 
-set -g __prompt_git __prompt_git_$fish_pid
-
 for type in cwd venv jobs git cmd_duration prompt_delim
     set -l color fish_color_$type
     set -g __prompt_color_$type (set_color $$color)
 end
 
-function $__prompt_git --on-variable $__prompt_git
-    commandline -f repaint
+function __prompt_update_git --on-variable __prompt_git_$fish_pid
+    set v __prompt_git_$fish_pid
+    if set -q $v
+        if test "$__prompt_git" != "$$v"
+            set -g __prompt_git $$v
+            commandline -f repaint
+        end
+        set -e $v
+    end
 end
 
 function __prompt_update_pwd --on-variable PWD
@@ -52,12 +57,11 @@ function __prompt_fish_postexec_handler --on-event fish_postexec
         set -g __prompt_cmd_duration_tmp "$dur "
     end
 
-    set -l last_job (jobs -l -g)
-    if test -n "$last_job"; and test "$last_job" != "$__prompt_last_job"
-        set -g __prompt_last_job $last_job
+    if test -n "$last_pid"; and test "$last_pid" != "$__prompt_last_pid"
+        set -g __prompt_last_pid $last_pid
         __prompt_update_jobs
-        function _notify_job_$last_job --on-job-exit $last_job --inherit-variable last_job
-            functions -e _notify_job_$last_job
+        function _notify_job_$last_pid --on-job-exit $last_pid --inherit-variable last_pid
+            functions -e _notify_job_$last_pid
             __prompt_update_jobs
         end
     end
@@ -113,7 +117,7 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
 
     if test -z "$__prompt_git_head"
         set -g __prompt_git_branch
-        set -U $__prompt_git
+        set -g __prompt_git
     else
         set -l os
         set -l branch (string replace -r '^ref: refs/heads/' '' < $__prompt_git_head; set os $status)
@@ -123,11 +127,9 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
 
         if test "$branch" != "$__prompt_git_branch"
             set -g __prompt_git_branch $branch
-            set -U $__prompt_git "$branch "
+            set -g __prompt_git "$branch "
         end
     end
-
-    command kill $__prompt_last_pid 2>/dev/null
 
     if test -z "$__prompt_git_branch"
         return
@@ -158,14 +160,6 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
                 set upstream (set_color cyan)'⇡⇣ '
         end
 
-        set -U $__prompt_git \"$__prompt_git_branch\$dirty \$action\$upstream\"
+        set -U __prompt_git_$fish_pid \"$__prompt_git_branch\$dirty \$action\$upstream\"
     " &
-
-    set -g __prompt_last_pid (jobs -l -p)
-    disown $__prompt_last_pid
-end
-
-function __prompt_fish_exit_handler --on-event fish_exit
-    set -q __prompt_last_pid; and command kill $__prompt_last_pid 2>/dev/null
-    set -e $__prompt_git
 end
