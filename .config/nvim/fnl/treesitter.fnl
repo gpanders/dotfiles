@@ -87,6 +87,7 @@
     (-> (nvim.buf.get_text bufnr start-row 0 end-row end-col {})
         (table.concat " ")
         (string.gsub "%s+" " ")
+        (string.gsub "%s*$" "")
         (->> (pick-values 1)))))
 
 (fn highlight-node [bufnr ns node]
