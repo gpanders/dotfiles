@@ -30,6 +30,19 @@
         diagnostic (cursor-diagnostic (vim.diagnostic.get bufnr {: lnum}))]
     (vim.diagnostic.show ns bufnr [diagnostic] {:virtual_text true})))
 
+(fn setloclist [winid items]
+  (let [{: nr} (vim.fn.getloclist winid {:nr "$"})]
+    (var id* nil)
+    (for [i 1 nr :until id*]
+      (let [{: id : context} (vim.fn.getloclist winid {:nr i :id 0 :context 1})]
+        (if context.diagnostics
+            (set id* id))))
+    (let [action (if id* "r" " ")]
+      (vim.fn.setloclist winid [] action {:id id*
+                                          : items
+                                          :title "Diagnostics"
+                                          :context {:diagnostics true}}))))
+
 (augroup diagnostics#
   (autocmd [:BufRead :BufNewFile] "*"
     (vim.diagnostic.disable 0)
@@ -46,7 +59,7 @@
       (when (nvim.buf.is_loaded bufnr)
         (let [diagnostics (vim.diagnostic.toqflist (vim.diagnostic.get bufnr))]
           (each [_ winid (ipairs (vim.fn.win_findbuf bufnr))]
-            (vim.fn.setloclist 0 diagnostics)))))))
+            (setloclist 0 diagnostics)))))))
 
 (keymap :n "]g" #(vim.diagnostic.goto_next {:float false}))
 (keymap :n "[g" #(vim.diagnostic.goto_prev {:float false}))
