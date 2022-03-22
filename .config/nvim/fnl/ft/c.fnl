@@ -33,6 +33,19 @@
         ; by binding to a throwaway variable
         (local _ (vim.loop.spawn vim.o.shell {:args ["-c" cmd]} #nil))))))
 
+(fn on-exit [chunks]
+  (let [lines (-> (table.concat chunks)
+                  (vim.trim))
+        paths (icollect [line (vim.gsplit lines "\n")]
+                (if (line:match "^ ")
+                    (vim.fn.simplify (line:match "%S+"))))]
+    (set vim.opt_local.path vim.o.path)
+    (vim.opt_local.path:append paths)
+    (when (= 1 (vim.fn.isdirectory :include))
+      (setlocal^= path :include))
+    (setlocal-= path ".")
+    (setlocal^= path ".")))
+
 (fn set-path []
   (let [ft vim.bo.filetype
         stdout (vim.loop.new_pipe false)
@@ -40,27 +53,10 @@
         compiler (if (= ft :cpp) cxx cc)
         args ["-E" "-Wp,-v" "-x" (if (= ft :cpp) "c++" "c") "/dev/null"]
         chunks []]
-    (fn on-exit []
-      (let [lines (-> (table.concat chunks)
-                      (vim.trim)
-                      (vim.split "\n"))
-            paths (icollect [_ v (ipairs lines)]
-                    (when (v:match "^ ") (v:match "%S+")))]
-        (-> #(vim.fn.simplify $1)
-            (vim.tbl_map paths)
-            (uniq)
-            (table.concat ",")
-            ( .. "," vim.o.path)
-            (->> (set vim.opt_local.path)))
-        (when (vim.fn.isdirectory :include)
-          (setlocal^= path :include))
-        (setlocal-= path ".")
-        (setlocal^= path ".")))
-
     (vim.loop.spawn
       compiler
       {: args :stdio [nil stdout stderr]}
-      (vim.schedule_wrap on-exit))
+      (vim.schedule #(on-exit chunks)))
     (let [f (fn [err data]
               (assert (not err) err)
               (table.insert chunks data))]
