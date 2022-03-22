@@ -12,6 +12,7 @@ set ignorecase
 set lazyredraw
 set linebreak
 set list
+set noswapfile
 set pumheight=10
 set scrolloff=2
 set shada='100,<50,s10,:100,/100,h
@@ -20,9 +21,9 @@ set shiftwidth=4
 set shortmess+=c
 set sidescrolloff=5
 set smartcase
-set noswapfile
 set tabline=%!tabline#show()
 set tagcase=match
+set termguicolors
 set undofile
 set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#,*.o
 set wildignorecase
