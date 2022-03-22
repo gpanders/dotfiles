@@ -100,7 +100,9 @@
           (set client-id (vim.lsp.start_client config))
           (when root-dir
             (tset clients root-dir client-id))))
-      (vim.lsp.buf_attach_client bufnr client-id))))
+      (if (not (vim.lsp.buf_attach_client bufnr client-id))
+          (echo (: "LSP client %s failed to attach to buffer %d" :format cmd bufnr) :WarningMsg))))
+  nil)
 
 (macro lsp-setup [...]
   (assert-compile (= 0 (math.fmod (select :# ...) 2))
