@@ -103,6 +103,14 @@
                       (values start-row start-col))]
     (nvim.win.set_cursor 0 [(+ row 1) col])))
 
+(var highlighting-enabled? true)
+(fn highlight [bufnr]
+  (when (and highlighting-enabled? (lang-has-parser (. vim.bo bufnr :filetype)))
+    (let [parser (vim.treesitter.get_parser bufnr)
+          syntax (. vim.bo bufnr :syntax)]
+      (vim.treesitter.highlighter.new parser {})
+      (tset vim.bo bufnr :syntax syntax))))
+
 (local commands {})
 
 (let [ns (nvim.create_namespace "")
@@ -147,12 +155,25 @@
         _ (echo "No context found"))))
 
   (fn commands.clear []
-    (nvim.buf.clear_namespace 0 ns 0 -1)))
+    (nvim.buf.clear_namespace 0 ns 0 -1))
+
+  (fn commands.highlight [arg]
+    (match arg
+      (where (or :enable :on)) (do
+                                 (set highlighting-enabled? true)
+                                 (each [_ bufnr (ipairs (nvim.list_bufs))]
+                                   (highlight bufnr)))
+      (where (or :disable :off)) (do
+                                   (set highlighting-enabled? false)
+                                   (each [_ bufnr (ipairs (nvim.list_bufs))]
+                                     (match (. vim.treesitter.highlighter.active bufnr)
+                                       highlighter (highlighter:destroy)))))))
 
 {: node-at-cursor
  : context
  : context-text
  : highlight-node
+ : highlight
  : goto-node
  : root
  : commands
