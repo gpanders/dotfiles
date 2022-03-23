@@ -18,5 +18,6 @@ vim.filetype.add({
     },
     pattern = {
         ["~/%.config/mutt/.*"] = "muttrc",
+        ["queries/.*/.*%.scm"] = "query",
     },
 })
