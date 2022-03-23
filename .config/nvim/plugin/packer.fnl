@@ -45,7 +45,6 @@
         "mfussenegger/nvim-lsp-compl"
         "nvim-lua/plenary.nvim" ; Dependency of gitsigns and telescope
         "nvim-telescope/telescope.nvim"
-        "andymass/vim-matchup"
 
         ; Language specific
         "ziglang/zig.vim"))))
