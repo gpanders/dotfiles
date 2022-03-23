@@ -1,4 +1,8 @@
 (doto vim.treesitter.highlighter.hl_map
+  (tset :normal :Normal)
+  (tset :storageclass :StorageClass)
+  (tset :preproc :PreProc)
+  (tset :define :Define)
   (tset :constant.builtin :Constant)
   (tset :function.builtin :Function)
   (tset :function.macro :Function)
