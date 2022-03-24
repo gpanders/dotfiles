@@ -1,4 +1,4 @@
-function n --wraps nnn --description "Alias for nnn"
+function nnn --description "Alias for nnn"
     if test -n "$XDG_CONFIG_HOME"
         set nnn_config_dir $XDG_CONFIG_HOME/nnn
     else
@@ -25,7 +25,7 @@ function n --wraps nnn --description "Alias for nnn"
 
     set NNN_TMPFILE $nnn_config_dir/.lastd
 
-    nnn -a -e $argv
+    command nnn -a -e $argv
 
     if test -e $NNN_TMPFILE
         source $NNN_TMPFILE
