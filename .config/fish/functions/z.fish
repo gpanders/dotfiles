@@ -2,13 +2,13 @@
 function z
     set argc (count $argv)
     if test $argc -eq 0
-        __zoxide_cd $HOME
+        cd $HOME
     else if test "$argv" = -
-        __zoxide_cd -
+        cd -
     else if test $argc -eq 1 -a -d $argv[1]
-        __zoxide_cd $argv[1]
+        cd $argv[1]
     else
-        set -l result (command zoxide query --exclude (__zoxide_pwd) -- $argv)
-        and __zoxide_cd $result
+        set -l result (command zoxide query --exclude $PWD -- $argv)
+        and cd $result
     end
 end
