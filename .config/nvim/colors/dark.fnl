@@ -48,7 +48,7 @@
   ModeMsg {:fg "green"}
   MoreMsg {:fg "green"}
   NonText {:fg "lightgray"}
-  NormalFloat {:link :Normal}
+  NormalFloat {:bg "darkgray"}
   PMenu {:bg "darkgray"}
   PMenuSel {:fg "darkgray" :bg "normal"}
   Question {:fg "blue"}
@@ -75,41 +75,41 @@
   ; Syntax items (:h group-name)
   Comment {:fg "lightgray"}
 
-  Constant {:fg "normal"}
+  Constant {}
   String {:fg "green"}
-  Character {:fg "darkorange"}
+  Character {:fg "red"}
   Number {:link :Constant}
   Boolean {:link :Constant}
   Float {:link :Constant}
 
-  Identifier {:fg "red"}
+  Identifier {}
   Function {:fg "blue"}
 
   Statement {:fg "red"}
-  Operator {:fg "normal" :attr :bold}
+  Operator {}
   Repeat {:link :Statement}
   Conditional {:link :Statement}
   Label {:link :Statement}
   Keyword {:link :Statement}
   Exception {:link :Statement}
 
-  PreProc {:fg "darkorange"}
+  PreProc {:fg "magenta"}
   Include {:fg "blue"}
-  Define {:link :PreProc}
-  Macro {:link :PreProc}
+  Define {:fg "magenta"}
+  Macro {:fg "magenta"}
   PreCondit {:link :PreProc}
 
   Type {:fg "yellow"}
   StorageClass {:link :Type}
-  Structure {:link :Type}
+  Structure {:fg "yellow"}
   Typedef {:link :Type}
 
   Special {:fg "cyan"}
   SpecialChar {:link :Special}
-  Tag {:link :Special}
+  Tag {:fg "red"}
   Delimiter {}
   SpecialComment {:link :Special}
-  Debug {:link :Special}
+  Debug {:fg "red"}
 
   Underlined {:fg "normal" :attr "underline"}
   Bold {:attr "bold"}
@@ -165,6 +165,8 @@
   manReference {:fg "yellow"}
   manUnderline {:fg "green" :attr "bold"}
 
+  helpHeader {:fg "yellow"}
+  helpSectionDelim {:fg "lightgray"}
   helpOption {:fg "yellow"}
   helpHyperTextJump {:fg "red"}
 
@@ -175,6 +177,8 @@
   vimVar {}
   vimFuncvar {}
   vimSpecial {}
+
+  zigLabel {:fg "cyan"}
 
   ; Plugin highlighting
   GitSignsAdd {:fg "green" :bg "darkgray"}
