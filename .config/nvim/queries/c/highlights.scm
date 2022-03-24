@@ -63,9 +63,11 @@
  "#if"
  "#endif"
  "#else"
-] @precondit
+] @preproc
 
 (preproc_params (identifier) @identifier)
+
+(preproc_if condition: (number_literal) @v (#eq? @v "0") "#endif" @comment) @comment
 
 ; #undef
 (preproc_call directive: (preproc_directive) @define)
