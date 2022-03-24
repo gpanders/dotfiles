@@ -137,7 +137,7 @@
       (nvim.buf.clear_namespace bufnr ns 0 -1)
       (match (context bufnr)
         ([ctx] _) (let [clear #(do (commands.clear)
-                                   (nvim.del.augroup_by_name "treesitter#context"))]
+                                   true)]
                     (highlight-node bufnr ns ctx)
                     (augroup treesitter#context
                       (autocmd! [:BufLeave :CursorMoved] "<buffer>")
