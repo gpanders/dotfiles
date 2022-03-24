@@ -36,31 +36,28 @@
 
 (fn Tree.draw [self bufnr]
   (tset vim.bo bufnr :modifiable true)
-  (nvim.buf.set_lines bufnr 0 -1 false (icollect [_ item (self:iter)]
-                                         (..
-                                           (: "  " :rep item.depth)
-                                           item.text
-                                           (if (= item.lnum item.end_lnum)
-                                               (: " [%d:%d-%d]" :format (+ item.lnum 1) (+ item.col 1) item.end_col)
-                                               (: " [%d:%d-%d:%d]" :format (+ item.lnum 1)
-                                                                           (+ item.col 1)
-                                                                           (+ item.end_lnum 1)
-                                                                           item.end_col)))))
+  (let [lines (icollect [_ item (self:iter)]
+                (..
+                  (: "  " :rep item.depth)
+                  item.text
+                  (if (= item.lnum item.end_lnum)
+                      (: " [%d:%d-%d]" :format (+ item.lnum 1) (+ item.col 1) item.end_col)
+                      (: " [%d:%d-%d:%d]" :format (+ item.lnum 1)
+                                                  (+ item.col 1)
+                                                  (+ item.end_lnum 1)
+                                                  item.end_col))))]
+    (nvim.buf.set_lines bufnr 0 -1 false lines))
   (tset vim.bo bufnr :modifiable false))
 
 (fn Tree.get [self i]
-  (let [t (if self.opts.anon
-              self.nodes
-              self.named)]
+  (let [t (if self.opts.anon self.nodes self.named)]
     (. t i)))
 
 (fn Tree.toggle-anonymous-nodes [self]
   (set self.opts.anon (not self.opts.anon)))
 
 (fn Tree.iter [self]
-  (ipairs (if self.opts.anon
-              self.nodes
-              self.named)))
+  (ipairs (if self.opts.anon self.nodes self.named)))
 
 (fn commands.view []
   (let [bufnr nvim.current.buf
@@ -116,4 +113,6 @@
                 (set tree (Tree:new bufnr))
                 (tree:draw b))))
         (autocmd :BufLeave {:buffer b}
-          (nvim.buf.clear_namespace bufnr ns 0 -1))))))
+          (nvim.buf.clear_namespace bufnr ns 0 -1))
+        (autocmd :BufHidden {:buffer bufnr :once true}
+          (nvim.win.close w true))))))
