@@ -3,7 +3,7 @@
 
 (local Tree {})
 
-(fn Tree.new [self bufnr start-node]
+(fn Tree.new [self bufnr]
   (fn traverse [node depth tree]
     (each [child field (node:iter_children)]
       (let [id (child:id)
@@ -25,47 +25,52 @@
                             :end_col end-col})
         (traverse child (+ depth 1) tree)))
     tree)
-  (let [t {:items (traverse start-node 0 [])
-           :opts {:anon false}}]
+  (let [start-node (root bufnr)
+        nodes (traverse start-node 0 [])
+        named (icollect [_ v (ipairs nodes)]
+                (if v.named v))
+        t {: nodes : named :opts {:anon false}}]
     (setmetatable t self)
     (set self.__index self)
     t))
 
 (fn Tree.draw [self bufnr]
   (tset vim.bo bufnr :modifiable true)
-  (nvim.buf.set_lines bufnr 0 -1 false (icollect [_ item (ipairs self.items)]
-                                         (when (or item.named self.opts.anon)
-                                           (..
-                                             (: "  " :rep item.depth)
-                                             item.text
-                                             (if (= item.lnum item.end_lnum)
-                                                 (: " [%d:%d-%d]" :format (+ item.lnum 1) (+ item.col 1) item.end_col)
-                                                 (: " [%d:%d-%d:%d]" :format (+ item.lnum 1)
-                                                                             (+ item.col 1)
-                                                                             (+ item.end_lnum 1)
-                                                                             item.end_col))))))
+  (nvim.buf.set_lines bufnr 0 -1 false (icollect [_ item (self:iter)]
+                                         (..
+                                           (: "  " :rep item.depth)
+                                           item.text
+                                           (if (= item.lnum item.end_lnum)
+                                               (: " [%d:%d-%d]" :format (+ item.lnum 1) (+ item.col 1) item.end_col)
+                                               (: " [%d:%d-%d:%d]" :format (+ item.lnum 1)
+                                                                           (+ item.col 1)
+                                                                           (+ item.end_lnum 1)
+                                                                           item.end_col)))))
   (tset vim.bo bufnr :modifiable false))
 
-(fn Tree.get [self item]
-  (when (not self.named)
-    (set self.named (icollect [_ v (ipairs self.items)]
-                      (if v.named v))))
-  (let [items (if self.opts.anon
-                  self.items
-                  self.named)]
-    (. items item)))
+(fn Tree.get [self i]
+  (let [t (if self.opts.anon
+              self.nodes
+              self.named)]
+    (. t i)))
 
 (fn Tree.toggle-anonymous-nodes [self]
   (set self.opts.anon (not self.opts.anon)))
 
+(fn Tree.iter [self]
+  (ipairs (if self.opts.anon
+              self.nodes
+              self.named)))
+
 (fn commands.view []
   (let [bufnr nvim.current.buf
-        winid nvim.current.win
-        root-node (root bufnr)
-        tree (Tree:new bufnr root-node)]
+        winid nvim.current.win]
+    (var tree (Tree:new bufnr))
     (exec "topleft 60vnew")
     (let [w nvim.current.win
           b (nvim.win.get_buf w)]
+      (tset vim.wo w :scrolloff 5)
+      (tset vim.wo w :wrap false)
       (tset vim.bo b :buflisted false)
       (tset vim.bo b :buftype :nofile)
       (tset vim.bo b :bufhidden :wipe)
@@ -95,11 +100,20 @@
               true
               (let [cursor-node-id (: (node-at-cursor) :id)]
                 (nvim.buf.clear_namespace b ns 0 -1)
-                (each [i v (ipairs tree)]
+                (var done? false)
+                (each [i v (tree:iter) :until done?]
                   (when (= v.id cursor-node-id)
+                    (set done? true)
                     (let [start (* 2 v.depth)
                           end (+ start (length v.text))]
                       (nvim.buf.set_extmark b ns (- i 1) start {:end_col end
-                                                                :hl_group :Visual})))))))
+                                                                :hl_group :Visual}))
+                    (nvim.win.set_cursor w [i 0]))))))
+        (autocmd [:TextChanged :InsertLeave] {:buffer bufnr}
+          (if (not (nvim.buf_is_loaded b))
+              true
+              (do
+                (set tree (Tree:new bufnr))
+                (tree:draw b))))
         (autocmd :BufLeave {:buffer b}
           (nvim.buf.clear_namespace bufnr ns 0 -1))))))

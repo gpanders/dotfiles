@@ -1,17 +1,16 @@
 (doto vim.treesitter.highlighter.hl_map
-  (tset :normal :Normal)
   (tset :storageclass :StorageClass)
+  (tset :typedef :Typedef)
   (tset :preproc :PreProc)
+  (tset :special :Special)
   (tset :define :Define)
+  (tset :macro :Macro)
   (tset :constant.builtin :Constant)
   (tset :function.builtin :Function)
   (tset :function.macro :Function)
-  (tset :parameter :Normal)
-  (tset :field :Normal)
-  (tset :property :Normal)
   (tset :constructor :Normal))
 
-(autocmd treesitter# :FileType [:c]
+(autocmd treesitter# :FileType [:c :zig]
   (let [bufnr (tonumber (vim.fn.expand "<abuf>"))
         {: highlight} (require :treesitter)]
     (highlight bufnr)))

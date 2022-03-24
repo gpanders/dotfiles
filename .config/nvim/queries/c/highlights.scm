@@ -2,8 +2,8 @@
 (sizeof_expression "sizeof" @operator)
 
 (storage_class_specifier) @storageclass
-(type_qualifier) @type.qualifier
-(null) @constant.builtin
+(type_qualifier) @type
+(null) @constant
 
 (comment) @comment
 [
@@ -16,7 +16,6 @@
 
 [
  (primitive_type)
- (type_identifier)
  (sized_type_specifier
    [
     "unsigned"
@@ -24,21 +23,39 @@
    ])
 ] @type
 
+"typedef" @typedef
+
 [
  "for"
  "while"
  "break"
  "continue"
+] @repeat
+
+[
  "if"
  "else"
  "switch"
+] @conditional
+
+[
  "case"
+ "default"
+] @label
+
+[
  "goto"
  "return"
-]
-@keyword
+] @keyword
+
+[
+ "struct"
+ "enum"
+ "union"
+] @structure
 
 "#include" @include
+"#define" @define
 
 [
  "#ifdef"
@@ -46,15 +63,9 @@
  "#if"
  "#endif"
  "#else"
-]
-@preproc
+] @precondit
 
-[
- "#define"
-]
-@define
-
-(preproc_params (identifier) @preproc.parameter)
+(preproc_params (identifier) @identifier)
 
 ; #undef
 (preproc_call directive: (preproc_directive) @define)

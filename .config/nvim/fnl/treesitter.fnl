@@ -106,8 +106,7 @@
 (var highlighting-enabled? true)
 (fn highlight [bufnr]
   (when (and highlighting-enabled? (lang-has-parser (. vim.bo bufnr :filetype)))
-    (let [parser (vim.treesitter.get_parser bufnr)
-          syntax (. vim.bo bufnr :syntax)]
+    (let [parser (vim.treesitter.get_parser bufnr)]
       (vim.treesitter.highlighter.new parser {}))))
 
 (local commands {})
