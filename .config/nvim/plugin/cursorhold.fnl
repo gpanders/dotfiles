@@ -5,7 +5,7 @@
 
 (fn callback [event]
   (vim.opt.eventignore:remove event)
-  (exec (: "doautocmd <nomodeline> %s" :format event))
+  (nvim.exec_autocmd event {:modeline false})
   (vim.opt.eventignore:append event))
 
 (augroup cursorhold

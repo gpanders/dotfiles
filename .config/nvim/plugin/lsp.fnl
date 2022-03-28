@@ -4,13 +4,6 @@
 (local configs {})
 (local state {:ns (nvim.create_namespace "")})
 
-(let [orig vim.uri_from_bufnr]
-  (fn vim.uri_from_bufnr [bufnr]
-    (let [fname (nvim.buf.get_name bufnr)]
-      (if (fname:find "^fugitive://")
-          (vim.uri_from_fname (vim.call :FugitiveReal fname))
-          (orig bufnr)))))
-
 (fn find-root [start patterns]
   (var done? false)
   (var curdir start)
@@ -32,8 +25,6 @@
   (when client.resolved_capabilities.goto_definition
     (tset vim.bo bufnr :tagfunc "v:lua.vim.lsp.tagfunc"))
   (when client.resolved_capabilities.document_highlight
-    (with-module [ts-config :nvim-treesitter.configs]
-      (ts-config.detach_module :refactor.highlight_definitions bufnr))
     (augroup lsp#
       (autocmd :CursorHold "<buffer>" vim.lsp.buf.document_highlight)
       (autocmd [:InsertEnter :CursorMoved] "<buffer>" vim.lsp.buf.clear_references)))
@@ -43,11 +34,15 @@
   (keymap :n "gK" vim.lsp.buf.hover {:buffer bufnr})
   (keymap :n "cac" vim.lsp.buf.code_action {:buffer bufnr})
 
+  (when (= client.name "lua-language-server")
+    ; Tone down lua-language-server's completion suggestions
+    (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
+
   (with-module [lsp-compl :lsp_compl]
     (vim.opt.completeopt:append [:noinsert])
     (lsp-compl.attach client bufnr {}))
 
-  (nvim.do_autocmd :User {:pattern :LspAttached}))
+  (nvim.exec_autocmd :User {:pattern :LspAttached}))
 
 (fn on-init [client result]
   (with-module [lsp-compl :lsp_compl]
@@ -60,7 +55,6 @@
 
 (fn on-exit [code signal client-id]
   (each [_ bufnr (ipairs (vim.lsp.get_buffers_by_client_id client-id))]
-    (tset vim.b bufnr :lsp nil)
     (vim.schedule #(do
                      (setlocal tagfunc nil)
                      (setlocal omnifunc nil)
@@ -148,7 +142,7 @@
 (autocmd lsp# :FileType "*"
   (when vim.g.lsp_enabled
     (let [bufnr (-> "<abuf>" vim.fn.expand tonumber)]
-      (when (and (vim.api.nvim_buf_is_valid bufnr) (vim.api.nvim_buf_is_loaded bufnr))
+      (when (and (nvim.buf.is_valid bufnr) (nvim.buf.is_loaded bufnr))
         (lsp-start bufnr)))))
 
 (let [commands {:stop #(each [client-id (pairs (vim.lsp.buf_get_clients))]

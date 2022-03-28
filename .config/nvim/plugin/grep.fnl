@@ -16,9 +16,9 @@
         (vim.fn.setloclist 0 {} " " what)
         (vim.fn.setqflist {} " " what))
     (exec (.. mods " " (if l "lopen" "copen") (match (length items)
-                                                0 nil
+                                                0 ""
                                                 n (.. " " (math.min n 10)))))
-    (exec (.. "doautocmd QuickFixCmdPost " (if l "lgrep" "grep")))))
+    (nvim.exec_autocmd :QuickFixCmdPost {:pattern (if l "lgrep" "grep") :modeline false})))
 
 (fn grep [l {: mods : args}]
   (let [args (vim.fn.expandcmd args)
@@ -29,7 +29,7 @@
                             s))
         stdout (vim.loop.new_pipe false)
         chunks []]
-    (exec (.. "doautocmd QuickFixCmdPre " (or (and l "lgrep") "grep")))
+    (nvim.exec_autocmd :QuickFixCmdPre {:pattern (if l "lgrep" "grep") :modeline false})
     (vim.loop.spawn
       vim.o.shell
       {:args ["-c" grepcmd] :stdio [nil stdout nil]}
