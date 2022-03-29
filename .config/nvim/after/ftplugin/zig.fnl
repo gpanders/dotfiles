@@ -13,3 +13,5 @@
         out (vim.fn.systemlist "zig fmt --stdin" (table.concat text "\n"))]
     (when (and (= 0 vim.v.shell_error) (not (equal? text out)))
       (nvim.buf.set_lines bufnr 0 -1 true out))))
+
+(append! vim.b.undo_ftplugin "|au! ft/zig BufWritePre <buffer>")
