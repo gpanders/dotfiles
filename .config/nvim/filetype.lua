@@ -6,7 +6,7 @@ vim.filetype.add({
         h = function()
             -- Use a lazy heuristic that #including a C++ header means it's a
             -- C++ header
-            if vim.fn.search("\\C^#include <[^>.]\\+>$", "nw") == 1 then
+            if vim.fn.search("\\C^#include <[^>.]\\+>$", "nw") ~= 0 then
                 return "cpp"
             end
             return "c"
