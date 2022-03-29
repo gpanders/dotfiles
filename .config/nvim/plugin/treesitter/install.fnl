@@ -48,6 +48,7 @@
       (table.insert args source))
     (table.insert args "-o")
     (table.insert args parser)
+    (vim.fn.mkdir build-dir :p)
     (let [out (run-in-dir src-dir args)]
       (assert (= 0 vim.v.shell_error) out))))
 
