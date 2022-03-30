@@ -19,7 +19,7 @@ function! s:PackInit() abort
     call minpac#add('tpope/vim-commentary')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-dispatch')
-    call minpac#add('yegappan/lsp')
+    call minpac#add('yegappan/lsp', #{type: 'opt'})
 endfunction
 
 command! PackUpdate call s:PackInit() | call minpac#update()
