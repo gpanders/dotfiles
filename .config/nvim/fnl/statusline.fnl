@@ -1,11 +1,3 @@
-(fn git []
-  (match vim.b.gitsigns_head
-    v v
-    nil (match (pcall vim.fn.FugitiveHead)
-          (true "") ""
-          (true branch) (.. branch " ")
-          _ "")))
-
 (fn obsession []
   (match (pcall vim.fn.ObsessionStatus)
     (true "") ""
@@ -21,7 +13,7 @@
                         (: "%s: %s" :format v.title v.message)
                         v.title)]
             (table.insert messages (if v.percentage
-                                       (: "%s (%%%d)" :format msg v.percentage)
+                                       (: "%s (%%%%%d)" :format msg v.percentage)
                                        msg)))))
       (each [_ v (ipairs client.messages.messages)]
         (when (and v.show_once (= v.shown 0))
@@ -56,7 +48,23 @@
       (0 w) (: "W:%-4d" :format w)
       (e w) (: "E:%-4d W:%-4d" :format e w))))
 
-{: git
- : lsp
- : obsession
- : diagnostics}
+(fn []
+  (let [items [" "
+               (obsession)
+               "%<%f "
+               (match vim.bo.filetype
+                 "" ""
+                 ft (.. "[" ft "] "))
+               (lsp)
+               "%m%r%="
+               (diagnostics)
+               (match vim.bo.fileformat
+                 "unix" ""
+                 ff (.. "[" ff "] "))
+               (match vim.bo.fileencoding
+                 "utf-8" ""
+                 "" ""
+                 fenc (.. "[" fenc "] "))
+               "%10.(%l:%c%V%)%6.P"
+               " "]]
+    (table.concat items)))

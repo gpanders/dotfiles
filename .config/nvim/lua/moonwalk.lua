@@ -1,6 +1,5 @@
 local ignored = {
     ["fnl/macros.fnl"] = true,
-    ["fnl/colors.fnl"] = true,
 }
 
 local function compile(path)

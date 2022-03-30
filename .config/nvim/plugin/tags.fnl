@@ -10,7 +10,7 @@
                               :context items
                               : title
                               :quickfixtextfunc "tags#qftf"})
-    (exec "copen")))
+    (vim.cmd "copen")))
 
 (fn find-tags [query]
   (let [pattern (if (query:match "^/")
@@ -26,7 +26,7 @@
 (fn tjump [arg]
   (let [tags (tselect arg)]
     (when (= 1 (length tags))
-      (exec (: "tjump %s" :format (. tags 1 :name))))))
+      (vim.cmd (: "tjump %s" :format (. tags 1 :name))))))
 
 (command :Tselect {:nargs 1 :complete :tag} (fn [{: args}] (tselect args)))
 (command :Tjump {:nargs 1 :complete :tag} (fn [{: args}] (tjump args)))

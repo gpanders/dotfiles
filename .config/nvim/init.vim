@@ -21,6 +21,7 @@ set shiftwidth=4
 set shortmess+=c
 set sidescrolloff=5
 set smartcase
+set statusline=%{%v:lua.require'statusline'()%}
 set tabline=%!tabline#show()
 set tagcase=match
 set termguicolors
@@ -157,7 +158,7 @@ augroup init
   autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
 
   " Defer setting the colorscheme until the UI loads (micro optimization)
-  autocmd UIEnter * silent! colorscheme dark
+  autocmd UIEnter * colorscheme base16-eighties
 
   " Restore cursor position (except for git commits and rebases)
   autocmd BufRead * if &ft !~# 'commit\|rebase' | exec 'silent! normal! g`"' | endif

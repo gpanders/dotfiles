@@ -2,7 +2,9 @@
   (set vim.g.lsp_enabled true))
 
 (local configs {})
-(local state {:ns (nvim.create_namespace "")})
+
+(fn dirname [path]
+  (vim.fn.fnamemodify path ":h"))
 
 (fn find-root [start patterns]
   (var done? false)
@@ -56,8 +58,8 @@
 (fn on-exit [code signal client-id]
   (each [_ bufnr (ipairs (vim.lsp.get_buffers_by_client_id client-id))]
     (vim.schedule #(do
-                     (setlocal tagfunc nil)
-                     (setlocal omnifunc nil)
+                     (set vim.opt_local.tagfunc nil)
+                     (set vim.opt_local.omnifunc nil)
                      (autocmd! lsp# "*" {:buffer bufnr})))))
 
 (local handlers {})
@@ -130,6 +132,7 @@
   :zig {:cmd [:zls]
         :root ["build.zig" "zls.json"]}
   :python {:cmd ["pyright-langserver" "--stdio"]
+           :name "pyright"
            :root ["pyproject.toml" "setup.py" "setup.cfg" "requirements.txt" "Pipfile" "pyrightconfig.json"]}
   :rust {:cmd [:rust-analyzer]
          :root ["Cargo.toml"]})
@@ -186,4 +189,4 @@
                        0 (nvim.err_writeln (: "Invalid command: %s" :format cmd))
                        _ (nvim.err_writeln (: "Ambiguous command: %s can match any of %s" :format cmd (table.concat matches ", ")))))))))
 
-  (exec "cnoreabbrev <expr> lsp (getcmdtype() ==# ':' && getcmdline() ==# 'lsp') ? 'Lsp' : 'lsp'"))
+  (vim.cmd "cnoreabbrev <expr> lsp (getcmdtype() ==# ':' && getcmdline() ==# 'lsp') ? 'Lsp' : 'lsp'"))

@@ -1,31 +1,5 @@
 (local M {})
 
-(fn M.setlocal [opt ?val]
-  (assert-compile (sym? opt) "opt should be a plain symbol" opt)
-  (let [opt (tostring opt)]
-    (if ?val
-      `(tset vim.opt_local ,opt ,?val)
-      (match (opt:gsub "&$" "")
-        (where (o n) (> n 0)) `(let [{:default default#} (vim.api.nvim_get_option_info ,o)]
-                                 (tset vim.opt_local ,o default#))
-        _ (match (opt:gsub "^no" "")
-            (o n) `(tset vim.opt_local ,o ,(= n 0)))))))
-
-(fn M.setlocal+= [opt val]
-  (assert-compile (sym? opt) "opt should be a plain symbol" opt)
-  `(: (. vim.opt_local ,(tostring opt)) :append ,val))
-
-(fn M.setlocal^= [opt val]
-  (assert-compile (sym? opt) "opt should be a plain symbol" opt)
-  `(: (. vim.opt_local ,(tostring opt)) :prepend ,val))
-
-(fn M.setlocal-= [opt val]
-  (assert-compile (sym? opt) "opt should be a plain symbol" opt)
-  `(: (. vim.opt_local ,(tostring opt)) :remove ,val))
-
-(fn M.exec [s]
-  `(vim.api.nvim_command ,s))
-
 (fn M.echo [msg ?hl ?history]
   (let [history (not (not ?history))]
     `(vim.api.nvim_echo [[,msg ,?hl]] ,history {})))
@@ -92,7 +66,8 @@ Examples:
         (table.insert form `(vim.api.nvim_create_augroup ,opts.group {:clear false})))
       (table.insert form `(vim.api.nvim_create_autocmd ,event {:group ,(or opts.group _G.augroup)
                                                                :pattern ,pattern
-                                                               :callback ,callback
+                                                               :command ,(if (= (type callback) :string) callback)
+                                                               :callback ,(if (not= (type callback) :string) callback)
                                                                :buffer ,opts.buffer
                                                                :once ,opts.once
                                                                :nested ,opts.nested})))
@@ -130,11 +105,6 @@ Examples:
         `(vim.api.nvim_buf_add_user_command ,bufnr ,cmd ,func ,opts)
         `(vim.api.nvim_add_user_command ,cmd ,func ,opts))))
 
-(fn M.append! [str s]
-  "Append to a string in place"
-  (assert-compile (sym? str) "expected symbol name for str" str)
-  `(set ,str (.. (or ,str "") ,s)))
-
 (fn M.with-module [module-binding ...]
   "Binds a module to the given name and executes the forms.
 
@@ -154,17 +124,7 @@ The example above is equivalent to
     `(match (pcall require ,name)
        (true ,binding) (do ,...))))
 
-(fn M.empty-or-nil? [s]
-  `(or (= ,s nil) (= (next ,s) nil)))
-
 (fn M.printf [s ...]
   `(print (: ,s :format ,...)))
-
-(fn M.lazy-require [mod]
-  `(setmetatable {} {:__index (fn [_# k#]
-                                (. (require ,(tostring mod)) k#))}))
-
-(fn M.dirname [path]
-  `(vim.fn.fnamemodify ,path ":h"))
 
 M

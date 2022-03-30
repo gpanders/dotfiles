@@ -40,4 +40,4 @@
 
 (keymap :n "t<CR>" #(open-term-win default-command (: "term%d" :format vim.v.count)))
 
-(exec "cnoreabbrev <expr> term     (getcmdtype() ==# ':' && getcmdline() ==# 'term') ? 'Term'  : 'term'")
+(vim.cmd "cnoreabbrev <expr> term     (getcmdtype() ==# ':' && getcmdline() ==# 'term') ? 'Term'  : 'term'")

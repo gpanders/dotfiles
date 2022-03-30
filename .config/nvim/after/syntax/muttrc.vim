@@ -1,9 +1,0 @@
-syn keyword muttrcColorField contained sidebar_divider
-syn keyword muttrcColorField contained sidebar_flagged
-syn keyword muttrcColorField contained sidebar_highlight
-syn keyword muttrcColorField contained sidebar_indicator
-syn keyword muttrcColorField contained sidebar_new
-
-syn keyword muttrcVarStr contained background_edit
-syn keyword muttrcVarStr contained send_multipart_alternative
-syn keyword muttrcVarStr contained send_multipart_alternative_filter
