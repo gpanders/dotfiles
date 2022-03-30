@@ -1,12 +1,17 @@
 filetype plugin indent on
 syntax on
 
-colorscheme base16-eighties
+silent! colorscheme base16-eighties
 
+" 24-bit color support
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+" Enable modifyOtherKeys
 let &t_TI = "\<Esc>[>4;2m"
-let &t_TE = "\<Esc>[>4;m"
+let &t_TE = "\<Esc>[>4;0m"
+
+" Set cursor mode: bar in insert, underline in replace
 let &t_SI = "\<Esc>[5 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
@@ -14,7 +19,6 @@ let &t_EI = "\<Esc>[2 q"
 set autoindent
 set autoread
 set backspace=indent,eol,start
-set backupdir=~/.local/share/vim/backup//
 set belloff=all
 set breakindent
 set colorcolumn=+1
@@ -22,7 +26,6 @@ set complete-=i
 set completeopt=menu,menuone
 set confirm
 set cursorline
-set directory=~/.local/share/vim/swap//
 set display=truncate
 set expandtab
 set formatoptions+=j
@@ -38,11 +41,8 @@ set nolangremap
 set nostartofline
 set noswapfile
 set nrformats-=octal
-set pumheight=10
 set scrolloff=2
-set shell=/bin/sh
 set shiftwidth=4
-set shortmess+=c
 set showcmd
 set sidescrolloff=5
 set smartcase
@@ -51,10 +51,10 @@ set tagcase=match
 set tags=./tags;,tags
 set termguicolors
 set ttimeout
-set ttimeoutlen=50
-set undodir=~/.local/share/vim/undo//
+set ttimeoutlen=100
+set undodir=~/.vim/undo//
 set undofile
-set viminfo='100,<50,s10,:100,/100,h
+set wildcharm=<Tab>
 set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#,*.o
 set wildignorecase
 set wildmenu
@@ -62,7 +62,6 @@ set wildmode=longest:full,full
 set wildoptions=pum,tagfile
 
 let &statusline = " %<%f %{&filetype !=# '' ? '[' . &filetype . '] ' : ''}%m%r%=%{&fileformat != 'unix' ? '[' . &fileformat . '] ' : ''}%{&fileencoding != 'utf-8' && &fileencoding != '' ? '[' . &fileencoding . '] ': ''}%10.(%l:%c%V%)%6.P "
-
 
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case
@@ -77,7 +76,7 @@ else
   endif
 endif
 
-command! -nargs=+ Grep execute 'silent grep! <args>' | copen
+command! -nargs=+ Grep execute 'silent grep! <args>' | copen | redraw
 
 " Enable indent-heuristic to make vimdiff more closely match git diff
 set diffopt+=indent-heuristic
@@ -85,7 +84,9 @@ set diffopt+=indent-heuristic
 " Auto close braces in insert mode
 inoremap {<CR> {<CR>}<Esc>O
 
-inoremap <C-Space> <C-X><C-O>
+inoremap <C-U> <C-G>u<C-U>
+
+nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
 
 " Make * and # work in visual mode
 xnoremap * y/\V<C-R>"<CR>
@@ -167,7 +168,7 @@ augroup init
   autocmd BufWinEnter * if &previewwindow | nnoremap <buffer> q <C-W>q | endif
   autocmd CmdWinEnter * nnoremap <buffer> q <C-W>q
 
-  autocmd FileType qf nnoremap <buffer> q <C-W>q
+  autocmd FileType qf,help nnoremap <buffer> q <C-W>q
 
   " Hide cursorline in insert mode and when the current window doesn't have
   " focus
