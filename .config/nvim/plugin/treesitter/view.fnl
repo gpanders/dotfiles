@@ -60,59 +60,60 @@
   (ipairs (if self.opts.anon self.nodes self.named)))
 
 (fn commands.view []
-  (let [bufnr nvim.current.buf
-        winid nvim.current.win]
-    (var tree (Tree:new bufnr))
-    (exec "topleft 60vnew")
+  (let [buf nvim.current.buf
+        win nvim.current.win]
+    (var tree (Tree:new buf.id))
+    (vim.cmd "topleft 60vnew")
     (let [w nvim.current.win
-          b (nvim.win.get_buf w)]
-      (tset vim.wo w :scrolloff 5)
-      (tset vim.wo w :wrap false)
-      (tset vim.bo b :buflisted false)
-      (tset vim.bo b :buftype :nofile)
-      (tset vim.bo b :bufhidden :wipe)
-      (nvim.buf.set_name b (: "Syntax tree for %s" :format (vim.fn.fnamemodify (nvim.buf.get_name bufnr) ":.")))
-      (tree:draw b)
+          b (Buffer.new (w:get_buf))]
+      (tset vim.wo w.id :scrolloff 5)
+      (tset vim.wo w.id :wrap false)
+      (tset vim.bo b.id :buflisted false)
+      (tset vim.bo b.id :buftype :nofile)
+      (tset vim.bo b.id :bufhidden :wipe)
+      (b:set_name (: "Syntax tree for %s" :format (vim.fn.fnamemodify (buf:get_name) ":.")))
+      (tree:draw b.id)
       (vim.fn.matchadd :NonText "\\[[0-9:-]\\+\\]")
       (vim.fn.matchadd :String "\".*\"")
-      (nvim.buf.clear_namespace bufnr ns 0 -1)
+      (buf:clear_namespace ns 0 -1)
       (keymap :n "<CR>" (fn []
-                            (let [[row] (nvim.win.get_cursor w)
+                            (let [[row] (w:get_cursor)
                                   {: lnum : col} (tree:get row)]
-                              (set nvim.current.win winid)
-                              (nvim.win.set_cursor winid [(+ lnum 1) col]))) {:buffer b})
+                              (set nvim.current.win win.id)
+                              (win:set_cursor [(+ lnum 1) col]))) {:buffer b.id})
       (keymap :n "a" (fn []
                        (tree:toggle-anonymous-nodes)
-                       (tree:draw b)) {:buffer b})
+                       (tree:draw b.id)) {:buffer b.id})
       (augroup treesitter#view
-        (autocmd :CursorMoved {:buffer b}
-          (nvim.buf.clear_namespace bufnr ns 0 -1)
-          (let [[row] (nvim.win.get_cursor w)
+        (autocmd :CursorMoved {:buffer b.id}
+          (buf:clear_namespace ns 0 -1)
+          (let [[row] (w:get_cursor)
                 {: lnum : col :end_lnum end-lnum :end_col end-col} (tree:get row)]
-            (nvim.buf.set_extmark bufnr ns lnum col {:end_row end-lnum
-                                                       :end_col (math.max 0 end-col)
-                                                       :hl_group :Visual})))
-        (autocmd :CursorMoved {:buffer bufnr}
-          (if (not (nvim.buf.is_loaded b))
+            (buf:set_extmark ns lnum col {:end_row end-lnum
+                                          :end_col (math.max 0 end-col)
+                                          :hl_group :Visual})))
+        (autocmd :CursorMoved {:buffer buf.id}
+          (if (not (b:is_loaded))
               true
               (let [cursor-node-id (: (node-at-cursor) :id)]
-                (nvim.buf.clear_namespace b ns 0 -1)
+                (b:clear_namespace ns 0 -1)
                 (var done? false)
                 (each [i v (tree:iter) :until done?]
                   (when (= v.id cursor-node-id)
                     (set done? true)
                     (let [start (* 2 v.depth)
                           end (+ start (length v.text))]
-                      (nvim.buf.set_extmark b ns (- i 1) start {:end_col end
-                                                                :hl_group :Visual}))
-                    (nvim.win.set_cursor w [i 0]))))))
-        (autocmd [:TextChanged :InsertLeave] {:buffer bufnr}
-          (if (not (nvim.buf_is_loaded b))
+                      (b:set_extmark ns (- i 1) start {:end_col end
+                                                       :hl_group :Visual}))
+                    (w:set_cursor [i 0]))))))
+        (autocmd [:TextChanged :InsertLeave] {:buffer buf.id}
+          (if (not (b:is_loaded))
               true
               (do
-                (set tree (Tree:new bufnr))
-                (tree:draw b))))
-        (autocmd :BufLeave {:buffer b}
-          (nvim.buf.clear_namespace bufnr ns 0 -1))
-        (autocmd :BufHidden {:buffer bufnr :once true}
-          (nvim.win.close w true))))))
+                (set tree (Tree:new buf.id))
+                (tree:draw b.id))))
+        (autocmd :BufLeave {:buffer b.id}
+          (buf:clear_namespace ns 0 -1))
+        (autocmd :BufHidden {:buffer buf.id :once true}
+          (when (w:is_valid)
+            (w:close true)))))))

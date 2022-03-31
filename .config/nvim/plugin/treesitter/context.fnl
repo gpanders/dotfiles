@@ -12,9 +12,9 @@
   (match (context bufnr)
     contexts (let [lines []
                    lang (. vim.bo bufnr :filetype)
-                   winid nvim.current.win
-                   [{: textoff : topline}] (vim.fn.getwininfo winid)
-                   width (- (nvim.win.get_width winid) textoff)]
+                   win nvim.current.win
+                   [{: textoff : topline}] (vim.fn.getwininfo win.id)
+                   width (- (win:get_width) textoff)]
                (each [_ ctx (ipairs contexts)]
                  (let [start-row (ctx:start)]
                    (if (< start-row (- topline 1))
@@ -37,7 +37,7 @@
                                                                                                        : width})
                                                                        n)
                              _ (let [w (vim.api.nvim_open_win b false {:relative :win
-                                                                       :win winid
+                                                                       :win win.id
                                                                        :row 0
                                                                        :col textoff
                                                                        : width

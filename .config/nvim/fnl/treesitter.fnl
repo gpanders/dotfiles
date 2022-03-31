@@ -8,7 +8,7 @@
              v v))))
 
 (fn root [bufnr]
-  (let [bufnr (or bufnr nvim.current.buf)]
+  (let [bufnr (or bufnr nvim.current.buf.id)]
     (match (pcall vim.treesitter.get_parser bufnr)
       (true parser) (let [[tree] (parser:parse)]
                       (tree:root))
@@ -44,7 +44,7 @@
   node)
 
 (fn node-at-cursor []
-  (let [bufnr nvim.current.buf]
+  (let [bufnr nvim.current.buf.id]
     (match (root bufnr)
       root-node (let [[lnum col] (nvim.win.get_cursor 0)
                       lnum (- lnum 1)]
@@ -114,14 +114,14 @@
 (let [ns (nvim.create_namespace "")
       state {}]
   (fn commands.cursor []
-    (let [bufnr nvim.current.buf
+    (let [buf nvim.current.buf
           highlight-cursor-node (fn []
                                   (match (node-at-cursor)
                                     node (do
-                                           (nvim.buf.clear_namespace bufnr ns 0 -1)
-                                           (highlight-node bufnr ns node)
-                                           (nvim.buf.set_extmark bufnr ns (node:end_) 0 {:virt_text [[(: "(%s)" :format (node:type)) "Comment"]]
-                                                                                         :hl_mode :combine}))))]
+                                           (buf:clear_namespace ns 0 -1)
+                                           (highlight-node buf.id ns node)
+                                           (buf:set_extmark ns (node:end_) 0 {:virt_text [[(: "(%s)" :format (node:type)) "Comment"]]
+                                                                              :hl_mode :combine}))))]
       (set state.cursor (not state.cursor))
       (if state.cursor
           (do
@@ -133,21 +133,21 @@
             (augroup! treesitter#cursor)))))
 
   (fn commands.context []
-    (let [bufnr nvim.current.buf]
-      (nvim.buf.clear_namespace bufnr ns 0 -1)
-      (match (context bufnr)
+    (let [buf nvim.current.buf]
+      (buf:clear_namespace ns 0 -1)
+      (match (context buf.id)
         ([ctx] _) (let [clear #(do (commands.clear)
                                    true)]
-                    (highlight-node bufnr ns ctx)
+                    (highlight-node buf.id ns ctx)
                     (augroup treesitter#context
                       (autocmd! [:BufLeave :CursorMoved] "<buffer>")
                       (autocmd :BufLeave "<buffer>" {:once true} clear)
                       (autocmd :CursorMoved "<buffer>"
-                        (match nvim.current.buf
-                          bufnr (let [[lnum] (nvim.win.get_cursor 0)
-                                      lnum (- lnum 1)]
-                                  (when (or (< lnum (ctx:start)) (< (ctx:end_) lnum))
-                                    (clear)))
+                        (match nvim.current.buf.id
+                          buf.id (let [[lnum] (nvim.win.get_cursor 0)
+                                       lnum (- lnum 1)]
+                                   (when (or (< lnum (ctx:start)) (< (ctx:end_) lnum))
+                                     (clear)))
                           _ (clear))))
                     (print (ctx:sexpr)))
         _ (echo "No context found"))))

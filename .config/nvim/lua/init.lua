@@ -1,3 +1,27 @@
+local Buffer = {}
+
+function Buffer.new(id)
+    return setmetatable({id = id}, {
+        __index = function(t, k)
+            local f = assert(vim.api["nvim_buf_" .. k], k)
+            t[k] = function(self, ...) return f(self.id, ...) end
+            return t[k]
+        end,
+    })
+end
+
+local Window = {}
+
+function Window.new(id)
+    return setmetatable({id = id}, {
+        __index = function(t, k)
+            local f = assert(vim.api["nvim_win_" .. k], k)
+            t[k] = function(self, ...) return f(self.id, ...) end
+            return t[k]
+        end,
+    })
+end
+
 local nvim = {
     buf = setmetatable({}, {
         __index = function(t, k)
@@ -13,7 +37,14 @@ local nvim = {
     }),
     current = setmetatable({}, {
         __index = function(_, k)
-            return vim.api["nvim_get_current_" .. k]()
+            local r = vim.api["nvim_get_current_" .. k]()
+            if k == "buf" then
+                return Buffer.new(r)
+            end
+            if k == "win" then
+                return Window.new(r)
+            end
+            return r
         end,
         __newindex = function(_, k, v)
             vim.api["nvim_set_current_" .. k](v)
@@ -27,3 +58,6 @@ _G.nvim = setmetatable(nvim, {
         return t[k]
     end,
 })
+
+_G.Buffer = Buffer
+_G.Window = Window
