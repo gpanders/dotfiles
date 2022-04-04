@@ -44,7 +44,7 @@
     (vim.opt.completeopt:append [:noinsert])
     (lsp-compl.attach client bufnr {}))
 
-  (nvim.exec_autocmd :User {:pattern :LspAttached}))
+  (nvim.exec_autocmds :User {:pattern :LspAttached}))
 
 (fn on-init [client result]
   (with-module [lsp-compl :lsp_compl]

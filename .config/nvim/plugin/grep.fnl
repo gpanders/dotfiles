@@ -6,13 +6,13 @@
                             s))
         stdout (vim.loop.new_pipe false)
         chunks []]
-    (nvim.exec_autocmd :QuickFixCmdPre {:pattern "grep" :modeline false})
+    (nvim.exec_autocmds :QuickFixCmdPre {:pattern "grep" :modeline false})
     (vim.loop.spawn
       vim.o.shell
       {:args ["-c" grepcmd] :stdio [nil stdout nil]}
       (vim.schedule_wrap #(let [lines (-> chunks table.concat (vim.split "\n" {:trimempty true}))]
                             (vim.fn.setqflist [] " " {: title : lines :efm vim.o.grepformat :nr "$"})
-                            (nvim.exec_autocmd :QuickFixCmdPost {:pattern "grep" :modeline false}))))
+                            (nvim.exec_autocmds :QuickFixCmdPost {:pattern "grep" :modeline false}))))
     (stdout:read_start
       (fn [err data]
         (assert (not err) err)
