@@ -2,6 +2,7 @@
 filetype on
 
 set breakindent
+set cinoptions=l1,:0,g0,E-s,N-s,t0,(s,J1,j1
 set colorcolumn=+1
 set completeopt=menu,menuone
 set confirm
