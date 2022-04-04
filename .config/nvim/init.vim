@@ -160,7 +160,7 @@ augroup init
   autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
 
   " Defer setting the colorscheme until the UI loads (micro optimization)
-  autocmd UIEnter * colorscheme base16-eighties
+  autocmd UIEnter * colorscheme nord
 
   " Restore cursor position (except for git commits and rebases)
   autocmd BufRead * if &ft !~# 'commit\|rebase' | exec 'silent! normal! g`"' | endif
