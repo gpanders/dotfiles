@@ -3,41 +3,43 @@ local nvim_set_hl = vim.api.nvim_set_hl
 vim.o.background = "dark"
 
 local colors = {
-    nord0        = { gui = "#2E3440", cterm = 0 },
-    nord1        = { gui = "#3B4252", cterm = 0 },
-    nord2        = { gui = "#434C5E", cterm = 2 },
-    nord3        = { gui = "#4C566A", cterm = 8 },
-    nord3_bright = { gui = "#616E88", cterm = 4 },
-    nord4        = { gui = "#D8DEE9", cterm = 5 },
-    nord5        = { gui = "#E5E9F0", cterm = 7 },
-    nord6        = { gui = "#ECEFF4", cterm = 15 },
-    nord7        = { gui = "#8FBCBB", cterm = 14 },
-    nord8        = { gui = "#88C0D0", cterm = 6 },
-    nord9        = { gui = "#81A1C1", cterm = 4 },
-    nord10       = { gui = "#5E81AC", cterm = 12 },
-    nord11       = { gui = "#BF616A", cterm = 1 },
-    nord12       = { gui = "#D08770", cterm = 11 },
-    nord13       = { gui = "#EBCB8B", cterm = 13 },
-    nord14       = { gui = "#A3BE8C", cterm = 2 },
-    nord15       = { gui = "#B48EAD", cterm = 5 },
+    background    = { gui = "#2E3440", cterm = 0  },
+    darkblack     = { gui = "#373E4D", cterm = 0  },
+    black         = { gui = "#3B4252", cterm = 0  },
+    lightblack    = { gui = "#434C5E", cterm = 2  },
+    brightblack   = { gui = "#4C566A", cterm = 8  },
+    brighterblack = { gui = "#616E88", cterm = 4  },
+    foreground    = { gui = "#D8DEE9", cterm = 7  },
+    darkwhite     = { gui = "#AEB3BB", cterm = 7  },
+    white         = { gui = "#E5E9F0", cterm = 7  },
+    brightwhite   = { gui = "#ECEFF4", cterm = 15 },
+    brightcyan    = { gui = "#8FBCBB", cterm = 14 },
+    cyan          = { gui = "#88C0D0", cterm = 6  },
+    blue          = { gui = "#81A1C1", cterm = 4  },
+    darkblue      = { gui = "#5E81AC", cterm = 12 },
+    red           = { gui = "#BF616A", cterm = 1  },
+    orange        = { gui = "#D08770", cterm = 11 },
+    yellow        = { gui = "#EBCB8B", cterm = 3  },
+    green         = { gui = "#A3BE8C", cterm = 2  },
+    magenta       = { gui = "#B48EAD", cterm = 5  },
 }
 
-vim.g.terminal_color_0 = colors.nord1.gui
-vim.g.terminal_color_1 = colors.nord11.gui
-vim.g.terminal_color_2 = colors.nord14.gui
-vim.g.terminal_color_3 = colors.nord13.gui
-vim.g.terminal_color_4 = colors.nord9.gui
-vim.g.terminal_color_5 = colors.nord15.gui
-vim.g.terminal_color_6 = colors.nord8.gui
-vim.g.terminal_color_7 = colors.nord5.gui
-vim.g.terminal_color_8 = colors.nord3.gui
-vim.g.terminal_color_9 = colors.nord11.gui
-vim.g.terminal_color_10 = colors.nord14.gui
-vim.g.terminal_color_11 = colors.nord13.gui
-vim.g.terminal_color_12 = colors.nord9.gui
-vim.g.terminal_color_13 = colors.nord15.gui
-vim.g.terminal_color_14 = colors.nord7.gui
-vim.g.terminal_color_15 = colors.nord6.gui
+vim.g.terminal_color_0 = colors.black.gui
+vim.g.terminal_color_1 = colors.red.gui
+vim.g.terminal_color_2 = colors.green.gui
+vim.g.terminal_color_3 = colors.yellow.gui
+vim.g.terminal_color_4 = colors.blue.gui
+vim.g.terminal_color_5 = colors.magenta.gui
+vim.g.terminal_color_6 = colors.cyan.gui
+vim.g.terminal_color_7 = colors.white.gui
+vim.g.terminal_color_8 = colors.brightblack.gui
+vim.g.terminal_color_9 = colors.red.gui
+vim.g.terminal_color_10 = colors.green.gui
+vim.g.terminal_color_11 = colors.yellow.gui
+vim.g.terminal_color_12 = colors.blue.gui
+vim.g.terminal_color_13 = colors.magenta.gui
+vim.g.terminal_color_14 = colors.brightcyan.gui
+vim.g.terminal_color_15 = colors.brightwhite.gui
 
 local function hi(name)
     return function(opts)
@@ -61,121 +63,125 @@ hi "Italic" {}
 hi "Underline" { attr = "underline" }
 
 -- Editor
-hi "ColorColumn" { bg = "nord1" }
-hi "Cursor" { fg = "nord0", bg = "nord4" }
-hi "CursorLine" { bg = "nord1" }
-hi "Error" { fg = "nord4", bg = "nord11" }
-hi "iCursor" { fg = "nord0", bg = "nord4" }
-hi "LineNr" { fg = "nord3" }
-hi "MatchParen" { fg = "nord8", bg = "nord3" }
-hi "NonText" { fg = "nord2" }
-hi "Normal" { fg = "nord4", bg = "nord0" }
-hi "Pmenu" { fg = "nord4", bg = "nord2" }
-hi "PmenuSbar" { fg = "nord4", bg = "nord2" }
-hi "PmenuSel" { fg = "nord8", bg = "nord3" }
-hi "PmenuThumb" { fg = "nord8", bg = "nord3" }
-hi "SpecialKey" { fg = "nord3" }
-hi "SpellBad" { fg = "nord11", bg = "nord0", attr = "undercurl", sp = "nord11" }
-hi "SpellCap" { fg = "nord13", bg = "nord0", attr = "undercurl", sp = "nord13" }
-hi "SpellLocal" { fg = "nord5", bg = "nord0", attr = "undercurl", sp = "nord5" }
-hi "SpellRare" { fg = "nord6", bg = "nord0", attr = "undercurl", sp = "nord6" }
-hi "Visual" { bg = "nord2" }
-hi "VisualNOS" { bg = "nord2" }
+hi "ColorColumn" { bg = "black" }
+hi "Cursor" { fg = "background", bg = "foreground" }
+hi "CursorLine" { bg = "black" }
+hi "Error" { fg = "foreground", bg = "red" }
+hi "iCursor" { fg = "background", bg = "foreground" }
+hi "LineNr" { fg = "brightblack" }
+hi "MatchParen" { fg = "cyan", bg = "brightblack" }
+hi "NonText" { fg = "lightblack" }
+hi "Normal" { fg = "foreground", bg = "background" }
+hi "Pmenu" { fg = "foreground", bg = "lightblack" }
+hi "PmenuSbar" { fg = "foreground", bg = "lightblack" }
+hi "PmenuSel" { fg = "cyan", bg = "brightblack" }
+hi "PmenuThumb" { fg = "cyan", bg = "brightblack" }
+hi "SpecialKey" { fg = "brightblack" }
+hi "SpellBad" { fg = "red", bg = "background", attr = "undercurl", sp = "red" }
+hi "SpellCap" { fg = "yellow", bg = "background", attr = "undercurl", sp = "yellow" }
+hi "SpellLocal" { fg = "white", bg = "background", attr = "undercurl", sp = "white" }
+hi "SpellRare" { fg = "brightwhite", bg = "background", attr = "undercurl", sp = "brightwhite" }
+hi "Visual" { bg = "lightblack" }
+hi "VisualNOS" { bg = "lightblack" }
 
 -- Neovim Support
-hi "healthError" { fg = "nord11", bg = "nord1" }
-hi "healthSuccess" { fg = "nord14", bg = "nord1" }
-hi "healthWarning" { fg = "nord13", bg = "nord1" }
-hi "TermCursorNC" { bg = "nord1" }
+hi "healthError" { fg = "red", bg = "black" }
+hi "healthSuccess" { fg = "green", bg = "black" }
+hi "healthWarning" { fg = "yellow", bg = "black" }
+hi "TermCursorNC" { bg = "black" }
 
-hi "DiagnosticWarn" { fg = "nord13" }
-hi "DiagnosticError" { fg = "nord11" }
-hi "DiagnosticInfo" { fg = "nord8" }
-hi "DiagnosticHint" { fg = "nord10" }
-hi "DiagnosticUnderlineWarn" { sp = "nord13", attr = "undercurl" }
-hi "DiagnosticUnderlineError" { sp = "nord11", attr = "undercurl" }
-hi "DiagnosticUnderlineInfo" { sp = "nord8", attr = "undercurl" }
-hi "DiagnosticUnderlineHint" { sp = "nord10", attr = "undercurl" }
+hi "DiagnosticWarn" { fg = "yellow" }
+hi "DiagnosticError" { fg = "red" }
+hi "DiagnosticInfo" { fg = "cyan" }
+hi "DiagnosticHint" { fg = "darkblue" }
+hi "DiagnosticSignWarn" { fg = "yellow", bg = "black" }
+hi "DiagnosticSignError" { fg = "red", bg = "black" }
+hi "DiagnosticSignInfo" { fg = "cyan", bg = "black" }
+hi "DiagnosticSignHint" { fg = "darkblue", bg = "black" }
+hi "DiagnosticUnderlineWarn" { sp = "yellow", attr = "undercurl" }
+hi "DiagnosticUnderlineError" { sp = "red", attr = "undercurl" }
+hi "DiagnosticUnderlineInfo" { sp = "cyan", attr = "undercurl" }
+hi "DiagnosticUnderlineHint" { sp = "darkblue", attr = "undercurl" }
 
 -- Neovim DocumentHighlight
-hi "LspReferenceText" { bg = "nord3" }
-hi "LspReferenceRead" { bg = "nord3" }
-hi "LspReferenceWrite" { bg = "nord3" }
+hi "LspReferenceText" { bg = "brightblack" }
+hi "LspReferenceRead" { bg = "brightblack" }
+hi "LspReferenceWrite" { bg = "brightblack" }
 
 -- Neovim LspSignatureHelp
-hi "LspSignatureActiveParameter" { fg = "nord8", attr = "underline" }
+hi "LspSignatureActiveParameter" { fg = "cyan", attr = "underline" }
 
 -- Gutter
-hi "CursorColumn" { bg = "nord1" }
-hi "CursorLineNr" { fg = "nord4", bg = "nord1" }
-hi "Folded" { fg = "nord3", bg = "nord1", attr = "bold" }
-hi "FoldColumn" { fg = "nord3", bg = "nord0" }
-hi "SignColumn" { fg = "nord1", bg = "nord0" }
+hi "CursorColumn" { bg = "black" }
+hi "CursorLineNr" { fg = "foreground", bg = "black" }
+hi "Folded" { fg = "brightblack", bg = "black", attr = "bold" }
+hi "FoldColumn" { fg = "brightblack", bg = "black" }
+hi "SignColumn" { fg = "black", bg = "black" }
 
 -- Navigation
-hi "Directory" { fg = "nord8" }
+hi "Directory" { fg = "cyan" }
 
 -- Prompt/Status
-hi "EndOfBuffer" { fg = "nord1" }
-hi "ErrorMsg" { fg = "nord4", bg = "nord11" }
-hi "ModeMsg" { fg = "nord4" }
-hi "MoreMsg" { fg = "nord8" }
-hi "Question" { fg = "nord4" }
-hi "StatusLine" { fg = "nord8", bg = "nord3" }
-hi "StatusLineNC" { fg = "nord4", bg = "nord1" }
-hi "StatusLineTerm" { fg = "nord8", bg = "nord3" }
-hi "StatusLineTermNC" { fg = "nord4", bg = "nord1" }
-hi "WarningMsg" { fg = "nord0", bg = "nord13" }
-hi "WildMenu" { fg = "nord8", bg = "nord1" }
+hi "EndOfBuffer" { fg = "black" }
+hi "ErrorMsg" { fg = "foreground", bg = "red" }
+hi "ModeMsg" { fg = "foreground" }
+hi "MoreMsg" { fg = "cyan" }
+hi "Question" { fg = "foreground" }
+hi "StatusLine" { fg = "foreground", bg = "lightblack" }
+hi "StatusLineNC" { fg = "brighterblack", bg = "darkblack" }
+hi "StatusLineTerm" { fg = "foreground", bg = "lightblack" }
+hi "StatusLineTermNC" { fg = "brighterblack", bg = "darkblack" }
+hi "WarningMsg" { fg = "background", bg = "yellow" }
+hi "WildMenu" { fg = "cyan", bg = "black" }
 
 -- Search
-hi "IncSearch" { fg = "nord6", bg = "nord10", attr = "underline" }
-hi "Search" { fg = "nord1", bg = "nord8" }
+hi "IncSearch" { fg = "brightwhite", bg = "darkblue", attr = "underline" }
+hi "Search" { fg = "black", bg = "cyan" }
 
 -- Tabs
-hi "TabLine" { fg = "nord4", bg = "nord1" }
-hi "TabLineFill" { fg = "nord4", bg = "nord1" }
-hi "TabLineSel" { fg = "nord8", bg = "nord3" }
+hi "TabLine" { fg = "foreground", bg = "black" }
+hi "TabLineFill" { fg = "foreground", bg = "black" }
+hi "TabLineSel" { fg = "cyan", bg = "brightblack" }
 
 -- Window
-hi "Title" { fg = "nord4" }
+hi "Title" { fg = "foreground" }
 
-hi "VertSplit" { fg = "nord1", bg = "nord1" }
+hi "VertSplit" { fg = "black", bg = "black" }
 
 -- +----------------------+
 -- + Language Base Groups +
 -- +----------------------+
-hi "Boolean" { fg = "nord9" }
-hi "Character" { fg = "nord14" }
-hi "Comment" { fg = "nord3_bright" }
+hi "Boolean" { fg = "blue" }
+hi "Character" { fg = "green" }
+hi "Comment" { fg = "brighterblack" }
 hi "Conceal" {}
-hi "Conditional" { fg = "nord9" }
-hi "Constant" { fg = "nord4" }
-hi "Decorator" { fg = "nord12" }
-hi "Define" { fg = "nord9" }
-hi "Delimiter" { fg = "nord6" }
-hi "Exception" { fg = "nord9" }
-hi "Float" { fg = "nord15" }
-hi "Function" { fg = "nord8" }
-hi "Identifier" { fg = "nord4" }
-hi "Include" { fg = "nord9" }
-hi "Keyword" { fg = "nord9" }
-hi "Label" { fg = "nord9" }
-hi "Number" { fg = "nord15" }
-hi "Operator" { fg = "nord9" }
-hi "PreProc" { fg = "nord9" }
-hi "Repeat" { fg = "nord9" }
-hi "Special" { fg = "nord4" }
-hi "SpecialChar" { fg = "nord13" }
-hi "SpecialComment" { fg = "nord8" }
-hi "Statement" { fg = "nord9" }
-hi "StorageClass" { fg = "nord9" }
-hi "String" { fg = "nord14" }
-hi "Structure" { fg = "nord9" }
-hi "Tag" { fg = "nord4" }
-hi "Todo" { fg = "nord13" }
-hi "Type" { fg = "nord9" }
-hi "Typedef" { fg = "nord9" }
+hi "Conditional" { fg = "blue" }
+hi "Constant" { fg = "foreground" }
+hi "Decorator" { fg = "orange" }
+hi "Define" { fg = "blue" }
+hi "Delimiter" { fg = "brightwhite" }
+hi "Exception" { fg = "blue" }
+hi "Float" { fg = "magenta" }
+hi "Function" { fg = "cyan" }
+hi "Identifier" { fg = "foreground" }
+hi "Include" { fg = "blue" }
+hi "Keyword" { fg = "blue" }
+hi "Label" { fg = "blue" }
+hi "Number" { fg = "magenta" }
+hi "Operator" { fg = "blue" }
+hi "PreProc" { fg = "blue" }
+hi "Repeat" { fg = "blue" }
+hi "Special" { fg = "foreground" }
+hi "SpecialChar" { fg = "yellow" }
+hi "SpecialComment" { fg = "cyan" }
+hi "Statement" { fg = "blue" }
+hi "StorageClass" { fg = "blue" }
+hi "String" { fg = "green" }
+hi "Structure" { fg = "blue" }
+hi "Tag" { fg = "foreground" }
+hi "Todo" { fg = "yellow" }
+hi "Type" { fg = "blue" }
+hi "Typedef" { fg = "blue" }
 hi "Annotation" { link = "Decorator" }
 hi "Macro" { link = "Define" }
 hi "PreCondit" { link = "PreProc" }
@@ -184,16 +190,16 @@ hi "Variable" { link = "Identifier" }
 -------------
 -- Languages
 -------------
-hi "asciidocAttributeEntry" { fg = "nord10" }
-hi "asciidocAttributeList" { fg = "nord10" }
-hi "asciidocAttributeRef" { fg = "nord10" }
-hi "asciidocHLabel" { fg = "nord9" }
-hi "asciidocListingBlock" { fg = "nord7" }
-hi "asciidocMacroAttributes" { fg = "nord8" }
-hi "asciidocOneLineTitle" { fg = "nord8" }
-hi "asciidocPassthroughBlock" { fg = "nord9" }
-hi "asciidocQuotedMonospaced" { fg = "nord7" }
-hi "asciidocTriplePlusPassthrough" { fg = "nord7" }
+hi "asciidocAttributeEntry" { fg = "darkblue" }
+hi "asciidocAttributeList" { fg = "darkblue" }
+hi "asciidocAttributeRef" { fg = "darkblue" }
+hi "asciidocHLabel" { fg = "blue" }
+hi "asciidocListingBlock" { fg = "brightcyan" }
+hi "asciidocMacroAttributes" { fg = "cyan" }
+hi "asciidocOneLineTitle" { fg = "cyan" }
+hi "asciidocPassthroughBlock" { fg = "blue" }
+hi "asciidocQuotedMonospaced" { fg = "brightcyan" }
+hi "asciidocTriplePlusPassthrough" { fg = "brightcyan" }
 hi "asciidocAdmonition" { link = "Keyword" }
 hi "asciidocAttributeRef" { link = "markdownH1" }
 hi "asciidocBackslash" { link = "Keyword" }
@@ -205,8 +211,8 @@ hi "asciidocQuotedUnconstrainedBold" { link = "asciidocQuotedBold" }
 hi "asciidocQuotedUnconstrainedEmphasized" { link = "asciidocQuotedEmphasized" }
 hi "asciidocURL" { link = "markdownLinkText" }
 
-hi "awkCharClass" { fg = "nord7" }
-hi "awkPatterns" { fg = "nord9", attr = "bold" }
+hi "awkCharClass" { fg = "brightcyan" }
+hi "awkPatterns" { fg = "blue", attr = "bold" }
 hi "awkArrayElement" { link = "Identifier" }
 hi "awkBoolLogic" { link = "Keyword" }
 hi "awkBrktRegExp" { link = "SpecialChar" }
@@ -222,21 +228,21 @@ hi "awkSpecialCharacter" { link = "SpecialChar" }
 hi "awkSpecialPrintf" { link = "SpecialChar" }
 hi "awkVariables" { link = "Identifier" }
 
-hi "cIncluded" { fg = "nord7" }
+hi "cIncluded" { fg = "brightcyan" }
 hi "cOperator" { link = "Operator" }
 hi "cPreCondit" { link = "PreCondit" }
 hi "cConstant" { link = "Type" }
 
-hi "cmakeGeneratorExpression" { fg = "nord10" }
+hi "cmakeGeneratorExpression" { fg = "darkblue" }
 
 hi "csPreCondit" { link = "PreCondit" }
 hi "csType" { link = "Type" }
 hi "csXmlTag" { link = "SpecialComment" }
 
-hi "cssAttributeSelector" { fg = "nord7" }
-hi "cssDefinition" { fg = "nord7" }
-hi "cssIdentifier" { fg = "nord7", attr = "underline" }
-hi "cssStringQ" { fg = "nord7" }
+hi "cssAttributeSelector" { fg = "brightcyan" }
+hi "cssDefinition" { fg = "brightcyan" }
+hi "cssIdentifier" { fg = "brightcyan", attr = "underline" }
+hi "cssStringQ" { fg = "brightcyan" }
 hi "cssAttr" { link = "Keyword" }
 hi "cssBraces" { link = "Delimiter" }
 hi "cssClassName" { link = "cssDefinition" }
@@ -246,45 +252,45 @@ hi "cssPseudoClass" { link = "cssDefinition" }
 hi "cssPseudoClassId" { link = "cssPseudoClass" }
 hi "cssVendor" { link = "Keyword" }
 
-hi "dosiniHeader" { fg = "nord8" }
+hi "dosiniHeader" { fg = "cyan" }
 hi "dosiniLabel" { link = "Type" }
 
-hi "dtBooleanKey" { fg = "nord7" }
-hi "dtExecKey" { fg = "nord7" }
-hi "dtLocaleKey" { fg = "nord7" }
-hi "dtNumericKey" { fg = "nord7" }
-hi "dtTypeKey" { fg = "nord7" }
+hi "dtBooleanKey" { fg = "brightcyan" }
+hi "dtExecKey" { fg = "brightcyan" }
+hi "dtLocaleKey" { fg = "brightcyan" }
+hi "dtNumericKey" { fg = "brightcyan" }
+hi "dtTypeKey" { fg = "brightcyan" }
 hi "dtDelim" { link = "Delimiter" }
 hi "dtLocaleValue" { link = "Keyword" }
 hi "dtTypeValue" { link = "Keyword" }
 
-hi "DiffAdd" { fg = "nord14", bg = "nord0", attr = "inverse" }
-hi "DiffChange" { fg = "nord13", bg = "nord0", attr = "inverse" }
-hi "DiffDelete" { fg = "nord11", bg = "nord0", attr = "inverse" }
-hi "DiffText" { fg = "nord9", bg = "nord0", attr = "inverse" }
+hi "DiffAdd" { fg = "green", bg = "background", attr = "inverse" }
+hi "DiffChange" { fg = "yellow", bg = "background", attr = "inverse" }
+hi "DiffDelete" { fg = "red", bg = "background", attr = "inverse" }
+hi "DiffText" { fg = "blue", bg = "background", attr = "inverse" }
 
 -- Legacy groups for official git.vim and diff.vim syntax
 hi "diffAdded" { link = "DiffAdd" }
 hi "diffChanged" { link = "DiffChange" }
 hi "diffRemoved" { link = "DiffDelete" }
 
-hi "gitconfigVariable" { fg = "nord7" }
-hi "gitrebaseFixup" { fg = "nord8" }
-hi "gitrebaseExec" { fg = "nord8" }
-hi "gitrebaseReword" { fg = "nord13" }
+hi "gitconfigVariable" { fg = "brightcyan" }
+hi "gitrebaseFixup" { fg = "cyan" }
+hi "gitrebaseExec" { fg = "cyan" }
+hi "gitrebaseReword" { fg = "yellow" }
 
-hi "goBuiltins" { fg = "nord7" }
+hi "goBuiltins" { fg = "brightcyan" }
 hi "goConstants" { link = "Keyword" }
 
-hi "haskellPreProc" { fg = "nord10" }
-hi "haskellType" { fg = "nord7" }
+hi "haskellPreProc" { fg = "darkblue" }
+hi "haskellType" { fg = "brightcyan" }
 hi "haskellPragma" { link = "haskellPreProc" }
 
-hi "helpBar" { fg = "nord3" }
-hi "helpHyperTextJump" { fg = "nord8", attr = "underline" }
+hi "helpBar" { fg = "brightblack" }
+hi "helpHyperTextJump" { fg = "cyan", attr = "underline" }
 
-hi "htmlArg" { fg = "nord7" }
-hi "htmlLink" { fg = "nord4" }
+hi "htmlArg" { fg = "brightcyan" }
+hi "htmlLink" { fg = "foreground" }
 hi "htmlBold" { link = "Bold" }
 hi "htmlEndTag" { link = "htmlTag" }
 hi "htmlItalic" { link = "Italic" }
@@ -298,13 +304,13 @@ hi "htmlSpecialChar" { link = "SpecialChar" }
 hi "htmlTag" { link = "Keyword" }
 hi "htmlTagN" { link = "htmlTag" }
 
-hi "javaDocTags" { fg = "nord7" }
+hi "javaDocTags" { fg = "brightcyan" }
 hi "javaCommentTitle" { link = "Comment" }
 hi "javaScriptBraces" { link = "Delimiter" }
 hi "javaScriptIdentifier" { link = "Keyword" }
 hi "javaScriptNumber" { link = "Number" }
 
-hi "jsGlobalNodeObjects" { fg = "nord8" }
+hi "jsGlobalNodeObjects" { fg = "cyan" }
 hi "jsBrackets" { link = "Delimiter" }
 hi "jsFuncCall" { link = "Function" }
 hi "jsFuncParens" { link = "Delimiter" }
@@ -313,9 +319,9 @@ hi "jsNoise" { link = "Delimiter" }
 hi "jsPrototype" { link = "Keyword" }
 hi "jsRegexpString" { link = "SpecialChar" }
 
-hi "jsonKeyword" { fg = "nord7" }
+hi "jsonKeyword" { fg = "brightcyan" }
 
-hi "lessClass" { fg = "nord7" }
+hi "lessClass" { fg = "brightcyan" }
 hi "lessAmpersand" { link = "Keyword" }
 hi "lessCssAttribute" { link = "Delimiter" }
 hi "lessFunction" { link = "Function" }
@@ -329,15 +335,15 @@ hi "lispFunc" { link = "Function" }
 
 hi "luaFunc" { link = "Function" }
 
-hi "markdownBlockquote" { fg = "nord7" }
-hi "markdownCode" { fg = "nord7" }
-hi "markdownCodeDelimiter" { fg = "nord7" }
-hi "markdownFootnote" { fg = "nord7" }
-hi "markdownId" { fg = "nord7" }
-hi "markdownIdDeclaration" { fg = "nord7" }
-hi "markdownH1" { fg = "nord8" }
-hi "markdownLinkText" { fg = "nord8" }
-hi "markdownUrl" { fg = "nord4" }
+hi "markdownBlockquote" { fg = "brightcyan" }
+hi "markdownCode" { fg = "brightcyan" }
+hi "markdownCodeDelimiter" { fg = "brightcyan" }
+hi "markdownFootnote" { fg = "brightcyan" }
+hi "markdownId" { fg = "brightcyan" }
+hi "markdownIdDeclaration" { fg = "brightcyan" }
+hi "markdownH1" { fg = "cyan" }
+hi "markdownLinkText" { fg = "cyan" }
+hi "markdownUrl" { fg = "foreground" }
 hi "markdownBold" { link = "Bold" }
 hi "markdownBoldDelimiter" { link = "Keyword" }
 hi "markdownFootnoteDefinition" { link = "markdownFootnote" }
@@ -355,8 +361,8 @@ hi "markdownListMarker" { link = "Keyword" }
 hi "markdownRule" { link = "Keyword" }
 hi "markdownHeadingDelimiter" { link = "Keyword" }
 
-hi "pandocDefinitionBlockTerm" { fg = "nord7" }
-hi "pandocTableDelims" { fg = "nord3" }
+hi "pandocDefinitionBlockTerm" { fg = "brightcyan" }
+hi "pandocTableDelims" { fg = "brightblack" }
 hi "pandocAtxHeader" { link = "markdownH1" }
 hi "pandocBlockQuote" { link = "markdownBlockquote" }
 hi "pandocCiteAnchor" { link = "Operator" }
@@ -378,28 +384,28 @@ hi "pandocStrong" { link = "markdownBold" }
 hi "pandocTableHeaderWord" { link = "pandocAtxHeader" }
 hi "pandocUListItemBullet" { link = "Operator" }
 
-hi "perlPackageDecl" { fg = "nord7" }
+hi "perlPackageDecl" { fg = "brightcyan" }
 
-hi "phpClasses" { fg = "nord7" }
-hi "phpDocTags" { fg = "nord7" }
+hi "phpClasses" { fg = "brightcyan" }
+hi "phpDocTags" { fg = "brightcyan" }
 hi "phpDocCustomTags" { link = "phpDocTags" }
 hi "phpMemberSelector" { link = "Keyword" }
-hi "phpClass" { fg = "nord7" }
-hi "phpClassImplements" { fg = "nord7", attr = "bold" }
+hi "phpClass" { fg = "brightcyan" }
+hi "phpClassImplements" { fg = "brightcyan", attr = "bold" }
 hi "phpClassExtends" { link = "phpClass" }
 hi "phpFunction" { link = "Function" }
 hi "phpMethod" { link = "Function" }
 hi "phpUseClass" { link = "phpClass" }
 
-hi "podCmdText" { fg = "nord7" }
-hi "podVerbatimLine" { fg = "nord4" }
+hi "podCmdText" { fg = "brightcyan" }
+hi "podVerbatimLine" { fg = "foreground" }
 hi "podFormat" { link = "Keyword" }
 
 hi "pythonBuiltin" { link = "Type" }
 hi "pythonEscape" { link = "SpecialChar" }
 
-hi "rubyConstant" { fg = "nord7" }
-hi "rubySymbol" { fg = "nord6", attr = "bold" }
+hi "rubyConstant" { fg = "brightcyan" }
+hi "rubySymbol" { fg = "brightwhite", attr = "bold" }
 hi "rubyAttribute" { link = "Identifier" }
 hi "rubyBlockParameterList" { link = "Operator" }
 hi "rubyInterpolationDelimiter" { link = "Keyword" }
@@ -408,20 +414,20 @@ hi "rubyLocalVariableOrMethod" { link = "Function" }
 hi "rubyPseudoVariable" { link = "Keyword" }
 hi "rubyRegexp" { link = "SpecialChar" }
 
-hi "rustAttribute" { fg = "nord10" }
-hi "rustEnum" { fg = "nord7", attr = "bold" }
-hi "rustMacro" { fg = "nord8", attr = "bold" }
-hi "rustModPath" { fg = "nord7" }
-hi "rustPanic" { fg = "nord9", attr = "bold" }
-hi "rustTrait" { fg = "nord7" }
+hi "rustAttribute" { fg = "darkblue" }
+hi "rustEnum" { fg = "brightcyan", attr = "bold" }
+hi "rustMacro" { fg = "cyan", attr = "bold" }
+hi "rustModPath" { fg = "brightcyan" }
+hi "rustPanic" { fg = "blue", attr = "bold" }
+hi "rustTrait" { fg = "brightcyan" }
 hi "rustCommentLineDoc" { link = "Comment" }
 hi "rustDerive" { link = "rustAttribute" }
 hi "rustEnumVariant" { link = "rustEnum" }
 hi "rustEscape" { link = "SpecialChar" }
 hi "rustQuestionMark" { link = "Keyword" }
 
-hi "sassClass" { fg = "nord7" }
-hi "sassId" { fg = "nord7", attr = "underline" }
+hi "sassClass" { fg = "brightcyan" }
+hi "sassId" { fg = "brightcyan", attr = "underline" }
 hi "sassAmpersand" { link = "Keyword" }
 hi "sassClassChar" { link = "Delimiter" }
 hi "sassControl" { link = "Keyword" }
@@ -444,16 +450,16 @@ hi "shDerefVar" { link = "Identifier" }
 hi "sqlKeyword" { link = "Keyword" }
 hi "sqlSpecial" { link = "Keyword" }
 
-hi "tsxAttrib" { fg = "nord7" }
+hi "tsxAttrib" { fg = "brightcyan" }
 hi "tsxEqual" { link = "Operator" }
 hi "tsxIntrinsicTagName" { link = "htmlTag" }
 hi "tsxTagName" { link = "tsxIntrinsicTagName" }
 
-hi "typescriptBOMWindowMethod" { fg = "nord8" }
-hi "typescriptClassName" { fg = "nord7" }
-hi "typescriptDecorator" { fg = "nord12" }
-hi "typescriptInterfaceName" { fg = "nord7", attr = "bold" }
-hi "typescriptRegexpString" { fg = "nord13" }
+hi "typescriptBOMWindowMethod" { fg = "cyan" }
+hi "typescriptClassName" { fg = "brightcyan" }
+hi "typescriptDecorator" { fg = "orange" }
+hi "typescriptInterfaceName" { fg = "brightcyan", attr = "bold" }
+hi "typescriptRegexpString" { fg = "yellow" }
 hi "typescriptOperator" { link = "Operator" }
 hi "typescriptBinaryOp" { link = "Operator" }
 hi "typescriptAssign" { link = "Operator" }
@@ -483,16 +489,16 @@ hi "typescriptMemberOptionality" { link = "Structure" }
 hi "typescriptNodeGlobal" { link = "typescriptGlobal" }
 hi "typescriptTypeBrackets" { link = "Structure" }
 
-hi "vimAugroup" { fg = "nord7" }
-hi "vimMapRhs" { fg = "nord7" }
-hi "vimNotation" { fg = "nord7" }
+hi "vimAugroup" { fg = "brightcyan" }
+hi "vimMapRhs" { fg = "brightcyan" }
+hi "vimNotation" { fg = "brightcyan" }
 hi "vimFunc" { link = "Function" }
 hi "vimFunction" { link = "Function" }
 hi "vimUserFunc" { link = "Function" }
 
-hi "xmlAttrib" { fg = "nord7" }
-hi "xmlCdataStart" { fg = "nord3_bright", attr = "bold" }
-hi "xmlNamespace" { fg = "nord7" }
+hi "xmlAttrib" { fg = "brightcyan" }
+hi "xmlCdataStart" { fg = "brighterblack", attr = "bold" }
+hi "xmlNamespace" { fg = "brightcyan" }
 hi "xmlAttribPunct" { link = "Delimiter" }
 hi "xmlCdata" { link = "Comment" }
 hi "xmlCdataCdata" { link = "xmlCdataStart" }
@@ -501,25 +507,25 @@ hi "xmlEndTag" { link = "xmlTagName" }
 hi "xmlProcessingDelim" { link = "Keyword" }
 hi "xmlTagName" { link = "Keyword" }
 
-hi "yamlBlockMappingKey" { fg = "nord7" }
+hi "yamlBlockMappingKey" { fg = "brightcyan" }
 hi "yamlBool" { link = "Keyword" }
 hi "yamlDocumentStart" { link = "Keyword" }
-hi "yamlKey" { fg = "nord7" }
+hi "yamlKey" { fg = "brightcyan" }
 
 ------------------
 -- Plugin Support
 ------------------
 
 -- gitsigns
-hi "GitSignsAdd" { fg = "nord14" }
-hi "GitSignsChange" { fg = "nord13" }
-hi "GitSignsChangeDelete" { fg = "nord11" }
-hi "GitSignsDelete" { fg = "nord11" }
+hi "GitSignsAdd" { fg = "green", bg = "black" }
+hi "GitSignsChange" { fg = "yellow", bg = "black" }
+hi "GitSignsChangeDelete" { fg = "red", bg = "black" }
+hi "GitSignsDelete" { fg = "red", bg = "black" }
 
 -- fugitive
-hi "gitcommitDiscardedFile" { fg = "nord11" }
-hi "gitcommitUntrackedFile" { fg = "nord11" }
-hi "gitcommitSelectedFile" { fg = "nord14" }
+hi "gitcommitDiscardedFile" { fg = "red" }
+hi "gitcommitUntrackedFile" { fg = "red" }
+hi "gitcommitSelectedFile" { fg = "green" }
 
 -- nvim-treesitter
 hi "TSAnnotation" { link = "Annotation" }
