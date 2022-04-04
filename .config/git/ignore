@@ -28,6 +28,7 @@ clangd/
 *.bin
 *.pyc
 __pycache__
+*.dSYM/
 
 # Archives
 *.tar
