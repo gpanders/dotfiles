@@ -35,8 +35,8 @@ set -U fish_color_jobs $foreground
 set -U fish_color_keyword $blue
 set -U fish_color_normal $foreground
 set -U fish_color_operator $cyan
-set -U fish_color_option $brightwhite
-set -U fish_color_param $brightwhite
+set -U fish_color_option $foreground
+set -U fish_color_param $foreground
 set -U fish_color_prompt_delim $magenta
 set -U fish_color_quote $green
 set -U fish_color_redirection $magenta
