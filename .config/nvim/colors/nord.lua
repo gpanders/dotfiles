@@ -119,7 +119,7 @@ hi "FoldColumn" { fg = "brightblack", bg = "black" }
 hi "SignColumn" { fg = "black", bg = "black" }
 
 -- Navigation
-hi "Directory" { fg = "cyan" }
+hi "Directory" { fg = "blue" }
 
 -- Prompt/Status
 hi "EndOfBuffer" { fg = "black" }
