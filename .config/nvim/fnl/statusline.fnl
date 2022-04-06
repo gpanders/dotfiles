@@ -1,7 +1,6 @@
 (fn obsession []
   (match (pcall vim.fn.ObsessionStatus)
-    (true "") ""
-    (true s) (.. s " ")
+    (true s) s
     _ ""))
 
 (fn lsp-progress-messages []
@@ -51,20 +50,28 @@
 (fn []
   (let [items [" "
                (obsession)
-               "%<%f "
+               (if (or vim.bo.readonly (not vim.bo.modifiable))
+                   "%2*"
+                   vim.bo.modified
+                   "%3*"
+                   "%1*")
+               " %<%f%* "
                (match vim.bo.filetype
                  "" ""
                  ft (.. "[" ft "] "))
                (lsp)
-               "%m%r%="
+               "%="
                (diagnostics)
-               (match vim.bo.fileformat
-                 "unix" ""
-                 ff (.. "[" ff "] "))
-               (match vim.bo.fileencoding
-                 "utf-8" ""
-                 "" ""
-                 fenc (.. "[" fenc "] "))
+               (if (and vim.bo.modifiable (not vim.bo.readonly))
+                   (..
+                     (match vim.bo.fileformat
+                       "unix" ""
+                       ff (.. "[" ff "] "))
+                     (match vim.bo.fileencoding
+                       "utf-8" ""
+                       "" ""
+                       fenc (.. "[" fenc "] ")))
+                   "")
                "%10.(%l:%c%V%)%6.P"
-               " "]]
+               "  "]]
     (table.concat items)))

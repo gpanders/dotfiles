@@ -146,9 +146,14 @@ hi "TabLineSel" { fg = "cyan", bg = "brightblack" }
 -- Window
 hi "Title" { fg = "foreground" }
 
-hi "VertSplit" { fg = "black", bg = "black" }
+hi "VertSplit" { fg = "darkblack", bg = "darkblack" }
 
 hi "QuickFixLine" { link = "Visual" }
+
+hi "User1" { fg = "foreground", bg = "lightblack", attr = "bold" }
+hi "User2" { fg = "yellow", bg = "lightblack", attr = "bold" }
+hi "User3" { fg = "red", bg = "lightblack", attr = "bold" }
+hi "User4" { fg = "brighterblack", bg = "lightblack" }
 
 -----------------------
 -- Language Base Groups
