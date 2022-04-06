@@ -15,6 +15,8 @@ nvim.add_user_command("PackerUpdate", function()
         "tpope/vim-surround",
         "tpope/vim-commentary",
         "tpope/vim-repeat",
+        "tpope/vim-abolish",
+        "tpope/vim-eunuch",
         "tpope/vim-rsi",
         { "tpope/vim-scriptease", opt = true },
         "tpope/vim-fugitive",
