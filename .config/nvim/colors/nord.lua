@@ -68,7 +68,7 @@ hi "Cursor" { fg = "background", bg = "foreground" }
 hi "CursorLine" { bg = "black" }
 hi "Error" { fg = "foreground", bg = "red" }
 hi "iCursor" { fg = "background", bg = "foreground" }
-hi "LineNr" { fg = "brightblack" }
+hi "LineNr" { fg = "brighterblack" }
 hi "MatchParen" { fg = "cyan", bg = "brightblack" }
 hi "NonText" { fg = "lightblack" }
 hi "Normal" { fg = "foreground", bg = "background" }
@@ -148,9 +148,11 @@ hi "Title" { fg = "foreground" }
 
 hi "VertSplit" { fg = "black", bg = "black" }
 
--- +----------------------+
--- + Language Base Groups +
--- +----------------------+
+hi "QuickFixLine" { link = "Visual" }
+
+-----------------------
+-- Language Base Groups
+-----------------------
 hi "Boolean" { fg = "blue" }
 hi "Character" { fg = "green" }
 hi "Comment" { fg = "brighterblack" }
@@ -171,7 +173,7 @@ hi "Number" { fg = "magenta" }
 hi "Operator" { fg = "blue" }
 hi "PreProc" { fg = "blue" }
 hi "Repeat" { fg = "blue" }
-hi "Special" { fg = "foreground" }
+hi "Special" { fg = "cyan" }
 hi "SpecialChar" { fg = "yellow" }
 hi "SpecialComment" { fg = "cyan" }
 hi "Statement" { fg = "blue" }

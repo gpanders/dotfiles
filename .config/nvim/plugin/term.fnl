@@ -4,29 +4,31 @@
   (let [bufnr (nvim.create_buf true false)]
     (nvim.buf.call bufnr #(vim.fn.termopen cmd))
     (when ?tag
-      (nvim.buf.set_var bufnr ?tag true))
+      (tset vim.b bufnr ?tag true))
     (augroup term#
       (autocmd :BufWinLeave {:buffer bufnr}
+        "Remember height of buffer window"
         (match (. vim.b bufnr :winid)
           (where winid (nvim.win.is_valid winid)) (tset vim.b bufnr :winheight (nvim.win.get_height winid)))
         (tset vim.b bufnr :winid nil))
       (autocmd :BufWinEnter {:buffer bufnr}
-        (let [winid nvim.current.win]
-          (tset vim.b bufnr :winid winid)
+        "Restore window height from the remembered value"
+        (let [win nvim.current.win]
+          (tset vim.b bufnr :winid win.id)
           (match (. vim.b bufnr :winheight)
-            height (nvim.win.set_height winid height)))))
+            height (win:set_height height)))))
     bufnr))
 
 (fn open-term-win [cmd ?tag]
   (var bufnr nil)
   (when ?tag
     (each [_ b (ipairs (nvim.list_bufs)) :until bufnr]
-      (match (pcall nvim.buf.get_var b ?tag)
-        (true true) (set bufnr b))))
+      (when (. vim.b b ?tag)
+        (set bufnr b))))
   (when (not bufnr)
     (set bufnr (create-term-buf cmd ?tag)))
   (match (. vim.b bufnr :winid)
-    (where winid (nvim.win.is_valid winid)) (nvim.set_current_win winid)
+    (where winid (nvim.win.is_valid winid)) (set nvim.current.win winid)
     _ (do
         (nvim.command "botright new")
         (nvim.win.set_buf 0 bufnr)))

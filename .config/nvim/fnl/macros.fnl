@@ -51,21 +51,24 @@ Examples:
                  (collect [k v (pairs (table.remove args 1)) :into {: group}]
                    (values k v))
                  {: group})
+        desc (if (= (type (. args 1)) :string) (table.remove args 1))
         callback (if (and (= 1 (length args)) (not (list? (. args 1))))
                      (. args 1)
                      `(fn [] ,(unpack args)))
         form `(do)]
     (when clear
-      (table.insert form `(each [_# {:id id#} (ipairs (vim.api.nvim_get_autocmds {:event ,(if (not= event "*") event)
-                                                                                  :group ,(or opts.group _G.augroup)
-                                                                                  :pattern ,pattern
-                                                                                  :buffer ,opts.buffer}))]
-                            (vim.api.nvim_del_autocmd id#))))
+      (table.insert form (if (= event "*")
+                             `(vim.api.nvim_create_augroup ,(or opts.group _G.augroup) {:clear true})
+                             `(vim.api.nvim_clear_autocmds {:event ,event
+                                                            :group ,(or opts.group _G.augroup)
+                                                            :pattern ,pattern
+                                                            :buffer ,opts.buffer}))))
     (when (< 0 (length args))
-      (when opts.group
+      (when (and opts.group (not clear))
         (table.insert form `(vim.api.nvim_create_augroup ,opts.group {:clear false})))
       (table.insert form `(vim.api.nvim_create_autocmd ,event {:group ,(or opts.group _G.augroup)
                                                                :pattern ,pattern
+                                                               :desc ,(or desc (if (sym? callback) (tostring callback)))
                                                                :command ,(if (= (type callback) :string) callback)
                                                                :callback ,(if (not= (type callback) :string) callback)
                                                                :buffer ,opts.buffer
