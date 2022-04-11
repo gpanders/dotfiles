@@ -1,4 +1,4 @@
-nvim.add_user_command("PackerUpdate", function()
+nvim.create_user_command("PackerUpdate", function()
     local ok, packer = pcall(require, "packer")
     if not ok then
         local install_path = string.format("%s/site/pack/packer/start/packer.nvim", vim.fn.stdpath("data"))

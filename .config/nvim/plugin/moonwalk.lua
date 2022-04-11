@@ -33,7 +33,7 @@ local function moonwalk()
     f:close()
 end
 
-vim.api.nvim_add_user_command("Moonwalk", moonwalk, { desc = "Compile all Fennel runtime files to Lua" })
+vim.api.nvim_create_user_command("Moonwalk", moonwalk, { desc = "Compile all Fennel runtime files to Lua" })
 
 -- Using a filesystem marker to do this seems hacky, but I don't now of a better way
 if not vim.loop.fs_stat(vim.fn.stdpath("cache") .. "/.compiled") then

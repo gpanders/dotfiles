@@ -105,8 +105,8 @@ Examples:
                 true 0)]
     (set opts.bufnr nil)
     (if bufnr
-        `(vim.api.nvim_buf_add_user_command ,bufnr ,cmd ,func ,opts)
-        `(vim.api.nvim_add_user_command ,cmd ,func ,opts))))
+        `(vim.api.nvim_buf_create_user_command ,bufnr ,cmd ,func ,opts)
+        `(vim.api.nvim_create_user_command ,cmd ,func ,opts))))
 
 (fn M.with-module [module-binding ...]
   "Binds a module to the given name and executes the forms.
