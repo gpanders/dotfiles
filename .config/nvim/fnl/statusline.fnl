@@ -1,6 +1,7 @@
 (fn obsession []
   (match (pcall vim.fn.ObsessionStatus)
-    (true s) s
+    (true "") ""
+    (true s) (.. s " ")
     _ ""))
 
 (fn lsp-progress-messages []
@@ -47,6 +48,11 @@
       (0 w) (: "W:%-4d" :format w)
       (e w) (: "E:%-4d W:%-4d" :format e w))))
 
+(fn filename []
+  (match (nvim.buf.get_name 0)
+    "" "[No Name]"
+    n (vim.fn.fnamemodify n ":~:.")))
+
 (fn []
   (let [items [" "
                (obsession)
@@ -55,7 +61,9 @@
                    vim.bo.modified
                    "%3*"
                    "%1*")
-               " %<%f%* "
+               "%<"
+               (filename)
+               "%* "
                (match vim.bo.filetype
                  "" ""
                  ft (.. "[" ft "] "))
