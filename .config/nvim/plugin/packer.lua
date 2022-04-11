@@ -28,7 +28,8 @@ nvim.create_user_command("PackerUpdate", function()
         "romainl/vim-qf",
         "mfussenegger/nvim-lsp-compl",
         { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
-        { "nvim-telescope/telescope.nvim", requires = { "nvim-lua/plenary.nvim" } },
+        { "nvim-telescope/telescope.nvim", opt = true, requires = { "nvim-lua/plenary.nvim" } },
+        "nvim-telescope/telescope-fzy-native.nvim",
 
         -- Language plugins
         "ziglang/zig.vim",
