@@ -11,7 +11,10 @@
       vim.o.shell
       {:args ["-c" grepcmd] :stdio [nil stdout nil]}
       (vim.schedule_wrap #(let [lines (-> chunks table.concat (vim.split "\n" {:trimempty true}))]
-                            (vim.fn.setqflist [] " " {: title : lines :efm vim.o.grepformat :nr "$"})
+                            (vim.fn.setqflist [] " " {:title grepcmd
+                                                      : lines
+                                                      :efm vim.o.grepformat
+                                                      :nr "$"})
                             (nvim.exec_autocmds :QuickFixCmdPost {:pattern "grep" :modeline false}))))
     (stdout:read_start
       (fn [err data]
