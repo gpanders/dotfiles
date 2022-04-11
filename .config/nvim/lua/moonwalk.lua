@@ -10,7 +10,7 @@ local function compile(path)
 
     local ok, fennel = pcall(require, "fennel")
     if not ok then
-        local version = "1.0.0"
+        local version = "1.1.0"
         local url = string.format("https://fennel-lang.org/downloads/fennel-%s.lua", version)
         local fennel_path = vim.fn.stdpath("data") .. "/site/lua/fennel.lua"
         vim.fn.mkdir(vim.fn.fnamemodify(fennel_path, ":h"), "p")
