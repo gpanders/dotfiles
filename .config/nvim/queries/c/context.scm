@@ -2,4 +2,4 @@
   [
     (pointer_declarator (function_declarator))
     (function_declarator)
-  ] @context.end) @context
+  ] . body: (_ "{" @context.end)) @context

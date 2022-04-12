@@ -551,4 +551,4 @@ hi "TSVariableBuiltin" { link = "Keyword" }
 -- hi "debugPC" { fg = "cyan", bg = "darkgray" }
 -- hi "debugBreakpoint" { fg = "red", bg = "darkgray" }
 
--- hi "TreesitterContext" { bg = "darkgray" }
+hi "TreesitterContext" { bg = "darkblack" }

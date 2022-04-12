@@ -10,16 +10,17 @@
 
 (fn show-context [bufnr]
   (match (context bufnr)
-    contexts (let [lines []
-                   lang (. vim.bo bufnr :filetype)
+    contexts (let [lang (. vim.bo bufnr :filetype)
                    win nvim.current.win
                    [{: textoff : topline}] (vim.fn.getwininfo win.id)
                    width (- (win:get_width) textoff)]
-               (each [_ ctx (ipairs contexts)]
-                 (let [start-row (ctx:start)]
+               (var text nil)
+               (for [i (length contexts) 1 -1 :until text]
+                 (let [ctx (. contexts i)
+                       start-row (ctx:start)]
                    (if (< start-row (- topline 1))
-                       (table.insert lines (context-text bufnr ctx)))))
-               (if (< 0 (length lines))
+                       (set text (context-text bufnr ctx)))))
+               (if text
                    (let [b (match (?. state bufnr :bufnr)
                              (where n (vim.api.nvim_buf_is_valid n)) n
                              _ (let [b (vim.api.nvim_create_buf false true)]
@@ -47,16 +48,9 @@
                                                                        :noautocmd true})]
                                  (tset vim.wo w :winhighlight "NormalFloat:TreesitterContext")
                                  (set state.winid w)
-                                 w))
-                         lines (if (< 1 (length lines))
-                                   (icollect [_ line (ipairs lines)]
-                                     (-> line
-                                         (vim.trim)
-                                         (string.gsub "%s*[%[%(%{]*%s*$" "")
-                                         (->> (pick-values 1))))
-                                   lines)]
+                                 w))]
                      (nvim.win.set_buf w b)
-                     (nvim.buf.set_lines b 0 -1 true [(table.concat lines " -> ")]))
+                     (nvim.buf.set_lines b 0 -1 true [text]))
                    (close)))
     _ (close)))
 

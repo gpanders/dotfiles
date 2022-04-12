@@ -80,13 +80,14 @@
   (let [query (or ?query (vim.treesitter.get_query (. vim.bo bufnr :filetype) :context))
         (start-row start-col) (node:start)
         (end-row end-col) (if (< 1 (length query.captures))
-                              (let [[end-node] (icollect [id subnode (query:iter_captures node)]
-                                                 (if (= (. query.captures id) :context.end) subnode))]
-                                (end-node:end_))
-                              (values (+ start-row 1) 0))]
-    (-> (nvim.buf.get_text bufnr start-row 0 end-row end-col {})
+                              (let [[end-node] (icollect [id subnode (query:iter_captures node bufnr start-row (node:end_))]
+                                                 (if (= (. query.captures id) :context.end)
+                                                     subnode))]
+                                (when end-node
+                                  (end-node:end_))))]
+    (-> (nvim.buf.get_text bufnr start-row 0 (or end-row (+ start-row 1)) (or end-col 0) {})
         (table.concat " ")
-        (string.gsub "%s+" " ")
+        (string.gsub "(%S)%s+" "%1 ")
         (string.gsub "%s*$" "")
         (->> (pick-values 1)))))
 
