@@ -11,12 +11,12 @@ local function compile(path)
     local ok, fennel = pcall(require, "fennel")
     if not ok then
         local version = "1.1.0"
-        local url = string.format("https://fennel-lang.org/downloads/fennel-%s.lua", version)
-        local fennel_path = vim.fn.stdpath("data") .. "/site/lua/fennel.lua"
-        vim.fn.mkdir(vim.fn.fnamemodify(fennel_path, ":h"), "p")
-        print(string.format("Downloading %s to %s...", url, fennel_path))
+        local url = string.format("https://fennel-lang.org/downloads/fennel-%s.tar.gz", version)
+        local tmpdir = vim.fn.fnamemodify(vim.fn.tempname(), ":h")
+        vim.fn.mkdir(tmpdir, "p")
+        print(string.format("Downloading Fennel %s...", version, tmpdir))
         local stderr
-        local jobid = vim.fn.jobstart(string.format("curl -sS -o '%s' '%s'", fennel_path, url), {
+        local jobid = vim.fn.jobstart(string.format("curl -sS -o '%s/fennel.tar.gz' '%s'", tmpdir, url), {
             stderr_buffered = true,
             on_stderr = function(_, data)
                 stderr = table.concat(data, "\n")
@@ -28,6 +28,14 @@ local function compile(path)
         end)
 
         assert(success, stderr)
+        local out = vim.fn.system(string.format("tar -C %s -xf %s/fennel.tar.gz", tmpdir, tmpdir))
+        assert(vim.v.shell_error == 0, out)
+
+        local fennel_path = vim.fn.stdpath("data") .. "/site/lua/fennel.lua"
+        vim.fn.mkdir(vim.fn.fnamemodify(fennel_path, ":h"), "p")
+        vim.fn.system(string.format("mv %s/fennel-%s/fennel.lua %s", tmpdir, version, fennel_path))
+        assert(vim.v.shell_error == 0, out)
+
         fennel = assert(dofile(fennel_path))
         package.loaded["fennel"] = fennel
     end
