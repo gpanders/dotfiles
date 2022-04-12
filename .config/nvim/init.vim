@@ -153,8 +153,9 @@ augroup init
   " Hide cursorline in insert mode and when the current window doesn't have
   " focus
   autocmd InsertEnter * setlocal nocursorline
+  autocmd InsertLeave * setlocal cursorline
   autocmd WinLeave,FocusLost * if !&diff | setlocal nocursorline | endif
-  autocmd InsertLeave,WinEnter,FocusGained * if mode() !=# 'i' | let &l:cursorline = 1 | endif
+  autocmd FocusGained * ++once autocmd init InsertLeave,WinEnter,FocusGained * let &l:cursorline = mode() !=# 'i'
 
   " Create missing parent directories automatically
   autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
