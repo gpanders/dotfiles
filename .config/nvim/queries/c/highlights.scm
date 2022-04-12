@@ -2,7 +2,7 @@
 (sizeof_expression "sizeof" @operator)
 
 (storage_class_specifier) @storageclass
-(type_qualifier) @type
+(type_qualifier) @type.qualifier
 (null) @constant
 
 (comment) @comment
@@ -23,7 +23,7 @@
    ])
 ] @type
 
-"typedef" @typedef
+"typedef" @type.definition
 
 [
  "for"
@@ -55,7 +55,7 @@
 ] @structure
 
 "#include" @include
-"#define" @define
+"#define" @macro
 
 [
  "#ifdef"
@@ -63,11 +63,11 @@
  "#if"
  "#endif"
  "#else"
-] @preproc
+] @macro
 
 (preproc_params (identifier) @identifier)
 
 (preproc_if condition: (number_literal) @v (#eq? @v "0") "#endif" @comment) @comment
 
 ; #undef
-(preproc_call directive: (preproc_directive) @define)
+(preproc_call directive: (preproc_directive) @macro)

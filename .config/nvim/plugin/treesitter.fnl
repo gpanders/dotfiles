@@ -1,10 +1,4 @@
 (doto vim.treesitter.highlighter.hl_map
-  (tset :storageclass :StorageClass)
-  (tset :typedef :Typedef)
-  (tset :preproc :PreProc)
-  (tset :special :Special)
-  (tset :define :Define)
-  (tset :macro :Macro)
   (tset :constant.builtin :Constant)
   (tset :function.builtin :Function)
   (tset :function.macro :Function)
