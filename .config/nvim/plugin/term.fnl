@@ -8,15 +8,16 @@
     (augroup term#
       (autocmd :BufWinLeave {:buffer bufnr}
         "Remember height of buffer window"
-        (match (. vim.b bufnr :winid)
-          (where winid (nvim.win.is_valid winid)) (tset vim.b bufnr :winheight (nvim.win.get_height winid)))
-        (tset vim.b bufnr :winid nil))
+        (fn []
+          (match (. vim.b bufnr :winid)
+            (where winid (nvim.win.is_valid winid)) (tset vim.b bufnr :winheight (nvim.win.get_height winid)))
+          (tset vim.b bufnr :winid nil)))
       (autocmd :BufWinEnter {:buffer bufnr}
         "Restore window height from the remembered value"
-        (let [win nvim.current.win]
-          (tset vim.b bufnr :winid win.id)
-          (match (. vim.b bufnr :winheight)
-            height (win:set_height height)))))
+        #(let [win nvim.current.win]
+           (tset vim.b bufnr :winid win.id)
+           (match (. vim.b bufnr :winheight)
+             height (win:set_height height)))))
     bufnr))
 
 (fn open-term-win [cmd ?tag]

@@ -128,7 +128,7 @@
           (do
             (highlight-cursor-node)
             (augroup treesitter#cursor
-              (autocmd! :CursorMoved "<buffer>" (highlight-cursor-node))))
+              (autocmd! :CursorMoved "<buffer>" #(highlight-cursor-node))))
           (do
             (commands.clear)
             (augroup! treesitter#cursor)))))
@@ -144,12 +144,12 @@
                       (autocmd! [:BufLeave :CursorMoved] "<buffer>")
                       (autocmd :BufLeave "<buffer>" {:once true} clear)
                       (autocmd :CursorMoved "<buffer>"
-                        (match nvim.current.buf.id
-                          buf.id (let [[lnum] (nvim.win.get_cursor 0)
-                                       lnum (- lnum 1)]
-                                   (when (or (< lnum (ctx:start)) (< (ctx:end_) lnum))
-                                     (clear)))
-                          _ (clear))))
+                        #(match nvim.current.buf.id
+                           buf.id (let [[lnum] (nvim.win.get_cursor 0)
+                                        lnum (- lnum 1)]
+                                    (when (or (< lnum (ctx:start)) (< (ctx:end_) lnum))
+                                      (clear)))
+                           _ (clear))))
                     (print (ctx:sexpr)))
         _ (echo "No context found"))))
 

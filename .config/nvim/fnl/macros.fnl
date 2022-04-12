@@ -52,9 +52,7 @@ Examples:
                    (values k v))
                  {: group})
         desc (if (= (type (. args 1)) :string) (table.remove args 1))
-        callback (if (and (= 1 (length args)) (not (list? (. args 1))))
-                     (. args 1)
-                     `(fn [] ,(unpack args)))
+        callback (. args 1)
         form `(do)]
     (when clear
       (table.insert form (if (= event "*")

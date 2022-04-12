@@ -5,9 +5,9 @@
   (tset :constructor :Normal))
 
 (autocmd treesitter# :FileType [:c :zig]
-  (let [bufnr (tonumber (vim.fn.expand "<abuf>"))
-        {: highlight} (require :treesitter)]
-    (highlight bufnr)))
+  (fn [{: buf}]
+    (let [{: highlight} (require :treesitter)]
+      (highlight buf))))
 
 (fn complete [arg line pos]
   (let [commands (. (require :treesitter) :commands)]

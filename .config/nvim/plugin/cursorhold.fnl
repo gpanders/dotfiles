@@ -13,13 +13,15 @@
 
 (augroup cursorhold
   (autocmd :CursorMoved "*"
-    (timer:stop)
-    (let [{: mode} (nvim.get_mode)
-          reg (vim.fn.reg_recording)]
-      (when (and (= :n (mode:sub 1 1)) (= "" reg))
-        (timer:start timeout 0 #(vim.schedule #(callback :CursorHold))))))
+    (fn []
+      (timer:stop)
+      (let [{: mode} (nvim.get_mode)
+            reg (vim.fn.reg_recording)]
+        (when (and (= :n (mode:sub 1 1)) (= "" reg))
+          (timer:start timeout 0 #(vim.schedule #(callback :CursorHold)))))))
   (autocmd :CursorMovedI "*"
-    (timer:stop)
-    (let [reg (vim.fn.reg_recording)]
-      (when (= "" reg)
-        (timer:start timeout 0 #(vim.schedule #(callback :CursorHoldI)))))))
+    (fn []
+      (timer:stop)
+      (let [reg (vim.fn.reg_recording)]
+        (when (= "" reg)
+          (timer:start timeout 0 #(vim.schedule #(callback :CursorHoldI))))))))

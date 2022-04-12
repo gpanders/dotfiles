@@ -86,34 +86,32 @@
                        (tree:draw b.id)) {:buffer b.id})
       (augroup treesitter#view
         (autocmd :CursorMoved {:buffer b.id}
-          (buf:clear_namespace ns 0 -1)
-          (let [[row] (w:get_cursor)
-                {: lnum : col :end_lnum end-lnum :end_col end-col} (tree:get row)]
-            (buf:set_extmark ns lnum col {:end_row end-lnum
-                                          :end_col (math.max 0 end-col)
-                                          :hl_group :Visual})))
+          (fn []
+            (buf:clear_namespace ns 0 -1)
+            (let [[row] (w:get_cursor)
+                  {: lnum : col :end_lnum end-lnum :end_col end-col} (tree:get row)]
+              (buf:set_extmark ns lnum col {:end_row end-lnum
+                                            :end_col (math.max 0 end-col)
+                                            :hl_group :Visual}))))
         (autocmd :CursorMoved {:buffer buf.id}
-          (if (not (b:is_loaded))
-              true
-              (let [cursor-node-id (: (node-at-cursor) :id)]
-                (b:clear_namespace ns 0 -1)
-                (var done? false)
-                (each [i v (tree:iter) :until done?]
-                  (when (= v.id cursor-node-id)
-                    (set done? true)
-                    (let [start (* 2 v.depth)
-                          end (+ start (length v.text))]
-                      (b:set_extmark ns (- i 1) start {:end_col end
-                                                       :hl_group :Visual}))
-                    (w:set_cursor [i 0]))))))
+          #(if (not (b:is_loaded))
+               true
+               (let [cursor-node-id (: (node-at-cursor) :id)]
+                 (b:clear_namespace ns 0 -1)
+                 (var done? false)
+                 (each [i v (tree:iter) :until done?]
+                   (when (= v.id cursor-node-id)
+                     (set done? true)
+                     (let [start (* 2 v.depth)
+                           end (+ start (length v.text))]
+                       (b:set_extmark ns (- i 1) start {:end_col end
+                                                        :hl_group :Visual}))
+                     (w:set_cursor [i 0]))))))
         (autocmd [:TextChanged :InsertLeave] {:buffer buf.id}
-          (if (not (b:is_loaded))
-              true
-              (do
-                (set tree (Tree:new buf.id))
-                (tree:draw b.id))))
-        (autocmd :BufLeave {:buffer b.id}
-          (buf:clear_namespace ns 0 -1))
-        (autocmd :BufHidden {:buffer buf.id :once true}
-          (when (w:is_valid)
-            (w:close true)))))))
+          #(if (not (b:is_loaded))
+               true
+               (do
+                 (set tree (Tree:new buf.id))
+                 (tree:draw b.id))))
+        (autocmd :BufLeave {:buffer b.id} #(buf:clear_namespace ns 0 -1))
+        (autocmd :BufHidden {:buffer buf.id :once true} #(if (w:is_valid) (w:close true)))))))

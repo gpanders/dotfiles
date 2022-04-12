@@ -22,7 +22,7 @@
         (vim.cmd "lopen")))))
 
 (autocmd treesitter#toc :FileType
-  (let [bufnr (tonumber (vim.fn.expand "<abuf>"))
-        lang (. vim.bo bufnr :filetype)]
-    (when (lang-has-parser lang)
-      (keymap :n "gO" commands.toc {:buffer bufnr}))))
+  (fn [{: buf}]
+    (let [lang (. vim.bo buf :filetype)]
+      (when (lang-has-parser lang)
+        (keymap :n "gO" commands.toc {:buffer buf})))))

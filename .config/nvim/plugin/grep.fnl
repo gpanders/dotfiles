@@ -26,8 +26,8 @@
 (command :Grep {:nargs :+ :complete :file_in_path} grep)
 
 (autocmd grep# :QuickFixCmdPost :grep {:nested true}
-  (let [list (vim.fn.getqflist)]
-    (vim.cmd (.. "cclose|" (math.min 10 (length list)) "cwindow"))))
+  #(let [list (vim.fn.getqflist)]
+     (vim.cmd (.. "cclose|" (math.min 10 (length list)) "cwindow"))))
 
 (vim.cmd "
 cnoreabbrev <expr> gr    (getcmdtype() ==# ':' && getcmdline() ==# 'gr')    ? 'Grep'  : 'gr'

@@ -55,8 +55,8 @@
     _ (close)))
 
 (autocmd treesitter# [:WinScrolled :CursorMoved :CursorMovedI]
-  (let [bufnr (tonumber (vim.fn.expand "<abuf>"))
-        lang (. vim.bo bufnr :filetype)]
-    (if (lang-has-parser lang)
-        (show-context bufnr)
-        (close))))
+  (fn [{: buf}]
+    (let [lang (. vim.bo buf :filetype)]
+      (if (lang-has-parser lang)
+          (show-context buf)
+          (close)))))

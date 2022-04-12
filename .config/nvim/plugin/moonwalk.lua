@@ -1,5 +1,5 @@
-local function compile()
-    return require("moonwalk").compile(vim.fn.expand("<afile>:p"))
+local function compile(args)
+    return require("moonwalk").compile(args.file)
 end
 
 vim.api.nvim_create_augroup("moonwalk", { clear = true })
@@ -11,8 +11,8 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 vim.api.nvim_create_autocmd("SourceCmd", {
     pattern = "*.fnl",
     group = "moonwalk",
-    callback = function()
-        vim.api.nvim_command("source " .. compile())
+    callback = function(args)
+        vim.api.nvim_command("source " .. compile(args))
     end,
 })
 

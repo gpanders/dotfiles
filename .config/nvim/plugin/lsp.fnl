@@ -143,10 +143,9 @@
       opts (start-client bufnr opts))))
 
 (autocmd lsp# :FileType "*"
-  (when vim.g.lsp_enabled
-    (let [bufnr (-> "<abuf>" vim.fn.expand tonumber)]
-      (when (and (nvim.buf.is_valid bufnr) (nvim.buf.is_loaded bufnr))
-        (lsp-start bufnr)))))
+  (fn [{: buf}]
+    (when (and vim.g.lsp_enabled (nvim.buf.is_valid buf) (nvim.buf.is_loaded buf))
+      (lsp-start buf))))
 
 (let [commands {:stop #(each [client-id (pairs (vim.lsp.buf_get_clients))]
                          (vim.lsp.stop_client client-id))
