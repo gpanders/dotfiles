@@ -56,10 +56,8 @@
 (fn []
   (let [items [" "
                (obsession)
-               (if (or vim.bo.readonly (not vim.bo.modifiable))
+               (if vim.bo.modified
                    "%2*"
-                   vim.bo.modified
-                   "%3*"
                    "%1*")
                "%<"
                (filename)

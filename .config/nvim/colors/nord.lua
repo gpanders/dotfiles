@@ -68,7 +68,7 @@ hi "Cursor" { fg = "background", bg = "foreground" }
 hi "CursorLine" { bg = "black" }
 hi "Error" { fg = "foreground", bg = "red" }
 hi "iCursor" { fg = "background", bg = "foreground" }
-hi "LineNr" { fg = "brighterblack" }
+hi "LineNr" { fg = "brighterblack", bg = "darkblack" }
 hi "MatchParen" { fg = "cyan", bg = "brightblack" }
 hi "NonText" { fg = "lightblack" }
 hi "Normal" { fg = "foreground", bg = "background" }
@@ -112,11 +112,11 @@ hi "LspReferenceWrite" { bg = "brightblack" }
 hi "LspSignatureActiveParameter" { fg = "cyan", attr = "underline" }
 
 -- Gutter
-hi "CursorColumn" { bg = "black" }
-hi "CursorLineNr" { fg = "foreground", bg = "black" }
-hi "Folded" { fg = "brightblack", bg = "black", attr = "bold" }
-hi "FoldColumn" { fg = "brightblack", bg = "black" }
-hi "SignColumn" { fg = "black", bg = "black" }
+hi "CursorColumn" { bg = "darkblack" }
+hi "CursorLineNr" { fg = "foreground", bg = "darkblack" }
+hi "Folded" { fg = "brightblack", bg = "darkblack", attr = "bold" }
+hi "FoldColumn" { fg = "brightblack", bg = "darkblack" }
+hi "SignColumn" { fg = "black", bg = "darkblack" }
 
 -- Navigation
 hi "Directory" { fg = "blue" }
@@ -151,9 +151,7 @@ hi "VertSplit" { fg = "darkblack", bg = "darkblack" }
 hi "QuickFixLine" { link = "Visual" }
 
 hi "User1" { fg = "foreground", bg = "lightblack", attr = "bold" }
-hi "User2" { fg = "yellow", bg = "lightblack", attr = "bold" }
-hi "User3" { fg = "red", bg = "lightblack", attr = "bold" }
-hi "User4" { fg = "brighterblack", bg = "lightblack" }
+hi "User2" { fg = "red", bg = "lightblack", attr = "bold" }
 
 -----------------------
 -- Language Base Groups
@@ -524,10 +522,10 @@ hi "yamlKey" { fg = "brightcyan" }
 ------------------
 
 -- gitsigns
-hi "GitSignsAdd" { fg = "green", bg = "black" }
-hi "GitSignsChange" { fg = "yellow", bg = "black" }
-hi "GitSignsChangeDelete" { fg = "red", bg = "black" }
-hi "GitSignsDelete" { fg = "red", bg = "black" }
+hi "GitSignsAdd" { fg = "green", bg = "darkblack" }
+hi "GitSignsChange" { fg = "yellow", bg = "darkblack" }
+hi "GitSignsChangeDelete" { fg = "red", bg = "darkblack" }
+hi "GitSignsDelete" { fg = "red", bg = "darkblack" }
 
 -- fugitive
 hi "gitcommitDiscardedFile" { fg = "red" }
