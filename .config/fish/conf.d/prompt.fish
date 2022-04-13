@@ -57,11 +57,12 @@ function __prompt_fish_postexec_handler --on-event fish_postexec
         set -g __prompt_cmd_duration_tmp "$dur "
     end
 
-    if test -n "$last_pid"; and test "$last_pid" != "$__prompt_last_pid"
-        set -g __prompt_last_pid $last_pid
+    set -l last_job (jobs -l -g)
+    if test -n "$last_job"; and test "$last_job" != "$__prompt_last_job"
+        set -g __prompt_last_job $last_job
         __prompt_update_jobs
-        function _notify_job_$last_pid --on-job-exit $last_pid --inherit-variable last_pid
-            functions -e _notify_job_$last_pid
+        function _notify_job_$last_job --on-job-exit $last_job --inherit-variable last_job
+            functions -e _notify_job_$last_job
             __prompt_update_jobs
         end
     end
