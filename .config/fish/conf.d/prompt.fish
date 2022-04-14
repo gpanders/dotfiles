@@ -1,5 +1,6 @@
 # Shamelessly ripped off from Jorge Bucaran (@jorgebucaran)'s Hydro prompt:
 # https://github.com/jorgebucaran/hydro
+# For OSC commands, see https://gitlab.freedesktop.org/Per_Bothner/specifications/blob/master/proposals/semantic-prompts.md
 
 status is-interactive; or exit
 
@@ -24,6 +25,10 @@ end
 function __prompt_update_pwd --on-variable PWD
     set -g __prompt_pwd (string replace -r -- '^'$HOME \~ $PWD)
     set -e __prompt_git_head
+
+    # Set current working directory
+    set -q HOSTNAME; or set -g HOSTNAME (hostname)
+    printf '\x1b]7;file://%s%s\x1b\\' $HOSTNAME $PWD
 end
 
 function __prompt_venv --on-variable VIRTUAL_ENV
@@ -42,6 +47,11 @@ function __prompt_update_jobs
         set -g __prompt_jobs "[$njobs] "
     end
     commandline -f repaint
+end
+
+function __prompt_fish_preexec_handler --on-event fish_preexec
+    # End of input, start of output
+    printf '\x1b]133;C;\x07'
 end
 
 function __prompt_fish_postexec_handler --on-event fish_postexec
@@ -70,7 +80,7 @@ end
 
 function __prompt_exit_status --on-event fish_postexec
     set -l last_pipestatus $pipestatus
-    set -lx __fish_last_status $status
+    set -l __fish_last_status $status
     if test $__fish_last_status -eq 0
         set -g __prompt_status
         return
@@ -84,6 +94,9 @@ function __prompt_exit_status --on-event fish_postexec
     end
     set __prompt_status_generation $status_generation
     set -g __prompt_status (__fish_print_pipestatus '[' '] ' '|' (set_color $fish_color_status) (set_color $bold_flag $fish_color_status) $last_pipestatus)
+
+    # End of current command (report status code)
+    printf '\x1b]133;D;%d;aid=%d\x07' $__fish_last_status $fish_pid
 end
 
 function __prompt_fish_prompt_handler --on-event fish_prompt
@@ -163,4 +176,7 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
 
         set -U __prompt_git_$fish_pid \"$__prompt_git_branch\$dirty \$action\$upstream\"
     " &
+
+    # Fresh line and enter prompt mode
+    printf '\x1b]133;A;cl=m;aid=%d\x07' $fish_pid
 end
