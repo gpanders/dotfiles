@@ -28,7 +28,7 @@ function __prompt_update_pwd --on-variable PWD
 
     # Set current working directory
     set -q HOSTNAME; or set -g HOSTNAME (hostname)
-    printf '\x1b]7;file://%s%s\x1b\\' $HOSTNAME $PWD
+    printf '\e]7;file://%s%s\e\\' $HOSTNAME $PWD
 end
 
 function __prompt_venv --on-variable VIRTUAL_ENV
@@ -51,7 +51,7 @@ end
 
 function __prompt_fish_preexec_handler --on-event fish_preexec
     # End of input, start of output
-    printf '\x1b]133;C;\x07'
+    printf '\e]133;C;\e\\'
 end
 
 function __prompt_fish_postexec_handler --on-event fish_postexec
@@ -96,7 +96,7 @@ function __prompt_exit_status --on-event fish_postexec
     set -g __prompt_status (__fish_print_pipestatus '[' '] ' '|' (set_color $fish_color_status) (set_color $bold_flag $fish_color_status) $last_pipestatus)
 
     # End of current command (report status code)
-    printf '\x1b]133;D;%d;aid=%d\x07' $__fish_last_status $fish_pid
+    printf '\e]133;D;%d;aid=%d\e\\' $__fish_last_status $fish_pid
 end
 
 function __prompt_fish_prompt_handler --on-event fish_prompt
@@ -178,5 +178,5 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
     " &
 
     # Fresh line and enter prompt mode
-    printf '\x1b]133;A;cl=m;aid=%d\x07' $fish_pid
+    printf '\e]133;A;cl=m;aid=%d\e\\' $fish_pid
 end
