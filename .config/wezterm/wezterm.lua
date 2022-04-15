@@ -1,16 +1,11 @@
 local wezterm = require "wezterm"
+local hostname = wezterm.hostname()
 
-local hostname
-do
-    local f = io.popen("uname -n")
-    hostname = f:read("*l")
-end
-
-local domains = {}
-do
-    local ok, d = pcall(require, "domains")
-    if ok then
-        domains = d
+local function merge(a, b)
+    for k, v in pairs(b) do
+        if a[k] == nil then
+            a[k] = v
+        end
     end
 end
 
@@ -60,13 +55,11 @@ local config = {
     color_scheme = "nord",
     font = wezterm.font("Iosevka Fixed SS05", {weight="Medium"}),
     font_size = 16,
-    enable_csi_u_key_encoding = true,
     bold_brightens_ansi_colors = false,
     term = "wezterm",
     set_environment_variables = {
-        TERMINFO_DIRS = os.getenv("HOME") .. "/.local/share/terminfo",
+        TERMINFO_DIRS = wezterm.home_dir .. "/.local/share/terminfo",
     },
-    default_prog = {"/usr/local/bin/fish", "-l"},
     tab_bar_at_bottom = true,
     use_fancy_tab_bar = false,
     use_resize_increments = true,
@@ -113,20 +106,29 @@ local config = {
         {key="s", mods="LEADER", action=wezterm.action{ShowLauncherArgs={flags="WORKSPACES"}}},
         {key="g", mods="LEADER", action=wezterm.action{ShowLauncherArgs={flags="FUZZY|WORKSPACES"}}},
     },
-
-    ssh_domains = domains.ssh_domains,
-
-    unix_domains = {
-        {
-            name = "unix",
-        },
-    },
-
-    default_gui_startup_args = {"connect", "unix"},
 }
 
 for i = 1, 9 do
     table.insert(config.keys, {key=tostring(i), mods="LEADER", action={ActivateTab=i-1}})
+end
+
+do
+    local ok, localconf = pcall(require, hostname)
+    if ok then
+        merge(config, localconf)
+    end
+end
+
+if not config.ssh_domains then
+    config.ssh_domains = {}
+end
+
+for host in pairs(wezterm.enumerate_ssh_hosts()) do
+    table.insert(config.ssh_domains, {
+        name = host,
+        remote_address = host,
+        assume_shell = "Posix",
+    })
 end
 
 return config
