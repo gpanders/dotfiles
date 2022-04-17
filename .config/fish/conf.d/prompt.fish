@@ -51,7 +51,7 @@ end
 
 function __prompt_fish_preexec_handler --on-event fish_preexec
     # End of input, start of output
-    printf '\e]133;C;\e\\'
+    printf '\e]133;C\e\\'
 end
 
 function __prompt_fish_postexec_handler --on-event fish_postexec
