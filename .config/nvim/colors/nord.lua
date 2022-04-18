@@ -77,10 +77,10 @@ hi "PmenuSbar" { fg = "foreground", bg = "lightblack" }
 hi "PmenuSel" { fg = "cyan", bg = "brightblack" }
 hi "PmenuThumb" { fg = "cyan", bg = "brightblack" }
 hi "SpecialKey" { fg = "brightblack" }
-hi "SpellBad" { fg = "red", bg = "background", attr = "undercurl", sp = "red" }
-hi "SpellCap" { fg = "yellow", bg = "background", attr = "undercurl", sp = "yellow" }
-hi "SpellLocal" { fg = "white", bg = "background", attr = "undercurl", sp = "white" }
-hi "SpellRare" { fg = "brightwhite", bg = "background", attr = "undercurl", sp = "brightwhite" }
+hi "SpellBad" { attr = "undercurl", sp = "red" }
+hi "SpellCap" { attr = "undercurl", sp = "yellow" }
+hi "SpellLocal" { attr = "undercurl", sp = "white" }
+hi "SpellRare" { attr = "undercurl", sp = "brightwhite" }
 hi "Visual" { bg = "lightblack" }
 hi "VisualNOS" { bg = "lightblack" }
 
