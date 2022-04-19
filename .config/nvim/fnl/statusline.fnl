@@ -62,9 +62,12 @@
                "%<"
                (filename)
                "%* "
+               (if vim.bo.readonly
+                   "%r "
+                   "")
                (match vim.bo.filetype
                  "" ""
-                 ft (.. "[" ft "] "))
+                 ft (: "[%s] " :format ft))
                (lsp)
                "%="
                (diagnostics)
@@ -72,11 +75,11 @@
                    (..
                      (match vim.bo.fileformat
                        "unix" ""
-                       ff (.. "[" ff "] "))
+                       ff (: "[%s] " :format ff))
                      (match vim.bo.fileencoding
                        "utf-8" ""
                        "" ""
-                       fenc (.. "[" fenc "] ")))
+                       fenc (: "[%s] " :format fenc)))
                    "")
                "%10.(%l:%c%V%)%6.P"
                "  "]]
