@@ -8,19 +8,14 @@
   (let [messages []]
     (each [client-id client (pairs (vim.lsp.buf_get_clients))]
       (each [k v (pairs client.messages.progress)]
-        (when (not v.done)
-          (let [msg (if v.message
-                        (: "%s: %s" :format v.title v.message)
-                        v.title)]
-            (table.insert messages (if v.percentage
-                                       (: "%s (%%%%%d)" :format msg v.percentage)
-                                       msg)))))
-      (each [_ v (ipairs client.messages.messages)]
-        (when (and v.show_once (= v.shown 0))
-          (table.insert messages v.content))
-        (set v.shown (+ v.shown 1)))
-      (each [k v (pairs client.messages.status)]
-        (assert false (.. k ": " (vim.inspect v)))))
+        (let [msg (if v.message
+                      (: "%s: %s" :format v.title v.message)
+                      v.title)]
+          (table.insert messages (if v.percentage
+                                     (: "%s (%%%%%d)" :format msg v.percentage)
+                                     msg)))
+        (when v.done
+          (tset client.messages.progress k nil))))
     messages))
 
 (fn lsp []
