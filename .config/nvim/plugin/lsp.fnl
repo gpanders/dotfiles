@@ -22,18 +22,19 @@
   curdir)
 
 (fn on-attach [client bufnr]
-  (when client.resolved_capabilities.completion
+  (when client.server_capabilities.completionProvider
     (tset vim.bo bufnr :omnifunc "v:lua.vim.lsp.omnifunc"))
-  (when client.resolved_capabilities.goto_definition
+  (when client.server_capabilities.definitionProvider
     (tset vim.bo bufnr :tagfunc "v:lua.vim.lsp.tagfunc"))
-  (when client.resolved_capabilities.document_highlight
+  (when client.server_capabilities.documentHighlightProvider
     (augroup lsp#
       (autocmd :CursorHold "<buffer>" vim.lsp.buf.document_highlight)
       (autocmd [:InsertEnter :CursorMoved] "<buffer>" vim.lsp.buf.clear_references)))
-  (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer bufnr})
+  (when client.server_capabilities.hoverProvider
+    (keymap :n "K" vim.lsp.buf.hover {:buffer bufnr}))
   (keymap :n "[R" vim.lsp.buf.references {:buffer bufnr})
-  (keymap :n "crr" vim.lsp.buf.rename {:buffer bufnr})
-  (keymap :n "gK" vim.lsp.buf.hover {:buffer bufnr})
+  (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer bufnr})
+  (keymap :n "cR" vim.lsp.buf.rename {:buffer bufnr})
   (keymap :n "cac" vim.lsp.buf.code_action {:buffer bufnr})
 
   (when (= client.name "lua-language-server")
