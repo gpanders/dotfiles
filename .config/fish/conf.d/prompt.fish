@@ -27,7 +27,7 @@ function __prompt_update_pwd --on-variable PWD
     set -e __prompt_git_head
 
     # Set current working directory
-    set -q HOSTNAME; or set -g HOSTNAME (hostname)
+    set -q HOSTNAME; or set -g HOSTNAME (uname -n)
     printf '\e]7;file://%s%s\e\\' $HOSTNAME $PWD
 end
 
