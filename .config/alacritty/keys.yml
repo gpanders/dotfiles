@@ -81,6 +81,16 @@ key_bindings:
   - { key: Semicolon, mods: Option,       chars: "\x1b;" }
   - { key: Semicolon, mods: Option|Shift, chars: "\x1b:" }
 
+  # Vi Mode
+  - { key: Escape,                mode: Vi|~Search, action: ToggleViMode }
+  - { key: G,      mods: Control, mode: Vi|~Search, action: ToggleViMode }
+  - { key: Q,                     mode: Vi|~Search, action: ToggleViMode }
+  - { key: Q,                     mode: Vi|~Search, action: ScrollToBottom }
+  - { key: Return,                mode: Vi|~Search, action: Copy }
+  - { key: Return,                mode: Vi|~Search, action: ClearSelection }
+  - { key: U,                     mode: Vi|~Search, action: ScrollHalfPageUp }
+  - { key: D,                     mode: Vi|~Search, action: ScrollHalfPageDown }
+
   # Search
   - { key: G, mods: Control, mode: Search, action: SearchFocusNext     }
   - { key: T, mods: Control, mode: Search, action: SearchFocusPrevious }

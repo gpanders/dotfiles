@@ -1,10 +1,16 @@
 import:
     - ~/.config/alacritty/colors/nord.yml
     - ~/.config/alacritty/keys.yml
+env:
+  TERM: alacritty-direct
+window:
+  padding:
+    x: 5
+    y: 5
 font:
   normal:
     family: Iosevka Fixed SS05
-    style: Regular
+    style: Medium
   bold:
     family: Iosevka Fixed SS05
     style: Bold
@@ -14,13 +20,13 @@ font:
   bold_italic:
     family: Iosevka Fixed SS05
     style: Bold Italic
-  size: 16.0
+  size: 11
 hints:
   alphabet: "jfkdls;ahgurieowpq"
   enabled:
    - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
              [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
-     command: open
+     action: Copy
      post_processing: true
      mouse:
        enabled: true
