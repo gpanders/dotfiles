@@ -157,16 +157,17 @@
     (nvim.buf.clear_namespace 0 ns 0 -1))
 
   (fn commands.highlight [arg]
-    (match arg
-      (where (or :enable :on)) (do
-                                 (set highlighting-enabled? true)
-                                 (each [_ bufnr (ipairs (nvim.list_bufs))]
-                                   (highlight bufnr)))
-      (where (or :disable :off)) (do
-                                   (set highlighting-enabled? false)
-                                   (each [_ bufnr (ipairs (nvim.list_bufs))]
-                                     (match (. vim.treesitter.highlighter.active bufnr)
-                                       highlighter (highlighter:destroy)))))))
+    (if (or (= arg :enable) (= arg :on))
+        (do
+          (set highlighting-enabled? true)
+          (each [_ bufnr (ipairs (nvim.list_bufs))]
+            (highlight bufnr)))
+        (or (= arg :disable) (= arg :off))
+        (do
+          (set highlighting-enabled? false)
+          (each [_ bufnr (ipairs (nvim.list_bufs))]
+            (match (. vim.treesitter.highlighter.active bufnr)
+              highlighter (highlighter:destroy)))))))
 
 {: node-at-cursor
  : context
