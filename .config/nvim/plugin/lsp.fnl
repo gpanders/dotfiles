@@ -1,5 +1,5 @@
-(when (= nil vim.g.lsp_enabled)
-  (set vim.g.lsp_enabled true))
+(when (= nil vim.g.lsp_autostart)
+  (set vim.g.lsp_autostart true))
 
 (local configs {})
 (local state {})
@@ -62,6 +62,13 @@
 
   (nvim.exec_autocmds :User {:pattern :LspAttached}))
 
+(fn on-detach [bufnr]
+  (tset state bufnr nil)
+  (vim.schedule #(do
+                   (nvim.set_option_value :tagfunc nil {:scope :local})
+                   (nvim.set_option_value :omnifunc nil {:scope :local})
+                   (autocmd! lsp# "*" {:buffer bufnr}))))
+
 (fn on-init [client result]
   (with-module [lsp-compl :lsp_compl]
     (set vim.lsp.text_document_completion_list_to_complete_items lsp-compl.text_document_completion_list_to_complete_items)
@@ -74,11 +81,7 @@
 
 (fn on-exit [code signal client-id]
   (each [_ bufnr (ipairs (vim.lsp.get_buffers_by_client_id client-id))]
-    (tset state bufnr nil)
-    (vim.schedule #(do
-                     (nvim.set_option_value :tagfunc nil {:scope :local})
-                     (nvim.set_option_value :omnifunc nil {:scope :local})
-                     (autocmd! lsp# "*" {:buffer bufnr})))))
+    (on-detach bufnr)))
 
 (fn hover [_ result ctx]
   ((. vim.lsp.handlers "textDocument/hover") _ result ctx {:border :rounded
@@ -119,7 +122,7 @@
           ft (. vim.bo bufnr :filetype)
           clients (. configs ft :clients)]
       (var client-id (. clients root-dir))
-      (when (not client-id)
+      (when (or (not client-id) (vim.lsp.client_is_stopped client-id))
         (let [config (mk-config cmd root-dir opts)]
           (set client-id (vim.lsp.start_client config))
           (when root-dir
@@ -172,24 +175,24 @@
 
 (autocmd lsp# :FileType "*"
   (fn [{: buf}]
-    (when (and vim.g.lsp_enabled (nvim.buf.is_valid buf) (nvim.buf.is_loaded buf))
+    (when (and (not= vim.g.lsp_autostart false) (nvim.buf.is_valid buf) (nvim.buf.is_loaded buf))
       (lsp-start buf))))
 
-(let [commands {:stop #(each [client-id (pairs (vim.lsp.buf_get_clients))]
+(let [commands {:stop #(each [client-id (pairs (vim.lsp.get_active_clients))]
                          (vim.lsp.stop_client client-id))
-                :detach #(each [client-id (pairs (vim.lsp.buf_get_clients))]
-                           (on-exit nil nil client-id)
-                           (vim.lsp.buf_detach_client 0 client-id))
+                :detach #(let [buf nvim.current.buf]
+                           (each [client-id (pairs (vim.lsp.buf_get_clients buf.id))]
+                             (vim.lsp.buf_detach_client buf.id client-id)
+                             (on-detach buf.id)))
                 :disable #(do
-                            (set vim.g.lsp_enabled false)
+                            (set vim.g.lsp_autostart false)
                             (each [client-id (pairs (vim.lsp.get_active_clients))]
                               (vim.lsp.stop_client client-id)))
-                :enable #(do
-                           (set vim.g.lsp_enabled true)
-                           (each [_ bufnr (ipairs (nvim.list_bufs))]
-                             (lsp-start bufnr)))
-                :start #(let [bufnr nvim.current.buf]
-                          (lsp-start bufnr))
+                :enable #(let [buf nvim.current.buf]
+                           (set vim.g.lsp_autostart true)
+                           (lsp-start buf.id))
+                :start #(let [buf nvim.current.buf]
+                          (lsp-start buf.id))
                 :find #(match $1
                          nil (vim.lsp.buf.definition)
                          q (vim.lsp.buf.workspace_symbol q))
