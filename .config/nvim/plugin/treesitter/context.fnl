@@ -14,13 +14,12 @@
                    win nvim.current.win
                    [{: textoff : topline}] (vim.fn.getwininfo win.id)
                    width (- (win:get_width) textoff)]
-               (var text nil)
-               (for [i (length contexts) 1 -1 :until text]
-                 (let [ctx (. contexts i)
-                       start-row (ctx:start)]
-                   (if (< start-row (- topline 1))
-                       (set text (context-text bufnr ctx)))))
-               (if text
+               (var text [])
+               (each [_ ctx (ipairs contexts)]
+                 (let [start-row (ctx:start)]
+                   (if (< start-row (+ (- topline 1) (length text)))
+                       (table.insert text (context-text bufnr ctx)))))
+               (if (< 0 (length text))
                    (let [b (match (?. state bufnr :bufnr)
                              (where n (vim.api.nvim_buf_is_valid n)) n
                              _ (let [b (vim.api.nvim_create_buf false true)]
@@ -35,6 +34,7 @@
                                                                        (vim.api.nvim_win_set_config n {:relative :win
                                                                                                        :row 0
                                                                                                        :col textoff
+                                                                                                       :height (length text)
                                                                                                        : width})
                                                                        n)
                              _ (let [w (vim.api.nvim_open_win b false {:relative :win
@@ -42,7 +42,7 @@
                                                                        :row 0
                                                                        :col textoff
                                                                        : width
-                                                                       :height 1
+                                                                       :height (length text)
                                                                        :focusable false
                                                                        :style :minimal
                                                                        :noautocmd true})]
@@ -50,7 +50,7 @@
                                  (set state.winid w)
                                  w))]
                      (nvim.win.set_buf w b)
-                     (nvim.buf.set_lines b 0 -1 true [text]))
+                     (nvim.buf.set_lines b 0 -1 true text))
                    (close)))
     _ (close)))
 
