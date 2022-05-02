@@ -136,10 +136,6 @@ augroup init
   " Highlight yanked text
   autocmd TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150, on_visual=true}
 
-  " Start insert mode in terminals automatically (and set the statusline to
-  " the terminal title)
-  autocmd TermOpen * setlocal statusline=%{b:term_title} | startinsert
-
   " Auto close shell terminals (#15440)
   autocmd TermClose *
         \ if !v:event.status |
