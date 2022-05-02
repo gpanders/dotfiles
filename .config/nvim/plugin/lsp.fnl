@@ -2,6 +2,7 @@
   (set vim.g.lsp_enabled true))
 
 (local configs {})
+(local state {})
 
 (fn dirname [path]
   (vim.fn.fnamemodify path ":h"))
@@ -22,14 +23,28 @@
   curdir)
 
 (fn on-attach [client bufnr]
+  (tset state bufnr {})
   (when client.server_capabilities.completionProvider
     (tset vim.bo bufnr :omnifunc "v:lua.vim.lsp.omnifunc"))
   (when client.server_capabilities.definitionProvider
     (tset vim.bo bufnr :tagfunc "v:lua.vim.lsp.tagfunc"))
   (when client.server_capabilities.documentHighlightProvider
-    (augroup lsp#
-      (autocmd :CursorHold "<buffer>" vim.lsp.buf.document_highlight)
-      (autocmd [:InsertEnter :CursorMoved] "<buffer>" vim.lsp.buf.clear_references)))
+    (let [timer (vim.loop.new_timer)]
+      (augroup lsp#
+        (autocmd :CursorMoved {:buffer bufnr}
+          #(let [[row col] (nvim.win.get_cursor 0)
+                 lnum (- row 1)
+                 references (. state bufnr :references)]
+             (timer:stop)
+             (var found? false)
+             (each [_ {:range {: start : end}} (ipairs (or references [])) :until found?]
+               (when (and (= start.line end.line lnum)
+                          (<= start.character col end.character))
+                 (set found? true)))
+             (when (not found?)
+               (vim.lsp.util.buf_clear_references bufnr)
+               (timer:start 150 0 #(vim.schedule vim.lsp.buf.document_highlight)))))
+        (autocmd [:InsertEnter :BufLeave] {:buffer bufnr} #(vim.lsp.util.buf_clear_references bufnr)))))
   (when client.server_capabilities.hoverProvider
     (keymap :n "K" vim.lsp.buf.hover {:buffer bufnr}))
   (keymap :n "[R" vim.lsp.buf.references {:buffer bufnr})
@@ -59,17 +74,27 @@
 
 (fn on-exit [code signal client-id]
   (each [_ bufnr (ipairs (vim.lsp.get_buffers_by_client_id client-id))]
+    (tset state bufnr nil)
     (vim.schedule #(do
-                     (set vim.opt_local.tagfunc nil)
-                     (set vim.opt_local.omnifunc nil)
+                     (nvim.set_option_value :tagfunc nil {:scope :local})
+                     (nvim.set_option_value :omnifunc nil {:scope :local})
                      (autocmd! lsp# "*" {:buffer bufnr})))))
 
-(local handlers {})
-(tset handlers "textDocument/hover" (fn [_ result ctx]
-                                      ((. vim.lsp.handlers "textDocument/hover") _ result ctx {:border :rounded
-                                                                                               :focusable false})))
-(tset handlers "textDocument/signatureHelp" (fn [_ result ctx]
-                                              (vim.lsp.handlers.signature_help _ result ctx {:focusable false})))
+(fn hover [_ result ctx]
+  ((. vim.lsp.handlers "textDocument/hover") _ result ctx {:border :rounded
+                                                           :focusable false}))
+(fn signature-help [_ result ctx]
+  (vim.lsp.handlers.signature_help _ result ctx {:focusable false}))
+
+(fn document-highlight [_ result ctx]
+  (let [references (or result [])]
+    (tset state ctx.bufnr :references references)
+    (vim.lsp.util.buf_clear_references bufnr)
+    ((. vim.lsp.handlers "textDocument/documentHighlight") _ references ctx)))
+
+(local handlers {"textDocument/hover" hover
+                 "textDocument/signatureHelp" signature-help
+                 "textDocument/documentHighlight" document-highlight})
 
 (fn mk-config [cmd ?root-dir ?opts]
   (let [capabilities (vim.lsp.protocol.make_client_capabilities)]
