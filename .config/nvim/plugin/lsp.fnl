@@ -219,4 +219,7 @@
                        0 (nvim.err_writeln (: "Invalid command: %s" :format cmd))
                        _ (nvim.err_writeln (: "Ambiguous command: %s can match any of %s" :format cmd (table.concat matches ", ")))))))))
 
-  (vim.cmd "cnoreabbrev <expr> lsp (getcmdtype() ==# ':' && getcmdline() ==# 'lsp') ? 'Lsp' : 'lsp'"))
+  (vim.cmd "cnoreabbrev <expr> lsp (getcmdtype() ==# ':' && getcmdline() ==# 'lsp') ? 'Lsp' : 'lsp'")
+  (keymap :n "yo<Space>" #(if vim.g.lsp_autostart
+                              (commands.disable)
+                              (commands.enable))))
