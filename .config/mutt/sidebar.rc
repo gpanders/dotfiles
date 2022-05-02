@@ -68,16 +68,16 @@ macro index K <sidebar-prev><sidebar-open>
 macro index J <sidebar-next><sidebar-open>
 
 # Color of the open mailbox
-color sidebar_indicator bold color15 color10
+color sidebar_indicator brightwhite black
 
 # Color of the highlighted, but not open, mailbox.
-color sidebar_highlight color7 color10
+color sidebar_highlight white black
 
 # Color of the divider separating the Sidebar from Mutt panels
-color sidebar_divider color10 default
+color sidebar_divider black default
 
 # Color to give mailboxes containing flagged mail
 color sidebar_flagged red default
 
 # Color to give mailboxes containing new mail
-color sidebar_new green default
+color sidebar_new blue default
