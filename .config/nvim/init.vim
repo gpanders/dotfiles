@@ -19,7 +19,6 @@ set scrolloff=2
 set shada='100,<50,s10,:100,/100,h
 set shell=/bin/sh
 set shiftwidth=4
-set shortmess+=c
 set sidescrolloff=5
 set smartcase
 set statusline=%{%v:lua.require'statusline'()%}

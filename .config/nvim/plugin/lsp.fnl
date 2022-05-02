@@ -50,7 +50,8 @@
 (fn on-init [client result]
   (with-module [lsp-compl :lsp_compl]
     (set vim.lsp.text_document_completion_list_to_complete_items lsp-compl.text_document_completion_list_to_complete_items)
-    (set client.resolved_capabilities.signature_help_trigger_characters []))
+    (when client.server_capabilities.signatureHelpProvider
+      (set client.server_capabilities.signatureHelpProvider.triggerCharacters [])))
   (when result.offsetEncoding
     (set client.offset_encoding result.offsetEncoding))
   (when client.config.settings
@@ -64,10 +65,11 @@
                      (autocmd! lsp# "*" {:buffer bufnr})))))
 
 (local handlers {})
-
 (tset handlers "textDocument/hover" (fn [_ result ctx]
                                       ((. vim.lsp.handlers "textDocument/hover") _ result ctx {:border :rounded
                                                                                                :focusable false})))
+(tset handlers "textDocument/signatureHelp" (fn [_ result ctx]
+                                              (vim.lsp.handlers.signature_help _ result ctx {:focusable false})))
 
 (fn mk-config [cmd ?root-dir ?opts]
   (let [capabilities (vim.lsp.protocol.make_client_capabilities)]
@@ -98,7 +100,7 @@
           (when root-dir
             (tset clients root-dir client-id))))
       (if (not (vim.lsp.buf_attach_client bufnr client-id))
-          (echo (: "LSP client %s failed to attach to buffer %d" :format cmd bufnr) :WarningMsg))))
+          (echo (: "LSP client %s failed to attach to buffer %d" :format (. cmd 1) bufnr) :WarningMsg))))
   nil)
 
 (macro lsp-setup [...]
