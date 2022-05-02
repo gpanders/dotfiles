@@ -1,5 +1,5 @@
 (when (= nil vim.g.lsp_autostart)
-  (set vim.g.lsp_autostart true))
+  (set vim.g.lsp_autostart false))
 
 (local configs {})
 (local state {})
