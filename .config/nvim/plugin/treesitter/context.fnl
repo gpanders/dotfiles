@@ -55,8 +55,9 @@
     _ (close)))
 
 (autocmd treesitter# [:WinScrolled :WinEnter :CursorMoved :CursorMovedI] "*"
-  #(let [buf nvim.current.buf
-         lang (. vim.bo buf.id :filetype)]
-     (if (lang-has-parser lang)
-         (show-context buf.id)
-         (close))))
+  #(match (vim.fn.getcmdwintype)
+     "" (let [buf nvim.current.buf
+              lang (. vim.bo buf.id :filetype)]
+          (if (lang-has-parser lang)
+              (show-context buf.id)
+              (close)))))
