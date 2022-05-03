@@ -1,18 +1,16 @@
-local function compile(args)
-    return require("moonwalk").compile(args.file)
-end
-
 vim.api.nvim_create_augroup("moonwalk", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = vim.fn.stdpath("config") .. "/*.fnl",
     group = "moonwalk",
-    callback = compile,
+    callback = function(args)
+        require("moonwalk").compile(args.file)
+    end,
 })
 vim.api.nvim_create_autocmd("SourceCmd", {
     pattern = "*.fnl",
     group = "moonwalk",
     callback = function(args)
-        vim.api.nvim_command("source " .. compile(args))
+        vim.api.nvim_command("source " .. require("moonwalk").compile(args.file))
     end,
 })
 
@@ -31,6 +29,9 @@ local function moonwalk()
     local f = io.open(vim.fn.stdpath("cache") .. "/.compiled", "w")
     f:write("")
     f:close()
+
+    -- Reset runtimepath cache so new Lua files are discovered
+    vim.o.runtimepath = vim.o.runtimepath
 end
 
 vim.api.nvim_create_user_command("Moonwalk", moonwalk, { desc = "Compile all Fennel runtime files to Lua" })
