@@ -7,6 +7,15 @@
 (fn dirname [path]
   (vim.fn.fnamemodify path ":h"))
 
+(fn once [f]
+  (var called false)
+  (fn [...]
+    (when (not called)
+      (f ...)
+      (set called true))))
+
+(local set-initial-log-level (once vim.lsp.set_log_level))
+
 (fn find-root [start patterns]
   (var done? false)
   (var curdir start)
@@ -113,14 +122,13 @@
        :on_exit on-exit
        :root_dir ?root-dir})))
 
-(fn start-client [bufnr {: cmd : root &as opts}]
+(fn start-client [bufnr ft {: cmd : root &as opts}]
   (when (= (vim.fn.executable (. cmd 1)) 1)
-    (let [root (icollect [_ v (ipairs [".git" ".hg" ".svn"]) :into root]
-                 v)
+    (let [root-markers (icollect [_ v (ipairs [".git" ".hg" ".svn"]) :into root] v)
           root-dir (let [dir (dirname (nvim.buf.get_name bufnr))]
-                     (find-root dir root))
-          ft (. vim.bo bufnr :filetype)
+                     (find-root dir root-markers))
           clients (. configs ft :clients)]
+      (set-initial-log-level :OFF)
       (var client-id (. clients root-dir))
       (when (or (not client-id) (vim.lsp.client_is_stopped client-id))
         (let [config (mk-config cmd root-dir opts)]
@@ -171,7 +179,7 @@
 (fn lsp-start [bufnr]
   (let [ft (. vim.bo bufnr :filetype)]
     (match (. configs ft)
-      opts (start-client bufnr opts))))
+      opts (start-client bufnr ft opts))))
 
 (autocmd lsp# :FileType "*"
   (fn [{: buf}]
@@ -201,7 +209,12 @@
                 :format #(vim.lsp.buf.formatting)
                 :references #(vim.lsp.buf.references)
                 :rename #(vim.lsp.buf.rename $1)
-                :signature_help #(vim.lsp.buf.signature_help)}
+                :signature_help #(vim.lsp.buf.signature_help)
+                :log #(match $1
+                        nil (echo (: "LSP log level is %s" :format (. vim.lsp.log_levels ((. (require "vim.lsp.log") :get_level)))))
+                        level (do
+                                (vim.lsp.set_log_level (level:upper))
+                                (echo (: "LSP log level set to %s" :format level))))}
       complete (fn [arg line pos]
                  (icollect [cmd (pairs commands)]
                    (if (= arg (string.sub cmd 1 (length arg)))
