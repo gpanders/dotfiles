@@ -53,7 +53,10 @@
              (when (not found?)
                (vim.lsp.util.buf_clear_references bufnr)
                (timer:start 150 0 #(vim.schedule vim.lsp.buf.document_highlight)))))
-        (autocmd [:InsertEnter :BufLeave] {:buffer bufnr} #(vim.lsp.util.buf_clear_references bufnr)))))
+        (autocmd [:InsertEnter :BufLeave] {:buffer bufnr}
+          (fn []
+            (timer:stop)
+            (vim.lsp.util.buf_clear_references bufnr))))))
   (when client.server_capabilities.hoverProvider
     (keymap :n "K" vim.lsp.buf.hover {:buffer bufnr}))
   (keymap :n "[R" vim.lsp.buf.references {:buffer bufnr})
@@ -61,12 +64,8 @@
   (keymap :n "cR" vim.lsp.buf.rename {:buffer bufnr})
   (keymap :n "cac" vim.lsp.buf.code_action {:buffer bufnr})
 
-  (when (= client.name "lua-language-server")
-    ; Tone down lua-language-server's completion suggestions
-    (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
-
   (with-module [lsp-compl :lsp_compl]
-    (vim.opt.completeopt:append [:noinsert])
+    (vim.cmd "set completeopt+=noinsert")
     (lsp-compl.attach client bufnr {}))
 
   (nvim.exec_autocmds :User {:pattern :LspAttached}))
@@ -167,7 +166,10 @@
                                               :nilness true}}}}
   :lua {:cmd [:lua-language-server]
         :root [".luarc.json"]
-        :settings {:Lua {:telemetry {:enable false}}}}
+        :settings {:Lua {:telemetry {:enable false}}}
+        :on_attach (fn [client bufnr]
+                     (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"])
+                     (on-attach client bufnr))}
   :zig {:cmd [:zls]
         :root ["build.zig" "zls.json"]}
   :python {:cmd ["pyright-langserver" "--stdio"]
