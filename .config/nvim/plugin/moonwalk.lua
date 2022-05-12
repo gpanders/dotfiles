@@ -14,6 +14,8 @@ vim.api.nvim_create_autocmd("SourceCmd", {
     end,
 })
 
+local marker = vim.fn.stdpath("state") .. "/moonwalk"
+
 local function moonwalk()
     local walk = require("moonwalk").walk
 
@@ -26,7 +28,7 @@ local function moonwalk()
     end)
 
     walk(vim.fn.stdpath("config"), "fnl", require("moonwalk").compile)
-    local f = io.open(vim.fn.stdpath("cache") .. "/.compiled", "w")
+    local f = io.open(marker, "w")
     f:write("")
     f:close()
 
@@ -37,6 +39,6 @@ end
 vim.api.nvim_create_user_command("Moonwalk", moonwalk, { desc = "Compile all Fennel runtime files to Lua" })
 
 -- Using a filesystem marker to do this seems hacky, but I don't now of a better way
-if not vim.loop.fs_stat(vim.fn.stdpath("cache") .. "/.compiled") then
+if not vim.loop.fs_stat(marker) then
     moonwalk()
 end
