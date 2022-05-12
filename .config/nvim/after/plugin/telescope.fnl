@@ -19,12 +19,12 @@
                                                 :use_git_root false}}})))
     (vim.cmd (: "Telescope %s" :format args.args))))
 
-(keymap :n "<Space>ff" "<Cmd>Telescope find_files<CR>")
-(keymap :n "<Space>b" "<Cmd>Telescope buffers<CR>")
+(keymap :n "<Space><Space>" "<Cmd>Telescope find_files<CR>")
+(keymap :n "<Space>." "<Cmd>Telescope buffers<CR>")
 (keymap :n "<Space>fo" "<Cmd>Telescope oldfiles<CR>")
 (keymap :n "<Space>fl" "<Cmd>Telescope loclist<CR>")
 (keymap :n "<Space>fq" "<Cmd>Telescope quickfix<CR>")
-(keymap :n "<Space>fd" "<Cmd>Telescope diagnostics<CR>")
+(keymap :n "<Space>fg" "<Cmd>Telescope diagnostics<CR>")
 
 (augroup telescope#
   (autocmd [:VimEnter :BufRead :BufNewFile :DirChanged] "*"
@@ -32,8 +32,8 @@
        false nil
        (true "") nil
        (true _) (do
-                  (keymap :n "<Space>ff" "<Cmd>Telescope git_files<CR>" {:buffer true})
-                  (keymap :n "<Space>fF" "<Cmd>Telescope find_files<CR>" {:buffer true}))))
+                  (keymap :n "<Space><Space>" "<Cmd>Telescope git_files<CR>" {:buffer true})
+                  (keymap :n "<Space>ff" "<Cmd>Telescope find_files<CR>" {:buffer true}))))
   (autocmd :User :LspAttached
     #(keymap :n "<Space>fs" "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>" {:buffer true}))
   (autocmd :FileType :TelescopePrompt

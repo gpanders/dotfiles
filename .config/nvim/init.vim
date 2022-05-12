@@ -59,9 +59,9 @@ nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap / ms/
 nnoremap ? ms?
-nnoremap <Space>w <Cmd>w<CR>
-nnoremap <Space>b :ls<CR>:b<Space>
-nnoremap <C-W><Space>b :ls<CR>:sb<Space>
+nnoremap <Space><CR> <Cmd>update<CR>
+nnoremap <Space>. :ls<CR>:b<Space>
+nnoremap <C-W><Space>. :ls<CR>:sb<Space>
 nnoremap <Space>e :e %:p:h/<Tab>
 nnoremap <C-W><Space>e :sp %:p:h/<Tab>
 nnoremap <Space>t :Tjump /

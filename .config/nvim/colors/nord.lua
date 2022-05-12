@@ -123,7 +123,7 @@ local highlights = {
     -- Tabs
     TabLine = { fg = foreground, bg = black },
     TabLineFill = { fg = foreground, bg = black },
-    TabLineSel = { fg = cyan, bg = brightblack },
+    TabLineSel = { fg = foreground, bg = brightblack, bold = true },
 
     -- Window
     Title = { fg = foreground },
@@ -132,8 +132,10 @@ local highlights = {
 
     QuickFixLine = { link = "Visual" },
 
-    User1 = { fg = foreground, bg = lightblack, bold = true },
-    User2 = { fg = red, bg = lightblack, bold = true },
+    User1 = { fg = red, bg = lightblack, bold = true },
+    User2 = { fg = blue, bg = lightblack },
+    User3 = { fg = foreground, bg = lightblack, bold = true },
+    User4 = { fg = green, bg = lightblack },
 
     -----------------------
     -- Language Base Groups

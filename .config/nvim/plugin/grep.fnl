@@ -34,5 +34,7 @@ cnoreabbrev <expr> gr    (getcmdtype() ==# ':' && getcmdline() ==# 'gr')    ? 'G
 cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'Grep'  : 'grep'
 ")
 
-(keymap :n "g/" ":Grep " {:silent false})
-(keymap :x "g/" "y:<C-U>Grep <C-R>\"" {:silent false})
+(keymap :n "<Space>/" ":Grep " {:silent false})
+(keymap :x "<Space>/" "y:<C-U>Grep <C-R>\"" {:silent false})
+(keymap :n "<Space>*" ":Grep <C-R><C-W><CR>")
+(keymap :x "<Space>*" "y:<C-U>Grep <C-R>\"<CR>")
