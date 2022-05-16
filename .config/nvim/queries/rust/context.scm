@@ -1,2 +1,2 @@
-(function_item return_type: (_) @context.end) @context
-(function_item parameters: (_) @context.end !return_type) @context
+(function_item return_type: (_) @end) @context
+(function_item parameters: (_) @end !return_type) @context

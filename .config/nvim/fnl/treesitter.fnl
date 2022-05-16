@@ -78,13 +78,17 @@
 
 (fn context-text [bufnr node ?query]
   (let [query (or ?query (vim.treesitter.get_query (. vim.bo bufnr :filetype) :context))
+        captures (collect [k v (pairs query.captures)] (values v k))
         (start-row start-col) (node:start)
-        (end-row end-col) (if (< 1 (length query.captures))
-                              (let [[end-node] (icollect [id subnode (query:iter_captures node bufnr start-row (node:end_))]
-                                                 (if (= (. query.captures id) :context.end)
-                                                     subnode))]
-                                (when end-node
-                                  (end-node:end_))))]
+        (end-row end-col) (do
+                            (var end-node nil)
+                            (each [pat mat (query:iter_matches node bufnr) :until end-node]
+                              (match (. mat captures.end)
+                                end (let [nod (. mat captures.context)]
+                                      (match (nod:start)
+                                        (start-row start-col) (set end-node end)))))
+                            (when end-node
+                              (end-node:end_)))]
     (-> (nvim.buf.get_text bufnr start-row 0 (or end-row (+ start-row 1)) (or end-col 0) {})
         (table.concat " ")
         (string.gsub "(%S)%s+" "%1 ")
