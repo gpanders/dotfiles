@@ -24,7 +24,9 @@ Examples:
         to (match (type to)
              :string to
              _ (do
-                 (set opts.desc (tostring (. to 2)))
+                 (if (sym? to)
+                     (set opts.desc (tostring to))
+                     (set opts.desc (tostring (. to 2))))
                  (set opts.callback to)
                  ""))]
     (when (= opts.noremap nil)
