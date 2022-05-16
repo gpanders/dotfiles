@@ -47,21 +47,16 @@
   (let [buf nvim.current.buf]
     (match (buf:get_name)
       "" "[No Name]"
-      n (let [cwd (vim.loop.cwd)
-              cwd (if (string.find n cwd)
-                      (: "%s/" :format (vim.fn.fnamemodify cwd ":t"))
-                      "")
-              fname (vim.fn.fnamemodify n ":~:.")
+      n (let [fname (vim.fn.fnamemodify n ":~:.")
               parent (fname:match "^(.*/)")
               tail (vim.fn.fnamemodify n ":t")
-              (parent-hl tail-hl cwd-hl) (if vim.bo.modified
-                                             (values "%1*" "%1*" "%1*")
-                                             (not= (tonumber vim.g.actual_curbuf) buf.id)
-                                             (values "" "%3*" "")
-                                             (values "%2*" "%3*" "%4*"))]
-          (: "%s%s%%<%s%s%s%s%%* " :format cwd-hl cwd
-                                           parent-hl (or parent "")
-                                           tail-hl tail)))))
+              (parent-hl tail-hl) (if vim.bo.modified
+                                      (values "%1*" "%1*")
+                                      (not= (tonumber vim.g.actual_curbuf) buf.id)
+                                      (values "" "%3*")
+                                      (values "%2*" "%3*"))]
+          (: "%%<%s%s%s%s%%* " :format parent-hl (or parent "")
+                                       tail-hl tail)))))
 
 (fn []
   (let [items [" "
