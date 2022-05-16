@@ -51,10 +51,6 @@ inoremap {<CR> {<CR>}<Esc>O
 
 inoremap <C-Space> <C-X><C-O>
 
-" Make * and # work in visual mode
-xnoremap * y/\V<C-R>"<CR>
-xnoremap # y?\V<C-R>"<CR>
-
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap / ms/
