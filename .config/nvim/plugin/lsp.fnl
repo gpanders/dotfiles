@@ -38,7 +38,9 @@
   (when client.server_capabilities.definitionProvider
     (tset vim.bo bufnr :tagfunc "v:lua.vim.lsp.tagfunc"))
   (when client.server_capabilities.documentHighlightProvider
-    (let [timer (vim.loop.new_timer)]
+    (when (not (. state bufnr :timer))
+      (tset state bufnr :timer (vim.loop.new_timer)))
+    (let [timer (. state bufnr :timer)]
       (augroup lsp#
         (autocmd :CursorMoved {:buffer bufnr}
           #(let [[row col] (nvim.win.get_cursor 0)
@@ -71,6 +73,8 @@
   (nvim.exec_autocmds :User {:pattern :LspAttached}))
 
 (fn on-detach [bufnr]
+  (match (. state bufnr :timer)
+    timer (timer:close))
   (tset state bufnr nil)
   (vim.schedule #(do
                    (nvim.set_option_value :tagfunc nil {:scope :local})

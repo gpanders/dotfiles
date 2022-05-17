@@ -34,6 +34,7 @@
       nil (vim.diagnostic.hide ns bufnr))))
 
 (augroup diagnostics#
+  (autocmd :VimLeavePre "*" #(timer:close))
   (autocmd [:BufRead :BufNewFile] "*"
     (fn [{: buf}]
       (vim.diagnostic.disable 0)

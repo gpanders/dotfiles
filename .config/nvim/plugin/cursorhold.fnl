@@ -4,6 +4,8 @@
 (local timer (vim.loop.new_timer))
 (local timeout 250)
 
+(autocmd cursorhold# :VimLeavePre #(timer:close))
+
 (vim.opt.eventignore:append [:CursorHold :CursorHoldI])
 
 (fn callback [event]
