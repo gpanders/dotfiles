@@ -44,7 +44,8 @@
       (e w) (: "E:%-4d W:%-4d" :format e w))))
 
 (fn filename []
-  (let [buf nvim.current.buf]
+  (let [win nvim.current.win
+        buf nvim.current.buf]
     (match (buf:get_name)
       "" "[No Name]"
       n (let [fname (vim.fn.fnamemodify n ":~:.")
@@ -52,7 +53,7 @@
               tail (vim.fn.fnamemodify n ":t")
               (parent-hl tail-hl) (if vim.bo.modified
                                       (values "%1*" "%1*")
-                                      (not= (tonumber vim.g.actual_curbuf) buf.id)
+                                      (not= (tonumber vim.g.actual_curwin) win.id)
                                       (values "" "%3*")
                                       (values "%2*" "%3*"))]
           (: "%%<%s%s%s%s%%* " :format parent-hl (or parent "")
