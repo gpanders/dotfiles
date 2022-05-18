@@ -6,7 +6,7 @@
 
 (fn lsp-progress-messages []
   (let [messages []]
-    (each [client-id client (pairs (vim.lsp.buf_get_clients))]
+    (each [_ client (ipairs (vim.lsp.get_active_clients {:bufnr 0}))]
       (each [k v (pairs client.messages.progress)]
         (let [msg (if v.message
                       (: "%s: %s" :format v.title v.message)
@@ -19,8 +19,8 @@
     messages))
 
 (fn lsp []
-  (let [clients (icollect [client-id client (pairs (vim.lsp.buf_get_clients))]
-                  (: "%s/%d" :format client.config.name client-id))]
+  (let [clients (icollect [_ client (ipairs (vim.lsp.get_active_clients {:bufnr 0}))]
+                  (: "%s/%d" :format client.config.name client.id))]
     (match (length clients)
       0 ""
       _ (let [clients (table.concat clients ", ")
