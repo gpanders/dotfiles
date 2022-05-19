@@ -70,24 +70,12 @@ nnoremap <expr> [a '<Cmd>' . v:count1 . 'prev<CR>'
 nnoremap <expr> ]a '<Cmd>' . v:count1 . 'next<CR>'
 nnoremap <expr> [b '<Cmd>' . v:count1 . 'bprev<CR>'
 nnoremap <expr> ]b '<Cmd>' . v:count1 . 'bnext<CR>'
-nnoremap <expr> [l '<Cmd>' . v:count1 . 'lprev<CR>'
-nnoremap <expr> ]l '<Cmd>' . v:count1 . 'lnext<CR>'
-nnoremap <expr> [<C-L> '<Cmd>' . v:count1 . 'lolder<CR>'
-nnoremap <expr> ]<C-L> '<Cmd>' . v:count1 . 'lnewer<CR>'
-nnoremap <expr> [q '<Cmd>' . v:count1 . 'cprev<CR>'
-nnoremap <expr> ]q '<Cmd>' . v:count1 . 'cnext<CR>'
-nnoremap <expr> [<C-Q> '<Cmd>' . v:count1 . 'colder<CR>'
-nnoremap <expr> ]<C-Q> '<Cmd>' . v:count1 . 'cnewer<CR>'
 nnoremap <expr> [t '<Cmd>' . v:count1 . 'tprev<CR>'
 nnoremap <expr> ]t '<Cmd>' . v:count1 . 'tnext<CR>'
 nnoremap [A <Cmd>first<CR>
 nnoremap ]A <Cmd>last<CR>
 nnoremap [B <Cmd>bfirst<CR>
 nnoremap ]B <Cmd>blast<CR>
-nnoremap [L <Cmd>lfirst<CR>
-nnoremap ]L <Cmd>llast<CR>
-nnoremap [Q <Cmd>cfirst<CR>
-nnoremap ]Q <Cmd>clast<CR>
 nnoremap [T <Cmd>tfirst<CR>
 nnoremap ]T <Cmd>tlast<CR>
 nnoremap <expr> [e '<Cmd>.move --' . v:count1 . '<CR>'
@@ -103,9 +91,6 @@ nnoremap yoc <Cmd>setlocal cursorline!<Bar>set cul?<CR>
 nnoremap yo<Bar> <Cmd>setlocal cursorcolumn!<Bar>set cuc?<CR>
 nnoremap <expr> yod '<Cmd>' . (&diff ? 'diffoff' : 'diffthis') . '<CR>'
 nnoremap yos <Cmd>setlocal spell!<Bar>set spell?<CR>
-
-nnoremap <expr> <Space>q getqflist(#{winid: 1}).winid ? '<Cmd>cclose<CR>' : '<Cmd>copen<CR><C-W>p'
-nnoremap <expr> <Space>l getloclist(0, #{winid: 1}).winid ? '<Cmd>lclose<CR>' : '<Cmd>lopen<CR><C-W>p'
 
 function! Sort(type, ...) abort
     '[,']sort

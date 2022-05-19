@@ -12,6 +12,9 @@
                                     :buffers {:previewer false
                                               :theme :dropdown
                                               : layout_config}
+                                    :oldfiles {:previewer false
+                                               :theme :dropdown
+                                               : layout_config}
                                     :git_files {:previewer false
                                                 :theme :dropdown
                                                 : layout_config
@@ -34,7 +37,7 @@
        (true _) (do
                   (keymap :n "<Space><Space>" "<Cmd>Telescope git_files<CR>" {:buffer true})
                   (keymap :n "<Space>ff" "<Cmd>Telescope find_files<CR>" {:buffer true}))))
-  (autocmd :User :LspAttached
+  (autocmd :LspAttach
     #(keymap :n "<Space>fs" "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>" {:buffer true}))
   (autocmd :FileType :TelescopePrompt
     (fn []

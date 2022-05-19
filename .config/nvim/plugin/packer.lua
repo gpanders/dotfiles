@@ -11,7 +11,6 @@ nvim.create_user_command("PackerUpdate", function()
     packer.startup({{
         "wbthomason/packer.nvim",
         "gpanders/nvim-parinfer",
-        "gpanders/vim-oldfiles",
         "tpope/vim-surround",
         "tpope/vim-commentary",
         "tpope/vim-repeat",
@@ -25,7 +24,6 @@ nvim.create_user_command("PackerUpdate", function()
         "tpope/vim-dispatch",
         "justinmk/vim-dirvish",
         "junegunn/vim-easy-align",
-        "romainl/vim-qf",
         "mfussenegger/nvim-lsp-compl",
         { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
         { "nvim-telescope/telescope.nvim", opt = true, requires = { "nvim-lua/plenary.nvim" } },
