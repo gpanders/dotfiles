@@ -4,7 +4,7 @@
   (tset :function.macro :Function)
   (tset :constructor :Normal))
 
-(autocmd treesitter# :FileType [:c :zig]
+(autocmd treesitter# :FileType [:c :zig :haskell]
   (fn [{: buf}]
     (let [{: highlight} (require :treesitter)]
       (highlight buf))))

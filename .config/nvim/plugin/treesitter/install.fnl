@@ -7,7 +7,8 @@
                    :lua (github "MunifTanjim/tree-sitter-lua")
                    :rust (github "tree-sitter/tree-sitter-rust")
                    :fennel (github "travonted/tree-sitter-fennel")
-                   :zig (github "maxxnino/tree-sitter-zig")})
+                   :zig (github "maxxnino/tree-sitter-zig")
+                   :haskell (github "tree-sitter/tree-sitter-haskell")})
 
 (local temp-dir (.. (vim.fn.stdpath :cache) "/treesitter"))
 (local parser-dir (.. (vim.fn.stdpath :data) "/site/parser/"))
