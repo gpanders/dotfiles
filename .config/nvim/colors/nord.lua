@@ -130,18 +130,18 @@ local highlights = {
     -- Window
     Title = { fg = foreground },
 
-    WinSeparator = { fg = darkblack, bg = background },
+    WinSeparator = { fg = darkblack, bg = darkblack },
 
     QuickFixLine = { link = "Visual" },
 
-    User1 = { fg = red, bg = background, bold = true },
-    User2 = { fg = blue, bg = background, bold = true },
-    User3 = { fg = foreground, bg = background, bold = true },
+    User1 = { fg = red, bg = black, bold = true },
+    User2 = { fg = blue, bg = black, bold = true },
+    User3 = { fg = foreground, bg = black, bold = true },
     User4 = { fg = green, bg = background },
     User5 = { fg = white, bg = lightblack },
 
     User8 = { fg = foreground, bg = brightblack },
-    User9 = { fg = foreground, bg = lightblack },
+    User9 = { fg = foreground, bg = darkblack },
 
     -----------------------
     -- Language Base Groups

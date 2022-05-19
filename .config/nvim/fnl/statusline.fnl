@@ -1,7 +1,7 @@
 (fn obsession []
   (match (pcall vim.fn.ObsessionStatus :$ :S)
     (true "") ""
-    (true s) (.. " " s " ")
+    (true s) (.. " " s)
     _ ""))
 
 (fn lsp-progress-messages [client]
@@ -40,18 +40,19 @@
       (e w) (: "E: %d W: %d " :format e w))))
 
 (fn filename [buf curwin]
-  (match (buf:get_name)
-    "" "Untitled"
-    n (let [fname (vim.fn.fnamemodify n ":~:.")
-            parent (fname:match "^(.*/)")
-            tail (vim.fn.fnamemodify n ":t")
-            (parent-hl tail-hl) (if vim.bo.modified
-                                    (values "%1*" "%1*")
-                                    (not curwin)
-                                    (values "" "")
-                                    (values "%2*" "%3*"))]
-        (: "%%<%s%s%s%s%%* " :format parent-hl (or parent "")
-                                     tail-hl tail))))
+  (let [name (match (buf:get_name)
+               "" "Untitled"
+               n (n:gsub "%%" "%%%%"))
+        fname (vim.fn.fnamemodify name ":~:.")
+              parent (fname:match "^(.*/)")
+              tail (vim.fn.fnamemodify name ":t")
+              (parent-hl tail-hl) (if vim.bo.modified
+                                      (values "%1*" "%1*")
+                                      (not curwin)
+                                      (values "" "")
+                                      (values "%2*" "%3*"))]
+    (: "%s %%<%s%s%s %%*" :format parent-hl (or parent "")
+                                  tail-hl tail)))
 
 (fn tabs [win]
   (let [tabpagenr (vim.fn.tabpagenr)
@@ -69,7 +70,7 @@
         win nvim.current.win
         curwin (= (tonumber vim.g.actual_curwin) win.id)
         items [(obsession)
-               (tabs)
+               (filename buf curwin)
                "%*%="
                (lsp)
                (diagnostics)
@@ -90,7 +91,7 @@
                       [client] (: " %s/%s " :format ft client.name)
                       _ (: " %s " :format ft)))
                (if curwin "%9*" "")
-               " %.(%l:%c%) %4.P  "]]
+               " %l:%c %P "]]
     (table.concat items)))
 
 (fn winbar []

@@ -29,8 +29,7 @@
 (nvim.set_decoration_provider ns {:on_end #(match state.diagnostic
                                              {: source : message} (print (if source
                                                                              (: "%s: %s" :format source message)
-                                                                             message))
-                                             _ (echo ""))})
+                                                                             message)))})
 
 (augroup diagnostics#
   (autocmd [:BufRead :BufNewFile]
@@ -39,12 +38,16 @@
       (autocmd :BufWritePost {:once true :buffer buf}
         (fn [{: buf}]
           (vim.diagnostic.enable 0)
-          (autocmd :InsertEnter {:buffer buf} #(set state.diagnostic nil))
+          (autocmd :InsertEnter {:buffer buf} #(do
+                                                 (set state.diagnostic nil)
+                                                 (echo "")))
           (autocmd :CursorMoved {:buffer buf}
             (fn [{: buf}]
               (let [[lnum] (nvim.win.get_cursor 0)
                     lnum (- lnum 1)]
-                (set state.diagnostic (cursor-diagnostic (vim.diagnostic.get buf {: lnum}))))))))))
+                (set state.diagnostic (cursor-diagnostic (vim.diagnostic.get buf {: lnum})))
+                (when (not state.diagnostic)
+                  (echo "")))))))))
   (autocmd :DiagnosticChanged
     (fn [{: buf}]
       (when (nvim.buf.is_loaded buf)
