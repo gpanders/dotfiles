@@ -54,7 +54,7 @@
     (: "%s %%<%s%s%s %%*" :format parent-hl (or parent "")
                                   tail-hl tail)))
 
-(fn tabs [win]
+(fn tabline []
   (let [tabpagenr (vim.fn.tabpagenr)
         items []]
     (for [i 1 (vim.fn.tabpagenr :$)]
@@ -62,7 +62,8 @@
             cwd (-> (vim.fn.getcwd -1 i)
                     (vim.fn.fnamemodify ":~")
                     (vim.fn.pathshorten))]
-        (table.insert items (: "%%#%s# %d %s " :format hi i cwd))))
+        (table.insert items (: "%%#%s#%%%dT %d %s " :format hi i i cwd))))
+    (table.insert items "%#TabLineFill#%T")
     (table.concat items)))
 
 (fn statusline []
@@ -71,18 +72,27 @@
         curwin (= (tonumber vim.g.actual_curwin) win.id)
         items [(obsession)
                (filename buf curwin)
-               "%*%="
+               (if vim.bo.readonly
+                   "%r "
+                   "")
+               (if vim.wo.previewwindow
+                   "%w "
+                   "")
+               "%="
                (lsp)
                (diagnostics)
                (if (and vim.bo.modifiable (not vim.bo.readonly))
-                   (..
+                   (let [t []]
                      (match vim.bo.fileformat
-                       "unix" ""
-                       ff (: "[%s] " :format ff))
+                       "unix" nil
+                       ff (table.insert t (if (= ff :dos) "CRLF" "CR")))
                      (match vim.bo.fileencoding
-                       "utf-8" ""
-                       "" ""
-                       fenc (: "[%s] " :format fenc)))
+                       "utf-8" nil
+                       "" nil
+                       fenc (table.insert t fenc))
+                     (if (< 0 (length t))
+                         (: "%%4* %s " :format (table.concat t " "))
+                         ""))
                    "")
                (if curwin "%8*" "")
                (match vim.bo.filetype
@@ -106,4 +116,5 @@
     (table.concat items)))
 
 {: statusline
- : winbar}
+ : winbar
+ : tabline}

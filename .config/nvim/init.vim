@@ -22,6 +22,7 @@ set shiftwidth=4
 set sidescrolloff=5
 set smartcase
 set statusline=%{%v:lua.require'statusline'.statusline()%}
+set tabline=%!v:lua.require'statusline'.tabline()
 set tagcase=match
 set termguicolors
 set undofile

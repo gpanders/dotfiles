@@ -123,8 +123,8 @@ local highlights = {
     Search = { fg = black, bg = cyan },
 
     -- Tabs
-    TabLine = { fg = foreground, bg = black },
-    TabLineFill = { fg = foreground, bg = black },
+    TabLine = { fg = brighterblack, bg = black },
+    TabLineFill = { fg = brighterblack, bg = darkblack },
     TabLineSel = { fg = foreground, bg = brightblack, bold = true },
 
     -- Window
@@ -137,7 +137,7 @@ local highlights = {
     User1 = { fg = red, bg = black, bold = true },
     User2 = { fg = blue, bg = black, bold = true },
     User3 = { fg = foreground, bg = black, bold = true },
-    User4 = { fg = green, bg = background },
+    User4 = { fg = black, bg = yellow },
     User5 = { fg = white, bg = lightblack },
 
     User8 = { fg = foreground, bg = brightblack },
