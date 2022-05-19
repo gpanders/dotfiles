@@ -10,6 +10,7 @@ set cursorline
 set expandtab
 set foldlevelstart=99
 set ignorecase
+set laststatus=3
 set lazyredraw
 set linebreak
 set list
@@ -19,16 +20,18 @@ set scrolloff=2
 set shada='100,<50,s10,:100,/100,h
 set shell=/bin/sh
 set shiftwidth=4
+set showtabline=0
 set sidescrolloff=5
 set smartcase
-set statusline=%{%v:lua.require'statusline'()%}
-set tabline=%!tabline#show()
+set statusline=%{%v:lua.require'statusline'.statusline()%}
 set tagcase=match
 set termguicolors
 set undofile
 set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#,*.o
 set wildignorecase
 set wildmode=longest:full,full
+set winbar=%{%v:lua.require'statusline'.winbar()%}
+set fillchars=wbr:─
 
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case
@@ -146,7 +149,7 @@ augroup init
   autocmd InsertEnter * setlocal nocursorline
   autocmd InsertLeave * setlocal cursorline
   autocmd WinLeave,FocusLost * if !&diff | setlocal nocursorline | endif
-  autocmd FocusGained * ++once autocmd init InsertLeave,WinEnter,FocusGained * let &l:cursorline = mode() !=# 'i'
+  autocmd InsertLeave,WinEnter,FocusGained * let &l:cursorline = mode() !=# 'i'
 
   " Create missing parent directories automatically
   autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')

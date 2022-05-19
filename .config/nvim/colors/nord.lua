@@ -76,10 +76,10 @@ local highlights = {
     DiagnosticError = { fg = red },
     DiagnosticInfo = { fg = cyan },
     DiagnosticHint = { fg = darkblue },
-    DiagnosticSignWarn = { fg = yellow, bg = black },
-    DiagnosticSignError = { fg = red, bg = black },
-    DiagnosticSignInfo = { fg = cyan, bg = black },
-    DiagnosticSignHint = { fg = darkblue, bg = black },
+    DiagnosticSignWarn = { fg = yellow, bg = darkblack },
+    DiagnosticSignError = { fg = red, bg = darkblack },
+    DiagnosticSignInfo = { fg = cyan, bg = darkblack },
+    DiagnosticSignHint = { fg = darkblue, bg = darkblack },
     DiagnosticUnderlineWarn = { sp = yellow, undercurl = true },
     DiagnosticUnderlineError = { sp = red, undercurl = true },
     DiagnosticUnderlineInfo = { sp = cyan, undercurl = true },
@@ -109,12 +109,14 @@ local highlights = {
     ModeMsg = { fg = foreground },
     MoreMsg = { fg = cyan },
     Question = { fg = foreground },
-    StatusLine = { fg = foreground, bg = lightblack },
+    StatusLine = { fg = foreground, bg = black },
     StatusLineNC = { fg = brighterblack, bg = darkblack },
     StatusLineTerm = { fg = foreground, bg = lightblack },
     StatusLineTermNC = { fg = brighterblack, bg = darkblack },
     WarningMsg = { fg = background, bg = yellow },
     WildMenu = { fg = cyan, bg = black },
+    WinBar = { fg = brighterblack, bg = background },
+    WinBarNC = { fg = brighterblack, bg = background },
 
     -- Search
     IncSearch = { fg = brightwhite, bg = darkblue, underline = true },
@@ -128,14 +130,18 @@ local highlights = {
     -- Window
     Title = { fg = foreground },
 
-    VertSplit = { fg = darkblack, bg = darkblack },
+    WinSeparator = { fg = darkblack, bg = background },
 
     QuickFixLine = { link = "Visual" },
 
-    User1 = { fg = red, bg = lightblack, bold = true },
-    User2 = { fg = blue, bg = lightblack },
-    User3 = { fg = foreground, bg = lightblack, bold = true },
-    User4 = { fg = green, bg = lightblack },
+    User1 = { fg = red, bg = background, bold = true },
+    User2 = { fg = blue, bg = background, bold = true },
+    User3 = { fg = foreground, bg = background, bold = true },
+    User4 = { fg = green, bg = background },
+    User5 = { fg = white, bg = lightblack },
+
+    User8 = { fg = foreground, bg = brightblack },
+    User9 = { fg = foreground, bg = lightblack },
 
     -----------------------
     -- Language Base Groups
