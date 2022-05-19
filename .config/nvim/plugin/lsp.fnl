@@ -39,6 +39,9 @@
       (tset vim.bo bufnr :omnifunc "v:lua.vim.lsp.omnifunc"))
     (when client.server_capabilities.definitionProvider
       (tset vim.bo bufnr :tagfunc "v:lua.vim.lsp.tagfunc"))
+    (when client.server_capabilities.codeLensProvider
+      (vim.lsp.codelens.refresh)
+      (autocmd lsp# [:BufEnter :InsertLeave] {:buffer bufnr} vim.lsp.codelens.refresh))
     (when client.server_capabilities.documentHighlightProvider
       (when (not (. state bufnr :timer))
         (tset state bufnr :timer (vim.loop.new_timer)))
@@ -65,8 +68,9 @@
       (keymap :n "K" vim.lsp.buf.hover {:buffer bufnr}))
     (keymap :n "[R" vim.lsp.buf.references {:buffer bufnr})
     (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer bufnr})
-    (keymap :n "cR" vim.lsp.buf.rename {:buffer bufnr})
-    (keymap :n "cac" vim.lsp.buf.code_action {:buffer bufnr})
+    (keymap :n "<Space>cr" vim.lsp.buf.rename {:buffer bufnr})
+    (keymap :n "<Space>ca" vim.lsp.buf.code_action {:buffer bufnr})
+    (keymap :n "<Space>cl" vim.lsp.codelens.run {:buffer bufnr})
 
     (with-module [lsp-compl :lsp_compl]
       (match client.name
