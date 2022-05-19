@@ -21,6 +21,8 @@ set shell=/bin/sh
 set shiftwidth=4
 set sidescrolloff=5
 set smartcase
+set splitright
+set splitbelow
 set statusline=%{%v:lua.require'statusline'.statusline()%}
 set tabline=%!v:lua.require'statusline'.tabline()
 set tagcase=match
@@ -50,6 +52,8 @@ set diffopt+=indent-heuristic
 inoremap {<CR> {<CR>}<Esc>O
 
 inoremap <C-Space> <C-X><C-O>
+
+nnoremap & <Cmd>&&<CR>
 
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
