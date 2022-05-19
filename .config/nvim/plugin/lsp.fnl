@@ -176,7 +176,11 @@
            :name "pyright"
            :root ["pyproject.toml" "setup.py" "setup.cfg" "requirements.txt" "Pipfile" "pyrightconfig.json"]}
   :rust {:cmd [:rust-analyzer]
-         :root ["Cargo.toml"]})
+         :root ["Cargo.toml"]}
+  :haskell {:cmd ["haskell-language-server-wrapper" "--lsp"]
+            :name :hls
+            :root ["*.cabal" "stack.yaml" "cabal.project" "package.yaml" "hie.yaml"]
+            :settings {:haskell {:formattingProvider :ormolu}}})
 
 (fn lsp-start [bufnr]
   (let [ft (. vim.bo bufnr :filetype)]
