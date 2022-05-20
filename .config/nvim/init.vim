@@ -21,8 +21,6 @@ set shell=/bin/sh
 set shiftwidth=4
 set sidescrolloff=5
 set smartcase
-set splitright
-set splitbelow
 set statusline=%{%v:lua.require'statusline'.statusline()%}
 set tabline=%!v:lua.require'statusline'.tabline()
 set tagcase=match
