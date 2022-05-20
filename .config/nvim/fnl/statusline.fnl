@@ -81,6 +81,7 @@
                "%="
                (lsp)
                (diagnostics)
+               (if curwin "%4*" "")
                (if (and vim.bo.modifiable (not vim.bo.readonly))
                    (let [t []]
                      (match vim.bo.fileformat
@@ -91,7 +92,7 @@
                        "" nil
                        fenc (table.insert t fenc))
                      (if (< 0 (length t))
-                         (: "%%4* %s " :format (table.concat t " "))
+                         (: " %s " :format (table.concat t " "))
                          ""))
                    "")
                (if curwin "%8*" "")
