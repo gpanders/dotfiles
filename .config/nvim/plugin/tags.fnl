@@ -24,9 +24,12 @@
     tags))
 
 (fn tjump [arg]
-  (let [tags (tselect arg)]
-    (when (= 1 (length tags))
-      (vim.cmd (: "tjump %s" :format (. tags 1 :name))))))
+  (let [tags (find-tags arg)]
+    (match (length tags)
+      0 (match (pcall vim.cmd (: "tjump %s" :format arg))
+          (false err) (nvim.err_writeln (pick-values 1 (err:gsub "^.-:" ""))))
+      1 (vim.cmd (: "tjump %s" :format (. tags 1 :name)))
+      n (tags-to-quickfix tags arg))))
 
 (command :Tselect {:nargs 1 :complete :tag} (fn [{: args}] (tselect args)))
 (command :Tjump {:nargs 1 :complete :tag} (fn [{: args}] (tjump args)))
