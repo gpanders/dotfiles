@@ -12,14 +12,10 @@ function! s:PackInit() abort
 
     call minpac#init()
     call minpac#add('k-takata/minpac', #{type: 'opt'})
-    call minpac#add('chriskempson/base16-vim', #{type: 'opt'})
-    call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('tpope/vim-repeat')
     call minpac#add('tpope/vim-commentary')
     call minpac#add('tpope/vim-surround')
-    call minpac#add('tpope/vim-dispatch')
-    call minpac#add('yegappan/lsp', #{type: 'opt'})
 endfunction
 
 command! PackUpdate call s:PackInit() | call minpac#update()
