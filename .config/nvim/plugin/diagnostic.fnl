@@ -45,9 +45,10 @@
             (fn [{: buf}]
               (let [[lnum] (nvim.win.get_cursor 0)
                     lnum (- lnum 1)]
-                (set state.diagnostic (cursor-diagnostic (vim.diagnostic.get buf {: lnum})))
-                (when (not state.diagnostic)
-                  (echo "")))))))))
+                (let [diag (cursor-diagnostic (vim.diagnostic.get buf {: lnum}))]
+                  (when (and (= diag nil) (not= state.diagnostic nil))
+                    (echo ""))
+                  (set state.diagnostic diag)))))))))
   (autocmd :DiagnosticChanged
     (fn [{: buf}]
       (when (nvim.buf.is_loaded buf)
