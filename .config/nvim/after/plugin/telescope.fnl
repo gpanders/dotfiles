@@ -23,7 +23,7 @@
     (vim.cmd (: "Telescope %s" :format args.args))))
 
 (keymap :n "<Space><Space>" "<Cmd>Telescope find_files<CR>")
-(keymap :n "<Space>." "<Cmd>Telescope buffers<CR>")
+(keymap :n "<Space>b" "<Cmd>Telescope buffers<CR>")
 (keymap :n "<Space>fo" "<Cmd>Telescope oldfiles<CR>")
 (keymap :n "<Space>fl" "<Cmd>Telescope loclist<CR>")
 (keymap :n "<Space>fq" "<Cmd>Telescope quickfix<CR>")
