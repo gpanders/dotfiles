@@ -38,7 +38,6 @@
         compiler (if (= ft :cpp) cxx cc)]
     (match (. cache compiler)
       nil (let [args [compiler "-E" "-Wp,-v" "-x" (if (= ft :cpp) "c++" "c") "/dev/null" "2>&1"]]
-            (print "running job")
             (vim.fn.jobstart (table.concat args " ") {:stdout_buffered true
                                                       :on_stdout #(callback bufnr compiler $2)}))
       p (do
