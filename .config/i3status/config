@@ -32,9 +32,10 @@ battery all {
         hide_seconds = true
         integer_battery_capacity = true
         last_full_capacity = true
-        status_chr = "  +"
-        status_bat = " "
-        status_full = " "
+        status_chr = "  "
+        status_bat = " 🔋 "
+        status_full = " 🔋 "
+        status_unk = " 🔋 "
 }
 
 disk "/" {

@@ -190,6 +190,7 @@ bar {
     separator_symbol "  "
     status_command i3status
     font pango:IBMPlexSans Medium 10
+    workspace_min_width 25
     colors {
         background #1f222d
         separator #1f222d
@@ -197,7 +198,7 @@ bar {
         focused_workspace  #1f222d #1f222d #ffffff
         active_workspace   #1f222d #252936 #5e81ac
         inactive_workspace #1f222d #1f222d #616e88
-        urgent_workspace   #1f222d #1f222d #ee829f
+        urgent_workspace   #ee829f #ee829f #2e3440
         binding_mode       #1f222d #81a1c1 #2e3440
     }
 }
