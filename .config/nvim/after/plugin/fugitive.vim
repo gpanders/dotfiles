@@ -10,4 +10,5 @@ augroup fugitive#
 augroup END
 
 nnoremap g<Space> :Git<Space>
+nnoremap g! :Git!<Space>
 nnoremap g<CR> <Cmd>Git<CR>
