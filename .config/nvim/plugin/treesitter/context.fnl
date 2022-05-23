@@ -23,8 +23,9 @@
                    (let [b (match (?. state bufnr :bufnr)
                              (where n (vim.api.nvim_buf_is_valid n)) n
                              _ (let [b (vim.api.nvim_create_buf false true)]
+                                 (tset vim.bo b :buftype :nofile)
                                  (tset vim.bo b :readonly true)
-                                 (tset vim.bo b :filetype (. vim.bo bufnr :filetype))
+                                 (tset vim.bo b :syntax (. vim.bo bufnr :filetype))
                                  (when (not (. state bufnr))
                                    (tset state bufnr {}))
                                  (tset state bufnr :bufnr b)
