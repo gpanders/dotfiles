@@ -7,22 +7,24 @@
 (fn read-compile-commands [bufnr]
   (with-open [f (io.open "compile_commands.json" :r)]
     (let [commands (-> (f:read "*a")
-                      (vim.json.decode))
+                       (vim.json.decode))
           fname (nvim.buf.get_name bufnr)
+          relname (vim.fn.fnamemodify fname ":.")
           dirs []]
      (var stop? false)
      (each [_ v (ipairs commands) :until stop?]
-       (when (= fname v.file)
+       (when (or (= fname v.file) (= relname v.file))
          (set stop? true)
          (var include-next false)
-         (each [tok (vim.gsplit v.command "%s+")]
-           (if include-next
-               (do
-                 (table.insert dirs tok)
-                 (set include-next false))
-               (or (= tok "-I") (= tok "-isystem"))
-               (set include-next true)
-               (table.insert dirs (string.match tok "^-I(%S+)$"))))))
+         (let [arguments (or v.arguments (vim.split v.command "%s+"))]
+           (each [_ tok (ipairs arguments)]
+             (if include-next
+                 (do
+                   (table.insert dirs tok)
+                   (set include-next false))
+                 (or (= tok "-I") (= tok "-isystem"))
+                 (set include-next true)
+                 (table.insert dirs (string.match tok "^-I(%S+)$")))))))
      (table.concat dirs ","))))
 
 (fn callback [bufnr cc data]
