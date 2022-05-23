@@ -138,6 +138,11 @@ unset local_date_header
 
 set attach_save_dir = ~/Downloads
 
+# Enable IMAP extensions
+set imap_qresync
+set imap_deflate
+set imap_idle
+
 source ~/.config/mutt/colors.rc
 source ~/.config/mutt/bindings.rc
 source ~/.config/mutt/sidebar.rc
