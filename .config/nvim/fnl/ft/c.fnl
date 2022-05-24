@@ -5,27 +5,27 @@
 (local M {})
 
 (fn read-compile-commands [bufnr]
-  (with-open [f (io.open "compile_commands.json" :r)]
-    (let [commands (-> (f:read "*a")
-                       (vim.json.decode))
-          fname (nvim.buf.get_name bufnr)
-          relname (vim.fn.fnamemodify fname ":.")
-          dirs []]
-     (var stop? false)
-     (each [_ v (ipairs commands) :until stop?]
-       (when (or (= fname v.file) (= relname v.file))
-         (set stop? true)
-         (var include-next false)
-         (let [arguments (or v.arguments (vim.split v.command "%s+"))]
-           (each [_ tok (ipairs arguments)]
-             (if include-next
-                 (do
-                   (table.insert dirs tok)
-                   (set include-next false))
-                 (or (= tok "-I") (= tok "-isystem"))
-                 (set include-next true)
-                 (table.insert dirs (string.match tok "^-I(%S+)$")))))))
-     (table.concat dirs ","))))
+  (match (io.open "compile_commands.json" :r)
+    f (let [commands (vim.json.decode (f:read "*a"))
+            fname (nvim.buf.get_name bufnr)
+            relname (vim.fn.fnamemodify fname ":.")
+            dirs []]
+        (f:close)
+        (var stop? false)
+        (each [_ v (ipairs commands) :until stop?]
+          (when (or (= fname v.file) (= relname v.file))
+            (set stop? true)
+            (var include-next false)
+            (let [arguments (or v.arguments (vim.split v.command "%s+"))]
+              (each [_ tok (ipairs arguments)]
+                (if include-next
+                    (do
+                      (table.insert dirs tok)
+                      (set include-next false))
+                    (or (= tok "-I") (= tok "-isystem"))
+                    (set include-next true)
+                    (table.insert dirs (string.match tok "^-I(%S+)$")))))))
+        (table.concat dirs ","))))
 
 (fn callback [bufnr cc data]
   (let [paths (-> (icollect [_ line (ipairs data)]
