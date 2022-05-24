@@ -27,7 +27,7 @@
 (keymap :n "<Space>fo" "<Cmd>Telescope oldfiles<CR>")
 (keymap :n "<Space>fl" "<Cmd>Telescope loclist<CR>")
 (keymap :n "<Space>fq" "<Cmd>Telescope quickfix<CR>")
-(keymap :n "<Space>fg" "<Cmd>Telescope diagnostics<CR>")
+(keymap :n "<Space>fd" "<Cmd>Telescope diagnostics<CR>")
 
 (augroup telescope#
   (autocmd [:VimEnter :BufRead :BufNewFile :DirChanged] "*"
