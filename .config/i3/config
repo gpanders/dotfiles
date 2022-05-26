@@ -27,7 +27,7 @@ exec --no-startup-id xset r rate 200 40
 exec --no-startup-id setxkbmap -option caps:ctrl_modifier
 
 # Launch polybar
-# exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
@@ -40,7 +40,7 @@ set $right l
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -185,26 +185,6 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-bar {
-    position top
-    separator_symbol "  "
-    status_command i3status
-    font pango:IBMPlexSans Medium 10
-    workspace_min_width 25
-    colors {
-        background #1f222d
-        separator #1f222d
-        statusline #e5e9f0
-        focused_workspace  #1f222d #1f222d #ffffff
-        active_workspace   #1f222d #252936 #5e81ac
-        inactive_workspace #1f222d #1f222d #616e88
-        urgent_workspace   #ee829f #ee829f #2e3440
-        binding_mode       #1f222d #81a1c1 #2e3440
-    }
-}
-
-for_window [class=".*"] border pixel 1
-for_window [floating] border normal 1
 gaps inner 5
 hide_edge_borders smart_no_gaps
 smart_borders on
