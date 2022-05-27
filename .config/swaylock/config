@@ -1,0 +1,17 @@
+daemonize
+image=/usr/share/wallpapers/Altai/contents/images/5120x2880.png
+
+key-hl-color=a3be8c
+bs-hl-color=616e88
+
+inside-color=2e3440
+ring-color=3b4252
+
+inside-ver-color=81a1c1
+ring-ver-color=81a1c1
+
+inside-clear-color=ebcb8b
+ring-clear-color=ebcb8b
+
+inside-wrong-color=bf616a
+ring-wrong-color=bf616a
