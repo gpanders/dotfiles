@@ -7,7 +7,6 @@ import tempfile
 
 SSH_SERVER = "p.gpanders.com:scpaste"
 HTTP_SERVER = "https://p.gpanders.com"
-THEME = "github"
 
 
 def main(name, extra):
@@ -17,14 +16,13 @@ def main(name, extra):
             if p.exists():
                 name = p.name
                 break
-
-        if name is None:
+        else:
             name = input("Name: ")
             if name == "":
                 print("Name is required", file=sys.stderr)
                 sys.exit(1)
 
-    args = ["highlight", "-a", "-I", "-O", "html", "-s", THEME, "-T", name]
+    args = ["highlight", "-a", "-O", "html", "-T", name]
 
     with tempfile.NamedTemporaryFile() as tmp:
         args += ["-o", tmp.name] + extra
