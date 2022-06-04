@@ -4,9 +4,6 @@
 (local configs {})
 (local state {})
 
-(fn dirname [path]
-  (vim.fn.fnamemodify path ":h"))
-
 (fn once [f]
   (var called false)
   (fn [...]
@@ -14,80 +11,63 @@
       (f ...)
       (set called true))))
 
-(local set-initial-log-level (once vim.lsp.set_log_level))
+(local set-initial-log-level (once #(vim.lsp.set_log_level $...)))
 
-(fn find-root [start patterns]
-  (var done? false)
-  (var curdir start)
-  (while (not done?)
-    (each [_ pattern (ipairs patterns) :until done?]
-      (set done? (not= "" (vim.fn.globpath curdir pattern))))
-    (when (not done?)
-      (let [parent (dirname curdir)]
-        (if (= parent curdir)
-            (do
-              (set curdir nil)
-              (set done? true))
-            (set curdir parent)))))
-  curdir)
+(augroup lsp#
+  (autocmd :LspAttach
+    (fn [{:buf bufnr :data {: client_id}}]
+      (local client (vim.lsp.get_client_by_id client_id))
+      (tset state bufnr {})
+      (when client.server_capabilities.completionProvider
+        (tset vim.bo bufnr :omnifunc "v:lua.vim.lsp.omnifunc"))
+      (when client.server_capabilities.definitionProvider
+        (tset vim.bo bufnr :tagfunc "v:lua.vim.lsp.tagfunc"))
+      (when client.server_capabilities.codeLensProvider
+        (vim.lsp.codelens.refresh)
+        (autocmd lsp# [:BufEnter :InsertLeave] {:buffer bufnr} vim.lsp.codelens.refresh))
+      (when client.server_capabilities.documentHighlightProvider
+        (when (not (. state bufnr :timer))
+          (tset state bufnr :timer (vim.loop.new_timer)))
+        (let [timer (. state bufnr :timer)]
+          (augroup lsp#
+            (autocmd :CursorMoved {:buffer bufnr}
+              #(let [[row col] (nvim.win.get_cursor 0)
+                     lnum (- row 1)
+                     references (. state bufnr :references)]
+                 (timer:stop)
+                 (var found? false)
+                 (each [_ {:range {: start : end}} (ipairs (or references [])) :until found?]
+                   (when (and (= start.line end.line lnum)
+                              (<= start.character col end.character))
+                     (set found? true)))
+                 (when (not found?)
+                   (vim.lsp.util.buf_clear_references bufnr)
+                   (timer:start 150 0 #(vim.schedule vim.lsp.buf.document_highlight)))))
+            (autocmd [:InsertEnter :BufLeave] {:buffer bufnr}
+              (fn []
+                (timer:stop)
+                (vim.lsp.util.buf_clear_references bufnr))))))
+      (when client.server_capabilities.hoverProvider
+        (keymap :n "K" vim.lsp.buf.hover {:buffer bufnr}))
+      (keymap :n "[R" vim.lsp.buf.references {:buffer bufnr})
+      (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer bufnr})
+      (keymap :n "<Space>cr" vim.lsp.buf.rename {:buffer bufnr})
 
-(autocmd lsp# :LspAttach
-  (fn [{:buf bufnr :data {: client_id}}]
-    (local client (vim.lsp.get_client_by_id client_id))
-    (tset state bufnr {})
-    (when client.server_capabilities.completionProvider
-      (tset vim.bo bufnr :omnifunc "v:lua.vim.lsp.omnifunc"))
-    (when client.server_capabilities.definitionProvider
-      (tset vim.bo bufnr :tagfunc "v:lua.vim.lsp.tagfunc"))
-    (when client.server_capabilities.codeLensProvider
-      (vim.lsp.codelens.refresh)
-      (autocmd lsp# [:BufEnter :InsertLeave] {:buffer bufnr} vim.lsp.codelens.refresh))
-    (when client.server_capabilities.documentHighlightProvider
-      (when (not (. state bufnr :timer))
-        (tset state bufnr :timer (vim.loop.new_timer)))
-      (let [timer (. state bufnr :timer)]
-        (augroup lsp#
-          (autocmd :CursorMoved {:buffer bufnr}
-            #(let [[row col] (nvim.win.get_cursor 0)
-                   lnum (- row 1)
-                   references (. state bufnr :references)]
-               (timer:stop)
-               (var found? false)
-               (each [_ {:range {: start : end}} (ipairs (or references [])) :until found?]
-                 (when (and (= start.line end.line lnum)
-                            (<= start.character col end.character))
-                   (set found? true)))
-               (when (not found?)
-                 (vim.lsp.util.buf_clear_references bufnr)
-                 (timer:start 150 0 #(vim.schedule vim.lsp.buf.document_highlight)))))
-          (autocmd [:InsertEnter :BufLeave] {:buffer bufnr}
-            (fn []
-              (timer:stop)
-              (vim.lsp.util.buf_clear_references bufnr))))))
-    (when client.server_capabilities.hoverProvider
-      (keymap :n "K" vim.lsp.buf.hover {:buffer bufnr}))
-    (keymap :n "[R" vim.lsp.buf.references {:buffer bufnr})
-    (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer bufnr})
-    (keymap :n "<Space>cr" vim.lsp.buf.rename {:buffer bufnr})
-    (keymap :n "<Space>ca" vim.lsp.buf.code_action {:buffer bufnr})
-    (keymap :n "<Space>cl" vim.lsp.codelens.run {:buffer bufnr})
-
-    (with-module [lsp-compl :lsp_compl]
-      (match client.name
-        :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
-      (vim.cmd "set completeopt+=noinsert")
-      (lsp-compl.attach client bufnr {}))))
-
-(autocmd lsp# :LspDetach
-  (fn [{: buf :data {: client_id}}]
-    (match (. state buf :timer)
-      timer (timer:close))
-    (tset state buf nil)
-    (with-module [lsp-compl :lsp_compl]
-      (lsp-compl.detach client_id buf))
-    (nvim.set_option_value :tagfunc nil {:scope :local})
-    (nvim.set_option_value :omnifunc nil {:scope :local})
-    (autocmd! lsp# "*" {:buffer buf})))
+      (with-module [lsp-compl :lsp_compl]
+        (match client.name
+          :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
+        (vim.cmd "set completeopt+=noinsert")
+        (lsp-compl.attach client bufnr {}))))
+  (autocmd :LspDetach
+    (fn [{: buf :data {: client_id}}]
+      (match (. state buf :timer)
+        timer (timer:close))
+      (tset state buf nil)
+      (with-module [lsp-compl :lsp_compl]
+        (lsp-compl.detach client_id buf))
+      (nvim.set_option_value :tagfunc nil {: buf})
+      (nvim.set_option_value :omnifunc nil {: buf})
+      (autocmd! lsp# "*" {:buffer buf}))))
 
 (fn on-init [client result]
   (with-module [lsp-compl :lsp_compl]
@@ -95,9 +75,7 @@
     (when client.server_capabilities.signatureHelpProvider
       (set client.server_capabilities.signatureHelpProvider.triggerCharacters [])))
   (when result.offsetEncoding
-    (set client.offset_encoding result.offsetEncoding))
-  (when client.config.settings
-    (client.notify :workspace/didChangeConfiguration {:settings client.config.settings})))
+    (set client.offset_encoding result.offsetEncoding)))
 
 (fn hover [_ result ctx]
   ((. vim.lsp.handlers "textDocument/hover") _ result ctx {:border :rounded
@@ -115,51 +93,30 @@
                  "textDocument/signatureHelp" signature-help
                  "textDocument/documentHighlight" document-highlight})
 
-(fn mk-config [cmd ?root-dir ?opts]
-  (let [capabilities (vim.lsp.protocol.make_client_capabilities)]
-    (set capabilities.workspace.configuration true)
-    (vim.tbl_deep_extend :keep (or ?opts {})
-      {:flags {:allow_incremental_sync true}
-       : cmd
-       :name (. cmd 1)
-       : handlers
-       : capabilities
-       :on_init on-init
-       :on_exit on-exit
-       :root_dir ?root-dir})))
-
-(fn start-client [bufnr ft {: cmd : root &as opts}]
-  (when (= (vim.fn.executable (. cmd 1)) 1)
-    (let [root-markers (icollect [_ v (ipairs [".git" ".hg" ".svn"]) :into root] v)
-          root-dir (let [dir (dirname (nvim.buf.get_name bufnr))]
-                     (find-root dir root-markers))
-          clients (. configs ft :clients)]
-      (set-initial-log-level :OFF)
-      (var client-id (. clients root-dir))
-      (when (or (not client-id) (vim.lsp.client_is_stopped client-id))
-        (let [config (mk-config cmd root-dir opts)]
-          (set client-id (vim.lsp.start_client config))
-          (when root-dir
-            (tset clients root-dir client-id))))
-      (if (not (vim.lsp.buf_attach_client bufnr client-id))
-          (echo (: "LSP client %s failed to attach to buffer %d" :format (. cmd 1) bufnr) :WarningMsg))))
-  nil)
+(fn lsp-start [bufnr]
+  (let [ft (. vim.bo bufnr :filetype)]
+    (match (. configs ft)
+      config (when (= 1 (vim.fn.executable (. config.cmd 1)))
+               (let [[root-marker] (vim.fs.find config.root {:upward true})
+                     root-dir (vim.fs.dirname root-marker)]
+                 (set-initial-log-level :OFF)
+                 (vim.lsp.start (vim.tbl_extend :keep config {:root_dir root-dir
+                                                              :on_init on-init
+                                                              : handlers})))))))
 
 (macro lsp-setup [...]
-  (assert-compile (= 0 (math.fmod (select :# ...) 2))
-                  "expected even number of filetype/config pairs")
-  (let [form `(do)]
-    (for [i 1 (select :# ...) 2]
-      (let [(filetypes opts) (select i ...)
-            opts (collect [k v (pairs opts) :into {:clients {}}]
-                   (values k v))
-            (first rest) (match filetypes
-                           [first & rest] (values first rest)
-                           _ (values filetypes []))]
-        (table.insert form `(tset configs ,first ,opts))
-        (each [_ ft (ipairs rest)]
-          (table.insert form `(tset configs ,ft (. configs ,first))))))
-    form))
+ (assert-compile (= 0 (math.fmod (select :# ...) 2))
+                 "expected even number of filetype/config pairs")
+ (let [form `(do)]
+   (for [i 1 (select :# ...) 2]
+     (let [(filetypes config) (select i ...)
+           (first rest) (match filetypes
+                          [first & rest] (values first rest)
+                          _ (values filetypes []))]
+       (table.insert form `(tset configs ,first ,config))
+       (each [_ ft (ipairs rest)]
+         (table.insert form `(tset configs ,ft (. configs ,first))))))
+   form))
 
 (lsp-setup
   [:c :cpp] {:cmd ["clangd" "--background-index"]
@@ -186,14 +143,11 @@
             :root ["*.cabal" "stack.yaml" "cabal.project" "package.yaml" "hie.yaml"]
             :settings {:haskell {:formattingProvider :ormolu}}})
 
-(fn lsp-start [bufnr]
-  (let [ft (. vim.bo bufnr :filetype)]
-    (match (. configs ft)
-      opts (start-client bufnr ft opts))))
-
 (autocmd lsp# :FileType "*"
   (fn [{: buf}]
-    (when (and (not= vim.g.lsp_autostart false) (nvim.buf.is_valid buf) (nvim.buf.is_loaded buf))
+    (when (and (not= vim.g.lsp_autostart false)
+               (nvim.buf.is_valid buf)
+               (nvim.buf.is_loaded buf))
       (lsp-start buf))))
 
 (let [commands {:stop #(each [client-id (pairs (vim.lsp.get_active_clients))]
@@ -205,9 +159,9 @@
                             (set vim.g.lsp_autostart false)
                             (each [client-id (pairs (vim.lsp.get_active_clients))]
                               (vim.lsp.stop_client client-id)))
-                :enable #(let [buf nvim.current.buf]
+                :enable #(do
                            (set vim.g.lsp_autostart true)
-                           (lsp-start buf.id))
+                           (commands.start))
                 :start #(let [buf nvim.current.buf]
                           (lsp-start buf.id))
                 :find #(match $1
@@ -229,8 +183,8 @@
                    (if (= arg (string.sub cmd 1 (length arg)))
                        cmd)))]
   (command :Lsp {:nargs "*" : complete}
-           (fn [{: args}]
-             (let [[cmd & args] (vim.split args " ")]
+           (fn [{: fargs}]
+             (let [[cmd & args] fargs]
                (match (. commands cmd)
                  f (f (unpack args))
                  _ (let [matches (icollect [k (pairs commands)]
