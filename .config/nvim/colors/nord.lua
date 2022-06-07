@@ -40,6 +40,8 @@ vim.g.terminal_color_14 = brightcyan
 vim.g.terminal_color_15 = brightwhite
 
 local highlights = {
+    Normal = { fg = foreground, bg = background },
+
     Bold = { bold = true },
     Italic = {},
     Underline = { underline = true },
@@ -49,11 +51,12 @@ local highlights = {
     Cursor = { fg = background, bg = foreground },
     CursorLine = { bg = black },
     Error = { fg = foreground, bg = red },
+    FloatBorder = { link = "Normal" },
     iCursor = { fg = background, bg = foreground },
     LineNr = { fg = brighterblack, bg = darkblack },
     MatchParen = { fg = cyan, bg = brightblack },
     NonText = { fg = lightblack },
-    Normal = { fg = foreground, bg = background },
+    NormalFloat = { link = "Normal" },
     Pmenu = { fg = foreground, bg = lightblack },
     PmenuSbar = { fg = foreground, bg = lightblack },
     PmenuSel = { fg = cyan, bg = brightblack },

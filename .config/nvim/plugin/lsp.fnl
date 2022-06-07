@@ -81,7 +81,8 @@
   ((. vim.lsp.handlers "textDocument/hover") _ result ctx {:border :rounded
                                                            :focusable false}))
 (fn signature-help [_ result ctx]
-  (vim.lsp.handlers.signature_help _ result ctx {:focusable false}))
+  (vim.lsp.handlers.signature_help _ result ctx {:focusable false
+                                                 :border :rounded}))
 
 (fn document-highlight [_ result ctx]
   (let [references (or result [])]
