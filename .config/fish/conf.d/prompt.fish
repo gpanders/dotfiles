@@ -25,10 +25,6 @@ end
 function __prompt_update_pwd --on-variable PWD
     set -g __prompt_pwd (string replace -r -- '^'$HOME \~ $PWD)
     set -e __prompt_git_head
-
-    # Set current working directory
-    set -q HOSTNAME; or set -g HOSTNAME (uname -n)
-    printf '\e]7;file://%s%s\e\\' $HOSTNAME $PWD
 end
 
 function __prompt_venv --on-variable VIRTUAL_ENV
