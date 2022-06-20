@@ -130,4 +130,10 @@ The example above is equivalent to
 (fn M.printf [s ...]
   `(print (: ,s :format ,...)))
 
+(fn M.silent [...]
+  `(let [p# _G.print]
+     (tset _G :print #nil)
+     ,...
+     (tset _G :print p#)))
+
 M
