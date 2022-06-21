@@ -518,6 +518,7 @@ local highlights = {
     GitSignsChange = { fg = yellow, bg = darkblack },
     GitSignsChangeDelete = { fg = red, bg = darkblack },
     GitSignsDelete = { fg = red, bg = darkblack },
+    GitSignsCurrentLineBlame = { link = "Comment" },
 
     -- fugitive
     gitcommitDiscardedFile = { fg = red },
