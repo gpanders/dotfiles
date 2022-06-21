@@ -63,6 +63,7 @@
  "#if"
  "#endif"
  "#else"
+ "#elif"
 ] @macro
 
 (preproc_params (identifier) @identifier)
