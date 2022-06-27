@@ -6,10 +6,6 @@ set $mod Mod4
 # is used in the bar {} block below.
 font pango:monospace 10
 
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
-
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
@@ -18,7 +14,7 @@ exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id ~/.fehbg
 
 # Start compositor
-#exec --no-startup-id picom -b
+exec --no-startup-id picom -b
 
 # Set key repeat rate
 exec --no-startup-id xset r rate 200 40
@@ -40,10 +36,10 @@ set $right l
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec kitty -1
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 
 # start dmenu (a program launcher)
 #bindsym $mod+d exec --no-startup-id dmenu_run
@@ -81,7 +77,8 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # toggle split orientation between horizontal and vertical
-bindsym $mod+BackSpace split toggle
+bindsym $mod+semicolon split vertical
+bindsym $mod+apostrophe split horizontal
 
 # enter fullscreen mode for the focused container
 bindsym $mod+Shift+Return fullscreen toggle
@@ -185,9 +182,13 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-gaps inner 5
+for_window [tiling] border pixel 1
+for_window [floating] border normal
+gaps inner 10
 hide_edge_borders smart_no_gaps
-smart_borders on
 workspace_auto_back_and_forth yes
 
 for_window [class="feh"] floating enable
+for_window [class="Nautilus"] floating enable
+for_window [class="Nemo"] floating enable
+for_window [class="explorer.exe"] floating enable
