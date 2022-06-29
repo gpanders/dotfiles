@@ -13,7 +13,7 @@
   (nvim.exec_autocmds event {:modeline false})
   (vim.opt.eventignore:append event))
 
-(augroup cursorhold
+(augroup cursorhold#
   (autocmd :CursorMoved "*"
     (fn []
       (timer:stop)
