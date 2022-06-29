@@ -7,4 +7,4 @@
 
 (match vim.g.zig_tags_file
   tags (when (= 1 (vim.fn.filereadable tags))
-         (set vim.bo.tags (.. tags "," vim.o.tags))))
+         (set vim.bo.tags (.. vim.o.tags "," tags))))
