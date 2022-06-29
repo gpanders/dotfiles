@@ -11,6 +11,7 @@
                                                  :follow true}
                                     :buffers {:previewer false
                                               :theme :dropdown
+                                              :sort_mru true
                                               : layout_config}
                                     :oldfiles {:previewer false
                                                :theme :dropdown
