@@ -10,6 +10,7 @@ set cursorline
 set expandtab
 set foldlevelstart=99
 set ignorecase
+set jumpoptions=view
 set lazyredraw
 set linebreak
 set list
@@ -66,8 +67,7 @@ nnoremap <Space>ev :vs %:p:h/<Tab>
 nnoremap <Space>t :Tjump /
 
 " Format whole buffer with formatprg without changing cursor position
-" See :h restore-position
-nnoremap gq<CR> mzHmygggqG`yzt`z
+nnoremap gq<CR> mzgggqG`z
 
 " Unimpaired style mappings
 nnoremap <expr> [a '<Cmd>' . v:count1 . 'prev<CR>'
