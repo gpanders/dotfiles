@@ -108,6 +108,10 @@ cnoremap <expr> <C-N> wildmenumode() ? '<C-N>' : '<Down>'
 cnoremap <expr> <C-J> pumvisible() ? '<Down><Tab>' : '<C-J>'
 cnoremap <expr> <C-K> pumvisible() ? '<Up><Tab>' : '<C-K>'
 
+" Swap p and P in visual mode
+vnoremap p P
+vnoremap P p
+
 iabbrev sizse size
 
 augroup init
