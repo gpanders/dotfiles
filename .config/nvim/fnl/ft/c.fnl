@@ -7,7 +7,7 @@
 (fn read-compile-commands [bufnr]
   (match (io.open "compile_commands.json" :r)
     f (let [commands (vim.json.decode (f:read "*a"))
-            fname (nvim.buf.get_name bufnr)
+            fname (nvim.buf_get_name bufnr)
             relname (vim.fn.fnamemodify fname ":.")
             dirs []]
         (f:close)

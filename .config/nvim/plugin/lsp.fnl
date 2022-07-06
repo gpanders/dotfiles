@@ -31,7 +31,7 @@
         (let [timer (. state bufnr :timer)]
           (augroup lsp#
             (autocmd :CursorMoved {:buffer bufnr}
-              #(let [[row col] (nvim.win.get_cursor 0)
+              #(let [[row col] (nvim.win_get_cursor 0)
                      lnum (- row 1)
                      references (. state bufnr :references)]
                  (timer:stop)
@@ -147,15 +147,15 @@
 (autocmd lsp# :FileType "*"
   (fn [{: buf}]
     (when (and (not= vim.g.lsp_autostart false)
-               (nvim.buf.is_valid buf)
-               (nvim.buf.is_loaded buf))
+               (nvim.buf_is_valid buf)
+               (nvim.buf_is_loaded buf))
       (lsp-start buf))))
 
 (let [commands {:stop #(each [client-id (pairs (vim.lsp.get_active_clients))]
                          (vim.lsp.stop_client client-id))
-                :detach #(let [buf nvim.current.buf]
-                           (each [_ client (ipairs (vim.lsp.get_active_clients {:bufnr buf.id}))]
-                             (vim.lsp.buf_detach_client buf.id client.id)))
+                :detach #(let [buf (nvim.get_current_buf)]
+                           (each [_ client (ipairs (vim.lsp.get_active_clients {:bufnr buf}))]
+                             (vim.lsp.buf_detach_client buf client.id)))
                 :disable #(do
                             (set vim.g.lsp_autostart false)
                             (each [client-id (pairs (vim.lsp.get_active_clients))]
@@ -163,8 +163,7 @@
                 :enable #(do
                            (set vim.g.lsp_autostart true)
                            (commands.start))
-                :start #(let [buf nvim.current.buf]
-                          (lsp-start buf.id))
+                :start #(lsp-start (nvim.get_current_buf))
                 :find #(match $1
                          nil (vim.lsp.buf.definition)
                          q (vim.lsp.buf.workspace_symbol q))

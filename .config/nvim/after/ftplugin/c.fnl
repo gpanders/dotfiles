@@ -1,3 +1,3 @@
 (local {: set-path} (require "ft/c"))
 
-(set-path nvim.current.buf.id)
+(set-path (nvim.get_current_buf))

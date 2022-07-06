@@ -8,7 +8,7 @@
              v v))))
 
 (fn root [bufnr]
-  (let [bufnr (or bufnr nvim.current.buf.id)]
+  (let [bufnr (or bufnr (nvim.get_current_buf))]
     (match (pcall vim.treesitter.get_parser bufnr)
       (true parser) (let [[tree] (parser:parse)]
                       (tree:root))
@@ -44,9 +44,9 @@
   node)
 
 (fn node-at-cursor []
-  (let [bufnr nvim.current.buf.id]
+  (let [bufnr (nvim.get_current_buf)]
     (match (root bufnr)
-      root-node (let [[lnum col] (nvim.win.get_cursor 0)
+      root-node (let [[lnum col] (nvim.win_get_cursor 0)
                       lnum (- lnum 1)]
                   (root-node:named_descendant_for_range lnum col lnum col)))))
 
@@ -89,7 +89,7 @@
                                         (start-row start-col) (set end-node end)))))
                             (when end-node
                               (end-node:end_)))]
-    (-> (nvim.buf.get_text bufnr start-row 0 (or end-row (+ start-row 1)) (or end-col 0) {})
+    (-> (nvim.buf_get_text bufnr start-row 0 (or end-row (+ start-row 1)) (or end-col 0) {})
         (table.concat " ")
         (string.gsub "(%S)%s+" "%1 ")
         (string.gsub "%s*$" "")
@@ -97,7 +97,7 @@
 
 (fn highlight-node [bufnr ns node]
   (let [(start-row start-col end-row end-col) (node:range)]
-    (nvim.buf.set_extmark bufnr ns start-row start-col {:end_row end-row
+    (nvim.buf_set_extmark bufnr ns start-row start-col {:end_row end-row
                                                         :end_col end-col
                                                         :hl_group :Visual})))
 
@@ -106,7 +106,7 @@
         (row col) (if end?
                       (values end-row end-col)
                       (values start-row start-col))]
-    (nvim.win.set_cursor 0 [(+ row 1) col])))
+    (nvim.win_set_cursor 0 [(+ row 1) col])))
 
 (var highlighting-enabled? true)
 (fn highlight [bufnr]
@@ -119,14 +119,14 @@
 (let [ns (nvim.create_namespace "")
       state {}]
   (fn commands.cursor []
-    (let [buf nvim.current.buf
+    (let [buf (nvim.get_current_buf)
           highlight-cursor-node (fn []
                                   (match (node-at-cursor)
                                     node (do
-                                           (buf:clear_namespace ns 0 -1)
-                                           (highlight-node buf.id ns node)
-                                           (buf:set_extmark ns (node:end_) 0 {:virt_text [[(: "(%s)" :format (node:type)) "Comment"]]
-                                                                              :hl_mode :combine}))))]
+                                           (nvim.buf_clear_namespace buf ns 0 -1)
+                                           (highlight-node buf ns node)
+                                           (nvim.buf_set_extmark buf ns (node:end_) 0 {:virt_text [[(: "(%s)" :format (node:type)) "Comment"]]
+                                                                                       :hl_mode :combine}))))]
       (set state.cursor (not state.cursor))
       (if state.cursor
           (do
@@ -138,27 +138,27 @@
             (augroup! treesitter#cursor)))))
 
   (fn commands.context []
-    (let [buf nvim.current.buf]
-      (buf:clear_namespace ns 0 -1)
-      (match (context buf.id)
+    (let [buf (nvim.get_current_buf)]
+      (nvim.buf_clear_namespace buf ns 0 -1)
+      (match (context buf)
         ([ctx] _) (let [clear #(do (commands.clear)
                                    true)]
-                    (highlight-node buf.id ns ctx)
+                    (highlight-node buf ns ctx)
                     (augroup treesitter#context
                       (autocmd! [:BufLeave :CursorMoved] "<buffer>")
                       (autocmd :BufLeave "<buffer>" {:once true} clear)
                       (autocmd :CursorMoved "<buffer>"
-                        #(match nvim.current.buf.id
-                           buf.id (let [[lnum] (nvim.win.get_cursor 0)
-                                        lnum (- lnum 1)]
-                                    (when (or (< lnum (ctx:start)) (< (ctx:end_) lnum))
-                                      (clear)))
+                        #(match (nvim.get_current_buf)
+                           buf (let [[lnum] (nvim.win_get_cursor 0)
+                                     lnum (- lnum 1)]
+                                 (when (or (< lnum (ctx:start)) (< (ctx:end_) lnum))
+                                   (clear)))
                            _ (clear))))
                     (print (ctx:sexpr)))
         _ (echo "No context found"))))
 
   (fn commands.clear []
-    (nvim.buf.clear_namespace 0 ns 0 -1))
+    (nvim.buf_clear_namespace 0 ns 0 -1))
 
   (fn commands.highlight [arg]
     (if (or (= arg :enable) (= arg :on))

@@ -154,4 +154,11 @@ augroup init
   autocmd InsertLeave * setlocal listchars+=trail:-
 augroup END
 
-lua require 'init'
+lua<<
+_G.nvim = setmetatable({}, {
+    __index = function(t, k)
+        t[k] = assert(vim.api["nvim_" .. k], k)
+        return t[k]
+    end,
+})
+.

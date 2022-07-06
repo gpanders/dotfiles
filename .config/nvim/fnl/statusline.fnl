@@ -40,7 +40,7 @@
       (e w) (: "E: %d W: %d " :format e w))))
 
 (fn filename [buf curwin]
-  (let [name (match (buf:get_name)
+  (let [name (match (nvim.buf_get_name buf)
                "" "Untitled"
                n (n:gsub "%%" "%%%%"))
         fname (vim.fn.fnamemodify name ":~:.")
@@ -67,9 +67,9 @@
     (table.concat items)))
 
 (fn statusline []
-  (let [buf nvim.current.buf
-        win nvim.current.win
-        curwin (= (tonumber vim.g.actual_curwin) win.id)
+  (let [buf (nvim.get_current_buf)
+        win (nvim.get_current_win)
+        curwin (= (tonumber vim.g.actual_curwin) win)
         items [(obsession)
                (filename buf curwin)
                (if vim.bo.readonly
@@ -98,24 +98,12 @@
                (if curwin "%8*" "")
                (match vim.bo.filetype
                  "" ""
-                 ft (match (vim.lsp.get_active_clients {:bufnr buf.id})
+                 ft (match (vim.lsp.get_active_clients {:bufnr buf})
                       [client] (: " %s/%s " :format ft client.name)
                       _ (: " %s " :format ft)))
                (if curwin "%9*" "")
                " %l:%c %P "]]
     (table.concat items)))
 
-(fn winbar []
-  (let [buf nvim.current.buf
-        curwin (= (tonumber vim.g.actual_curwin) nvim.current.win.id)
-        items [" "
-               (filename buf curwin)
-               (if vim.bo.readonly
-                   "%r "
-                   "")
-               " "]]
-    (table.concat items)))
-
 {: statusline
- : winbar
  : tabline}

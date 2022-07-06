@@ -8,7 +8,7 @@
 
 (fn cursor-diagnostic [diagnostics]
   "Find the diagnostic closest to the cursor"
-  (let [[lnum curcol] (nvim.win.get_cursor 0)
+  (let [[lnum curcol] (nvim.win_get_cursor 0)
         lnum (- lnum 1)]
     (var score math.huge)
     (var diag nil)
@@ -43,7 +43,7 @@
                                                  (echo "")))
           (autocmd :CursorMoved {:buffer buf}
             (fn [{: buf}]
-              (let [[lnum] (nvim.win.get_cursor 0)
+              (let [[lnum] (nvim.win_get_cursor 0)
                     lnum (- lnum 1)]
                 (let [diag (cursor-diagnostic (vim.diagnostic.get buf {: lnum}))]
                   (when (and (= diag nil) (not= state.diagnostic nil))
@@ -51,7 +51,7 @@
                   (set state.diagnostic diag)))))))))
   (autocmd :DiagnosticChanged
     (fn [{: buf}]
-      (when (nvim.buf.is_loaded buf)
+      (when (nvim.buf_is_loaded buf)
         (let [diagnostics (vim.diagnostic.toqflist (vim.diagnostic.get buf))]
           (each [_ winid (ipairs (vim.fn.win_findbuf buf))]
             (let [action (match (vim.fn.getloclist winid {:context 1})
