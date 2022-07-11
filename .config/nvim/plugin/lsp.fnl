@@ -18,10 +18,6 @@
     (fn [{:buf bufnr :data {: client_id}}]
       (local client (vim.lsp.get_client_by_id client_id))
       (tset state bufnr {})
-      (when client.server_capabilities.completionProvider
-        (tset vim.bo bufnr :omnifunc "v:lua.vim.lsp.omnifunc"))
-      (when client.server_capabilities.definitionProvider
-        (tset vim.bo bufnr :tagfunc "v:lua.vim.lsp.tagfunc"))
       (when client.server_capabilities.codeLensProvider
         (vim.lsp.codelens.refresh)
         (autocmd lsp# [:BufEnter :InsertLeave] {:buffer bufnr} vim.lsp.codelens.refresh))
@@ -65,8 +61,6 @@
       (tset state buf nil)
       (with-module [lsp-compl :lsp_compl]
         (lsp-compl.detach client_id buf))
-      (nvim.set_option_value :tagfunc nil {: buf})
-      (nvim.set_option_value :omnifunc nil {: buf})
       (autocmd! lsp# "*" {:buffer buf}))))
 
 (fn on-init [client result]
@@ -164,15 +158,6 @@
                            (set vim.g.lsp_autostart true)
                            (commands.start))
                 :start #(lsp-start (nvim.get_current_buf))
-                :find #(match $1
-                         nil (vim.lsp.buf.definition)
-                         q (vim.lsp.buf.workspace_symbol q))
-                :code_action #(vim.lsp.buf.code_action)
-                :hover #(vim.lsp.buf.hover)
-                :format #(vim.lsp.buf.formatting)
-                :references #(vim.lsp.buf.references)
-                :rename #(vim.lsp.buf.rename $1)
-                :signature_help #(vim.lsp.buf.signature_help)
                 :log #(match $1
                         nil (echo (: "LSP log level is %s" :format (. vim.lsp.log_levels ((. (require "vim.lsp.log") :get_level)))))
                         level (do
