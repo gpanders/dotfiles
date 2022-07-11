@@ -15,21 +15,22 @@
 
 (augroup lsp#
   (autocmd :LspAttach
-    (fn [{:buf bufnr :data {: client_id}}]
+    (fn [{: buf :data {: client_id}}]
       (local client (vim.lsp.get_client_by_id client_id))
-      (tset state bufnr {})
+      (tset state buf {})
+      (tset vim.b buf :lsp_client client.name)
       (when client.server_capabilities.codeLensProvider
         (vim.lsp.codelens.refresh)
-        (autocmd lsp# [:BufEnter :InsertLeave] {:buffer bufnr} vim.lsp.codelens.refresh))
+        (autocmd lsp# [:BufEnter :InsertLeave] {:buffer buf} vim.lsp.codelens.refresh))
       (when client.server_capabilities.documentHighlightProvider
-        (when (not (. state bufnr :timer))
-          (tset state bufnr :timer (vim.loop.new_timer)))
-        (let [timer (. state bufnr :timer)]
+        (when (not (. state buf :timer))
+          (tset state buf :timer (vim.loop.new_timer)))
+        (let [timer (. state buf :timer)]
           (augroup lsp#
-            (autocmd :CursorMoved {:buffer bufnr}
+            (autocmd :CursorMoved {:buffer buf}
               #(let [[row col] (nvim.win_get_cursor 0)
                      lnum (- row 1)
-                     references (. state bufnr :references)]
+                     references (. state buf :references)]
                  (timer:stop)
                  (var found? false)
                  (each [_ {:range {: start : end}} (ipairs (or references [])) :until found?]
@@ -37,28 +38,29 @@
                               (<= start.character col end.character))
                      (set found? true)))
                  (when (not found?)
-                   (vim.lsp.util.buf_clear_references bufnr)
+                   (vim.lsp.util.buf_clear_references buf)
                    (timer:start 150 0 #(vim.schedule vim.lsp.buf.document_highlight)))))
-            (autocmd [:InsertEnter :BufLeave] {:buffer bufnr}
+            (autocmd [:InsertEnter :BufLeave] {:buffer buf}
               (fn []
                 (timer:stop)
-                (vim.lsp.util.buf_clear_references bufnr))))))
+                (vim.lsp.util.buf_clear_references buf))))))
       (when client.server_capabilities.hoverProvider
-        (keymap :n "K" vim.lsp.buf.hover {:buffer bufnr}))
-      (keymap :n "[R" vim.lsp.buf.references {:buffer bufnr})
-      (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer bufnr})
-      (keymap :n "<Space>cr" vim.lsp.buf.rename {:buffer bufnr})
+        (keymap :n "K" vim.lsp.buf.hover {:buffer buf}))
+      (keymap :n "[R" vim.lsp.buf.references {:buffer buf})
+      (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer buf})
+      (keymap :n "<Space>cr" vim.lsp.buf.rename {:buffer buf})
 
       (with-module [lsp-compl :lsp_compl]
         (match client.name
           :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
         (vim.cmd "set completeopt+=noinsert")
-        (lsp-compl.attach client bufnr {}))))
+        (lsp-compl.attach client buf {}))))
   (autocmd :LspDetach
     (fn [{: buf :data {: client_id}}]
       (match (. state buf :timer)
         timer (timer:close))
       (tset state buf nil)
+      (tset vim.b buf :lsp_client nil)
       (with-module [lsp-compl :lsp_compl]
         (lsp-compl.detach client_id buf))
       (autocmd! lsp# "*" {:buffer buf}))))

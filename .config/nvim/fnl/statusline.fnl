@@ -18,11 +18,12 @@
     messages))
 
 (fn lsp []
-  (match (vim.lsp.get_active_clients {:bufnr 0})
-    [client] (let [messages (lsp-progress-messages client)]
-               (match (length messages)
-                 0 ""
-                 n (: " %s " :format (table.concat messages ", "))))
+  (match vim.b.lsp_client
+    name (let [[client] (vim.lsp.get_active_clients {:bufnr 0 : name})
+               messages (lsp-progress-messages client)]
+           (match (length messages)
+             0 ""
+             n (: " %s " :format (table.concat messages ", "))))
     _ ""))
 
 
@@ -98,8 +99,8 @@
                (if curwin "%8*" "")
                (match vim.bo.filetype
                  "" ""
-                 ft (match (vim.lsp.get_active_clients {:bufnr buf})
-                      [client] (: " %s/%s " :format ft client.name)
+                 ft (match vim.b.lsp_client
+                      name (: " %s/%s " :format ft name)
                       _ (: " %s " :format ft)))
                (if curwin "%9*" "")
                " %l:%c %P "]]
