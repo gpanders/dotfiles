@@ -20,7 +20,9 @@
                                                 :theme :dropdown
                                                 : layout_config
                                                 :show_untracked false
-                                                :use_git_root false}}})))
+                                                :use_git_root false}}
+                          :defaults {:mappings {:i {"<Esc>" :close
+                                                    "<C-U>" false}}}})))
     (vim.cmd (: "Telescope %s" :format args.args))))
 
 (keymap :n "<Space><Space>" "<Cmd>Telescope find_files<CR>")
@@ -39,8 +41,4 @@
                   (keymap :n "<Space><Space>" "<Cmd>Telescope git_files<CR>" {:buffer true})
                   (keymap :n "<Space>ff" "<Cmd>Telescope find_files<CR>" {:buffer true}))))
   (autocmd :LspAttach
-    #(keymap :n "<Space>fs" "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>" {:buffer true}))
-  (autocmd :FileType :TelescopePrompt
-    (fn []
-      (nvim.buf.del_keymap 0 :i "<C-U>")
-      (keymap :i "<Esc>" "<C-C>" {:buffer true :noremap false}))))
+    #(keymap :n "<Space>fs" "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>" {:buffer true})))
