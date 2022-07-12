@@ -11,6 +11,8 @@
  (system_lib_string)
 ] @string
 
+(string_literal (escape_sequence) @string.escape)
+
 (char_literal) @character
 (number_literal) @number
 
@@ -68,6 +70,9 @@
 
 (preproc_params (identifier) @identifier)
 
-(preproc_if condition: (number_literal) @v (#eq? @v "0") "#endif" @comment) @comment
+(
+ (preproc_if condition: (number_literal) @v (#eq? @v "0") "#endif" @comment) @comment
+ (set! "priority" 105)
+)
 
 (preproc_directive) @macro
