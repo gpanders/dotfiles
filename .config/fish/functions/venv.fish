@@ -6,8 +6,13 @@ function __venv_create --argument-names dir
     end
 end
 
+function __venv_activate --argument-names venv
+    set -q venv_dir; or set venv_dir $XDG_DATA_HOME/venv
+    VIRTUAL_ENV_DISABLE_PROMPT=1 source $venv_dir/$venv/bin/activate.fish
+end
+
 function venv
-    set -q venv_dir; or set -U venv_dir $XDG_DATA_HOME/venv
+    set -q venv_dir; or set venv_dir $XDG_DATA_HOME/venv
 
     switch $argv[1]
         case '-h' '--help' 'help'
@@ -21,7 +26,7 @@ function venv
         case ''
             set -l venv (printf '%s\n' (command ls $venv_dir) | fzf)
             if test -n "$venv"
-                source $venv_dir/$venv/bin/activate.fish
+                __venv_activate $venv
             end
         case create
             if __venv_create $venv_dir/$argv[2]
@@ -43,13 +48,13 @@ function venv
             end
         case '*'
             if test -d $venv_dir/$argv[1]
-                source $venv_dir/$argv[1]/bin/activate.fish
+                __venv_activate $argv[1]
             else
                 read -P "venv '$argv[1]' does not exist. Create it? [Y/n] " ans
                 if test (string lower $ans) != 'n'
                     if __venv_create $venv_dir/$argv[1]
                         echo "Virtual environment $argv[1] created"
-                        source $venv_dir/$argv[1]/bin/activate.fish
+                        __venv_activate $venv
                     end
                 end
             end
