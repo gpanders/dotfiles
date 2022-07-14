@@ -1,13 +1,10 @@
-defaults
-
+account greg@gpanders.com
+host mail.gandi.net
+port 465
 tls on
 tls_starttls off
 auth on
-
-account personal
-
-host mail.gandi.net
 from greg@gpanders.com
 user greg@gpanders.com
 
-account default : personal
+account default : greg@gpanders.com
