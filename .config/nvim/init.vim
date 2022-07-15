@@ -53,8 +53,6 @@ inoremap {<CR> {<CR>}<Esc>O
 
 inoremap <C-Space> <C-X><C-O>
 
-nnoremap & <Cmd>&&<CR>
-
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap / ms/
