@@ -68,6 +68,7 @@ nnoremap <Space>t :Tjump /
 
 " Format whole buffer with formatprg without changing cursor position
 nnoremap gq<CR> mzgggqG`z
+nnoremap gq? <Cmd>set formatprg?<CR>
 
 " Unimpaired style mappings
 nnoremap <expr> [a '<Cmd>' . v:count1 . 'prev<CR>'
