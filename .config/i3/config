@@ -47,7 +47,7 @@ bindsym $mod+q kill
 # bindsym $mod+d exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
-bindsym $mod+space exec --no-startup-id i3-dmenu-desktop --dmenu='dmenu -i -nb #1f222d -nf #e5e9f0 -sb #3b4252 -sf #eceff4'
+bindsym $mod+space exec --no-startup-id i3-dmenu-desktop --dmenu='dmenu -i -nb #242424 -nf #ffffff -sb #3584e4 -sf #ffffff'
 
 # change focus
 bindsym $mod+$left focus left
@@ -77,8 +77,8 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # toggle split orientation between horizontal and vertical
-bindsym $mod+semicolon split vertical
-bindsym $mod+apostrophe split horizontal
+bindsym $mod+backslash split horizontal
+bindsym $mod+minus split vertical
 
 # enter fullscreen mode for the focused container
 bindsym $mod+Shift+Return fullscreen toggle
@@ -101,11 +101,11 @@ bindsym $mod+a focus parent
 bindsym $mod+b focus child
 
 # move the currently focused window to the scratchpad
-bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+Shift+period move scratchpad
 
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
-bindsym $mod+minus scratchpad show
+bindsym $mod+period scratchpad show
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -135,6 +135,8 @@ bindsym $mod+0 workspace number $ws10
 bindsym $mod+Shift+bracketleft workspace prev
 bindsym $mod+Shift+bracketright workspace next
 bindsym $mod+Tab workspace back_and_forth
+
+workspace_auto_back_and_forth yes
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -182,13 +184,15 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+bindsym $mod+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+
+hide_edge_borders smart
+
+for_window [all] title_format " %title"
 for_window [tiling] border pixel 1
-for_window [floating] border normal
-gaps inner 10
-hide_edge_borders smart_no_gaps
-workspace_auto_back_and_forth yes
 
 for_window [class="feh"] floating enable
-for_window [class="Nautilus"] floating enable
+for_window [class="Nautilus"] floating enable, border pixel 1
 for_window [class="Nemo"] floating enable
 for_window [class="explorer.exe"] floating enable
