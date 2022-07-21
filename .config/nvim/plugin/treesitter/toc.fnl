@@ -19,7 +19,7 @@
         (vim.fn.setloclist 0 [] " " {: items
                                      :title (.. "Contexts in " (-> (nvim.buf_get_name buf)
                                                                    (vim.fn.fnamemodify ":.")))})
-        (vim.cmd "lopen")))))
+        (vim.cmd.lopen)))))
 
 (autocmd treesitter#toc :FileType
   (fn [{: buf}]

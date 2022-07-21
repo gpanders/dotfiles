@@ -1,6 +1,6 @@
 (command :Telescope {:nargs "*"}
   (fn [args]
-    (vim.cmd "packadd telescope.nvim")
+    (vim.cmd.packadd "telescope.nvim")
     (with-module [telescope :telescope]
       (let [layout_config {:width #(math.min $2 100)
                            :height #(math.min $3 25)}]
