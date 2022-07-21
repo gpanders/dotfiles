@@ -32,6 +32,7 @@
  "while"
  "break"
  "continue"
+ "do"
 ] @repeat
 
 [
