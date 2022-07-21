@@ -14,12 +14,6 @@ exec_always --no-startup-id ~/.fehbg
 # Start compositor
 exec --no-startup-id picom -b
 
-# Set key repeat rate
-exec --no-startup-id xset r rate 200 40
-
-# Make Caps Lock an extra Ctrl
-exec --no-startup-id setxkbmap -option caps:ctrl_modifier
-
 # Launch polybar
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
