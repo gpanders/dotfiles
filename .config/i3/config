@@ -1,5 +1,3 @@
-include colors.conf
-
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -192,4 +190,5 @@ hide_edge_borders smart
 for_window [all] title_format " %title"
 for_window [tiling] border pixel 1
 
-include float.conf
+include config.d/*.conf
+include `hostname`.conf
