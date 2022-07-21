@@ -192,7 +192,4 @@ hide_edge_borders smart
 for_window [all] title_format " %title"
 for_window [tiling] border pixel 1
 
-for_window [class="feh"] floating enable
-for_window [class="Nautilus"] floating enable, border pixel 1
-for_window [class="Nemo"] floating enable
-for_window [class="explorer.exe"] floating enable
+include float.conf
