@@ -39,7 +39,7 @@ bindsym $mod+q kill
 # bindsym $mod+d exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
-bindsym $mod+space exec --no-startup-id i3-dmenu-desktop --dmenu='dmenu -i -nb #242424 -nf #ffffff -sb #3584e4 -sf #ffffff'
+bindsym $mod+space exec "rofi -modi drun,calc -show drun"
 
 # change focus
 bindsym $mod+$left focus left
@@ -183,6 +183,7 @@ hide_edge_borders smart
 
 for_window [all] title_format " %title"
 for_window [tiling] border pixel 1
+for_window [floating] border normal
 
 include config.d/*.conf
 include `hostname`.conf

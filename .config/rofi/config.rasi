@@ -1,0 +1,68 @@
+// Adwaita colors from https://gnome.pages.gitlab.gnome.org/libadwaita/doc/main/named-colors.html
+* {
+    foreground: #ffffff;
+    background: #242424;
+    alternate-normal-foreground: @foreground;
+    alternate-normal-background: @background;
+    selected-active-foreground: #ffffff;
+    selected-active-background: #3584e4;
+    selected-normal-foreground: #ffffff;
+    selected-normal-background: #3584e4;
+    separatorcolor: rgba(255, 255, 255, 0.1);
+}
+
+configuration {
+    show-icons: true;
+    markup: true;
+
+    calc {
+        show-match: false;
+        sort: false;
+    }
+}
+
+window {
+    border: 0;
+    border-radius: 6px;
+    width: 80ch;
+    anchor: north;
+    location: north;
+    y-offset: 30%;
+}
+
+listview, message {
+    border: 1px solid 0px 0px;
+}
+
+listview {
+    lines: 10;
+    fixed-height: false;
+    dynamic: true;
+}
+
+scrollbar {
+    handle-color: rgba(255, 255, 255, 0.1);
+    handle-width: 4px;
+}
+
+inputbar {
+    // Hide prompt, since the mode is shown in the mode switcher
+    children: [entry, case-indicator];
+}
+
+entry, element, button, message {
+    padding: 5px;
+}
+
+mode-switcher {
+    border-radius: 6px;
+}
+
+button {
+    background-color: #303030;
+}
+
+button selected {
+    background-color: rgba(255, 255, 255, 0.1);
+    text-color: @foreground;
+}
