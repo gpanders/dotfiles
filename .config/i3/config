@@ -12,10 +12,16 @@ exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id ~/.fehbg
 
 # Start compositor
-exec --no-startup-id picom -b
+exec --no-startup-id systemd-cat -t picom picom
 
 # Launch polybar
-exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec --no-startup-id systemd-cat -t polybar polybar
+
+# Start xsettingsd
+exec --no-startup-id systemd-cat -t xsettingsd xsettingsd
+
+# Start dunst
+exec --no-startup-id systemd-cat -t dunst dunst
 
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
@@ -181,9 +187,7 @@ bindsym $mod+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: 
 
 hide_edge_borders smart
 
-for_window [all] title_format " %title"
-for_window [tiling] border pixel 1
-for_window [floating] border normal
+for_window [tiling] title_format " %title", border pixel 1
 
 include config.d/*.conf
 include `hostname`.conf

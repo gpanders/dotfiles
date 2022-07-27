@@ -24,7 +24,7 @@ configuration {
 window {
     border: 0;
     border-radius: 6px;
-    width: 80ch;
+    width: 60ch;
     anchor: north;
     location: north;
     y-offset: 30%;
