@@ -23,6 +23,7 @@ nvim.create_user_command("PackerUpdate", function()
         "tpope/vim-obsession",
         "tpope/vim-dispatch",
         "justinmk/vim-dirvish",
+        "justinmk/vim-sneak",
         "junegunn/vim-easy-align",
         "mfussenegger/nvim-lsp-compl",
         { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },

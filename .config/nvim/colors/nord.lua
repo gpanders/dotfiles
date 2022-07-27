@@ -545,6 +545,8 @@ local highlights = {
     --  debugBreakpoint = { fg = red, bg = darkgray },
 
     TreesitterContext = { bg = darkblack },
+
+    Sneak = { bg = yellow, fg = black },
 }
 
 for group, opts in pairs(highlights) do
