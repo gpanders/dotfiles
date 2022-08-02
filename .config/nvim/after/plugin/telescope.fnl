@@ -1,28 +1,19 @@
 (command :Telescope {:nargs "*"}
   (fn [args]
-    (vim.cmd.packadd "telescope.nvim")
+    (nvim.command "delcommand Telescope")
+    (nvim.command "packadd telescope.nvim")
     (with-module [telescope :telescope]
-      (let [layout_config {:width #(math.min $2 100)
-                           :height #(math.min $3 25)}]
-        (telescope.setup {:pickers {:find_files {:previewer false
-                                                 :theme :dropdown
-                                                 : layout_config
-                                                 :hidden true
-                                                 :follow true}
-                                    :buffers {:previewer false
-                                              :theme :dropdown
-                                              :sort_mru true
-                                              : layout_config}
-                                    :oldfiles {:previewer false
-                                               :theme :dropdown
-                                               : layout_config}
-                                    :git_files {:previewer false
-                                                :theme :dropdown
-                                                : layout_config
-                                                :show_untracked false
-                                                :use_git_root false}}
-                          :defaults {:mappings {:i {"<Esc>" :close
-                                                    "<C-U>" false}}}})))
+      (telescope.setup {:pickers {:buffers {:sort_mru true}
+                                  :git_files {:show_untracked false
+                                              :use_git_root false}}
+                        :defaults {:layout_strategy :vertical
+                                   :dynamic_preview_title true
+                                   :mappings {:i {"<Esc>" :close
+                                                  "<C-D>" false
+                                                  "<C-U>" false
+                                                  "<C-Down>" :preview_scrolling_down
+                                                  "<C-Up>" :preview_scrolling_up}}}})
+      (telescope.load_extension :fzf))
     (vim.cmd (: "Telescope %s" :format args.args))))
 
 (keymap :n "<C-P>" "<Cmd>Telescope find_files<CR>")

@@ -547,6 +547,8 @@ local highlights = {
     TreesitterContext = { bg = darkblack },
 
     Sneak = { bg = yellow, fg = black },
+
+    TelescopeMatching = { fg = yellow },
 }
 
 for group, opts in pairs(highlights) do

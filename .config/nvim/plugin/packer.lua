@@ -28,6 +28,7 @@ nvim.create_user_command("PackerUpdate", function()
         "mfussenegger/nvim-lsp-compl",
         { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
         { "nvim-telescope/telescope.nvim", opt = true, requires = { "nvim-lua/plenary.nvim" } },
+        { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
 
         -- Language plugins
         "ziglang/zig.vim",
