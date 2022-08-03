@@ -27,8 +27,7 @@ nvim.create_user_command("PackerUpdate", function()
         "junegunn/vim-easy-align",
         "mfussenegger/nvim-lsp-compl",
         { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
-        { "nvim-telescope/telescope.nvim", opt = true, requires = { "nvim-lua/plenary.nvim" } },
-        { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+        "ibhagwan/fzf-lua",
 
         -- Language plugins
         "ziglang/zig.vim",
