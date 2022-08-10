@@ -14,7 +14,6 @@ set jumpoptions=view
 set lazyredraw
 set linebreak
 set list
-set noswapfile
 set path=.,,
 set pumheight=10
 set scrolloff=2
@@ -24,6 +23,7 @@ set shiftwidth=4
 set sidescrolloff=5
 set smartcase
 set statusline=%{%v:lua.require'statusline'.statusline()%}
+set noswapfile
 set tabline=%!v:lua.require'statusline'.tabline()
 set tagcase=match
 set termguicolors

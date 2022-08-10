@@ -4,12 +4,14 @@
                                          (with-module [fzf :fzf-lua]
                                             (when (not loaded)
                                               (set loaded true)
-                                              (fzf.setup {:fzf_opts {"--layout" :default}
-                                                          :winopts {:height 0.67
-                                                                    :width 0.67
-                                                                    :preview {:flip_columns 80}}}))
+                                              (fzf.setup {:fzf_opts {"--layout" :default}}))
                                             (tset t k (. fzf k)))
                                          (. t k))})]
+    (let [func vim.ui.select]
+      (fn vim.ui.select [...]
+        (set vim.ui.select func)
+        (fzf.register_ui_select {:winopts {:height 20 :width 100}})
+        (vim.ui.select ...)))
     (keymap :n "<C-P>" #(fzf.files))
     (keymap :n "<Space>b" #(fzf.buffers))
     (keymap :n "<Space>*" #(fzf.grep_cword))

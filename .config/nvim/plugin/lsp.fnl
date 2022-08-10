@@ -19,9 +19,6 @@
       (local client (vim.lsp.get_client_by_id client_id))
       (tset state buf {})
       (tset vim.b buf :lsp_client client.name)
-      (when client.server_capabilities.codeLensProvider
-        (vim.lsp.codelens.refresh)
-        (autocmd lsp# [:BufEnter :InsertLeave] {:buffer buf} vim.lsp.codelens.refresh))
       (when client.server_capabilities.documentHighlightProvider
         (when (not (. state buf :timer))
           (tset state buf :timer (vim.loop.new_timer)))
@@ -49,6 +46,7 @@
       (keymap :n "[R" vim.lsp.buf.references {:buffer buf})
       (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer buf})
       (keymap :n "<Space>cr" vim.lsp.buf.rename {:buffer buf})
+      (keymap :n "<Space>ca" vim.lsp.buf.code_action {:buffer buf})
 
       (with-module [lsp-compl :lsp_compl]
         (match client.name
