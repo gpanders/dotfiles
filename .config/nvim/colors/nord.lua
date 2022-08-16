@@ -44,7 +44,7 @@ local highlights = {
 
     Bold = { bold = true },
     Italic = {},
-    Underline = { underline = true },
+    Underlined = { underline = true },
 
     -- Editor
     ColorColumn = { bg = black },
