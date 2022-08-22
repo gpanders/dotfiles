@@ -26,7 +26,8 @@ nvim.create_user_command("PackerUpdate", function()
         "justinmk/vim-sneak",
         "junegunn/vim-easy-align",
         "mfussenegger/nvim-lsp-compl",
-        { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
+        "lewis6991/gitsigns.nvim",
+        "nvim-lua/plenary.nvim", -- Required by telescope
         { "nvim-telescope/telescope.nvim", opt = true, branch = "0.1.x" },
         "nvim-telescope/telescope-fzy-native.nvim",
 
