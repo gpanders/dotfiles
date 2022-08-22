@@ -4,14 +4,7 @@
 (local configs {})
 (local state {})
 
-(fn once [f]
-  (var called false)
-  (fn [...]
-    (when (not called)
-      (f ...)
-      (set called true))))
-
-(local set-initial-log-level (once #(vim.lsp.set_log_level $...)))
+(var set-log-level false)
 
 (augroup lsp#
   (autocmd :LspAttach
@@ -94,7 +87,9 @@
       config (when (= 1 (vim.fn.executable (. config.cmd 1)))
                (let [[root-marker] (vim.fs.find config.root {:upward true})
                      root-dir (vim.fs.dirname root-marker)]
-                 (set-initial-log-level :OFF)
+                 (when (not set-log-level)
+                   (vim.lsp.set_log_level :OFF)
+                   (set set-log-level true))
                  (vim.lsp.start (vim.tbl_extend :keep config {:root_dir root-dir
                                                               :on_init on-init
                                                               : handlers})))))))
@@ -162,6 +157,7 @@
                         nil (echo (: "LSP log level is %s" :format (. vim.lsp.log_levels ((. (require "vim.lsp.log") :get_level)))))
                         level (do
                                 (vim.lsp.set_log_level (level:upper))
+                                (set set-log-level true)
                                 (echo (: "LSP log level set to %s" :format level))))}
       complete (fn [arg line pos]
                  (icollect [cmd (pairs commands)]
