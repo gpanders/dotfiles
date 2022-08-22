@@ -1,7 +1,6 @@
 [user]
 	name = Gregory Anders
 	email = greg@gpanders.com
-	signingKey = 0x56E93C2FB6B08BDB
 [alias]
 	co = checkout
 	c = commit
@@ -46,6 +45,7 @@
 	ui = auto
 [log]
 	date = local
+	showSignature = true
 [push]
 	gpgSign = if-asked
 [pull]
@@ -64,3 +64,8 @@
 	cmd = nvim -c \"Gvdiffsplit!\" \"$MERGED\"
 [merge]
 	tool = fugitive
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	defaultKeyCommand = ssh-add -L
+	allowedSignersFile = ~/.ssh/allowed_signers
