@@ -28,8 +28,9 @@
 	ctags = !.git/ctags
 [commit]
 	verbose = true
+	gpgSign = true
 [tag]
-	gpgsign = true
+	gpgSign = true
 [sendemail]
 	annotate = yes
 	confirm = auto
