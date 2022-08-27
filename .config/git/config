@@ -46,7 +46,6 @@
 	ui = auto
 [log]
 	date = local
-	showSignature = true
 [push]
 	gpgSign = if-asked
 [pull]
