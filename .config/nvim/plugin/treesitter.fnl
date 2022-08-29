@@ -1,9 +1,3 @@
-(doto vim.treesitter.highlighter.hl_map
-  (tset :constant.builtin :Constant)
-  (tset :function.builtin :Function)
-  (tset :function.macro :Function)
-  (tset :constructor :Normal))
-
 (autocmd treesitter# :Syntax [:c :zig :haskell]
   (fn [{: buf}]
     (let [{: highlight} (require :treesitter)]

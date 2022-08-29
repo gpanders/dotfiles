@@ -184,6 +184,7 @@ local highlights = {
     Macro = { link = "Define" },
     PreCondit = { link = "PreProc" },
     Variable = { link = "Identifier" },
+    Constructor = {},
 
     -------------
     -- Languages
