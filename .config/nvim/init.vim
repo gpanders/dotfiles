@@ -48,9 +48,6 @@ endif
 " Enable indent-heuristic to make vimdiff more closely match git diff
 set diffopt+=indent-heuristic
 
-" Auto close braces in insert mode
-inoremap {<CR> {<CR>}<Esc>O
-
 inoremap <C-Space> <C-X><C-O>
 
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
@@ -62,7 +59,6 @@ nnoremap <Space>b :ls<CR>:b<Space>
 nnoremap <Space>ee :e %:p:h/<Tab>
 nnoremap <Space>es :sp %:p:h/<Tab>
 nnoremap <Space>ev :vs %:p:h/<Tab>
-nnoremap <Space>t :Tjump /
 
 " Format whole buffer with formatprg without changing cursor position
 nnoremap gq<CR> mzgggqG`z
