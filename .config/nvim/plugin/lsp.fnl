@@ -44,7 +44,7 @@
       (with-module [lsp-compl :lsp_compl]
         (match client.name
           :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
-        (vim.cmd.set "completeopt+=noinsert")
+        (vim.cmd "set completeopt+=noinsert")
         (lsp-compl.attach client buf {}))))
   (autocmd :LspDetach
     (fn [{: buf :data {: client_id}}]
@@ -110,7 +110,7 @@
 
 (lsp-setup
   [:c :cpp] {:cmd ["clangd" "--background-index"]
-             :root ["compile_commands.json" "compile_flags.txt"]
+             :root [".clangd" ".clang-format" "compile_commands.json" "compile_flags.txt"]
              :flags {:debounce_text_changes 20}
              :offset_encoding :utf-16}
   [:go :gomod] {:cmd [:gopls]
