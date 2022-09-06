@@ -1,7 +1,4 @@
-(autocmd treesitter# :Syntax [:c :zig :haskell]
-  (fn [{: buf}]
-    (let [{: highlight} (require :treesitter)]
-      (highlight buf))))
+(autocmd treesitter# :FileType [:c :zig :lua] #(vim.treesitter.start))
 
 (fn complete [arg line pos]
   (let [commands (. (require :treesitter) :commands)]
