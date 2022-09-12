@@ -1,19 +1,21 @@
 (local ns (nvim.create_namespace :diagnostics))
-(local state {})
+(local diagnostics {})
 
 (vim.diagnostic.config {:virtual_text false
                         :underline true
                         :signs true
                         :severity_sort true})
 
-(fn cursor-diagnostic [diagnostics]
+(fn cursor-diagnostic [buf]
   "Find the diagnostic closest to the cursor"
+  (when (not (. diagnostics buf))
+    (tset diagnostics buf (vim.diagnostic.get buf)))
   (let [[lnum curcol] (nvim.win_get_cursor 0)
         lnum (- lnum 1)]
     (var score math.huge)
     (var diag nil)
     (var done? false)
-    (each [_ v (ipairs diagnostics) :until done?]
+    (each [_ v (ipairs (. diagnostics buf) :until done?)]
       (match v
         {: lnum : col : end_col}
         (if (<= col curcol end_col)
@@ -26,38 +28,30 @@
                 (set score scr))))))
     diag))
 
-(nvim.set_decoration_provider ns {:on_end #(match state.diagnostic
-                                             {: source : message} (print (if source
-                                                                             (: "%s: %s" :format source message)
-                                                                             message)))})
-
 (augroup diagnostics#
   (autocmd [:BufRead :BufNewFile]
     (fn [{: buf}]
-      (vim.diagnostic.disable 0)
+      (vim.diagnostic.disable buf)
       (autocmd :BufWritePost {:once true :buffer buf}
         (fn [{: buf}]
-          (vim.diagnostic.enable 0)
-          (autocmd :InsertEnter {:buffer buf} #(do
-                                                 (set state.diagnostic nil)
-                                                 (echo "")))
+          (vim.diagnostic.enable buf)
+          (autocmd :InsertEnter {:buffer buf} #(vim.diagnostic.hide ns buf))
           (autocmd :CursorMoved {:buffer buf}
             (fn [{: buf}]
               (let [[lnum] (nvim.win_get_cursor 0)
                     lnum (- lnum 1)]
-                (let [diag (cursor-diagnostic (vim.diagnostic.get buf {: lnum}))]
-                  (when (and (= diag nil) (not= state.diagnostic nil))
-                    (echo ""))
-                  (set state.diagnostic diag)))))))))
+                (let [diag (cursor-diagnostic buf)]
+                  (vim.diagnostic.show ns buf [diag] {:virtual_text true})))))))))
   (autocmd :DiagnosticChanged
     (fn [{: buf}]
+      (tset diagnostics buf (vim.diagnostic.get buf))
       (when (nvim.buf_is_loaded buf)
-        (let [diagnostics (vim.diagnostic.toqflist (vim.diagnostic.get buf))]
+        (let [items (vim.diagnostic.toqflist (. diagnostics buf))]
           (each [_ winid (ipairs (vim.fn.win_findbuf buf))]
             (let [action (match (vim.fn.getloclist winid {:context 1})
                             {:context {:diagnostics true}} "r"
                             _ " ")]
-              (vim.fn.setloclist winid [] action {:items diagnostics
+              (vim.fn.setloclist winid [] action {: items
                                                   :title :Diagnostics
                                                   :context {:diagnostics true}}))))))))
 
