@@ -1,2 +1,5 @@
+# This file contains commands to be run by *all* X11 desktop environments
 setxkbmap -option caps:ctrl_modifier
 xset r rate 200 40
+
+# vim: ft=sh
