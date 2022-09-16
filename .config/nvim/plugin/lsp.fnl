@@ -65,8 +65,8 @@
     (set client.offset_encoding result.offsetEncoding)))
 
 (fn hover [_ result ctx]
-  ((. vim.lsp.handlers "textDocument/hover") _ result ctx {:border :rounded
-                                                           :focusable false}))
+  ((. vim.lsp.handlers "textDocument/hover") _ result ctx {:border :rounded}))
+
 (fn signature-help [_ result ctx]
   (vim.lsp.handlers.signature_help _ result ctx {:focusable false
                                                  :border :rounded}))
