@@ -1,6 +1,8 @@
 " Ensure filetype autocommands are created first
 filetype on
 
+colorscheme nord
+
 set breakindent
 set cinoptions=l1,:0,g0,E-s,N-s,t0,(s,J1,j1
 set colorcolumn=+1
@@ -138,9 +140,6 @@ augroup init
 
   " Create missing parent directories automatically
   autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
-
-  " Defer setting the colorscheme until the UI loads (micro optimization)
-  autocmd UIEnter * colorscheme nord
 
   " Restore cursor position (except for git commits and rebases)
   autocmd BufRead * if &ft !~# 'commit\|rebase' | exec 'silent! normal! g`"' | endif
