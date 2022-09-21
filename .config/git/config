@@ -28,7 +28,6 @@
 	ctags = !.git/ctags
 [commit]
 	verbose = true
-	gpgSign = true
 [tag]
 	gpgSign = true
 [sendemail]
@@ -64,8 +63,3 @@
 	cmd = nvim -c \"Gvdiffsplit!\" \"$MERGED\"
 [merge]
 	tool = fugitive
-[gpg]
-	format = ssh
-[gpg "ssh"]
-	defaultKeyCommand = ssh-add -L
-	allowedSignersFile = ~/.ssh/allowed_signers
