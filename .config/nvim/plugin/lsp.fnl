@@ -151,7 +151,11 @@
                               (vim.lsp.stop_client client-id)))
                 :enable #(do
                            (set vim.g.lsp_autostart true)
-                           (commands.start))
+                           (let [curbuf (nvim.get_current_buf)]
+                             (lsp-start curbuf)
+                             (each [_ buf (ipairs (nvim.list_bufs))]
+                               (when (and (not= curbuf buf) (nvim.buf_is_loaded buf))
+                                 (autocmd :BufEnter {:buffer buf :once true} #(lsp-start buf))))))
                 :start #(lsp-start (nvim.get_current_buf))
                 :log #(match $1
                         nil (echo (: "LSP log level is %s" :format (. vim.lsp.log_levels ((. (require "vim.lsp.log") :get_level)))))
