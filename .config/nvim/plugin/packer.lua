@@ -29,10 +29,10 @@ nvim.create_user_command("PackerUpdate", function()
         "nvim-lua/plenary.nvim", -- Required by telescope
         { "nvim-telescope/telescope.nvim", opt = true, branch = "0.1.x" },
         "nvim-telescope/telescope-fzy-native.nvim",
-        "nvim-treesitter/nvim-treesitter",
+        { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
         { "nvim-treesitter/playground", opt = true },
-
         "ii14/exrc.vim",
+        "dcampos/nvim-snippy",
 
         -- Language plugins
         "ziglang/zig.vim",

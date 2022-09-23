@@ -1,0 +1,32 @@
+snippet for
+	for (${1:size_t} ${2:i} = ${3:0}; $2 < ${4}; $2++) {
+		$0
+	}
+snippet ifndef
+	#ifndef $1_H_
+	#define $1_H_
+
+	$0
+
+	#endif // $1_H_
+snippet inc
+	#include "$0.h"
+snippet sinc
+	#include <$0.h>
+snippet print
+	printf("$1\n"$2);$0
+snippet fprint
+	fprintf(${1:stderr}, "$2\n"$3)$0;
+snippet main
+	#include <stdio.h>
+
+	int
+	main(int argc, char **argv)
+	{
+		$0
+		return 0;
+	}
+snippet jdoc
+	/**
+	 * $0
+	 */

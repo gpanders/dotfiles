@@ -1,0 +1,10 @@
+extends c
+
+snippet sinc
+	#include <$1>
+snippet cout
+	std::cout << "${0:$VISUAL}" << std::endl;
+snippet rfor
+	for (${1:const auto&} $2 : $3) {
+	    $0
+	}

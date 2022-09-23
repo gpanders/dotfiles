@@ -1,0 +1,8 @@
+snippet getopts
+	while getopts "h$1" o; do
+		case "\$o" in
+			h) usage; exit 0 ;;
+		${1/\(\w\):\?/\t\1) ;;\n/g}
+		esac
+	done
+	shift \$((OPTIND-1))
