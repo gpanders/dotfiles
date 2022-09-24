@@ -32,7 +32,7 @@ nvim.create_user_command("PackerUpdate", function()
         { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
         { "nvim-treesitter/playground", opt = true },
         "ii14/exrc.vim",
-        "dcampos/nvim-snippy",
+        { "dcampos/nvim-snippy", opt = true },
 
         -- Language plugins
         "ziglang/zig.vim",
