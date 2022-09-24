@@ -2,7 +2,7 @@
   (fn [args]
     (nvim.command "delcommand Telescope")
     (nvim.command "packadd telescope.nvim")
-    (with-module [telescope :telescope]
+    (let [telescope (require :telescope)]
       (telescope.setup {:pickers {:buffers {:sort_mru true}
                                   :git_files {:show_untracked false
                                               :use_git_root false}}

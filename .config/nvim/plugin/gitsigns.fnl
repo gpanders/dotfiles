@@ -1,7 +1,7 @@
 (autocmd gitsigns# [:BufNewFile :BufRead] "*"
   #(let [(ok? result) (pcall vim.call :FugitiveGitDir)]
     (when (or (not ok?) (not= result ""))
-      (with-module [gitsigns :gitsigns]
+      (let [gitsigns (require :gitsigns)]
         (gitsigns.setup {:on_attach (fn [buffer]
                                       (keymap :n "[c" #(if vim.wo.diff
                                                            "[c"

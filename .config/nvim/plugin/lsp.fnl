@@ -41,7 +41,7 @@
       (keymap :n "<Space>cr" vim.lsp.buf.rename {:buffer buf})
       (keymap :n "<Space>ca" vim.lsp.buf.code_action {:buffer buf})
 
-      (with-module [lsp-compl :lsp_compl]
+      (let [lsp-compl (require :lsp_compl)]
         (match client.name
           :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
         (vim.cmd "set completeopt+=noinsert")
