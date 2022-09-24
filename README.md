@@ -8,4 +8,4 @@ This repository contains configuration files for a variety of programs.
     git remote add -f origin https://git.sr.ht/~gpanders/dotfiles
     git checkout -f master
     git sparse-checkout set '/*' '!LICENSE' '!README.md'
-    git config status.showUntrackedFiles no
+    echo '*' >> $HOME/.dotfiles/info/exclude
