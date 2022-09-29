@@ -70,7 +70,7 @@ function __prompt_fish_postexec_handler --on-event fish_postexec
         function _notify_job_$last_job --on-job-exit $last_job --inherit-variable last_job
             functions -e _notify_job_$last_job
             __prompt_update_jobs
-        end
+        end 2>/dev/null
     end
 end
 

@@ -11,3 +11,5 @@ function __dotfiles_pwd_handler --on-variable PWD
         set -e __dotfiles_git
     end
 end
+
+__dotfiles_pwd_handler
