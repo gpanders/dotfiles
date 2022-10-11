@@ -58,7 +58,10 @@ Examples:
         form `(do)]
     (when clear
       (table.insert form (if (= event "*")
-                             `(vim.api.nvim_create_augroup ,(or opts.group _G.augroup) {:clear true})
+                             `(each [_# v# (ipairs (vim.api.nvim_get_autocmds {:group ,(or opts.group _G.augroup)
+                                                                               :pattern ,pattern
+                                                                               :buffer ,opts.buffer}))]
+                                (vim.api.nvim_del_autocmd v#.id))
                              `(vim.api.nvim_clear_autocmds {:event ,event
                                                             :group ,(or opts.group _G.augroup)
                                                             :pattern ,pattern
