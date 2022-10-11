@@ -27,9 +27,11 @@ function __prompt_update_pwd --on-variable PWD
     set -e __prompt_git_head
 end
 
-function __prompt_venv --on-variable VIRTUAL_ENV
+function __prompt_venv --on-variable VIRTUAL_ENV --on-variable IN_NIX_SHELL
     if set -q VIRTUAL_ENV
         set -g __prompt_venv (basename $VIRTUAL_ENV)' '
+    else if set -q IN_NIX_SHELL
+        set -g __prompt_venv 'nix-shell '
     else
         set -g __prompt_venv
     end
@@ -103,10 +105,6 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
     end
 
     set -q __prompt_pwd; or __prompt_update_pwd
-
-    if set -q IN_NIX_SHELL
-        set -g __prompt_venv 'nix-shell '
-    end
 
     if set -q __prompt_cmd_duration_tmp
         set -g __prompt_cmd_duration $__prompt_cmd_duration_tmp
