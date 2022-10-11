@@ -18,14 +18,12 @@
     messages))
 
 (fn lsp []
-  (match vim.b.lsp_client
-    name (let [[client] (vim.lsp.get_active_clients {:bufnr 0 : name})
-               messages (lsp-progress-messages client)]
-           (match (length messages)
-             0 ""
-             n (: " %s " :format (table.concat messages ", "))))
-    _ ""))
-
+  (match-try vim.b.lsp_client
+    name (vim.lsp.get_active_clients {:bufnr 0 : name})
+    [client] (lsp-progress-messages client)
+    (where messages (< 0 (length messages))) (: " %s " :format (table.concat messages ", "))
+    (catch
+      _ "")))
 
 (fn diagnostics []
   (let [diags (vim.diagnostic.get 0 {:severity {:min vim.diagnostic.severity.WARN}})
