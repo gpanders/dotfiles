@@ -117,8 +117,7 @@
                              (vim.lsp.buf_detach_client buf client.id)))
                 :disable #(do
                             (set vim.g.lsp_autostart false)
-                            (each [client-id (pairs (vim.lsp.get_active_clients))]
-                              (vim.lsp.stop_client client-id)))
+                            (vim.lsp.stop_client (vim.lsp.get_active_clients)))
                 :enable #(do
                            (set vim.g.lsp_autostart true)
                            (let [curbuf (nvim.get_current_buf)]
