@@ -31,17 +31,13 @@
 (augroup diagnostics#
   (autocmd [:BufRead :BufNewFile]
     (fn [{: buf}]
-      (vim.diagnostic.disable buf)
-      (autocmd :BufWritePost {:once true :buffer buf}
+      (autocmd :InsertEnter {:buffer buf} #(vim.diagnostic.hide ns buf))
+      (autocmd :CursorMoved {:buffer buf}
         (fn [{: buf}]
-          (vim.diagnostic.enable buf)
-          (autocmd :InsertEnter {:buffer buf} #(vim.diagnostic.hide ns buf))
-          (autocmd :CursorMoved {:buffer buf}
-            (fn [{: buf}]
-              (let [[lnum] (nvim.win_get_cursor 0)
-                    lnum (- lnum 1)]
-                (let [diag (cursor-diagnostic buf)]
-                  (vim.diagnostic.show ns buf [diag] {:virtual_text {:source :if_many}})))))))))
+          (let [[lnum] (nvim.win_get_cursor 0)
+                lnum (- lnum 1)]
+            (let [diag (cursor-diagnostic buf)]
+              (vim.diagnostic.show ns buf [diag] {:virtual_text {:source :if_many}})))))))
   (autocmd :DiagnosticChanged
     (fn [{: buf :data {: diagnostics}}]
       (tset cache buf diagnostics))))
@@ -49,3 +45,9 @@
 (keymap :n "]g" #(vim.diagnostic.goto_next {:float false}))
 (keymap :n "[g" #(vim.diagnostic.goto_prev {:float false}))
 (keymap :n "go" #(vim.diagnostic.open_float {:border :rounded}))
+
+(var enabled true)
+(keymap :n "yog" #(do (if enabled
+                          (vim.diagnostic.disable)
+                          (vim.diagnostic.enable))
+                      (set enabled (not enabled))))
