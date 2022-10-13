@@ -81,6 +81,21 @@ key_bindings:
   - { key: Semicolon, mods: Option,       chars: "\x1b;" }
   - { key: Semicolon, mods: Option|Shift, chars: "\x1b:" }
 
+  # Enable some CSIu keys
+  - { key: Apostrophe, mods: Control, chars: "\x1b[39;5u" }
+  - { key: Comma,      mods: Control, chars: "\x1b[44;5u" }
+  - { key: Key0,       mods: Control, chars: "\x1b[48;5u" }
+  - { key: Key1,       mods: Control, chars: "\x1b[49;5u" }
+  - { key: Key2,       mods: Control, chars: "\x1b[50;5u" }
+  - { key: Key3,       mods: Control, chars: "\x1b[51;5u" }
+  - { key: Key4,       mods: Control, chars: "\x1b[52;5u" }
+  - { key: Key5,       mods: Control, chars: "\x1b[53;5u" }
+  - { key: Key6,       mods: Control, chars: "\x1b[54;5u" }
+  - { key: Key7,       mods: Control, chars: "\x1b[55;5u" }
+  - { key: Key8,       mods: Control, chars: "\x1b[56;5u" }
+  - { key: Key9,       mods: Control, chars: "\x1b[57;5u" }
+  - { key: Semicolon,  mods: Control, chars: "\x1b[59;5u" }
+
   # Vi Mode
   - { key: Escape,                mode: Vi|~Search, action: ToggleViMode }
   - { key: G,      mods: Control, mode: Vi|~Search, action: ToggleViMode }
