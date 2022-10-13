@@ -21,6 +21,7 @@ local config = {
     },
     hide_tab_bar_if_only_one_tab = true,
     use_resize_increments = true,
+    enable_kitty_keyboard = true,
     colors = {
         compose_cursor = "cyan",
         tab_bar = {
@@ -43,6 +44,7 @@ local config = {
         {key="Enter", mods="CMD", action=action.SplitHorizontal {domain="CurrentPaneDomain"}},
         {key="Enter", mods="CMD|SHIFT", action="TogglePaneZoomState"},
         {key="w", mods="CMD", action=action.CloseCurrentPane {confirm=true}},
+        {key="c", mods="CMD|SHIFT", action="ActivateCopyMode"},
     },
 }
 
