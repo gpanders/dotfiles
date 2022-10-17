@@ -123,6 +123,7 @@ local highlights = {
 
     -- Search
     IncSearch = { fg = brightwhite, bg = darkblue, underline = true },
+    CurSearch = { link = "IncSearch" },
     Search = { fg = black, bg = cyan },
 
     -- Tabs
