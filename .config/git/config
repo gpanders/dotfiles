@@ -26,6 +26,7 @@
 	sw = switch
 	re = restore
 	ctags = !.git/ctags
+	dt = difftool
 [commit]
 	verbose = true
 [tag]
@@ -63,3 +64,11 @@
 	cmd = nvim -c \"Gvdiffsplit!\" \"$MERGED\"
 [merge]
 	tool = fugitive
+[diff]
+	tool = difftastic
+[difftool]
+	prompt = false
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+	difftool = true
