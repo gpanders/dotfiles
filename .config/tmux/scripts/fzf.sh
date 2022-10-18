@@ -5,11 +5,6 @@ if [ -z "${TMUX:-}" ]; then
 	exit
 fi
 
-if [ -t 0 ]; then
-	tmux display-message 'No data on stdin'
-	exit
-fi
-
 copy() {
 	if command -v pbcopy >/dev/null; then
 		cmd=pbcopy
@@ -40,7 +35,7 @@ while getopts "u" o; do
 done
 shift $((OPTIND - 1))
 
-items=$(grep -oE "$pattern" | uniq)
+items=$(tmux capture-pane -J -p | grep -oE "$pattern" | uniq)
 if [ -z "$items" ]; then
 	tmux display-message "No $name found"
 	exit
