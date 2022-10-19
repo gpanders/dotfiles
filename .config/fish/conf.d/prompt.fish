@@ -37,14 +37,19 @@ function __prompt_venv --on-variable VIRTUAL_ENV --on-variable IN_NIX_SHELL
     end
 end
 
+functions -c fish_job_summary __fish_job_summary
+function fish_job_summary
+    __fish_job_summary $argv
+    __prompt_update_jobs
+end
+
 function __prompt_update_jobs
-    set -l njobs (count (jobs -p))
+    set -l njobs (count (jobs -g))
     if test $njobs -eq 0
         set -g __prompt_jobs
     else
         set -g __prompt_jobs "[$njobs] "
     end
-    commandline -f repaint
 end
 
 function __prompt_fish_preexec_handler --on-event fish_preexec
@@ -65,15 +70,8 @@ function __prompt_fish_postexec_handler --on-event fish_postexec
         set -g __prompt_cmd_duration_tmp "$dur "
     end
 
-    set -l last_job (jobs -l -g)
-    if test -n "$last_job"; and test "$last_job" != "$__prompt_last_job"
-        set -g __prompt_last_job $last_job
-        __prompt_update_jobs
-        function _notify_job_$last_job --on-job-exit $last_job --inherit-variable last_job
-            functions -e _notify_job_$last_job
-            __prompt_update_jobs
-        end 2>/dev/null
-    end
+    jobs -l >/dev/null
+    and __prompt_update_jobs
 end
 
 function __prompt_exit_status --on-event fish_postexec
