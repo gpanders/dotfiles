@@ -110,8 +110,6 @@ cnoremap <expr> <C-K> pumvisible() ? '<Up><Tab>' : '<C-K>'
 vnoremap p P
 vnoremap P p
 
-iabbrev sizse size
-
 augroup init
   autocmd!
 
