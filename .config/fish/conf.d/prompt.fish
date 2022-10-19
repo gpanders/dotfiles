@@ -112,10 +112,17 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
     end
 
     if not set -q __prompt_git_head
-        if test -n "$GIT_DIR" && test -f $GIT_DIR/HEAD
-            set -g __prompt_git_head $GIT_DIR/HEAD
-        else if test -f .git/HEAD
-            set -g __prompt_git_head .git/HEAD
+        set -l gitdir
+        if test -n "$GIT_DIR"
+            set gitdir "$GIT_DIR"
+        else if test -d .git
+            set gitdir .git
+        else if test -f .git
+            set gitdir (string match -r -g '^gitdir: (.*)$' < .git)
+        end
+
+        if test -n "$gitdir" && test -f $gitdir/HEAD
+            set -g __prompt_git_head $gitdir/HEAD
         else
             set -g __prompt_git_head (command git rev-parse --git-path HEAD 2>/dev/null)
         end
@@ -125,49 +132,42 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
         set -g __prompt_git_branch
         set -g __prompt_git
     else
-        set -l os
-        set -l branch (string replace -r '^ref: refs/heads/' '' < $__prompt_git_head; set os $status)
-        if test $os -ne 0
-            set branch (string sub -l 7 $branch)
-        end
-
+        set -l branch (string match -r -g '^ref: refs/heads/(.*)$' < $__prompt_git_head)
         if test "$branch" != "$__prompt_git_branch"
             set -g __prompt_git_branch $branch
             set -g __prompt_git "$branch "
         end
     end
 
-    if test -z "$__prompt_git_branch"
-        return
+    if test -n "$__prompt_git_branch"
+        fish -P -c "
+            set -l action (fish_print_git_action)
+            if test -n \"\$action\"
+                set action \"(\$action) \"
+            end
+
+            set -l dirty
+            if not command git diff-index --no-ext-diff --quiet HEAD 2>/dev/null
+                set dirty '*'
+            end
+
+            # Upstream status
+            set count (git rev-list --count --left-right @{u}...HEAD 2>/dev/null)
+            set upstream
+            switch \"\$count\"
+                case ''
+                case '0'\t'0'
+                case '0'\t'*'
+                    set upstream (set_color cyan)'⇡ '
+                case '*'\t'0'
+                    set upstream (set_color cyan)'⇣ '
+                case '*'
+                    set upstream (set_color cyan)'⇡⇣ '
+            end
+
+            set -U __prompt_git_$fish_pid \"$__prompt_git_branch\$dirty \$action\$upstream\"
+        " &
     end
-
-    fish -P -c "
-        set -l action (fish_print_git_action)
-        if test -n \"\$action\"
-            set action \"(\$action) \"
-        end
-
-        set -l dirty
-        if not command git diff-index --no-ext-diff --quiet HEAD 2>/dev/null
-            set dirty '*'
-        end
-
-        # Upstream status
-        set count (git rev-list --count --left-right @{u}...HEAD 2>/dev/null)
-        set upstream
-        switch \"\$count\"
-            case ''
-            case '0'\t'0'
-            case '0'\t'*'
-                set upstream (set_color cyan)'⇡ '
-            case '*'\t'0'
-                set upstream (set_color cyan)'⇣ '
-            case '*'
-                set upstream (set_color cyan)'⇡⇣ '
-        end
-
-        set -U __prompt_git_$fish_pid \"$__prompt_git_branch\$dirty \$action\$upstream\"
-    " &
 
     # Fresh line and enter prompt mode
     printf '\e]133;A;cl=m;aid=%d\e\\' $fish_pid
