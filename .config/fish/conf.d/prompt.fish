@@ -70,8 +70,7 @@ function __prompt_fish_postexec_handler --on-event fish_postexec
         set -g __prompt_cmd_duration_tmp "$dur "
     end
 
-    jobs -l >/dev/null
-    and __prompt_update_jobs
+    __prompt_update_jobs
 end
 
 function __prompt_exit_status --on-event fish_postexec
