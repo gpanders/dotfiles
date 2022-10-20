@@ -1,8 +1,6 @@
 filetype plugin indent on
 syntax on
 
-colorscheme desert
-
 " Set cursor mode: bar in insert, underline in replace
 let &t_SI = "\<Esc>[5 q"
 let &t_SR = "\<Esc>[4 q"
