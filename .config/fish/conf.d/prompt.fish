@@ -131,7 +131,7 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
         set -g __prompt_git_branch
         set -g __prompt_git
     else
-        set -l branch (string match -r -g '^ref: refs/heads/(.*)$' < $__prompt_git_head)
+        set -l branch (string match -r -g '^ref: refs/heads/(.*)|([0-9a-f]{8})[0-9a-f]+$' < $__prompt_git_head)
         if test "$branch" != "$__prompt_git_branch"
             set -g __prompt_git_branch $branch
             set -g __prompt_git "$branch "
