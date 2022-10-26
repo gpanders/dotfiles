@@ -18,6 +18,10 @@
 (local handlers {"textDocument/hover" hover
                  "textDocument/signatureHelp" signature-help})
 
+(local capabilities (vim.tbl_deep_extend :force
+                                         (vim.lsp.protocol.make_client_capabilities)
+                                         ((. (require :lsp_compl) :capabilities))))
+
 (fn start [bufnr]
   (let [ft (. vim.bo bufnr :filetype)]
     (match (. configs ft)
@@ -26,6 +30,7 @@
                      root-dir (vim.fs.dirname root-marker)]
                  (vim.lsp.start (vim.tbl_extend :keep config {:root_dir root-dir
                                                               :on_init on-init
+                                                              : capabilities
                                                               : handlers})))))))
 
 (fn enable []
