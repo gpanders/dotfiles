@@ -46,8 +46,6 @@
 	ui = auto
 [log]
 	date = local
-[push]
-	gpgSign = if-asked
 [pull]
 	rebase = true
 [filter "lfs"]
