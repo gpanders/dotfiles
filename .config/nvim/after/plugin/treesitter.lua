@@ -10,3 +10,9 @@ require("nvim-treesitter.configs").setup({
         },
     },
 })
+
+nvim.create_user_command(
+    "TSPlaygroundToggle",
+    "delcommand TSPlaygroundToggle|packadd playground|TSPlaygroundToggle",
+    {}
+)
