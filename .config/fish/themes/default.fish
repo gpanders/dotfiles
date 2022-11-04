@@ -6,7 +6,7 @@ set -U fish_color_normal normal
 set -U fish_color_command blue
 set -U fish_color_quote yellow
 set -U fish_color_redirection cyan --bold
-set -U fish_color_end green
+set -U fish_color_end normal
 set -U fish_color_error brred
 set -U fish_color_param normal
 set -U fish_color_comment red
