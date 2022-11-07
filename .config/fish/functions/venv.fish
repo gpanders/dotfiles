@@ -54,7 +54,7 @@ function venv
                 if test (string lower $ans) != 'n'
                     if __venv_create $venv_dir/$argv[1]
                         echo "Virtual environment $argv[1] created"
-                        __venv_activate $venv
+                        __venv_activate $argv[1]
                     end
                 end
             end
