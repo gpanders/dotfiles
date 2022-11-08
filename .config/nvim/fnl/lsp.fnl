@@ -63,6 +63,8 @@
   [:c :cpp] {:cmd ["clangd" "--background-index"]
              :root [".clangd" ".clang-format" "compile_commands.json" "compile_flags.txt"]
              :flags {:debounce_text_changes 20}
+             :capabilities {:textDocument {:completion {:editsNearCursor true}}
+                            :offsetEncoding {:utf-8 :utf-16}}
              :offset_encoding :utf-16}
   [:go :gomod] {:cmd [:gopls]
                 :root ["go.mod"]
