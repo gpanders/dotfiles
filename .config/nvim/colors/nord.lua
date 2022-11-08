@@ -77,15 +77,15 @@ local highlights = {
 
     DiagnosticWarn = { fg = yellow },
     DiagnosticError = { fg = red },
-    DiagnosticInfo = { fg = cyan },
+    DiagnosticInfo = { fg = blue },
     DiagnosticHint = { fg = darkblue },
     DiagnosticSignWarn = { fg = yellow, bg = darkblack },
     DiagnosticSignError = { fg = red, bg = darkblack },
-    DiagnosticSignInfo = { fg = cyan, bg = darkblack },
+    DiagnosticSignInfo = { fg = blue, bg = darkblack },
     DiagnosticSignHint = { fg = darkblue, bg = darkblack },
     DiagnosticUnderlineWarn = { sp = yellow, undercurl = true },
     DiagnosticUnderlineError = { sp = red, undercurl = true },
-    DiagnosticUnderlineInfo = { sp = cyan, undercurl = true },
+    DiagnosticUnderlineInfo = { sp = blue, undercurl = true },
     DiagnosticUnderlineHint = { sp = darkblue, undercurl = true },
 
     -- Neovim DocumentHighlight
