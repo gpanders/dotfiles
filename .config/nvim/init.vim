@@ -145,6 +145,9 @@ augroup init
   " Don't show trailing spaces in insert mode
   autocmd InsertEnter * setlocal listchars-=trail:-
   autocmd InsertLeave * setlocal listchars+=trail:-
+
+  " For some filetypes, completion based on syntax is better than nothing
+  autocmd FileType cmake setlocal omnifunc=syntaxcomplete#Complete
 augroup END
 
 lua<<
