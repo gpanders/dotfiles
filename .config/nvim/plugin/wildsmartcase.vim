@@ -1,7 +1,7 @@
-if exists('g:loaded_wildignorecase')
+if exists('g:loaded_wildsmartcase')
     finish
 endif
-let g:loaded_wildignorecase = 1
+let g:loaded_wildsmartcase = 1
 
 set nofileignorecase
 set wildcharm=<Tab>
@@ -16,7 +16,7 @@ endfunction
 
 cnoremap <expr> <Tab> <SID>CmdlineTab()
 
-augroup wildignorecase
+augroup wildsmartcase
     autocmd!
     autocmd CmdlineEnter : let s:wic = &wildignorecase
     autocmd CmdlineLeave : if exists('s:wic') | let &wildignorecase = s:wic | endif
