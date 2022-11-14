@@ -33,7 +33,9 @@ paq {
     "https://github.com/nvim-lua/plenary.nvim", -- Required by telescope
     { "https://github.com/nvim-telescope/telescope.nvim", opt = true, branch = "0.1.x" },
     "https://github.com/nvim-telescope/telescope-fzy-native.nvim",
-    { "https://github.com/nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
+    { "https://github.com/nvim-treesitter/nvim-treesitter", opt = true, run = function()
+        vim.cmd "packadd nvim-treesitter|TSUpdate"
+    end }
     { "https://github.com/nvim-treesitter/playground", opt = true },
     "https://github.com/ii14/exrc.vim",
     { "https://github.com/dcampos/nvim-snippy", opt = true },
