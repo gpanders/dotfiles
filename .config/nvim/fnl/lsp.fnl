@@ -26,8 +26,10 @@
   (let [ft (. vim.bo bufnr :filetype)]
     (match (. configs ft)
       config (when (= 1 (vim.fn.executable (. config.cmd 1)))
-               (let [[root-marker] (vim.fs.find config.root {:upward true})
-                     root-dir (vim.fs.dirname root-marker)]
+               (let [root-dir (if config.root
+                                  (let [[root-marker] (vim.fs.find config.root {:upward true})]
+                                    (vim.fs.dirname root-marker))
+                                  (vim.loop.cwd))]
                  (vim.lsp.start (vim.tbl_extend :keep config {:root_dir root-dir
                                                               :on_init on-init
                                                               : capabilities
