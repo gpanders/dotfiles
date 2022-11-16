@@ -88,11 +88,11 @@ nnoremap [<Space> <Cmd>put! =repeat(nr2char(10), v:count1)<CR><CR>:']+1<CR>
 nnoremap ]<Space> <Cmd>put =repeat(nr2char(10), v:count1)<CR><CR>:'[-1<CR>
 nnoremap yon <Cmd>setlocal number!<Bar>set nu?<CR>
 nnoremap yor <Cmd>setlocal relativenumber!<Bar>set rnu?<CR>
-nnoremap yol <Cmd>setlocal list!<Bar>set list?<CR>
 nnoremap yoc <Cmd>setlocal cursorline!<Bar>set cul?<CR>
 nnoremap yo<Bar> <Cmd>setlocal cursorcolumn!<Bar>set cuc?<CR>
 nnoremap <expr> yod '<Cmd>' . (&diff ? 'diffoff' : 'diffthis') . '<CR>'
 nnoremap yos <Cmd>setlocal spell!<Bar>set spell?<CR>
+nnoremap yow <Cmd>setlocal wrap!<Bar>set wrap?<CR>
 
 function! Sort(type, ...) abort
     '[,']sort

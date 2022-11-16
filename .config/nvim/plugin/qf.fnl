@@ -1,13 +1,13 @@
-(keymap :n "<Space>q" #(let [{: winid : items} (vim.fn.getqflist {:winid 1 :items 1})]
-                         (match (values winid (length items))
-                           (0 0) nil
-                           (0 n) (vim.cmd (: "copen %d|wincmd p" :format (math.min 10 n)))
-                           _ (vim.cmd.cclose))))
-(keymap :n "<Space>l" #(let [{: winid : items} (vim.fn.getloclist 0 {:winid 1 :items 1})]
-                         (match (values winid (length items))
-                           (0 0) nil
-                           (0 n) (vim.cmd (: "lopen %d|wincmd p" :format (math.min 10 n)))
-                           _ (vim.cmd.lclose))))
+(keymap :n "yoq" #(let [{: winid : items} (vim.fn.getqflist {:winid 1 :items 1})]
+                    (match (values winid (length items))
+                      (0 0) nil
+                      (0 n) (vim.cmd (: "copen %d|wincmd p" :format (math.min 10 n)))
+                      _ (vim.cmd.cclose))))
+(keymap :n "yol" #(let [{: winid : items} (vim.fn.getloclist 0 {:winid 1 :items 1})]
+                    (match (values winid (length items))
+                      (0 0) nil
+                      (0 n) (vim.cmd (: "lopen %d|wincmd p" :format (math.min 10 n)))
+                      _ (vim.cmd.lclose))))
 
 (fn list [prefix dir]
   (match (pcall vim.cmd (.. vim.v.count1 prefix dir))
