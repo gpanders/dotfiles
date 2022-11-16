@@ -14,4 +14,11 @@ function s:install(args)
     packadd nvim-treesitter
     exec 'TSInstall' a:args
 endfunction
-command! -nargs=1 TSInstall call s:install(<q-args>)
+command! -nargs=* TSInstall call s:install(<q-args>)
+
+function s:update(args)
+    delcommand TSUpdate
+    packadd nvim-treesitter
+    exec 'TSUpdate' a:args
+endfunction
+command! -nargs=* TSUpdate call s:update(<q-args>)
