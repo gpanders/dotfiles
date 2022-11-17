@@ -5,7 +5,7 @@ set -euf
 packpath="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/pack/plugins"
 
 plug() {
-	url="$1"
+	url="https://$1"
 	name=${url##*/}
 	type=${2:-start}
 	path="$packpath/$type/$name"
@@ -18,6 +18,34 @@ plug() {
 	fi
 }
 
+prompt() {
+	path="$1"
+	quit=0
+	while true; do
+		printf 'Update? [y/N/l/q] '
+		read -r ans
+		case "$ans" in
+		[yY])
+			git -C "$path" merge --ff-only '@{u}'
+			printf '\n'
+			break
+			;;
+		[lL])
+			git -C "$path" log --patch --color 'HEAD...@{u}'
+			;;
+		[qQ])
+			quit=1
+			break
+			;;
+		*)
+			break
+			;;
+		esac
+	done
+
+	return "$quit"
+}
+
 showlog() {
 	plugins="$(find "$packpath" -mindepth 2 -maxdepth 2 -type d)"
 	for path in $plugins; do
@@ -26,61 +54,37 @@ showlog() {
 			name=${path##*/}
 			printf '%s has %d new commits:\n' "$name" "$count"
 			git -C "$path" log --color --format='%>(12)%C(auto)%h %s' 'HEAD...@{u}'
-			printf '\nUpdate? [y/N/q] '
-			read -r ans
-			case "$ans" in
-			[Yy])
-				git -C "$path" merge --ff-only '@{u}'
-				printf '\n'
-				;;
-			[qQ])
+			if ! prompt "$path"; then
 				break
-				;;
-			*) ;;
-			esac
-
+			fi
 		fi
 	done
 }
 
-github() {
-	name="$1"
-	shift
-	plug "https://github.com/$name" "$@"
-}
-
-tpope() {
-	name="$1"
-	shift
-	plug "https://tpope.io/vim/$name" "$@"
-}
-
-github gpanders/nvim-parinfer
-tpope surround
-tpope commentary
-tpope repeat
-tpope abolish
-tpope eunuch
-tpope rsi
-tpope scriptease opt
-tpope fugitive
-tpope sleuth
-tpope obsession
-tpope dispatch
-github justinmk/vim-dirvish
-github junegunn/vim-easy-align
-github mfussenegger/nvim-lsp-compl
-github lewis6991/gitsigns.nvim
-github nvim-lua/plenary.nvim # Required by telescope
-github nvim-telescope/telescope.nvim opt 0.1.x
-github nvim-telescope/telescope-fzy-native.nvim
-github nvim-treesitter/nvim-treesitter opt
-github nvim-treesitter/playground opt
-github ii14/exrc.vim
-github dcampos/nvim-snippy opt
-
-# Language plugins
-github ziglang/zig.vim
+plug tpope.io/vim/surround
+plug tpope.io/vim/commentary
+plug tpope.io/vim/repeat
+plug tpope.io/vim/abolish
+plug tpope.io/vim/eunuch
+plug tpope.io/vim/rsi
+plug tpope.io/vim/scriptease opt
+plug tpope.io/vim/fugitive
+plug tpope.io/vim/sleuth
+plug tpope.io/vim/obsession
+plug tpope.io/vim/dispatch
+plug github.com/gpanders/nvim-parinfer
+plug github.com/justinmk/vim-dirvish
+plug github.com/junegunn/vim-easy-align
+plug github.com/mfussenegger/nvim-lsp-compl
+plug github.com/lewis6991/gitsigns.nvim
+plug github.com/nvim-lua/plenary.nvim # Required by telescope
+plug github.com/nvim-telescope/telescope.nvim opt 0.1.x
+plug github.com/nvim-telescope/telescope-fzy-native.nvim
+plug github.com/nvim-treesitter/nvim-treesitter opt
+plug github.com/nvim-treesitter/playground opt
+plug github.com/ii14/exrc.vim
+plug github.com/dcampos/nvim-snippy opt
+plug github.com/ziglang/zig.vim
 
 wait
 
