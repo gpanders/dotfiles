@@ -158,4 +158,12 @@ _G.nvim = setmetatable({}, {
         return t[k]
     end,
 })
+
+-- Recursively find .nvimrc files in parent directories
+for dir in vim.fs.parents(vim.loop.cwd()) do
+  local s = vim.secure.read(dir .. "/.nvimrc")
+  if s ~= nil then
+    vim.api.nvim_exec(s, false)
+  end
+end
 .
