@@ -88,3 +88,5 @@ plug github.com/ziglang/zig.vim
 wait
 
 showlog
+
+nvim --headless +'helptags ALL' +q
