@@ -82,7 +82,6 @@ plug github.com/nvim-telescope/telescope.nvim opt 0.1.x
 plug github.com/nvim-telescope/telescope-fzy-native.nvim
 plug github.com/nvim-treesitter/nvim-treesitter opt
 plug github.com/nvim-treesitter/playground opt
-plug github.com/ii14/exrc.vim
 plug github.com/dcampos/nvim-snippy opt
 plug github.com/ziglang/zig.vim
 

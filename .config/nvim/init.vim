@@ -10,6 +10,7 @@ set completeopt=menu,menuone
 set confirm
 set cursorline
 set expandtab
+set exrc
 set foldlevelstart=99
 set ignorecase
 set jumpoptions=view
