@@ -31,6 +31,8 @@ Examples:
                  ""))]
     (when (= opts.noremap nil)
       (set opts.noremap true))
+    (when (and opts.expr (= opts.replace_keycodes nil))
+      (set opts.replace_keycodes true))
     (when (= opts.silent nil)
       (set opts.silent true))
     (let [buf (match opts.buffer

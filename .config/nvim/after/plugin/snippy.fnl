@@ -2,5 +2,23 @@
   #(let [snippy (require :snippy)]
      (snippy.complete_done)))
 
-(keymap [:i :s] "<Tab>" "<Plug>(snippy-expand-or-advance)")
-(keymap [:i :s] "<S-Tab>" "<Plug>(snippy-previous)")
+(keymap :i "<C-]>"
+  #(let [snippy (require :snippy)]
+     (if (snippy.can_expand)
+         "<Plug>(snippy-expand)"
+         "<C-]>"))
+  {:expr true})
+
+(keymap [:i :s] "<C-j>"
+  #(let [snippy (require :snippy)]
+     (if (snippy.can_jump 1)
+         "<Plug>(snippy-next)"
+         "<C-j>"))
+  {:expr true})
+
+(keymap [:i :s] "<C-k>"
+  #(let [snippy (require :snippy)]
+     (if (snippy.can_jump -1)
+         "<Plug>(snippy-next)"
+         "<C-k>"))
+  {:expr true})
