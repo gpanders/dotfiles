@@ -1,7 +1,6 @@
-(autocmd snippy# :InsertEnter {:once true}
-  #(do
-     (vim.cmd "packadd nvim-snippy")
-     (let [snippy (require :snippy)]
-       (snippy.setup {:mappings {:is {:<Tab> :expand_or_advance
-                                      :<S-Tab> :previous}}})
-       (autocmd snippy# :CompleteDone snippy.complete_done))))
+(autocmd snippy# :CompleteDone
+  #(let [snippy (require :snippy)]
+     (snippy.complete_done)))
+
+(keymap [:i :s] "<Tab>" "<Plug>(snippy-expand-or-advance)")
+(keymap [:i :s] "<S-Tab>" "<Plug>(snippy-previous)")
