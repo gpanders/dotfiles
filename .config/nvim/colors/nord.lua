@@ -528,19 +528,12 @@ local highlights = {
     gitcommitSelectedFile = { fg = green },
 
     -- nvim-treesitter
-    TSAnnotation = { link = "Annotation" },
-    TSConstBuiltin = { link = "Constant" },
-    TSConstructor = { link = "Function" },
-    TSEmphasis = { link = "Italic" },
-    TSFuncBuiltin = { link = "Function" },
-    TSFuncMacro = { link = "Function" },
-    TSStringRegex = { link = "SpecialChar" },
-    TSStrong = { link = "Bold" },
-    TSStructure = { link = "Structure" },
-    TSTagDelimiter = { link = "TSTag" },
-    TSUnderline = { link = "Underline" },
-    TSVariable = { link = "Variable" },
-    TSVariableBuiltin = { link = "Keyword" },
+    ["@constant.builtin"] = { link = "Constant" },
+    ["@constructor"] = { link = "Function" },
+    ["@function.builtin"] = { link = "Function" },
+    ["@function.macro"] = { link = "Function" },
+    ["@string.regex"] = { link = "SpecialChar" },
+    ["@variable.builtin"] = { link = "Keyword" },
 
     -- termdebug
     --  debugPC = { fg = cyan, bg = darkgray },
