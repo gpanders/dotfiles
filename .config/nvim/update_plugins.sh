@@ -4,11 +4,14 @@ set -euf
 
 packpath="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/pack/plugins"
 
+plugins=""
+
 plug() {
 	url="https://$1"
 	name=${url##*/}
 	type=${2:-start}
 	path="$packpath/$type/$name"
+	plugins="$plugins $path"
 
 	if [ -d "$path" ]; then
 		git -C "$path" fetch --quiet &
@@ -47,11 +50,27 @@ prompt() {
 }
 
 showlog() {
-	plugins="$(find "$packpath" -mindepth 2 -maxdepth 2 -type d)"
-	for path in $plugins; do
+	tmp=$(mktemp)
+	trap 'rm -f $tmp' EXIT
+	printf '%s\n' "$plugins" > "$tmp"
+	installed="$(find "$packpath" -mindepth 2 -maxdepth 2 -type d)"
+	for path in $installed; do
+		name=${path##*/}
+		if ! grep -qF "$path" "$tmp"; then
+			printf 'Remove %s? [Y/n] ' "$name"
+			read -r ans
+			case "$ans" in
+			[Nn])
+				;;
+			*)
+				rm -rf "$path"
+				;;
+			esac
+			continue
+		fi
+
 		count="$(git -C "$path" rev-list --count 'HEAD...@{u}')"
 		if [ "$count" -gt 0 ]; then
-			name=${path##*/}
 			printf '%s has %d new commits:\n' "$name" "$count"
 			git -C "$path" log --color --format='%>(12)%C(auto)%h %s' 'HEAD...@{u}'
 			if ! prompt "$path"; then
