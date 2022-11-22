@@ -10,7 +10,6 @@ set completeopt=menu,menuone
 set confirm
 set cursorline
 set expandtab
-set exrc
 set foldlevelstart=99
 set ignorecase
 set jumpoptions=view
@@ -160,8 +159,8 @@ _G.nvim = setmetatable({}, {
 })
 
 -- Recursively find .nvimrc files in parent directories
-for dir in vim.fs.parents(vim.loop.cwd()) do
-  local s = vim.secure.read(dir .. "/.nvimrc")
+for _, v in ipairs(vim.fs.find({".nvimrc"}, {upward=true})) do
+  local s = vim.secure.read(v)
   if s ~= nil then
     vim.api.nvim_exec(s, false)
   end
