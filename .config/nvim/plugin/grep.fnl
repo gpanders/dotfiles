@@ -1,6 +1,5 @@
-(fn grep [{: mods : args}]
-  (let [mods (if (= mods "") :botright mods)
-        grepcmd (match (vim.o.grepprg:gsub "%$%*" args)
+(fn grep [{: args}]
+  (let [grepcmd (match (vim.o.grepprg:gsub "%$%*" args)
                   (s n) (if (= n 0)
                             (.. s " " args)
                             s))
@@ -27,7 +26,7 @@
 
 (autocmd grep# :QuickFixCmdPost :grep {:nested true}
   #(let [list (vim.fn.getqflist)]
-     (vim.cmd (.. "cclose|" (math.min 10 (length list)) "cwindow"))))
+     (vim.cmd (.. "cclose|botright " (math.min 10 (length list)) "cwindow"))))
 
 (vim.cmd "
 cnoreabbrev <expr> gr    (getcmdtype() ==# ':' && getcmdline() ==# 'gr')    ? 'Grep'  : 'gr'
