@@ -52,7 +52,7 @@ prompt() {
 showlog() {
 	tmp=$(mktemp)
 	trap 'rm -f $tmp' EXIT
-	printf '%s\n' "$plugins" > "$tmp"
+	printf '%s\n' "$plugins" >"$tmp"
 	installed="$(find "$packpath" -mindepth 2 -maxdepth 2 -type d)"
 	for path in $installed; do
 		name=${path##*/}
@@ -60,8 +60,8 @@ showlog() {
 			printf 'Remove %s? [Y/n] ' "$name"
 			read -r ans
 			case "$ans" in
-			[Nn])
-				;;
+			[Nn]) ;;
+
 			*)
 				rm -rf "$path"
 				;;
