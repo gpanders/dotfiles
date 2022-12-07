@@ -10,7 +10,7 @@ local function compile(path)
 
     local ok, fennel = pcall(require, "fennel")
     if not ok then
-        local version = "1.1.0"
+        local version = "1.2.1"
         local url = string.format("https://fennel-lang.org/downloads/fennel-%s.tar.gz", version)
         local tmpdir = vim.fn.fnamemodify(vim.fn.tempname(), ":h")
         vim.fn.mkdir(tmpdir, "p")
