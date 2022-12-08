@@ -4,8 +4,7 @@
     (nvim.command "packadd telescope.nvim")
     (let [telescope (require :telescope)]
       (telescope.setup {:pickers {:buffers {:sort_mru true}
-                                  :git_files {:show_untracked false
-                                              :use_git_root false}}
+                                  :git_files {:show_untracked true}}
                         :defaults {:dynamic_preview_title true
                                    :mappings {:i {"<Esc>" :close
                                                   "<C-D>" false
@@ -28,7 +27,7 @@
        false nil
        (true "") nil
        (true _) (do
-                  (keymap :n "<Space>f" "<Cmd>Telescope git_files<CR>" {:buffer true})
-                  (keymap :n "<Space>F" "<Cmd>Telescope find_files<CR>" {:buffer true}))))
+                  (keymap :n "<Space>f" "<Cmd>Telescope git_files use_git_root=false<CR>" {:buffer true})
+                  (keymap :n "<Space>F" "<Cmd>Telescope git_files<CR>" {:buffer true}))))
   (autocmd :LspAttach
     #(keymap :n "<Space>s" "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>" {:buffer true})))
