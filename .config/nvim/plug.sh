@@ -102,7 +102,6 @@ plug github.com/nvim-telescope/telescope-fzy-native.nvim
 plug github.com/nvim-treesitter/nvim-treesitter opt
 plug github.com/nvim-treesitter/playground opt
 plug github.com/dcampos/nvim-snippy
-plug github.com/ziglang/zig.vim
 
 wait
 
