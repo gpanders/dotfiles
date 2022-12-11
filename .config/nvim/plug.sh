@@ -10,15 +10,28 @@ plug() {
 	url="https://$1"
 	name=${url##*/}
 	type=${2:-start}
+	after=${4:-''}
 	path="$packpath/$type/$name"
 	plugins="$plugins $path"
 
-	if [ -d "$path" ]; then
-		git -C "$path" fetch --quiet &
-	else
-		printf 'Cloning %s\n' "$name"
-		git clone --quiet --recurse-submodules --shallow-submodules --depth=1 ${3:+--branch $3} "$url" "$path" &
-	fi
+	(
+		if [ -d "$path" ]; then
+			git -C "$path" fetch --quiet
+		else
+			printf 'Cloning %s\n' "$name"
+			git clone \
+				--quiet \
+				--recurse-submodules \
+				--shallow-submodules \
+				--depth=1 \
+				${3:+--branch $3} \
+				"$url" "$path"
+		fi
+
+		if [ -n "$after" ]; then
+			(cd "$path" && sh -c "$after")
+		fi
+	) &
 }
 
 prompt() {
@@ -98,7 +111,7 @@ plug github.com/mfussenegger/nvim-lsp-compl
 plug github.com/lewis6991/gitsigns.nvim
 plug github.com/nvim-lua/plenary.nvim # Required by telescope
 plug github.com/nvim-telescope/telescope.nvim opt 0.1.x
-plug github.com/nvim-telescope/telescope-fzy-native.nvim
+plug github.com/nvim-telescope/telescope-fzf-native.nvim start main make
 plug github.com/nvim-treesitter/nvim-treesitter opt
 plug github.com/dcampos/nvim-snippy
 

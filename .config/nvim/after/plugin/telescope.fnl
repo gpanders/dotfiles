@@ -11,7 +11,7 @@
                                                   "<C-U>" false
                                                   "<S-Down>" :preview_scrolling_down
                                                   "<S-Up>" :preview_scrolling_up}}}})
-      (telescope.load_extension :fzy_native))
+      (telescope.load_extension :fzf))
     (vim.cmd (: "Telescope %s" :format args.args))))
 
 (keymap :n "<Space>f" "<Cmd>Telescope find_files<CR>")
