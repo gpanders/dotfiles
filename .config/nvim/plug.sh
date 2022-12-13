@@ -29,7 +29,8 @@ plug() {
 		fi
 
 		if [ -n "$after" ]; then
-			(cd "$path" && sh -c "$after")
+			cd "$path"
+			sh -c "$after" >/dev/null
 		fi
 	) &
 }
@@ -43,7 +44,6 @@ prompt() {
 		case "$ans" in
 		[yY])
 			git -C "$path" merge --ff-only '@{u}'
-			printf '\n'
 			break
 			;;
 		[lL])
