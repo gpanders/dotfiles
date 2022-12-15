@@ -25,6 +25,7 @@ set shell=/bin/sh
 set shiftwidth=4
 set sidescrolloff=5
 set smartcase
+set splitright
 set statusline=%{%v:lua.require'statusline'.statusline()%}
 set noswapfile
 set tabline=%!v:lua.require'statusline'.tabline()
