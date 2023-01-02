@@ -112,6 +112,9 @@ cnoremap <expr> <C-K> pumvisible() ? '<Up><Tab>' : '<C-K>'
 vnoremap p P
 vnoremap P p
 
+" Use zS mapping from scriptease for :Inspect
+nnoremap zS <Cmd>Inspect<CR>
+
 augroup init
   autocmd!
 
