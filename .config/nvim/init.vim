@@ -125,15 +125,6 @@ augroup init
   " Highlight yanked text
   autocmd TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150, on_visual=true}
 
-  " Auto close shell terminals (#15440)
-  autocmd TermClose *
-        \ if !v:event.status |
-        \   let info = nvim_get_chan_info(&channel) |
-        \   if get(info, 'argv', []) ==# [&shell] |
-        \     exec 'bdelete! ' .. expand('<abuf>') |
-        \   endif |
-        \ endif
-
   " Hide cursorline in insert mode and when the current window doesn't have
   " focus
   autocmd InsertEnter * setlocal nocursorline

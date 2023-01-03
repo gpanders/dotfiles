@@ -6,12 +6,13 @@
     (when ?tag
       (tset vim.b bufnr ?tag true))
     (augroup term#
-      (autocmd :TermClose {:buffer bufnr}
-        "Automatically close window if it exits without error"
-        #(when (= 0 vim.v.event.status)
-           (let [exe (. cmd 1)]
-             (match (nvim.get_chan_info vim.bo.channel)
-               {:argv [exe] :buffer bufnr} (nvim.command (.. "bdelete! " bufnr))))))
+      (when (and (= default-command (. cmd 1)) (= 1 (length cmd)))
+        (autocmd :TermClose {:buffer bufnr}
+          "Automatically close window if it exits without error"
+          #(when (= 0 vim.v.event.status)
+             (let [exe (vim.fn.exepath (. cmd 1))]
+               (match (nvim.get_chan_info vim.bo.channel)
+                 {:argv [exe] :buffer bufnr} (nvim.command (.. "bdelete! " bufnr)))))))
       (autocmd :BufWinLeave {:buffer bufnr}
         "Remember height of buffer window"
         (fn []
@@ -45,7 +46,6 @@
   (fn [{: args}]
     (let [args (if (= "" args) default-command args)
           cmd (vim.split args " " {})]
-      (tset cmd 1 (vim.fn.exepath (. cmd 1)))
       (open-term-win cmd))))
 
 (keymap :n "t<CR>" #(open-term-win default-command (: "term%d" :format vim.v.count)))
