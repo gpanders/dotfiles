@@ -20,7 +20,7 @@ set list
 set path=.,,
 set pumheight=10
 set scrolloff=2
-set shada='100,<50,s10,:100,/100,h
+set shada='100,<50,s10,:100,/100,h,r/tmp/,r/private/,rfugitive:,rzipfile:,rterm:
 set shell=/bin/sh
 set shiftwidth=4
 set sidescrolloff=5
