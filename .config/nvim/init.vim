@@ -110,6 +110,15 @@ cnoremap <expr> <C-N> wildmenumode() ? '<C-N>' : '<Down>'
 cnoremap <expr> <C-J> pumvisible() ? '<Down><Tab>' : '<C-J>'
 cnoremap <expr> <C-K> pumvisible() ? '<Up><Tab>' : '<C-K>'
 
+" Readline-style bindings in command and insert modes
+inoremap <C-B> <Left>
+inoremap <C-F> <Right>
+cnoremap <C-A> <Home>
+cnoremap <C-B> <Left>
+cnoremap <expr> <C-F> getcmdpos() == (len(getcmdline()) + 1) ? '<C-F>' : '<Right>'
+cnoremap <C-X><C-A> <C-A>
+cnoremap <C-X><C-F> <C-F>
+
 " Swap p and P in visual mode
 vnoremap p P
 vnoremap P p

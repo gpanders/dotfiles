@@ -98,7 +98,6 @@ plug tpope.io/vim/commentary
 plug tpope.io/vim/repeat
 plug tpope.io/vim/abolish
 plug tpope.io/vim/eunuch
-plug tpope.io/vim/rsi
 plug tpope.io/vim/fugitive
 plug tpope.io/vim/sleuth
 plug tpope.io/vim/obsession
