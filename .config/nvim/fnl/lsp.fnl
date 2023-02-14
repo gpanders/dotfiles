@@ -5,8 +5,8 @@
     (set vim.lsp.text_document_completion_list_to_complete_items lsp-compl.text_document_completion_list_to_complete_items)
     (when client.server_capabilities.signatureHelpProvider
       (set client.server_capabilities.signatureHelpProvider.triggerCharacters [])))
-  (when result.offsetEncoding
-    (set client.offset_encoding result.offsetEncoding)))
+  (match (or result.offsetEncoding result.capabilities.positionEncoding)
+    enc (set client.offset_encoding enc)))
 
 (fn hover [_ result ctx]
   ((. vim.lsp.handlers "textDocument/hover") _ result ctx {:border :rounded}))
@@ -66,8 +66,7 @@
              :root [".clangd" ".clang-format" "compile_commands.json" "compile_flags.txt"]
              :flags {:debounce_text_changes 20}
              :capabilities {:textDocument {:completion {:editsNearCursor true}}
-                            :offsetEncoding {:utf-8 :utf-16}}
-             :offset_encoding :utf-16}
+                            :offsetEncoding [:utf-8 :utf-16]}}
   [:go :gomod] {:cmd [:gopls]
                 :root ["go.mod"]
                 :settings {:gopls {:analyses {:unusedparams true
@@ -82,7 +81,8 @@
            :name "pyright"
            :root ["pyproject.toml" "setup.py" "setup.cfg" "requirements.txt" "Pipfile" "pyrightconfig.json"]}
   :rust {:cmd [:rust-analyzer]
-         :root ["Cargo.toml"]}
+         :root ["Cargo.toml"]
+         :capabilities {:general {:positionEncodings [:utf-8 :utf-16]}}}
   :haskell {:cmd ["haskell-language-server-wrapper" "--lsp"]
             :name :hls
             :root ["*.cabal" "stack.yaml" "cabal.project" "package.yaml" "hie.yaml"]
