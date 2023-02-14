@@ -8,13 +8,13 @@ local function compile(path)
         return
     end
 
+    local fennel_version = "1.3.0"
     local ok, fennel = pcall(require, "fennel")
-    if not ok then
-        local version = "1.2.1"
-        local url = string.format("https://fennel-lang.org/downloads/fennel-%s.tar.gz", version)
+    if not ok or fennel.version ~= fennel_version then
+        local url = string.format("https://fennel-lang.org/downloads/fennel-%s.tar.gz", fennel_version)
         local tmpdir = vim.fn.fnamemodify(vim.fn.tempname(), ":h")
         vim.fn.mkdir(tmpdir, "p")
-        print(string.format("Downloading Fennel %s...", version, tmpdir))
+        print(string.format("Downloading Fennel %s...", fennel_version, tmpdir))
         local stderr
         local jobid = vim.fn.jobstart(string.format("curl -sS -o '%s/fennel.tar.gz' '%s'", tmpdir, url), {
             stderr_buffered = true,
@@ -33,20 +33,31 @@ local function compile(path)
 
         local fennel_path = vim.fn.stdpath("data") .. "/site/lua/fennel.lua"
         vim.fn.mkdir(vim.fn.fnamemodify(fennel_path, ":h"), "p")
-        vim.fn.system(string.format("mv %s/fennel-%s/fennel.lua %s", tmpdir, version, fennel_path))
+        out = vim.fn.system(string.format("mv %s/fennel-%s/fennel.lua %s", tmpdir, fennel_version, fennel_path))
         assert(vim.v.shell_error == 0, out)
 
+        -- Clear all cached modules from an existing fennel installation.
+        -- Without this, dofile() below will simply reload the existing version
+        -- of fennel instead of picking up the new one
+        for _, v in ipairs({"loaded", "preload"}) do
+            for k in pairs(package[v]) do
+                if k:match("^fennel%.?") then
+                    package[v][k] = nil
+                end
+            end
+        end
+
         fennel = assert(dofile(fennel_path))
-        package.loaded["fennel"] = fennel
+        package.loaded.fennel = fennel
     end
 
-    local f = io.open(path)
-    if not f then
-        return
-    end
-
+    local f = assert(io.open(path))
     local src = f:read("*a")
     f:close()
+
+    if not src then
+        return
+    end
 
     local macro_path = fennel["macro-path"]
     fennel["macro-path"] = macro_path .. ";" .. vim.fn.stdpath("config") .. "/fnl/?.fnl"
