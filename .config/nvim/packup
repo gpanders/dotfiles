@@ -105,6 +105,7 @@ plug tpope.io/vim/dispatch
 plug github.com/gpanders/nvim-parinfer
 plug github.com/justinmk/vim-dirvish
 plug github.com/junegunn/vim-easy-align
+plug github.com/junegunn/vim-peekaboo
 plug github.com/mfussenegger/nvim-lsp-compl
 plug github.com/lewis6991/gitsigns.nvim
 plug github.com/nvim-lua/plenary.nvim # Required by telescope
