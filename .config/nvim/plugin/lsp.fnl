@@ -68,6 +68,7 @@
                        _ (nvim.err_writeln (: "Ambiguous command: %s can match any of %s" :format cmd (table.concat matches ", ")))))))))
 
   (vim.cmd "cnoreabbrev <expr> lsp (getcmdtype() ==# ':' && getcmdline() ==# 'lsp') ? 'Lsp' : 'lsp'")
-  (keymap :n "<Space>cc" #(if vim.g.lsp_autostart
-                              (commands.disable)
-                              (commands.enable))))
+  (keymap :n "<Space>cc" #(let [lsp (require :lsp)]
+                            (if vim.g.lsp_autostart
+                                (lsp.disable)
+                                (lsp.enable)))))
