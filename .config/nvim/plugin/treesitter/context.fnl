@@ -65,13 +65,16 @@
     (-> (nvim.buf_get_text bufnr start-row 0 (or end-row (+ start-row 1)) (or end-col 0) {})
         (table.concat " ")
         (string.gsub "(%S)%s+" "%1 ")
+        (string.gsub "%(%s+" "(")
+        (string.gsub "%s+%)" ")")
         (string.gsub "%s*$" "")
         (->> (pick-values 1)))))
 
 (fn close []
   (match state.winid
     w (do
-        (nvim.win_close w true)
+        (when (nvim.win_is_valid w)
+          (nvim.win_close w true))
         (set state.winid nil))))
 
 (fn show-context [bufnr]
