@@ -110,7 +110,7 @@ plug github.com/mfussenegger/nvim-lsp-compl
 plug github.com/lewis6991/gitsigns.nvim
 plug github.com/nvim-lua/plenary.nvim # Required by telescope
 plug github.com/nvim-telescope/telescope.nvim opt 0.1.x
-plug github.com/natecraddock/telescope-zf-native.nvim
+plug github.com/nvim-telescope/telescope-fzf-native.nvim start main make
 plug github.com/nvim-treesitter/nvim-treesitter opt
 plug github.com/dcampos/nvim-snippy
 
