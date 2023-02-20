@@ -2,4 +2,5 @@
   [
     (pointer_declarator (function_declarator))
     (function_declarator)
-  ] @end) @context
+  ] @end-toc
+  body: (compound_statement "{" @end)) @context

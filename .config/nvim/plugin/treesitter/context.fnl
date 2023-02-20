@@ -49,14 +49,14 @@
                            (and (= end-row start-row) (< end-col start-col))))))))
     scopes))
 
-(fn context-text [bufnr node ?query]
+(fn context-text [bufnr node ?query ?end-capture]
   (let [query (or ?query (vim.treesitter.get_query (. vim.bo bufnr :filetype) :context))
         captures (collect [k v (pairs query.captures)] (values v k))
         (start-row start-col) (node:start)
         (end-row end-col) (do
                             (var end-node nil)
                             (each [pat mat (query:iter_matches node bufnr) :until end-node]
-                              (match (. mat captures.end)
+                              (match (. mat (. captures (or ?end-capture :end)))
                                 end (let [nod (. mat captures.context)]
                                       (match (nod:start)
                                         (start-row start-col) (set end-node end)))))
@@ -76,22 +76,24 @@
 
 (fn show-context [bufnr]
   (match (context bufnr)
-    contexts (let [lang (. vim.bo bufnr :filetype)
-                   win (nvim.get_current_win)
+    contexts (let [win (nvim.get_current_win)
                    [{: textoff : topline}] (vim.fn.getwininfo win)
                    width (- (nvim.win_get_width win) textoff)]
                (var text [])
                (each [_ ctx (ipairs contexts)]
                  (let [start-row (ctx:start)]
                    (if (< start-row (+ (- topline 1) (length text)))
-                       (table.insert text (context-text bufnr ctx)))))
+                       (let [t (context-text bufnr ctx)]
+                         (table.insert text (if (< (length t) width)
+                                                t
+                                                (: "%s ..." :format (t:sub 1 (- width 4)))))))))
                (if (< 0 (length text))
                    (let [b (match (?. state bufnr :bufnr)
                              (where n (vim.api.nvim_buf_is_valid n)) n
                              _ (let [b (vim.api.nvim_create_buf false true)]
                                  (tset vim.bo b :buftype :nofile)
                                  (tset vim.bo b :readonly true)
-                                 (tset vim.bo b :syntax (. vim.bo bufnr :filetype))
+                                 (tset vim.bo b :filetype (. vim.bo bufnr :filetype))
                                  (when (not (. state bufnr))
                                    (tset state bufnr {}))
                                  (tset state bufnr :bufnr b)
@@ -114,6 +116,7 @@
                                                                :style :minimal
                                                                :noautocmd true})]
                                  (tset vim.wo w :winhighlight "NormalFloat:TreesitterContext")
+                                 (tset vim.wo w :linebreak false)
                                  (set state.winid w)
                                  w))]
                      (nvim.win_set_buf w b)
@@ -133,7 +136,7 @@
         (each [id subnode (query:iter_captures root-node)]
           (when (= id context-id)
             (let [(lnum _ end-lnum _) (subnode:range)]
-              (table.insert items {:text (context-text buf subnode query)
+              (table.insert items {:text (context-text buf subnode query :end-toc)
                                    :bufnr buf
                                    :lnum (+ lnum 1)
                                    :end_lnum (+ end-lnum 1)}))))

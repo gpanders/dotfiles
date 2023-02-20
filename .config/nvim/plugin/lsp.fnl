@@ -32,6 +32,7 @@
 (autocmd lsp# :FileType "*"
   (fn [{: buf}]
     (when (and (not= vim.g.lsp_autostart false)
+               (= (. vim.bo buf :buftype) "")
                (nvim.buf_is_valid buf)
                (nvim.buf_is_loaded buf))
       (let [lsp (require :lsp)]

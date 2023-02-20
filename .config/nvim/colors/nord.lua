@@ -511,6 +511,8 @@ local highlights = {
     yamlDocumentStart = { link = "Keyword" },
     yamlKey = { fg = brightcyan },
 
+    ["@attribute.zig"] = { link = "Keyword" },
+
     ------------------
     -- Plugin Support
     ------------------
