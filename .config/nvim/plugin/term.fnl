@@ -30,7 +30,7 @@
 (fn open-term-win [cmd ?tag]
   (var bufnr nil)
   (when ?tag
-    (each [_ b (ipairs (nvim.list_bufs)) :until bufnr]
+    (each [_ b (ipairs (nvim.list_bufs)) &until bufnr]
       (when (. vim.b b ?tag)
         (set bufnr b))))
   (when (not bufnr)

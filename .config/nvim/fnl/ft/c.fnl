@@ -12,7 +12,7 @@
             dirs []]
         (f:close)
         (var stop? false)
-        (each [_ v (ipairs commands) :until stop?]
+        (each [_ v (ipairs commands) &until stop?]
           (when (or (= fname v.file) (= relname v.file))
             (set stop? true)
             (var include-next false)

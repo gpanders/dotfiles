@@ -52,7 +52,7 @@ Examples:
         pattern (if (or (= (type (. args 1)) :string) (sym? (. args 1)) (sequence? (. args 1)))
                     (table.remove args 1))
         opts (if (table? (. args 1))
-                 (collect [k v (pairs (table.remove args 1)) :into {: group}]
+                 (collect [k v (pairs (table.remove args 1)) &into {: group}]
                    (values k v))
                  {: group})
         desc (if (= (type (. args 1)) :string) (table.remove args 1))

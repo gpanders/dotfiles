@@ -15,7 +15,7 @@
     (var score math.huge)
     (var diag nil)
     (var done? false)
-    (each [_ v (ipairs (. cache buf) :until done?)]
+    (each [_ v (ipairs (. cache buf) &until done?)]
       (match v
         {: lnum : col : end_col}
         (if (<= col curcol end_col)
