@@ -1,3 +1,3 @@
-(Decl (FnProto function: (IDENTIFIER) (ErrorUnionExpr) @end-toc) (Block "{" @end)) @context
-(Decl (VarDecl (ErrorUnionExpr (SuffixExpr (ContainerDecl (ContainerDeclType) @end-toc "{" @end))))) @context
-(TestDecl (STRINGLITERALSINGLE) @end-toc (Block "{" @end)) @context
+(Decl (FnProto function: (IDENTIFIER) (ErrorUnionExpr) @toc) (Block "{" @text)) @context
+(Decl (VarDecl (ErrorUnionExpr (SuffixExpr (ContainerDecl (ContainerDeclType) @toc "{" @text))))) @context
+(TestDecl (STRINGLITERALSINGLE) @toc (Block "{" @text)) @context

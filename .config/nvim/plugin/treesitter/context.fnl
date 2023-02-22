@@ -1,11 +1,28 @@
+;; This plugin shows the "context" of the cursor position in a buffer. The
+;; context is usually (but not necessarily) a function. If the beginning of the
+;; current context is not visible in the window, a floating window is created
+;; at the top of the current window that shows the current context.
+;;
+;; The context is language dependent and is defined by a "context" query. The
+;; text shown in the floating window is the first line of the context, unless a
+;; @text capture is used, in which case the text shown is from the beginning of
+;; the context until the node specified by the @text capture.
+;;
+;; This plugin also provides a table of contents (TOC) function. This shows all
+;; of the contexts within a buffer in the location list. The text for each TOC
+;; entry is the same as the text in the floating window, unless the context
+;; query uses a @toc capture, in which case the text is the beginning of the
+;; context until the node specified by the @toc capture.
+
 (local state {})
 
-(local lang-has-parser
+(local filetype-has-parser
        (let [lut {}]
-         (fn [lang]
-           (match (. lut lang)
-             nil (let [has-parser (vim.treesitter.language.require_language lang nil true)]
-                   (tset lut lang has-parser)
+         (fn [ft]
+           (match (. lut ft)
+             nil (let [lang (or (vim.treesitter.language.get_lang ft) ft)
+                       has-parser (vim.treesitter.language.add lang {:silent true :filetype ft})]
+                   (tset lut ft has-parser)
                    has-parser)
              v v))))
 
@@ -24,45 +41,40 @@
             (and (= end-row other-end-row) (<= other-end-col end-col)))
         (and (= start-row other-start-row) (<= other-end-col end-col)))))
 
-(fn node-at-cursor []
-  (let [bufnr (nvim.get_current_buf)]
-    (match (root bufnr)
-      root-node (let [[lnum col] (nvim.win_get_cursor 0)
-                      lnum (- lnum 1)]
-                  (root-node:named_descendant_for_range lnum col lnum col)))))
-
 (fn context [bufnr]
-  (let [scopes []
-        lang (. vim.bo bufnr :filetype)]
-    (match (vim.treesitter.query.get_query lang :context)
-      query
-      (let [cursor-node (node-at-cursor)
-            (end-row end-col) (cursor-node:end_)
-            [context-id] (icollect [i v (ipairs query.captures)]
-                           (if (= v :context) i))]
-        (var done? false)
-        (each [id node (query:iter_captures (root bufnr)) :until done?]
-          (when (and (= id context-id) (contains-node? node cursor-node))
-            (table.insert scopes node))
-          (let [(start-row start-col) (node:start)]
-            (set done? (or (< end-row start-row)
-                           (and (= end-row start-row) (< end-col start-col))))))))
-    scopes))
+  (let [ft (. vim.bo bufnr :filetype)
+        lang (or (vim.treesitter.language.get_lang ft) ft)
+        query (vim.treesitter.get_query lang :context)]
+    (when query
+      (let [cursor-node (vim.treesitter.get_node)]
+        (when cursor-node
+          (let [scopes []
+                (end-row end-col) (cursor-node:end_)
+                captures (collect [k v (pairs query.captures)] (values v k))]
+            (each [id ctx (query:iter_captures (root bufnr) bufnr 0 end-row)]
+              (when (and (= id captures.context) (contains-node? ctx cursor-node))
+                (table.insert scopes ctx)))
+           scopes))))))
 
 (fn context-text [bufnr node ?query ?end-capture]
-  (let [query (or ?query (vim.treesitter.get_query (. vim.bo bufnr :filetype) :context))
+  (let [ft (. vim.bo bufnr :filetype)
+        lang (or (vim.treesitter.language.get_lang ft) ft)
+        query (or ?query (vim.treesitter.get_query lang :context))
         captures (collect [k v (pairs query.captures)] (values v k))
         (start-row start-col) (node:start)
         (end-row end-col) (do
                             (var end-node nil)
-                            (each [pat mat (query:iter_matches node bufnr) :until end-node]
-                              (match (. mat (. captures (or ?end-capture :end)))
-                                end (let [nod (. mat captures.context)]
-                                      (match (nod:start)
-                                        (start-row start-col) (set end-node end)))))
+                            (each [_ mat (query:iter_matches node bufnr) &until end-node]
+                              (match (. mat (. captures (or ?end-capture :text)))
+                                text (let [ctx (. mat captures.context)]
+                                       (match (ctx:start)
+                                         (start-row start-col) (set end-node text)))))
                             (when end-node
-                              (end-node:end_)))]
-    (-> (nvim.buf_get_text bufnr start-row 0 (or end-row (+ start-row 1)) (or end-col 0) {})
+                              (end-node:end_)))
+        text (if (and end-row end-col)
+                 (nvim.buf_get_text bufnr start-row 0 end-row end-col {})
+                 (nvim.buf_get_lines bufnr start-row (+ start-row 1) true))]
+    (-> text
         (table.concat " ")
         (string.gsub "(%S)%s+" "%1 ")
         (string.gsub "%(%s+" "(")
@@ -79,6 +91,7 @@
 
 (fn show-context [bufnr]
   (match (context bufnr)
+    nil (close)
     contexts (let [win (nvim.get_current_win)
                    [{: textoff : topline}] (vim.fn.getwininfo win)
                    width (- (nvim.win_get_width win) textoff)]
@@ -87,10 +100,16 @@
                  (let [start-row (ctx:start)]
                    (if (< start-row (+ (- topline 1) (length text)))
                        (let [t (context-text bufnr ctx)]
-                         (table.insert text (if (< (length t) width)
-                                                t
-                                                (: "%s ..." :format (t:sub 1 (- width 4)))))))))
-               (if (< 0 (length text))
+                         (var end-node ctx)
+                         (while (end-node:named)
+                           (set end-node (end-node:child (- (end-node:child_count) 1))))
+                         (let [end-text (end-node:type)]
+                           (table.insert text (+ (/ (length text) 2) 1) (if (< (length t) width)
+                                                                            t
+                                                                            (: "%s ..." :format (t:sub 1 (- width 4)))))
+                           (table.insert text (+ (/ (length text) 2) 2) end-text))))))
+               (local height (/ (length text) 2))
+               (if (< 0 height)
                    (let [b (match (?. state bufnr :bufnr)
                              (where n (vim.api.nvim_buf_is_valid n)) n
                              _ (let [b (vim.api.nvim_create_buf false true)]
@@ -106,7 +125,7 @@
                                                                (nvim.win_set_config n {:relative :win
                                                                                        :row 0
                                                                                        :col textoff
-                                                                                       :height (length text)
+                                                                                       : height
                                                                                        : width})
                                                                n)
                              _ (let [w (nvim.open_win b false {:relative :win
@@ -114,7 +133,7 @@
                                                                :row 0
                                                                :col textoff
                                                                : width
-                                                               :height (length text)
+                                                               : height
                                                                :focusable false
                                                                :style :minimal
                                                                :noautocmd true})]
@@ -124,8 +143,7 @@
                                  w))]
                      (nvim.win_set_buf w b)
                      (nvim.buf_set_lines b 0 -1 true text))
-                   (close)))
-    _ (close)))
+                   (close)))))
 
 (fn toc []
   (let [buf (nvim.get_current_buf)
@@ -133,16 +151,15 @@
     (match (vim.treesitter.query.get_query lang :context)
       query
       (let [root-node (root buf)
-            items []
             [context-id] (icollect [i v (ipairs query.captures)]
-                           (if (= v :context) i))]
-        (each [id subnode (query:iter_captures root-node)]
-          (when (= id context-id)
-            (let [(lnum _ end-lnum _) (subnode:range)]
-              (table.insert items {:text (context-text buf subnode query :end-toc)
-                                   :bufnr buf
-                                   :lnum (+ lnum 1)
-                                   :end_lnum (+ end-lnum 1)}))))
+                           (if (= v :context) i))
+            items (icollect [id subnode (query:iter_captures root-node)]
+                    (when (= id context-id)
+                      (let [(lnum _ end-lnum _) (subnode:range)]
+                        {:text (context-text buf subnode query :toc)
+                         :bufnr buf
+                         :lnum (+ lnum 1)
+                         :end_lnum (+ end-lnum 1)})))]
         (vim.fn.setloclist 0 [] " " {: items
                                      :title (.. "Contexts in " (-> (nvim.buf_get_name buf)
                                                                    (vim.fn.fnamemodify ":.")))})
@@ -153,12 +170,13 @@
   (autocmd [:WinScrolled :WinEnter :CursorMoved :CursorMovedI] "*"
     #(match (vim.fn.getcmdwintype)
        "" (let [buf (nvim.get_current_buf)
-                lang (. vim.bo buf :filetype)]
-            (if (lang-has-parser lang)
+                ft (. vim.bo buf :filetype)]
+            (if (filetype-has-parser ft)
                 (show-context buf)
                 (close)))))
   (autocmd :FileType
     (fn [{: buf}]
-      (let [lang (. vim.bo buf :filetype)]
-        (when (lang-has-parser lang)
+      (let [ft (. vim.bo buf :filetype)
+            lang (or (vim.treesitter.language.get_lang ft) ft)]
+        (when (filetype-has-parser ft)
           (keymap :n "gO" toc {:buffer buf}))))))
