@@ -1,5 +1,5 @@
-(when (= nil vim.g.lsp_autostart)
-  (set vim.g.lsp_autostart false))
+(when (= nil vim.g.lsp)
+  (set vim.g.lsp {:autostart false}))
 
 (augroup lsp#
   (autocmd :LspAttach
@@ -14,8 +14,12 @@
         (keymap :n "K" vim.lsp.buf.hover {:buffer buf}))
       (keymap :n "[R" vim.lsp.buf.references {:buffer buf})
       (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer buf})
-      (keymap :n "<Space>cr" vim.lsp.buf.rename {:buffer buf})
-      (keymap :n "<Space>ca" vim.lsp.buf.code_action {:buffer buf})
+      (keymap :n "<Space>r" vim.lsp.buf.rename {:buffer buf})
+      (keymap :n "<Space>a" vim.lsp.buf.code_action {:buffer buf})
+
+      (autocmd lsp# :BufWritePre #(when (vim.F.if_nil (?. vim.b.lsp :autoformat)
+                                                      (vim.F.if_nil vim.g.lsp.autoformat false))
+                                    (vim.lsp.buf.format {:bufnr buf})))
 
       (let [lsp-compl (require :lsp_compl)]
         (match client.name
@@ -31,7 +35,7 @@
 
 (autocmd lsp# :FileType "*"
   (fn [{: buf}]
-    (when (and (not= vim.g.lsp_autostart false)
+    (when (and (not= vim.g.lsp.autostart false)
                (= (. vim.bo buf :buftype) "")
                (nvim.buf_is_valid buf)
                (nvim.buf_is_loaded buf))
@@ -70,6 +74,6 @@
 
   (vim.cmd "cnoreabbrev <expr> lsp (getcmdtype() ==# ':' && getcmdline() ==# 'lsp') ? 'Lsp' : 'lsp'")
   (keymap :n "<Space>cc" #(let [lsp (require :lsp)]
-                            (if vim.g.lsp_autostart
+                            (if vim.g.lsp.autostart
                                 (lsp.disable)
                                 (lsp.enable)))))

@@ -36,7 +36,7 @@
                                                               : handlers})))))))
 
 (fn enable []
-  (set vim.g.lsp_autostart true)
+  (set vim.g.lsp.autostart true)
   (let [curbuf (nvim.get_current_buf)]
     (start curbuf)
     (each [_ buf (ipairs (nvim.list_bufs))]
@@ -44,7 +44,7 @@
         (autocmd :BufEnter {:buffer buf :once true} #(start buf))))))
 
 (fn disable []
-  (set vim.g.lsp_autostart false)
+  (set vim.g.lsp.autostart false)
   (vim.lsp.stop_client (vim.lsp.get_active_clients)))
 
 (macro setup [...]
