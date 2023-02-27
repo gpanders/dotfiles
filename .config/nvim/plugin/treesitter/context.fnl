@@ -21,7 +21,7 @@
          (fn [ft]
            (match (. lut ft)
              nil (let [lang (or (vim.treesitter.language.get_lang ft) ft)
-                       has-parser (vim.treesitter.language.add lang {:silent true :filetype ft})]
+                       has-parser (pcall vim.treesitter.language.add lang {:filetype ft})]
                    (tset lut ft has-parser)
                    has-parser)
              v v))))
