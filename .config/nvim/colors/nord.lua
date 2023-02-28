@@ -319,6 +319,7 @@ local highlights = {
     jsRegexpString = { link = "SpecialChar" },
 
     jsonKeyword = { fg = brightcyan },
+    jsonCommentError = { link = "Comment" },
 
     lessClass = { fg = brightcyan },
     lessAmpersand = { link = "Keyword" },
