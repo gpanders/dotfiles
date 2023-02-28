@@ -36,7 +36,7 @@
                (let [bufname (vim.fn.bufname v.bufnr)]
                  (var done? false)
                  (each [src dst (pairs map) &until done?]
-                   (let [(fullpath n) (bufname:gsub (: "^%s" :format src) dst)]
+                   (let [(fullpath n) (bufname:gsub src dst)]
                      (when (< 0 n)
                        (set done? true)
                        (tset delete v.bufnr true)
