@@ -17,9 +17,10 @@
       (keymap :n "<Space>r" vim.lsp.buf.rename {:buffer buf})
       (keymap :n "<Space>a" vim.lsp.buf.code_action {:buffer buf})
 
-      (autocmd lsp# :BufWritePre #(when (vim.F.if_nil (?. vim.b.lsp :autoformat)
-                                                      (vim.F.if_nil vim.g.lsp.autoformat false))
-                                    (vim.lsp.buf.format {:bufnr buf})))
+      (autocmd lsp# :BufWritePre {:buffer buf}
+        #(when (vim.F.if_nil (?. vim.b.lsp :autoformat)
+                             (vim.F.if_nil vim.g.lsp.autoformat false))
+           (vim.lsp.buf.format {:bufnr buf})))
 
       (let [lsp-compl (require :lsp_compl)]
         (match client.name
