@@ -1,9 +1,13 @@
 vim.filetype.add({
     extension = {
         h = function()
-            -- Use a lazy heuristic that #including a C++ header means it's a
-            -- C++ header
-            if vim.fn.search("\\C^#include <[^>.]\\+>$", "nw") ~= 0 then
+            -- Try to be a little intelligent when determining if a .h file is C++ or C
+            if
+                vim.fn.search(
+                    "\\C\\%(^#include <[^>.]\\+>$\\|\\<constexpr\\>\\|^class\\> [A-Z]\\|^using\\>\\|\\<std::\\)",
+                    "nw"
+                ) ~= 0
+            then
                 return "cpp"
             end
             return "c"
