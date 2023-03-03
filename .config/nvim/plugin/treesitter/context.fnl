@@ -54,7 +54,9 @@
             (each [id ctx (query:iter_captures (root bufnr) bufnr 0 end-row)]
               (when (and (= id captures.context) (contains-node? ctx cursor-node))
                 (table.insert scopes ctx)))
-           scopes))))))
+           (match (length scopes)
+             0 nil
+             _ scopes)))))))
 
 (fn context-text [bufnr node ?query ?end-capture]
   (let [ft (. vim.bo bufnr :filetype)
@@ -89,61 +91,71 @@
           (nvim.win_close w true))
         (set state.winid nil))))
 
+(fn stale? [contexts width topline]
+  (let [ctx (. contexts (length contexts) :id)]
+    (match state.last
+      {: ctx : width : topline} false
+      _ true)))
+
 (fn show-context [bufnr]
   (match (context bufnr)
-    nil (close)
+    nil (do
+          (set state.last nil)
+          (close))
     contexts (let [win (nvim.get_current_win)
                    [{: textoff : topline}] (vim.fn.getwininfo win)
                    width (- (nvim.win_get_width win) textoff)]
-               (var text [])
-               (each [_ ctx (ipairs contexts)]
-                 (let [start-row (ctx:start)]
-                   (if (< start-row (+ (- topline 1) (length text)))
-                       (let [t (context-text bufnr ctx)]
-                         (var end-node ctx)
-                         (while (end-node:named)
-                           (set end-node (end-node:child (- (end-node:child_count) 1))))
-                         (let [end-text (end-node:type)]
-                           (table.insert text (+ (/ (length text) 2) 1) (if (< (length t) width)
-                                                                            t
-                                                                            (: "%s ..." :format (t:sub 1 (- width 4)))))
-                           (table.insert text (+ (/ (length text) 2) 2) end-text))))))
-               (local height (/ (length text) 2))
-               (if (< 0 height)
-                   (let [b (match (?. state bufnr :bufnr)
-                             (where n (vim.api.nvim_buf_is_valid n)) n
-                             _ (let [b (vim.api.nvim_create_buf false true)]
-                                 (tset vim.bo b :buftype :nofile)
-                                 (tset vim.bo b :readonly true)
-                                 (tset vim.bo b :filetype (. vim.bo bufnr :filetype))
-                                 (when (not (. state bufnr))
-                                   (tset state bufnr {}))
-                                 (tset state bufnr :bufnr b)
-                                 b))
-                         w (match state.winid
-                             (where n (nvim.win_is_valid n)) (do
-                                                               (nvim.win_set_config n {:relative :win
-                                                                                       :row 0
-                                                                                       :col textoff
-                                                                                       : height
-                                                                                       : width})
-                                                               n)
-                             _ (let [w (nvim.open_win b false {:relative :win
-                                                               :win win
-                                                               :row 0
-                                                               :col textoff
-                                                               : width
-                                                               : height
-                                                               :focusable false
-                                                               :style :minimal
-                                                               :noautocmd true})]
-                                 (tset vim.wo w :winhighlight "NormalFloat:TreesitterContext")
-                                 (tset vim.wo w :linebreak false)
-                                 (set state.winid w)
-                                 w))]
-                     (nvim.win_set_buf w b)
-                     (nvim.buf_set_lines b 0 -1 true text))
-                   (close)))))
+               (when (stale? contexts width topline)
+                 (set state.last {:ctx (. contexts (length contexts) :id) : width : topline})
+                 (var text [])
+                 (each [_ ctx (ipairs contexts)]
+                   (let [start-row (ctx:start)]
+                     (if (< start-row (+ (- topline 1) (length text)))
+                         (let [t (context-text bufnr ctx)]
+                           (var end-node ctx)
+                           (while (end-node:named)
+                             (set end-node (end-node:child (- (end-node:child_count) 1))))
+                           (let [end-text (end-node:type)]
+                             (table.insert text (+ (/ (length text) 2) 1) (if (< (length t) width)
+                                                                              t
+                                                                              (: "%s ..." :format (t:sub 1 (- width 4)))))
+                             (table.insert text (+ (/ (length text) 2) 2) end-text))))))
+                 (local height (/ (length text) 2))
+                 (if (< 0 height)
+                     (let [b (match (?. state bufnr :bufnr)
+                               (where n (vim.api.nvim_buf_is_valid n)) n
+                               _ (let [b (vim.api.nvim_create_buf false true)]
+                                   (tset vim.bo b :buftype :nofile)
+                                   (tset vim.bo b :readonly true)
+                                   (tset vim.bo b :filetype (. vim.bo bufnr :filetype))
+                                   (when (not (. state bufnr))
+                                     (tset state bufnr {}))
+                                   (tset state bufnr :bufnr b)
+                                   b))
+                           w (match state.winid
+                               (where n (nvim.win_is_valid n)) (do
+                                                                 (nvim.win_set_config n {:relative :win
+                                                                                         :row 0
+                                                                                         :col textoff
+                                                                                         : height
+                                                                                         : width})
+                                                                 n)
+                               _ (let [w (nvim.open_win b false {:relative :win
+                                                                 :win win
+                                                                 :row 0
+                                                                 :col textoff
+                                                                 : width
+                                                                 : height
+                                                                 :focusable false
+                                                                 :style :minimal
+                                                                 :noautocmd true})]
+                                   (tset vim.wo w :winhighlight "NormalFloat:TreesitterContext")
+                                   (tset vim.wo w :linebreak false)
+                                   (set state.winid w)
+                                   w))]
+                       (nvim.win_set_buf w b)
+                       (nvim.buf_set_lines b 0 -1 true text))
+                     (close))))))
 
 (fn toc []
   (let [buf (nvim.get_current_buf)
