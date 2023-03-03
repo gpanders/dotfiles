@@ -14,10 +14,8 @@ set exrc
 set foldlevelstart=99
 set ignorecase
 set jumpoptions=view
-set lazyredraw
 set linebreak
 set list
-set path=.,,
 set pumheight=10
 set scrolloff=2
 set shada='100,<50,s10,:100,/100,h,r/tmp/,r/private/,rfugitive:,rzipfile:,rterm:
