@@ -9,7 +9,6 @@ set colorcolumn=+1
 set completeopt=menu,menuone
 set confirm
 set cursorline
-set expandtab
 set exrc
 set foldlevelstart=99
 set ignorecase
@@ -20,7 +19,6 @@ set pumheight=10
 set scrolloff=2
 set shada='100,<50,s10,:100,/100,h,r/tmp/,r/private/,rfugitive:,rzipfile:,rterm:
 set shell=/bin/sh
-set shiftwidth=4
 set sidescrolloff=5
 set smartcase
 set splitright

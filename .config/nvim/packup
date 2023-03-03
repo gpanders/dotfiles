@@ -19,18 +19,11 @@ plug() {
 			git -C "$path" fetch --quiet
 		else
 			printf 'Cloning %s\n' "$name"
-			git clone \
-				--quiet \
-				--recurse-submodules \
-				--shallow-submodules \
-				--depth=1 \
-				${3:+--branch $3} \
-				"$url" "$path"
+			git clone -q --recurse-submodules --shallow-submodules --depth=1 ${3:+--branch "$3"} "$url" "$path"
 		fi
 
 		if [ -n "$after" ]; then
-			cd "$path"
-			sh -c "$after" >/dev/null
+			cd "$path" && sh -c "$after" >/dev/null
 		fi
 	) &
 }
@@ -74,7 +67,6 @@ showlog() {
 			read -r ans
 			case "$ans" in
 			[Nn]) ;;
-
 			*)
 				rm -rf "$path"
 				;;
