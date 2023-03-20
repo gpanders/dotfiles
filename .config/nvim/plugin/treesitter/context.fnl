@@ -180,12 +180,12 @@
 
 (augroup context#
   (autocmd [:WinScrolled :WinEnter :CursorMoved :CursorMovedI] "*"
-    #(match (vim.fn.getcmdwintype)
-       "" (let [buf (nvim.get_current_buf)
+    #(when (= "" (vim.fn.getcmdwintype))
+       (let [buf (nvim.get_current_buf)
                 ft (. vim.bo buf :filetype)]
-            (if (filetype-has-parser ft)
-                (show-context buf)
-                (close)))))
+         (if (filetype-has-parser ft)
+             (show-context buf)
+             (close)))))
   (autocmd :FileType
     (fn [{: buf}]
       (let [ft (. vim.bo buf :filetype)
