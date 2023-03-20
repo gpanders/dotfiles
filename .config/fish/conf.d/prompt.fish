@@ -6,9 +6,13 @@ status is-interactive; or exit
 
 set -q fish_prompt_delim; or set -g fish_prompt_delim '❯'
 
-for type in cwd venv jobs git cmd_duration prompt_delim
+for type in cwd venv jobs git cmd_duration prompt_delim host
     set -l color fish_color_$type
     set -g __prompt_color_$type (set_color $$color)
+end
+
+if set -q SSH_TTY
+    set -g __prompt_host "$hostname:"
 end
 
 function __prompt_update_git --on-variable __prompt_git_$fish_pid
