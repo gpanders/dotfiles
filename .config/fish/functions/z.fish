@@ -1,5 +1,11 @@
 # Jump to a directory using only keywords.
 function z
+    if not command -sq zoxide
+        functions -e z
+        fish_command_not_found z
+        return 127
+    end
+
     set -l argc (count $argv)
     set -l completion_regex '^'(string escape --style=regex 'z!')'(.*)$'
 
