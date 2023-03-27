@@ -44,7 +44,7 @@
 (fn context [bufnr]
   (let [ft (. vim.bo bufnr :filetype)
         lang (or (vim.treesitter.language.get_lang ft) ft)
-        query (vim.treesitter.get_query lang :context)]
+        query (vim.treesitter.query.get lang :context)]
     (when query
       (let [cursor-node (vim.treesitter.get_node)]
         (when cursor-node
@@ -61,7 +61,7 @@
 (fn context-text [bufnr node ?query ?end-capture]
   (let [ft (. vim.bo bufnr :filetype)
         lang (or (vim.treesitter.language.get_lang ft) ft)
-        query (or ?query (vim.treesitter.get_query lang :context))
+        query (or ?query (vim.treesitter.query.get lang :context))
         captures (collect [k v (pairs query.captures)] (values v k))
         (start-row start-col) (node:start)
         (end-row end-col) (do
@@ -160,7 +160,7 @@
 (fn toc []
   (let [buf (nvim.get_current_buf)
         lang (. vim.bo buf :filetype)]
-    (match (vim.treesitter.query.get_query lang :context)
+    (match (vim.treesitter.query.query.get lang :context)
       query
       (let [root-node (root buf)
             [context-id] (icollect [i v (ipairs query.captures)]
