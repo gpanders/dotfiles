@@ -3,13 +3,13 @@
 
 (vim.diagnostic.config {:virtual_text false
                         :underline true
-                        :signs true
+                        :signs {:min vim.diagnostic.severity.INFO}
                         :severity_sort true})
 
 (fn cursor-diagnostic [buf]
   "Find the diagnostic closest to the cursor"
   (when (not (. cache buf))
-    (tset cache buf (vim.diagnostic.get buf)))
+    (tset cache buf (vim.diagnostic.get buf {:severity {:min vim.diagnostic.severity.INFO}})))
   (let [[lnum curcol] (nvim.win_get_cursor 0)
         lnum (- lnum 1)]
     (var score math.huge)
@@ -37,10 +37,14 @@
           (let [[lnum] (nvim.win_get_cursor 0)
                 lnum (- lnum 1)]
             (let [diag (cursor-diagnostic buf)]
+              (when diag
+                (set diag.message ((vim.gsplit diag.message "\n"))))
               (vim.diagnostic.show ns buf [diag] {:virtual_text {:source :if_many}})))))))
   (autocmd :DiagnosticChanged
     (fn [{: buf :data {: diagnostics}}]
-      (tset cache buf diagnostics))))
+      (tset cache buf (icollect [_ v (ipairs diagnostics)]
+                        (if (<= v.severity vim.diagnostic.severity.INFO)
+                            v))))))
 
 (keymap :n "]g" #(vim.diagnostic.goto_next {:float false}))
 (keymap :n "[g" #(vim.diagnostic.goto_prev {:float false}))
