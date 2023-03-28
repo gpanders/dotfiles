@@ -38,6 +38,7 @@
   (fn [{: buf}]
     (when (and (not= vim.g.lsp.autostart false)
                (= (. vim.bo buf :buftype) "")
+               (vim.loop.fs_access (nvim.buf_get_name buf) :r)
                (nvim.buf_is_valid buf)
                (nvim.buf_is_loaded buf))
       (let [lsp (require :lsp)]
