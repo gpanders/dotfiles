@@ -154,6 +154,8 @@ augroup init
 augroup END
 
 lua<<
+vim.loader.enable()
+
 _G.nvim = setmetatable({}, {
     __index = function(t, k)
         t[k] = assert(vim.api["nvim_" .. k], k)
