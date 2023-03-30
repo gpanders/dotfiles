@@ -98,11 +98,9 @@ plug github.com/gpanders/nvim-parinfer
 plug github.com/justinmk/vim-dirvish
 plug github.com/junegunn/vim-easy-align
 plug github.com/junegunn/vim-peekaboo
+plug github.com/ibhagwan/fzf-lua
 plug github.com/mfussenegger/nvim-lsp-compl
 plug github.com/lewis6991/gitsigns.nvim
-plug github.com/nvim-lua/plenary.nvim # Required by telescope
-plug github.com/nvim-telescope/telescope.nvim opt 0.1.x
-plug github.com/nvim-telescope/telescope-fzf-native.nvim start main make
 plug github.com/gpanders/nvim-treesitter opt
 plug github.com/dcampos/nvim-snippy
 
