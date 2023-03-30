@@ -17,6 +17,12 @@ plug() {
 	(
 		if [ -d "$path" ]; then
 			git -C "$path" fetch --quiet
+		elif [ "$type" = start ] && [ -d "$packpath/opt/$name" ]; then
+			printf 'Moving %s from opt to start\n' "$name"
+			mv "$packpath/opt/$name" "$path"
+		elif [ "$type" = opt ] && [ -d "$packpath/start/$name" ]; then
+			printf 'Moving %s from start to opt\n' "$name"
+			mv "$packpath/start/$name" "$path"
 		else
 			printf 'Cloning %s\n' "$name"
 			git clone -q --recurse-submodules --shallow-submodules --depth=1 ${3:+--branch "$3"} "$url" "$path"
