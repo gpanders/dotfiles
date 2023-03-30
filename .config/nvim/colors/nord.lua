@@ -87,6 +87,8 @@ local highlights = {
     DiagnosticUnderlineError = { sp = red, undercurl = true },
     DiagnosticUnderlineInfo = { sp = blue, undercurl = true },
     DiagnosticUnderlineHint = { sp = darkblue, undercurl = true },
+    DiagnosticUnnecessary = { link = "Comment" },
+    DiagnosticDeprecated = { link = "Comment" },
 
     -- Neovim DocumentHighlight
     LspReferenceText = { bg = brightblack },
