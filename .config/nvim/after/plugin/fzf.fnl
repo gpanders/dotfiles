@@ -3,11 +3,11 @@
 
 (local fzf (setmetatable {} {:__index (fn [t k]
                                         (let [fzf (require :fzf-lua)]
-                                          (fzf.setup opts)
-                                         (setmetatable t {:__index (fn [t k]
-                                                                     (tset t k (. (require :fzf-lua) k))
-                                                                     (. t k))})
-                                         (. t k)))}))
+                                          (fzf.setup opts))
+                                        (setmetatable t {:__index (fn [t k]
+                                                                    (tset t k (assert (. (require :fzf-lua) k)))
+                                                                    (. t k))})
+                                        (. t k))}))
 
 (fn vim.ui.select [...]
   (fzf.register_ui_select)
@@ -33,4 +33,4 @@
   (autocmd :LspAttach
     #(keymap :n "<Space>s" #(fzf.lsp_live_workspace_symbols) {:buffer true}))
   (autocmd :LspDetach
-    #(nvim.buf_del_keymap 0 :n "<Space>s")))
+    #(pcall nvim.buf_del_keymap 0 :n "<Space>s")))
