@@ -1,5 +1,6 @@
 (local opts {:fzf_opts {"--layout" false "--info" false}
-             :keymap {:builtin {"<C-/>" :toggle-help}}})
+             :keymap {:builtin {"<C-/>" :toggle-help}}
+             :git {:files {:cmd "git ls-files -o -c --exclude-standard"}}})
 
 (local fzf (setmetatable {} {:__index (fn [t k]
                                         (let [fzf (require :fzf-lua)]
