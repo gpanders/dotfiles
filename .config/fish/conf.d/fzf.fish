@@ -15,7 +15,7 @@ else if command -sq ag
 end
 
 set -gx FZF_DEFAULT_COMMAND "$FZF_CTRL_T_COMMAND"
-set -gx FZF_DEFAULT_OPTS '--tiebreak=length,end --color=fg:-1,bg:-1,fg+:-1:reverse,bg+:-1:reverse,hl:3,hl+:3:reverse,pointer:-1,marker:4,info:-1,prompt:-1'
+set -gx FZF_DEFAULT_OPTS '--tiebreak=length,end --color=fg:-1,bg:-1,fg+:-1:reverse,bg+:-1:reverse,hl:3,hl+:3:reverse,pointer:-1,marker:4,info:-1,prompt:-1 --scrollbar=▐'
 
 if command -sq bat
     set -gx FZF_DEFAULT_OPTS "$FZF_DEFAULT_OPTS --ansi --preview 'bat -f -p --theme ansi --line-range :300 {}'"
