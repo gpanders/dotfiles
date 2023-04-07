@@ -1,4 +1,4 @@
-(local disabled {:help true})
+(local disabled {})
 (local ft-lang-map {:terraform :hcl})
 
 (autocmd treesitter#highlight :FileType

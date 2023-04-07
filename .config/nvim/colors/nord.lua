@@ -134,7 +134,7 @@ local highlights = {
     TabLineSel = { fg = foreground, bg = brightblack, bold = true },
 
     -- Window
-    Title = { fg = foreground },
+    Title = { fg = blue },
 
     WinSeparator = { fg = darkblack, bg = darkblack },
 
@@ -188,6 +188,17 @@ local highlights = {
     PreCondit = { link = "PreProc" },
     Variable = { link = "Identifier" },
     Constructor = {},
+
+    ---------------
+    -- Tree-sitter
+    ---------------
+    ["@constant.builtin"] = { link = "Constant" },
+    ["@constructor"] = { link = "Function" },
+    ["@function.builtin"] = { link = "Function" },
+    ["@function.macro"] = { link = "Function" },
+    ["@string.regex"] = { link = "SpecialChar" },
+    ["@variable.builtin"] = { link = "Keyword" },
+    ["@text.uri"] = { fg = blue, underline = true },
 
     -------------
     -- Languages
@@ -289,6 +300,8 @@ local highlights = {
 
     helpBar = { fg = brightblack },
     helpHyperTextJump = { fg = cyan, underline = true },
+    ["@text.reference.help"] = { link = "helpHyperTextJump" },
+    ["@label.help"] = { link = "helpHyperTextEntry" },
 
     htmlArg = { fg = brightcyan },
     htmlLink = { fg = foreground },
@@ -531,14 +544,6 @@ local highlights = {
     gitcommitDiscardedFile = { fg = red },
     gitcommitUntrackedFile = { fg = red },
     gitcommitSelectedFile = { fg = green },
-
-    -- nvim-treesitter
-    ["@constant.builtin"] = { link = "Constant" },
-    ["@constructor"] = { link = "Function" },
-    ["@function.builtin"] = { link = "Function" },
-    ["@function.macro"] = { link = "Function" },
-    ["@string.regex"] = { link = "SpecialChar" },
-    ["@variable.builtin"] = { link = "Keyword" },
 
     -- termdebug
     --  debugPC = { fg = cyan, bg = darkgray },
