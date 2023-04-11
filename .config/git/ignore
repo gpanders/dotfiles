@@ -20,6 +20,7 @@ compile_commands.json
 clangd/
 .mypy_cache/
 .nvimrc
+.nvim.lua
 .*_history
 
 # Outputs
