@@ -1,8 +1,7 @@
 (fn grep [{: args}]
-  (let [grepcmd (match (vim.o.grepprg:gsub "%$%*" args)
-                  (s n) (if (= n 0)
-                            (.. s " " args)
-                            s))
+  (let [grepcmd (case (vim.o.grepprg:gsub "%$%*" args)
+                  (s 0) (.. s " " args)
+                  (s n) s)
         stdout (vim.loop.new_pipe false)
         chunks []]
     (nvim.exec_autocmds :QuickFixCmdPre {:pattern "grep" :modeline false})

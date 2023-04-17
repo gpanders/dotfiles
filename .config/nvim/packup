@@ -99,7 +99,6 @@ plug tpope.io/vim/eunuch
 plug tpope.io/vim/fugitive
 plug tpope.io/vim/sleuth
 plug tpope.io/vim/obsession
-plug tpope.io/vim/dispatch
 plug github.com/gpanders/nvim-parinfer
 plug github.com/justinmk/vim-dirvish
 plug github.com/junegunn/vim-easy-align

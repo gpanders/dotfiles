@@ -48,6 +48,7 @@
           cmd (vim.split args " " {})]
       (open-term-win cmd))))
 
-(keymap :n "t<CR>" #(open-term-win default-command (: "term%d" :format vim.v.count)))
+(keymap :n "`<CR>" #(open-term-win default-command (: "term%d" :format vim.v.count)))
+(keymap :n "`<Space>" ":<C-U>Term " {:silent false})
 
 (vim.cmd "cnoreabbrev <expr> term     (getcmdtype() ==# ':' && getcmdline() ==# 'term') ? 'Term'  : 'term'")

@@ -29,7 +29,8 @@
 
 (autocmd qf# :QuickFixCmdPost
   #(match vim.g.quickfix_path_map
-     map (let [list (vim.fn.getqflist {:items true :title true})
+     map (let [list (vim.fn.getqflist {:items true :title true :winid true})
+               cursor (nvim.win_get_cursor list.winid)
                delete {}]
            (each [_ v (ipairs list.items)]
              (when (= v.valid 1)
@@ -44,4 +45,5 @@
                        (set v.bufnr nil)))))))
            (each [bufnr (pairs delete)]
              (vim.api.nvim_buf_delete bufnr {}))
-           (vim.fn.setqflist {} :r list))))
+           (vim.fn.setqflist [] :r list)
+           (nvim.win_set_cursor list.winid cursor))))
