@@ -10,7 +10,7 @@
                 (vim.fn.setqflist [] " " {:title makeprg :nr "$"})
                 (let [{: id} (vim.fn.getqflist {:id 0})]
                   id))]
-   (vim.cmd "copen|wincmd p")
+   (vim.cmd "botright copen|wincmd p")
    (nvim.exec_autocmds :QuickFixCmdPre {:pattern "make" :modeline false})
    (var handle nil)
    (fn on-exit [code]
