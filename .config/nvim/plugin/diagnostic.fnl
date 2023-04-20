@@ -3,7 +3,7 @@
 
 (vim.diagnostic.config {:virtual_text false
                         :underline true
-                        :signs {:min vim.diagnostic.severity.INFO}
+                        :signs {:severity {:min vim.diagnostic.severity.INFO}}
                         :severity_sort true})
 
 (fn cursor-diagnostic [buf]
