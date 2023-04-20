@@ -169,7 +169,7 @@ local highlights = {
     Keyword = { fg = blue },
     Label = { fg = blue },
     Number = { fg = magenta },
-    Operator = { fg = blue },
+    Operator = {},
     PreProc = { fg = blue },
     Repeat = { fg = blue },
     Special = { fg = cyan },
