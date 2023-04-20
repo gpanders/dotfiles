@@ -22,4 +22,4 @@
                   (echo "Alternate file not found")))
             bufnr))))
 
-    (keymap :n "<Space>cf" switch-source-header {:buffer true})))
+    (keymap :n "<Space>h" switch-source-header {:buffer true})))
