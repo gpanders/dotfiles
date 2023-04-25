@@ -1,34 +1,47 @@
+(fn create-qf [title handle]
+  (nvim.exec_autocmds :QuickFixCmdPre {:pattern "make" :modeline false})
+  (vim.fn.setqflist [] " " {: title :nr "$"})
+  (vim.cmd "botright copen|wincmd p")
+  (let [{: id : qfbufnr} (vim.fn.getqflist {:id 0 :qfbufnr true :winid true})]
+    (keymap :n "<C-C>" #(let [title (: "%s (Interrupted)" :format title)]
+                          (handle:kill vim.loop.constants.SIGINT)
+                          (vim.fn.setqflist [] :a {: title})) {:buffer qfbufnr})
+    id))
+
 (fn make [{: args}]
   (let [makeprg (case (vim.o.makeprg:gsub "%$%*" args)
-                 (s 0) (.. s " " args)
-                 (s n) s)
-        [cmd & args] (vim.split makeprg " " {:trimempty true})
+                  (s 0) (.. s " " args)
+                  (s n) s)
+        makeprg (vim.fn.expandcmd (vim.trim makeprg))
+        [cmd & args] (vim.split makeprg " ")
         stdout (vim.loop.new_pipe false)
-        stderr (vim.loop.new_pipe false)
-        chunks []
-        qf-id (do
-                (vim.fn.setqflist [] " " {:title makeprg :nr "$"})
-                (let [{: id} (vim.fn.getqflist {:id 0})]
-                  id))]
-   (vim.cmd "botright copen|wincmd p")
-   (nvim.exec_autocmds :QuickFixCmdPre {:pattern "make" :modeline false})
+        stderr (vim.loop.new_pipe false)]
    (var handle nil)
    (fn on-exit [code]
      (when handle
        (handle:close))
+     (stdout:close)
+     (stderr:close)
      (vim.schedule #(do
                       (nvim.exec_autocmds :QuickFixCmdPost {:pattern "make" :modeline false})
-                      (when (= code 0)
-                        (vim.cmd.cclose)))))
-   (set handle (vim.loop.spawn cmd {: args :stdio [nil stdout stderr]} on-exit))
-   (fn on-data [err data]
-     (assert (not err) err)
-     (when data
-       (vim.schedule #(let [lines (vim.split data "\n" {:trimempty true})]
-                        (vim.fn.setqflist [] :a {:id qf-id : lines})
-                        (vim.cmd.cbottom)))))
-   (stdout:read_start on-data)
-   (stderr:read_start on-data)))
+                      (if (= code 0)
+                          (vim.cmd.cclose)
+                          (print (: "Command %s exited with error code %d" :format makeprg code))))))
+   (match (vim.loop.spawn cmd {: args :stdio [nil stdout stderr]} on-exit)
+     (nil err) (print (: "Failed to spawn process: %s" :format err))
+     h (set handle h))
+   (when handle
+     (var qf nil)
+     (fn on-data [err data]
+       (assert (not err) err)
+       (when data
+         (vim.schedule #(let [lines (vim.split data "\n" {:trimempty true})]
+                          (when (not qf)
+                            (set qf (create-qf makeprg handle)))
+                          (vim.fn.setqflist [] :a {:id qf : lines})
+                          (vim.cmd.cbottom)))))
+     (stdout:read_start on-data)
+     (stderr:read_start on-data))))
 
 (command :Make {:nargs :*} make)
 
