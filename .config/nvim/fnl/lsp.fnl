@@ -87,7 +87,9 @@
             :name :hls
             :root ["*.cabal" "stack.yaml" "cabal.project" "package.yaml" "hie.yaml"]
             :settings {:haskell {:formattingProvider :ormolu}}}
-  :terraform {:cmd ["tflint" "--langserver"]})
+  :terraform {:cmd ["tflint" "--langserver"]}
+  [:ocaml :dune :reason] {:cmd [:ocamllsp]
+                          :root ["*.opam" "dune-project" "dune-workspace"]})
 
 {: start
  : enable
