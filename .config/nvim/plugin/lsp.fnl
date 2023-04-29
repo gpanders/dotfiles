@@ -1,5 +1,5 @@
 (when (= nil vim.g.lsp)
-  (set vim.g.lsp {:autostart false}))
+  (set vim.g.lsp {:autostart true}))
 
 (augroup lsp#
   (autocmd :LspAttach
