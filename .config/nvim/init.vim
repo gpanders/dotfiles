@@ -60,6 +60,7 @@ nnoremap <Space>b :ls<CR>:b<Space>
 nnoremap <Space>ee :e %:p:h/<Tab>
 nnoremap <Space>es :sp %:p:h/<Tab>
 nnoremap <Space>ev :vs %:p:h/<Tab>
+nnoremap <Space>Y "+y$
 nnoremap <Space>y "+y
 xnoremap <Space>y "+y
 
