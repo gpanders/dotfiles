@@ -22,7 +22,7 @@ set -U fish_color_cwd_root red
 set -U fish_color_user brgreen
 set -U fish_color_autosuggestion brblack
 set -U fish_pager_color_completion normal
-set -U fish_color_host normal
+set -U fish_color_host magenta
 set -U fish_pager_color_description yellow -i
 set -U fish_color_cancel -r
 set -U fish_pager_color_prefix normal --bold --underline
