@@ -12,7 +12,7 @@ for type in cwd venv jobs git cmd_duration prompt_delim host
 end
 
 if set -q SSH_TTY
-    set -g __prompt_host "$hostname:"
+    set -g __prompt_host "$hostname"(set_color normal)":"
 end
 
 function __prompt_update_git --on-variable __prompt_git_$fish_pid
