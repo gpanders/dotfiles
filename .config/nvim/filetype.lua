@@ -17,6 +17,9 @@ vim.filetype.add({
         env = "env",
         plist = "xml",
     },
+    filename = {
+        [".envrc"] = "sh",
+    },
     pattern = {
         ["~/%.config/mutt/.*"] = "muttrc",
     },
