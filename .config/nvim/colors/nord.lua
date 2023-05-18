@@ -69,12 +69,7 @@ local highlights = {
     Visual = { bg = lightblack },
     VisualNOS = { bg = lightblack },
 
-    -- Neovim Support
-    healthError = { fg = red, bg = black },
-    healthSuccess = { fg = green, bg = black },
-    healthWarning = { fg = yellow, bg = black },
-    TermCursorNC = { bg = black },
-
+    DiagnosticOk = { fg = green },
     DiagnosticWarn = { fg = yellow },
     DiagnosticError = { fg = red },
     DiagnosticInfo = { fg = blue },
