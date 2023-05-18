@@ -39,7 +39,11 @@
     (where winid (nvim.win_is_valid winid)) (nvim.set_current_win winid)
     _ (do
         (nvim.command "botright new")
-        (nvim.win_set_buf 0 bufnr)))
+        (nvim.win_set_buf 0 bufnr)
+        ; These are set by termopen(), but since they are window local options
+        ; they must be set anytime a new window is created
+        (set vim.wo.list false)
+        (set vim.wo.wrap false)))
   (nvim.command "startinsert"))
 
 (command :Term {:nargs "*"}
