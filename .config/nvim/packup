@@ -105,7 +105,7 @@ plug github.com/junegunn/vim-peekaboo
 plug github.com/ibhagwan/fzf-lua
 plug github.com/mfussenegger/nvim-lsp-compl
 plug github.com/lewis6991/gitsigns.nvim
-plug github.com/gpanders/nvim-treesitter opt
+plug github.com/gpanders/nvim-treesitter start main
 plug github.com/dcampos/nvim-snippy
 
 wait
