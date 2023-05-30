@@ -137,7 +137,7 @@ augroup init
   " focus
   autocmd InsertEnter * setlocal nocursorline
   autocmd InsertLeave * setlocal cursorline
-  autocmd WinLeave,FocusLost * if !&diff | setlocal nocursorline | endif
+  autocmd WinLeave,FocusLost * if !&diff && !&cursorbind | setlocal nocursorline | endif
   autocmd InsertLeave,WinEnter,FocusGained * let &l:cursorline = mode() !=# 'i'
 
   " Create missing parent directories automatically
