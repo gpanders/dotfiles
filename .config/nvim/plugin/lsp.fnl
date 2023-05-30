@@ -6,11 +6,11 @@
     (fn [{: buf :data {: client_id}}]
       (local client (vim.lsp.get_client_by_id client_id))
       (tset vim.b buf :lsp_client client.name)
-      (when client.server_capabilities.documentHighlightProvider
+      (when (client.supports_method :textDocument/documentHighlight)
         (augroup lsp#
           (autocmd [:CursorHold :InsertLeave] {:buffer buf} vim.lsp.buf.document_highlight)
           (autocmd [:CursorMoved :InsertEnter] {:buffer buf} vim.lsp.buf.clear_references)))
-      (when client.server_capabilities.hoverProvider
+      (when (client.supports_method :textDocument/hover)
         (keymap :n "<Space>k" vim.lsp.buf.hover {:buffer buf}))
       (keymap :n "[R" vim.lsp.buf.references {:buffer buf})
       (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer buf})
