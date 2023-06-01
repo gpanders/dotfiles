@@ -5,7 +5,7 @@
     (set vim.lsp.text_document_completion_list_to_complete_items lsp-compl.text_document_completion_list_to_complete_items)
     (when (client.supports_method :textDocument/signatureHelp)
       (set client.server_capabilities.signatureHelpProvider.triggerCharacters [])))
-  (match (or result.offsetEncoding result.capabilities.positionEncoding)
+  (match result.offsetEncoding
     enc (set client.offset_encoding enc)))
 
 (fn hover [_ result ctx]
@@ -81,8 +81,7 @@
            :name "pyright"
            :root ["pyproject.toml" "setup.py" "setup.cfg" "requirements.txt" "Pipfile" "pyrightconfig.json"]}
   :rust {:cmd [:rust-analyzer]
-         :root ["Cargo.toml"]
-         :capabilities {:general {:positionEncodings [:utf-8 :utf-16]}}}
+         :root ["Cargo.toml"]}
   :haskell {:cmd ["haskell-language-server-wrapper" "--lsp"]
             :name :hls
             :root ["*.cabal" "stack.yaml" "cabal.project" "package.yaml" "hie.yaml"]
