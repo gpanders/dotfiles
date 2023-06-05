@@ -20,6 +20,7 @@
 
 (local capabilities (vim.tbl_deep_extend :force
                                          (vim.lsp.protocol.make_client_capabilities)
+                                         {:general {:positionEncodings [:utf-8 :utf-16]}}
                                          ((. (require :lsp_compl) :capabilities))))
 
 (fn start [bufnr]
