@@ -4,7 +4,7 @@
   (vim.cmd "botright copen|wincmd p")
   (let [{: id : qfbufnr} (vim.fn.getqflist {:id 0 :qfbufnr true :winid true})]
     (keymap :n "<C-C>" #(let [title (: "%s (Interrupted)" :format title)]
-                          (handle:kill vim.loop.constants.SIGINT)
+                          (handle:kill vim.uv.constants.SIGINT)
                           (vim.fn.setqflist [] :a {: title})) {:buffer qfbufnr})
     id))
 
@@ -14,8 +14,8 @@
                   (s n) s)
         makeprg (vim.fn.expandcmd (vim.trim makeprg))
         [cmd & args] (vim.split makeprg " ")
-        stdout (vim.loop.new_pipe false)
-        stderr (vim.loop.new_pipe false)]
+        stdout (vim.uv.new_pipe false)
+        stderr (vim.uv.new_pipe false)]
    (var handle nil)
    (fn on-exit [code]
      (when handle
@@ -27,7 +27,7 @@
                       (if (= code 0)
                           (vim.cmd.cclose)
                           (print (: "Command %s exited with error code %d" :format makeprg code))))))
-   (match (vim.loop.spawn cmd {: args :stdio [nil stdout stderr]} on-exit)
+   (match (vim.uv.spawn cmd {: args :stdio [nil stdout stderr]} on-exit)
      (nil err) (print (: "Failed to spawn process: %s" :format err))
      h (set handle h))
    (when handle

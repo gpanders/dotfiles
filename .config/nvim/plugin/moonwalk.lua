@@ -39,6 +39,6 @@ end
 vim.api.nvim_create_user_command("Moonwalk", moonwalk, { desc = "Compile all Fennel runtime files to Lua" })
 
 -- Using a filesystem marker to do this seems hacky, but I don't now of a better way
-if not vim.loop.fs_stat(marker) then
+if not vim.uv.fs_stat(marker) then
     moonwalk()
 end

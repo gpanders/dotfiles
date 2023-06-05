@@ -29,7 +29,7 @@
     #(case (pcall vim.fn.FugitiveGitDir)
        (true "") nil
        (true _) (do
-                  (keymap :n "<Space>f" #(fzf.git_files {:prompt "> " :cwd (vim.loop.cwd)}) {:buffer true})
+                  (keymap :n "<Space>f" #(fzf.git_files {:prompt "> " :cwd (vim.uv.cwd)}) {:buffer true})
                   (keymap :n "<Space>F" #(fzf.files)) {:buffer true})))
   (autocmd :LspAttach
     #(keymap :n "<Space>s" #(fzf.lsp_live_workspace_symbols) {:buffer true}))

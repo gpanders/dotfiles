@@ -29,7 +29,7 @@
                (let [root-dir (if config.root
                                   (let [[root-marker] (vim.fs.find config.root {:upward true})]
                                     (vim.fs.dirname root-marker))
-                                  (vim.loop.cwd))]
+                                  (vim.uv.cwd))]
                  (vim.lsp.start (vim.tbl_extend :keep config {:root_dir root-dir
                                                               :on_init on-init
                                                               : capabilities
