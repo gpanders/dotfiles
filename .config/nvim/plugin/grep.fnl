@@ -1,28 +1,18 @@
 (fn grep [{: args}]
   (let [grepcmd (case (vim.o.grepprg:gsub "%$%*" args)
                   (s 0) (.. s " " args)
-                  (s n) s)
-        stdout (vim.uv.new_pipe false)
-        chunks []]
+                  (s n) s)]
     (nvim.exec_autocmds :QuickFixCmdPre {:pattern "grep" :modeline false})
-    (var handle nil)
-    (fn callback []
-      (when handle
-        (handle:close))
-      (vim.schedule #(let [lines (-> chunks table.concat (vim.split "\n" {:trimempty true}))]
-                       (vim.fn.setqflist [] " " {:title grepcmd
-                                                 : lines
-                                                 :efm vim.o.grepformat
-                                                 :nr "$"})
-                       (nvim.exec_autocmds :QuickFixCmdPost {:pattern "grep" :modeline false}))))
-    (set handle (vim.uv.spawn vim.o.shell
-                                {:args ["-c" grepcmd] :stdio [nil stdout nil]}
-                                callback))
-    (stdout:read_start
-      (fn [err data]
-        (assert (not err) err)
-        (when data
-          (table.insert chunks data))))
+    (fn callback [{: code : stdout : stderr}]
+      (let [src (if (= 0 code) stdout stderr)
+            lines (vim.split src "\n" {:tripempty true})]
+        (vim.schedule #(do
+                         (vim.fn.setqflist [] " " {:title grepcmd
+                                                   : lines
+                                                   :efm vim.o.grepformat
+                                                   :nr "$"})
+                         (nvim.exec_autocmds :QuickFixCmdPost {:pattern "grep" :modeline false})))))
+    (vim.system [vim.o.shell "-c" grepcmd] callback)
     (print grepcmd)))
 
 (command :Grep {:nargs :+ :complete :file_in_path} grep)

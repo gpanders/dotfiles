@@ -1,47 +1,32 @@
-(fn create-qf [title handle]
-  (nvim.exec_autocmds :QuickFixCmdPre {:pattern "make" :modeline false})
-  (vim.fn.setqflist [] " " {: title :nr "$"})
-  (vim.cmd "botright copen|wincmd p")
-  (let [{: id : qfbufnr} (vim.fn.getqflist {:id 0 :qfbufnr true :winid true})]
-    (keymap :n "<C-C>" #(let [title (: "%s (Interrupted)" :format title)]
-                          (handle:kill vim.uv.constants.SIGINT)
-                          (vim.fn.setqflist [] :a {: title})) {:buffer qfbufnr})
-    id))
-
 (fn make [{: args}]
   (let [makeprg (case (vim.o.makeprg:gsub "%$%*" args)
                   (s 0) (.. s " " args)
                   (s n) s)
         makeprg (vim.fn.expandcmd (vim.trim makeprg))
-        [cmd & args] (vim.split makeprg " ")
-        stdout (vim.uv.new_pipe false)
-        stderr (vim.uv.new_pipe false)]
-   (var handle nil)
-   (fn on-exit [code]
-     (when handle
-       (handle:close))
-     (stdout:close)
-     (stderr:close)
+        state {}]
+   (fn on-exit [{: code}]
      (vim.schedule #(do
                       (nvim.exec_autocmds :QuickFixCmdPost {:pattern "make" :modeline false})
                       (if (= code 0)
                           (vim.cmd.cclose)
                           (print (: "Command %s exited with error code %d" :format makeprg code))))))
-   (match (vim.uv.spawn cmd {: args :stdio [nil stdout stderr]} on-exit)
-     (nil err) (print (: "Failed to spawn process: %s" :format err))
-     h (set handle h))
-   (when handle
-     (var qf nil)
-     (fn on-data [err data]
-       (assert (not err) err)
-       (when data
-         (vim.schedule #(let [lines (vim.split data "\n" {:trimempty true})]
-                          (when (not qf)
-                            (set qf (create-qf makeprg handle)))
-                          (vim.fn.setqflist [] :a {:id qf : lines})
-                          (vim.cmd.cbottom)))))
-     (stdout:read_start on-data)
-     (stderr:read_start on-data))))
+   (fn on-data [err data]
+     (assert (not err) err)
+     (when data
+       (vim.schedule #(let [lines (vim.split data "\n" {:trimempty true})]
+                        (when (not state.qf)
+                          (vim.fn.setqflist [] " " {:title makeprg :nr "$"})
+                          (vim.cmd "botright copen|wincmd p")
+                          (let [{: id : qfbufnr} (vim.fn.getqflist {:id 0 :qfbufnr true})]
+                            (set state.qf id)
+                            (keymap :n "<C-C>" #(let [result (state.handle:wait 0)]
+                                                  (when (not= 0 result.signal)
+                                                    (let [title (: "%s (Interrupted)" :format makeprg)]
+                                                      (vim.fn.setqflist [] :a {: title}))) {}) {:buffer qfbufnr})))
+                        (vim.fn.setqflist [] :a {:id state.qf : lines})
+                        (vim.cmd.cbottom)))))
+   (nvim.exec_autocmds :QuickFixCmdPre {:pattern "make" :modeline false})
+   (set state.handle (vim.system (vim.split makeprg " ") {:stdout on-data :stderr on-data} on-exit))))
 
 (command :Make {:nargs :*} make)
 

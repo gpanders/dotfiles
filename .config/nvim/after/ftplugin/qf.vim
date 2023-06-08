@@ -1,3 +1,5 @@
+setlocal nowrap
+
 nnoremap <silent> <buffer> q :q<CR>
 
 augroup qf
@@ -13,4 +15,4 @@ if !exists('loaded_cfilter')
   let loaded_cfilter = get(g:, 'loaded_cfilter')
 endif
 
-let b:undo_ftplugin .= '|nun <buffer> q|au! qf * <buffer>'
+let b:undo_ftplugin .= '|setl wrap<|nun <buffer> q|au! qf * <buffer>'
