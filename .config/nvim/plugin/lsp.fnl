@@ -5,7 +5,7 @@
   (autocmd :LspAttach
     (fn [{: buf :data {: client_id}}]
       (local client (vim.lsp.get_client_by_id client_id))
-      (tset vim.b buf :lsp_client client.name)
+      (tset vim.b buf :lsp client.name)
       (when (client.supports_method :textDocument/documentHighlight)
         (augroup lsp#
           (autocmd [:CursorHold :InsertLeave] {:buffer buf} vim.lsp.buf.document_highlight)
@@ -28,10 +28,11 @@
         (lsp-compl.attach client buf {}))))
   (autocmd :LspDetach
     (fn [{: buf :data {: client_id}}]
-      (tset vim.b buf :lsp_client nil)
+      (tset vim.b buf :lsp nil)
       (let [lsp-compl (require :lsp_compl)]
         (lsp-compl.detach client_id buf))
-      (autocmd! lsp# "*" {:buffer buf}))))
+      (autocmd! lsp# "*" {:buffer buf})))
+  (autocmd :LspProgress "*" "redrawstatus"))
 
 (autocmd lsp# :FileType "*"
   (fn [{: buf}]

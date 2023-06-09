@@ -4,24 +4,38 @@
     (true s) (.. " " s)
     _ ""))
 
-(fn lsp-progress-messages [client]
-  (let [messages []]
-    (each [k v (pairs client.messages.progress)]
-      (let [msg (if v.message
-                    (: "%s: %s" :format v.title v.message)
-                    v.title)]
-        (table.insert messages (if v.percentage
-                                   (: "%s (%%%%%d)" :format msg v.percentage)
-                                   msg)))
-      (when v.done
-        (tset client.messages.progress k nil)))
-    messages))
+(fn lsp-progress [client]
+  (var percentage nil)
+  (let [groups {}
+        messages []]
+    (each [{: token : value} client.progress]
+      (when (?. value :kind)
+        (let [group (case groups.token
+                      group group
+                      nil (let [group {}]
+                            (set groups.token group)
+                            group))]
+          (set group.title (or value.title group.title))
+          (set group.message (or value.message group.message))
+          (when value.percentage
+            (set percentage (math.max (or percentage 0) value.percentage))))))
+    (each [_ group (pairs groups)]
+      (let [m (if group.title
+                  (if group.message
+                      (: "%s: %s" :format group.title group.message)
+                      group.title)
+                  group.message)]
+        (tset messages (+ (length messages) 1) m)))
+    (let [message (table.concat messages ", ")]
+      (if percentage
+          (: "%s (%%%%%d)" :format message percentage)
+          message))))
 
 (fn lsp []
-  (match-try vim.b.lsp_client
+  (match-try vim.b.lsp
     name (vim.lsp.get_active_clients {:bufnr 0 : name})
-    [client] (lsp-progress-messages client)
-    (where messages (< 0 (length messages))) (: " %s " :format (table.concat messages ", "))
+    [client] (lsp-progress client)
+    message (: " %s " :format message)
     (catch
       _ "")))
 
@@ -97,7 +111,7 @@
                (if curwin "%8*" "")
                (match vim.bo.filetype
                  "" ""
-                 ft (match vim.b.lsp_client
+                 ft (match vim.b.lsp
                       name (: " %s/%s " :format ft name)
                       _ (: " %s " :format ft)))
                (if curwin "%9*" "")

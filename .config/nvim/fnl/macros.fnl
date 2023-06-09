@@ -55,7 +55,9 @@ Examples:
                  (collect [k v (pairs (table.remove args 1)) &into {: group}]
                    (values k v))
                  {: group})
-        desc (if (= (type (. args 1)) :string) (table.remove args 1))
+        desc (if (and (= (type (. args 1)) :string)
+                      (< 1 (length args)))
+                 (table.remove args 1))
         callback (. args 1)
         form `(do)]
     (when clear
