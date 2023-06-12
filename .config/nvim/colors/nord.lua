@@ -85,13 +85,12 @@ local highlights = {
     DiagnosticUnnecessary = { link = "Comment" },
     DiagnosticDeprecated = { link = "Comment" },
 
-    -- Neovim DocumentHighlight
+    -- LSP
     LspReferenceText = { bg = brightblack },
     LspReferenceRead = { bg = brightblack },
     LspReferenceWrite = { bg = brightblack },
-
-    -- Neovim LspSignatureHelp
-    LspSignatureActiveParameter = { fg = cyan, underline = true },
+    LspSignatureActiveParameter = { underline = true, bold = true, sp = foreground },
+    LspInlayHint = { link = "Comment" },
 
     -- Gutter
     CursorColumn = { bg = darkblack },
