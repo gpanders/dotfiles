@@ -21,11 +21,8 @@
   #(let [list (vim.fn.getqflist)]
      (vim.cmd (.. "cclose|botright " (math.min 10 (length list)) "cwindow"))))
 
-(vim.cmd "
-cnoreabbrev <expr> gr    (getcmdtype() ==# ':' && getcmdline() ==# 'gr')    ? 'Grep'  : 'gr'
-cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'Grep'  : 'grep'
-")
-
+(keymap :ca "gr" #(if (and (= ":" (vim.fn.getcmdtype)) (= "gr" (vim.fn.getcmdline))) :Grep :gr) {:expr true :silent false})
+(keymap :ca "grep" #(if (and (= ":" (vim.fn.getcmdtype)) (= "grep" (vim.fn.getcmdline))) :Grep :grep) {:expr true :silent false})
 (keymap :n "<Space>/" ":Grep " {:silent false})
 (keymap :x "<Space>/" "y:<C-U>Grep <C-R>\"" {:silent false})
 (keymap :n "<Space>*" ":Grep <C-R><C-W><CR>")

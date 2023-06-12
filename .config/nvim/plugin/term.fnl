@@ -54,5 +54,4 @@
 
 (keymap :n "`<CR>" #(open-term-win default-command (: "term%d" :format vim.v.count)))
 (keymap :n "`<Space>" ":<C-U>Term " {:silent false})
-
-(vim.cmd "cnoreabbrev <expr> term     (getcmdtype() ==# ':' && getcmdline() ==# 'term') ? 'Term'  : 'term'")
+(keymap :ca "term" #(if (and (= ":" (vim.fn.getcmdtype)) (= "term" (vim.fn.getcmdline))) :Term :term) {:expr true :silent false})
