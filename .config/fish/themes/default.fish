@@ -33,3 +33,4 @@ set -U fish_color_keyword blue
 set -U fish_color_git brblack
 set -U fish_color_prompt_delim magenta
 set -U fish_color_cmd_duration yellow
+set -U fish_color_venv brblack
