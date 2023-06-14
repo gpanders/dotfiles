@@ -160,7 +160,7 @@
 (fn toc []
   (let [buf (nvim.get_current_buf)
         lang (. vim.bo buf :filetype)]
-    (match (vim.treesitter.query.query.get lang :context)
+    (match (vim.treesitter.query.get lang :context)
       query
       (let [root-node (root buf)
             [context-id] (icollect [i v (ipairs query.captures)]
