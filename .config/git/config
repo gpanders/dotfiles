@@ -29,8 +29,6 @@
 	dt = difftool
 [commit]
 	verbose = true
-[tag]
-	gpgSign = true
 [sendemail]
 	annotate = yes
 	confirm = auto
