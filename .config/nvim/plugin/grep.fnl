@@ -5,7 +5,7 @@
     (nvim.exec_autocmds :QuickFixCmdPre {:pattern "grep" :modeline false})
     (fn callback [{: code : stdout : stderr}]
       (let [src (if (= 0 code) stdout stderr)
-            lines (vim.split src "\n" {:tripempty true})]
+            lines (vim.split src "\n" {:trimempty true})]
         (vim.schedule #(do
                          (vim.fn.setqflist [] " " {:title grepcmd
                                                    : lines
