@@ -10,10 +10,6 @@
                                                                     (. t k))})
                                         (. t k))}))
 
-(fn vim.ui.select [...]
-  (fzf.register_ui_select)
-  (vim.ui.select ...))
-
 (keymap :n "<Space>f" #(fzf.files))
 (keymap :n "<Space>b" #(fzf.buffers))
 (keymap :n "<Space>'" #(fzf.resume))
@@ -22,6 +18,7 @@
 (keymap :n "<Space>/" #(fzf.live_grep_native {:prompt "> "}))
 (keymap :n "<Space>*" #(fzf.grep_cword {:prompt "> "}))
 (keymap :n "<Space>j" #(fzf.jumps))
+(keymap :n "<Space>m" #(fzf.marks))
 (command :Oldfiles {} #(fzf.oldfiles))
 
 (augroup fzf#
