@@ -22,7 +22,7 @@
                   (echo "Alternate file not found")))
             bufnr))))
 
-    (keymap :n "<Space>h" switch-source-header {:buffer true})))
+    (keymap :n "gh" switch-source-header {:buffer true})))
 
 (let [lsp (require :lsp)]
   (lsp.start {:cmd ["clangd" "--background-index"]
