@@ -54,4 +54,4 @@
 (keymap :n "yog" #(do (if enabled
                           (vim.diagnostic.disable)
                           (vim.diagnostic.enable))
-                      (set enabled (not enabled))))
+                      (set enabled (not enabled))) {:desc "Toggle diagnostics"})

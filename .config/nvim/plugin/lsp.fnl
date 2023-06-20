@@ -13,7 +13,7 @@
       (when (client.supports_method :textDocument/hover)
         (keymap :n "<Space>k" vim.lsp.buf.hover {:buffer buf}))
       (when (client.supports_method :textDocument/inlayHint)
-        (keymap :n "yoh" #(vim.lsp.buf.inlay_hint buf) {:buffer buf}))
+        (keymap :n "yoh" #(vim.lsp.buf.inlay_hint buf) {:buffer buf :desc "Toggle inlay hints"}))
       (keymap :n "[R" vim.lsp.buf.references {:buffer buf})
       (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer buf})
       (keymap :n "crr" vim.lsp.buf.rename {:buffer buf})
