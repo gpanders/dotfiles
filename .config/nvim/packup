@@ -38,7 +38,7 @@ prompt() {
 	path="$1"
 	quit=0
 	while true; do
-		printf 'Update? [y/N/l/q] '
+		printf 'Update? [y/N/l/s/q] '
 		read -r ans
 		case "$ans" in
 		[yY])
@@ -51,6 +51,9 @@ prompt() {
 		[qQ])
 			quit=1
 			break
+			;;
+		[sS])
+			(cd "$path"; printf 'Opening subshell in %s. Press Ctrl-D to exit.\n' "$path"; $SHELL) || true
 			;;
 		*)
 			break
