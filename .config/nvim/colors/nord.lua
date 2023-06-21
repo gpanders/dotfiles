@@ -55,7 +55,7 @@ local highlights = {
     iCursor = { fg = background, bg = foreground },
     LineNr = { fg = brighterblack, bg = darkblack },
     MatchParen = { fg = cyan, bg = brightblack },
-    NonText = { fg = lightblack },
+    NonText = { fg = brightblack },
     NormalFloat = { link = "Normal" },
     Pmenu = { fg = foreground, bg = lightblack },
     PmenuSbar = { fg = foreground, bg = lightblack },
@@ -90,7 +90,6 @@ local highlights = {
     LspReferenceRead = { bg = brightblack },
     LspReferenceWrite = { bg = brightblack },
     LspSignatureActiveParameter = { underline = true, bold = true, sp = foreground },
-    LspInlayHint = { link = "Comment" },
     LspCodeLens = { link = "Comment" },
     LspCodeLensSeparator = { link = "Comment" },
 

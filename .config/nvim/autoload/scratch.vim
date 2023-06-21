@@ -34,7 +34,6 @@ function! s:highlight(cmd) abort
     elseif firstline =~# '^\w\+\s\+xxx \%(links\|cleared\|cterm\|gui\|term\)'
         syntax match Keyword /\v%(c?term%([fb]g)?|gui%([fb]g)?)\=/
         syntax keyword Keyword links to
-        highlight Keyword ctermfg=4 guifg=Cyan
         for linenr in range(1, line('$'))
             let line = getline(linenr)
             let syn = matchstr(line, '^\w\+')
