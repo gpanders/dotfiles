@@ -1,6 +1,3 @@
-(when (= nil vim.g.lsp)
-  (set vim.g.lsp {:autostart true}))
-
 (augroup lsp#
   (autocmd :LspAttach
     (fn [{: buf :data {: client_id}}]

@@ -1,3 +1,6 @@
+(when (= nil vim.g.lsp)
+  (set vim.g.lsp {:autostart true}))
+
 (fn on-init [client result]
   (let [lsp-compl (require :lsp_compl)]
     (set vim.lsp.text_document_completion_list_to_complete_items lsp-compl.text_document_completion_list_to_complete_items)
