@@ -17,7 +17,7 @@
       (keymap :n "[R" vim.lsp.buf.references {:buffer buf})
       (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer buf})
       (keymap :n "crr" vim.lsp.buf.rename {:buffer buf})
-      (keymap :n "<M-CR>" #(vim.lsp.buf.code_action {:apply true}) {:buffer buf})
+      (keymap :n "<M-CR>" vim.lsp.buf.code_action {:buffer buf})
 
       (autocmd lsp# :BufWritePre {:buffer buf}
         #(when (vim.F.if_nil (?. vim.b.lsp :autoformat) vim.g.lsp.autoformat false)
