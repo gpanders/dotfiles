@@ -8,3 +8,5 @@
 
 (let [satellite (require :satellite)]
   (satellite.setup {:handlers {:marks {:enable false}}}))
+
+(set vim.o.wrapmargin 1)
