@@ -6,33 +6,20 @@
 
 (fn lsp-progress [client]
   (var percentage nil)
-  (let [groups {}
-        messages []]
-    (each [{: token : value} client.progress]
-      (when (?. value :kind)
-        (let [group (case groups.token
-                      group group
-                      nil (let [group {}]
-                            (set groups.token group)
-                            group))]
-          (set group.title (or value.title group.title))
-          (set group.message (or value.message group.message))
-          (when value.percentage
-            (set percentage (math.max (or percentage 0) value.percentage))))))
-    (each [_ group (pairs groups)]
-      (let [m (if group.title
-                  (if group.message
-                      (: "%s: %s" :format group.title group.message)
-                      group.title)
-                  group.message)]
-        (tset messages (+ (length messages) 1) m)))
-    (let [message (table.concat messages ", ")]
-      (if percentage
-          (: "%s (%%%%%d)" :format message percentage)
-          message))))
+  (let [messages (icollect [{: value} client.progress]
+                   (when (?. value :kind)
+                     (when value.percentage
+                       (set percentage (math.max (or percentage 0) value.percentage)))
+                     (if value.message
+                         (: "%s: %s" :format value.title value.message)
+                         value.title)))
+        message (table.concat messages ", ")]
+    (if percentage
+        (: "%s (%%%%%d)" :format message percentage)
+        message)))
 
 (fn lsp []
-  (match-try vim.b.lsp
+  (case-try vim.b.lsp
     name (vim.lsp.get_active_clients {:bufnr 0 : name})
     [client] (lsp-progress client)
     message (: " %s " :format message)
