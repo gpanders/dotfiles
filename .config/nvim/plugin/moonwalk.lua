@@ -17,6 +17,8 @@ vim.api.nvim_create_autocmd("SourceCmd", {
 local marker = vim.fn.stdpath("state") .. "/moonwalk"
 
 local function moonwalk()
+    vim.loader.disable()
+
     local walk = require("moonwalk").walk
 
     -- Clean existing files
@@ -28,12 +30,14 @@ local function moonwalk()
     end)
 
     walk(vim.fn.stdpath("config"), "fnl", require("moonwalk").compile)
-    local f = io.open(marker, "w")
+    local f = assert(io.open(marker, "w"))
     f:write("")
     f:close()
 
     -- Reset runtimepath cache so new Lua files are discovered
     vim.o.runtimepath = vim.o.runtimepath
+
+    vim.schedule(vim.loader.enable)
 end
 
 vim.api.nvim_create_user_command("Moonwalk", moonwalk, { desc = "Compile all Fennel runtime files to Lua" })
