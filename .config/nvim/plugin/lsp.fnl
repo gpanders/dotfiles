@@ -25,11 +25,12 @@
           #(when (vim.F.if_nil (?. vim.b.lsp :autoformat) vim.g.lsp.autoformat false)
              (vim.lsp.buf.format {:bufnr buf :id client_id}))))
 
-      (let [lsp-compl (require :lsp_compl)]
-        (match client.name
-          :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
-        (vim.cmd "set completeopt+=noinsert")
-        (lsp-compl.attach client buf {}))))
+      (when (client.supports_method :textDocument/completion)
+        (let [lsp-compl (require :lsp_compl)]
+          (match client.name
+            :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
+          (vim.cmd "set completeopt+=noinsert")
+          (lsp-compl.attach client buf {})))))
   (autocmd :LspDetach
     (fn [{: buf :data {: client_id}}]
       (tset vim.b buf :lsp nil)
