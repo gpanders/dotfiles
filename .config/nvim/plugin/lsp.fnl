@@ -20,9 +20,10 @@
       (keymap :n "crr" vim.lsp.buf.rename {:buffer buf})
       (keymap :n "<M-CR>" vim.lsp.buf.code_action {:buffer buf})
 
-      (autocmd lsp# :BufWritePre {:buffer buf}
-        #(when (vim.F.if_nil (?. vim.b.lsp :autoformat) vim.g.lsp.autoformat false)
-           (vim.lsp.buf.format {:bufnr buf})))
+      (when (client.supports_method :textDocument/formatting)
+        (autocmd lsp# :BufWritePre {:buffer buf}
+          #(when (vim.F.if_nil (?. vim.b.lsp :autoformat) vim.g.lsp.autoformat false)
+             (vim.lsp.buf.format {:bufnr buf :id client_id}))))
 
       (let [lsp-compl (require :lsp_compl)]
         (match client.name
