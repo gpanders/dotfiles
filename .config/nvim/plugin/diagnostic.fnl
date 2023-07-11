@@ -41,10 +41,8 @@
                 (set diag.message ((vim.gsplit diag.message "\n"))))
               (vim.diagnostic.show ns buf [diag] {:virtual_text {:source :if_many}})))))))
   (autocmd :DiagnosticChanged
-    (fn [{: buf :data {: diagnostics}}]
-      (tset cache buf (icollect [_ v (ipairs diagnostics)]
-                        (if (<= v.severity vim.diagnostic.severity.INFO)
-                            v))))))
+    (fn [{: buf}]
+      (tset cache buf nil))))
 
 (keymap :n "]g" #(vim.diagnostic.goto_next {:float false}))
 (keymap :n "[g" #(vim.diagnostic.goto_prev {:float false}))
