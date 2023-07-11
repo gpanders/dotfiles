@@ -19,6 +19,7 @@ set pumheight=10
 set scrolloff=2
 set shada='100,<50,s10,:100,/100,h,r/tmp/,r/private/,rfugitive:,rzipfile:,rterm:
 set shell=/bin/sh
+set showbreak=↳\ 
 set sidescrolloff=5
 set smartcase
 set splitright
