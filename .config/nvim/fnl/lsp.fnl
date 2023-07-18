@@ -48,7 +48,7 @@
 
 (fn disable []
   (set vim.g.lsp.autostart false)
-  (vim.lsp.stop_client (vim.lsp.get_active_clients)))
+  (vim.lsp.stop_client (vim.lsp.get_clients)))
 
 {: start
  : enable

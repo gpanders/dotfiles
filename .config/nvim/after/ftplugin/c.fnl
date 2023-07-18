@@ -9,7 +9,7 @@
     (fn switch-source-header []
       (let [bufnr (nvim.get_current_buf)
             uri (vim.uri_from_bufnr bufnr)
-            [client] (vim.lsp.get_active_clients {: bufnr :name :clangd})]
+            [client] (vim.lsp.get_clients {: bufnr :name :clangd})]
         (when client
           (client.request
             :textDocument/switchSourceHeader

@@ -20,7 +20,7 @@
 
 (fn lsp []
   (case-try vim.b.lsp
-    name (vim.lsp.get_active_clients {:bufnr 0 : name})
+    name (vim.lsp.get_clients {:bufnr 0 : name})
     [client] (lsp-progress client)
     message (: " %s " :format message)
     (catch
