@@ -7,7 +7,8 @@
         (orig ...)))))
 
 (let [satellite (require :satellite)]
-  (satellite.setup {:handlers {:marks {:enable false}
+  (satellite.setup {:current_only true
+                    :handlers {:marks {:enable false}
                                :cursor {:enable false}
                                :gitsigns {:enable false}
                                :quickfix {:enable false}
