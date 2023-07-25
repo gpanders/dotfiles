@@ -33,30 +33,20 @@
                       (tree:root))
       _ nil)))
 
-(fn contains-node? [node other]
-  (let [(start-row start-col end-row end-col) (node:range)
-        (other-start-row other-start-col other-end-row other-end-col) (other:range)]
-    (if (< start-row other-start-row)
-        (or (< other-end-row end-row)
-            (and (= end-row other-end-row) (<= other-end-col end-col)))
-        (and (= start-row other-start-row) (<= other-end-col end-col)))))
-
 (fn context [bufnr]
   (let [ft (. vim.bo bufnr :filetype)
         lang (or (vim.treesitter.language.get_lang ft) ft)
         query (vim.treesitter.query.get lang :context)]
     (when query
-      (let [cursor-node (vim.treesitter.get_node)]
-        (when cursor-node
-          (let [scopes []
-                (end-row end-col) (cursor-node:end_)
-                captures (collect [k v (pairs query.captures)] (values v k))]
-            (each [id ctx (query:iter_captures (root bufnr) bufnr 0 end-row)]
-              (when (and (= id captures.context) (contains-node? ctx cursor-node))
-                (table.insert scopes ctx)))
-           (match (length scopes)
-             0 nil
-             _ scopes)))))))
+      (let [[row col] (nvim.win_get_cursor 0)
+            row (- row 1)
+            captures (collect [k v (pairs query.captures)] (values v k))
+            scopes (icollect [id ctx (query:iter_captures (root bufnr) bufnr 0 row)]
+                     (when (and (= id captures.context)
+                                (vim.treesitter.is_in_node_range ctx row col))
+                       ctx))]
+        (if (< 0 (length scopes))
+            scopes)))))
 
 (fn context-text [bufnr node ?query ?end-capture]
   (let [ft (. vim.bo bufnr :filetype)
