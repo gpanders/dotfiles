@@ -196,6 +196,7 @@ local highlights = {
     ["@text.uri"] = { fg = blue, underline = true },
     ["@text.strong"] = { bold = true },
     ["@text.emphasis"] = { italic = true },
+    ["@text.literal"] = {},
 
     -------------
     -- Languages
@@ -393,6 +394,7 @@ local highlights = {
     ["@text.reference.markdown_inline"] = { link = "markdownLinkText" },
     ["@punctuation.bracket.markdown_inline"] = { link = "markdownLinkTextDelimiter" },
     ["@punctuation.special.markdown"] = { link = "markdownListMarker" },
+    ["@punctuation.delimiter.markdown_inline"] = { link = "markdownCodeDelimiter" },
 
     pandocDefinitionBlockTerm = { fg = brightcyan },
     pandocTableDelims = { fg = brightblack },
