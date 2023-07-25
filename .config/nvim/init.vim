@@ -65,6 +65,9 @@ nnoremap <Space>Y "+y$
 nnoremap <Space>y "+y
 xnoremap <Space>y "+y
 
+" Use gK for keywordprg, since K gets mapped to 'hover' in LSP buffers
+nnoremap gK K
+
 " Format whole buffer with formatprg without changing cursor position
 nnoremap gq<CR> mzgggqG`z
 nnoremap gq? <Cmd>set formatprg?<CR>
