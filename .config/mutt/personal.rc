@@ -1,4 +1,4 @@
-set folder    = "imaps://mail.gandi.net"
+set folder    = "imaps://imap.migadu.com"
 set spoolfile = "+Inbox"
 set postponed = "+Drafts"
 set record    = "+Sent"
@@ -13,7 +13,7 @@ mailboxes +Lists
 mailboxes +Trash
 
 set imap_user = "greg@gpanders.com"
-set imap_pass = "`security find-internet-password -s mail.gandi.net -a greg@gpanders.com -r imap -w`"
+set imap_pass = "`security find-internet-password -s imap.migadu.com -a greg@gpanders.com -r imap -w`"
 set from = "greg@gpanders.com"
 set query_command = "khard email --parsable --search-in-source-files '%s'"
 set hostname = "gpanders.com"

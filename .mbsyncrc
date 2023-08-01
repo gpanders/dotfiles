@@ -8,7 +8,7 @@ Subfolders Verbatim
 Path ~/.mail/
 
 IMAPStore personal
-Host mail.gandi.net
+Host imap.migadu.com
 User greg@gpanders.com
 UseKeychain yes
 SSLType IMAPS

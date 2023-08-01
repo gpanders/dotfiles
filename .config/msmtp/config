@@ -1,5 +1,5 @@
 account greg@gpanders.com
-host mail.gandi.net
+host smtp.migadu.com
 port 465
 tls on
 tls_starttls off
