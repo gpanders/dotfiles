@@ -12,13 +12,8 @@
                         (values left-start-row left-start-col))]
       (nvim.win_set_cursor 0 [(+ row 1) col]))))
 
-(fn *swap [forward count]
-  (let [buf (nvim.get_current_buf)
-        ft (. vim.bo buf :filetype)
-        lang (or (vim.treesitter.language.get_lang ft) ft)
-        query (vim.treesitter.query.get lang :swap)
-        capture-map (collect [k v (pairs query.captures)] (values v k))
-        parser (vim.treesitter.get_parser buf lang)
+(fn *swap [buf parser query forward count]
+  (let [capture-map (collect [k v (pairs query.captures)] (values v k))
         [tree] (parser:parse)
         [row col] (nvim.win_get_cursor 0)
         row (- row 1)]
@@ -46,7 +41,15 @@
             nil (set done? true)))))))
 
 (fn swap [forward]
-  (*swap forward vim.v.count1)
+  (let [buf (nvim.get_current_buf)
+        ft (. vim.bo buf :filetype)
+        lang (or (vim.treesitter.language.get_lang ft) ft)
+        query (vim.treesitter.query.get lang :swap)]
+    (if query
+        (case (pcall vim.treesitter.get_parser bufnr lang)
+          (true parser) (*swap buf parser query forward vim.v.count1)
+          _ (nvim.err_writeln (: "No parser found for language %s" :format lang)))
+        (nvim.err_writeln (: "No 'swap' query found for language %s" :format lang))))
   (pcall vim.fn.repeat#set (if forward ">a" "<a") vim.v.count))
 
 (keymap :n ">a" #(swap true))

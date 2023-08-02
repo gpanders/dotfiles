@@ -93,8 +93,8 @@
           (set state.last nil)
           (close))
     contexts (let [win (nvim.get_current_win)
-                   [{: textoff : topline}] (vim.fn.getwininfo win)
-                   width (- (nvim.win_get_width win) textoff)]
+                   [{: width : textoff : topline}] (vim.fn.getwininfo win)
+                   width (- width textoff)]
                (when (stale? contexts width topline)
                  (set state.last {:ctx (. contexts (length contexts) :id) : width : topline})
                  (var text [])
@@ -103,12 +103,10 @@
                      (if (< start-row (+ (- topline 1) (length text)))
                          (let [t (context-text bufnr ctx)]
                            (var end-node ctx)
-                           (while (end-node:named)
+                           (while (and (end-node:named) (< 0 (end-node:child_count)))
                              (set end-node (end-node:child (- (end-node:child_count) 1))))
                            (let [end-text (end-node:type)]
-                             (table.insert text (+ (/ (length text) 2) 1) (if (< (length t) width)
-                                                                              t
-                                                                              (: "%s ..." :format (t:sub 1 (- width 4)))))
+                             (table.insert text (+ (/ (length text) 2) 1) t)
                              (table.insert text (+ (/ (length text) 2) 2) end-text))))))
                  (local height (/ (length text) 2))
                  (if (< 0 height)
@@ -140,7 +138,8 @@
                                                                  :style :minimal
                                                                  :noautocmd true})]
                                    (tset vim.wo w :winhighlight "NormalFloat:TreesitterContext")
-                                   (tset vim.wo w :linebreak false)
+                                   (tset vim.wo w :wrap false)
+                                   (tset vim.wo w :listchars "extends:…")
                                    (set state.winid w)
                                    w))]
                        (nvim.win_set_buf w b)
