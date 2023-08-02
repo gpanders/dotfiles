@@ -22,6 +22,7 @@ set shell=/bin/sh
 set showbreak=↳\ 
 set sidescrolloff=5
 set smartcase
+set smoothscroll
 set splitright
 set statusline=%{%v:lua.require'statusline'.statusline()%}
 set noswapfile
