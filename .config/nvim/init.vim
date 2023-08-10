@@ -141,9 +141,6 @@ augroup init
   " Create missing parent directories automatically
   autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
 
-  " Restore cursor position (except for git commits and rebases)
-  autocmd BufRead * if &ft !~# 'commit\|rebase' | exec 'silent! normal! g`"' | endif
-
   " Don't show trailing spaces in insert mode
   autocmd InsertEnter * setlocal listchars-=trail:-
   autocmd InsertLeave * setlocal listchars+=trail:-
