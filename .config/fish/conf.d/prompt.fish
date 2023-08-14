@@ -29,6 +29,9 @@ end
 function __prompt_update_pwd --on-variable PWD
     set -g __prompt_pwd (string replace -r -- '^'$HOME \~ $PWD)
     set -e __prompt_git_head
+    if not status --is-command-substitution; and not set -q INSIDE_EMACS
+        printf '\e]7;file://%s%s\e\\' $hostname (string escape --style=url $PWD)
+    end
 end
 
 function __prompt_venv --on-variable VIRTUAL_ENV --on-variable IN_NIX_SHELL
@@ -95,7 +98,7 @@ function __prompt_exit_status --on-event fish_postexec
     set -g __prompt_status (__fish_print_pipestatus '[' '] ' '|' (set_color $fish_color_status) (set_color $bold_flag $fish_color_status) $last_pipestatus)
 
     # End of current command (report status code)
-    printf '\e]133;D;%d;aid=%d\e\\' $__fish_last_status $fish_pid
+    printf '\e]133;D;%d\e\\' $__fish_last_status
 end
 
 function __prompt_fish_prompt_handler --on-event fish_prompt
@@ -171,7 +174,4 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
             set -U __prompt_git_$fish_pid \"$__prompt_git_branch\$dirty \$action\$upstream\"
         " &
     end
-
-    # Fresh line and enter prompt mode
-    printf '\e]133;A;cl=m;aid=%d\e\\' $fish_pid
 end
