@@ -41,11 +41,7 @@
 
 (fn enable []
   (set vim.g.lsp.autostart true)
-  (let [curbuf (nvim.get_current_buf)]
-    (start curbuf)
-    (each [_ buf (ipairs (nvim.list_bufs))]
-      (when (and (not= curbuf buf) (nvim.buf_is_loaded buf))
-        (autocmd :BufEnter {:buffer buf :once true} #(start buf))))))
+  (vim.cmd "doautoall <nomodeline> FileType"))
 
 (fn disable []
   (set vim.g.lsp.autostart false)
