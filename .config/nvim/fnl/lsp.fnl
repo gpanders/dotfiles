@@ -21,7 +21,8 @@
 
 (local capabilities (vim.tbl_deep_extend :force
                                          (vim.lsp.protocol.make_client_capabilities)
-                                         {:general {:positionEncodings [:utf-8 :utf-16]}}
+                                         {:general {:positionEncodings [:utf-8 :utf-16]}
+                                          :workspace {:didChangeWatchedFiles {:dynamicRegistration false}}}
                                          ((. (require :lsp_compl) :capabilities))))
 
 (fn start [config]
