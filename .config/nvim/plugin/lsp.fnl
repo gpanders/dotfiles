@@ -24,16 +24,19 @@
              (vim.lsp.buf.format {:bufnr buf :id client_id}))))
 
       (when (client.supports_method :textDocument/completion)
-        (let [lsp-compl (require :lsp_compl)]
+        (with-module [compl :lsp_compl]
           (match client.name
             :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
           (vim.cmd "set completeopt+=noinsert")
-          (lsp-compl.attach client buf {})))))
+          (let [{: expand_snippet} (require :snippy)]
+            (set compl.expand_snippet expand_snippet))
+          (keymap :i :<CR> #(if (compl.accept_pum) :<C-Y> :<CR>) {:expr true :buffer true})
+          (compl.attach client buf {})))))
   (autocmd :LspDetach
     (fn [{: buf :data {: client_id}}]
       (tset vim.b buf :lsp nil)
-      (let [lsp-compl (require :lsp_compl)]
-        (lsp-compl.detach client_id buf))
+      (with-module [compl :lsp_compl]
+        (compl.detach client_id buf))
       (autocmd! lsp# "*" {:buffer buf})))
   (autocmd :LspProgress "*" "redrawstatus"))
 

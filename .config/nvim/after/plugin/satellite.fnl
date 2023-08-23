@@ -13,5 +13,3 @@
                                :gitsigns {:enable false}
                                :quickfix {:enable false}
                                :diagnostic {:min_severity vim.diagnostic.severity.INFO}}}))
-
-(set vim.o.wrapmargin 1)

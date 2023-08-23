@@ -1,4 +1,4 @@
-(let [gitsigns (require :gitsigns)]
+(with-module [gitsigns :gitsigns]
   (gitsigns.setup {:on_attach (fn [buffer]
                                 (keymap :n "[c" #(if vim.wo.diff
                                                      "[c"

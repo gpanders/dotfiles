@@ -1,9 +1,13 @@
 (when (= nil vim.g.lsp)
   (set vim.g.lsp {:autostart true}))
 
+(local compl (match (pcall require :lsp_compl)
+               (true compl) compl
+               _ nil))
+
 (fn on-init [client result]
-  (let [lsp-compl (require :lsp_compl)]
-    (set vim.lsp.text_document_completion_list_to_complete_items lsp-compl.text_document_completion_list_to_complete_items)
+  (when compl
+    (set vim.lsp.text_document_completion_list_to_complete_items compl.text_document_completion_list_to_complete_items)
     (when (client.supports_method :textDocument/signatureHelp)
       (set client.server_capabilities.signatureHelpProvider.triggerCharacters [])))
   (match result.offsetEncoding
@@ -22,7 +26,7 @@
 (local capabilities (vim.tbl_deep_extend :force
                                          (vim.lsp.protocol.make_client_capabilities)
                                          {:general {:positionEncodings [:utf-8 :utf-16]}}
-                                         ((. (require :lsp_compl) :capabilities))))
+                                         (if compl (compl.capabilities) {})))
 
 (fn start [config]
   (when (and (= 1 (vim.fn.executable (. config.cmd 1)))

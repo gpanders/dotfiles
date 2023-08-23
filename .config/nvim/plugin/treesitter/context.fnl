@@ -188,7 +188,7 @@
   (autocmd [:WinScrolled :WinEnter :CursorMoved :CursorMovedI] "*"
     #(when (= "" (vim.fn.getcmdwintype))
        (let [buf (nvim.get_current_buf)
-                ft (. vim.bo buf :filetype)]
+             ft (. vim.bo buf :filetype)]
          (if (filetype-has-parser ft)
              (show-context buf)
              (close)))))
