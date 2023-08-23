@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 
+import re
 import subprocess
-from pathlib import Path
 import sys
 import tempfile
+from pathlib import Path
 
 SSH_SERVER = "p.gpanders.com:scpaste"
 HTTP_SERVER = "https://p.gpanders.com"
+THEME = "edit-bbedit"
+FONT = "Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace"
+FONT_SIZE = "0.9rem"
 
 
 def main(name, extra):
@@ -22,15 +26,28 @@ def main(name, extra):
                 print("Name is required", file=sys.stderr)
                 sys.exit(1)
 
-    args = ["highlight", "-a", "-O", "html", "-T", name]
+    args = [
+        "highlight",
+        "--anchors",
+        "--out-format=html",
+        "--include-style",
+        "--line-numbers",
+        f"--style={THEME}",
+        f"--font={FONT}",
+        f"--doc-title={name}",
+        *extra,
+    ]
 
     with tempfile.NamedTemporaryFile() as tmp:
-        args += ["-o", tmp.name] + extra
         try:
             proc = subprocess.run(args, stdin=sys.stdin, capture_output=True)
             if proc.returncode != 0:
                 sys.stderr.write(proc.stderr.decode())
                 sys.exit(1)
+
+            out = re.sub(r"\b(font-size):[^;]+;", rf"\1:{FONT_SIZE};", proc.stdout.decode())
+            tmp.write(out.encode())
+
             subprocess.run(
                 ["scp", tmp.name, f"{SSH_SERVER}/{name}.html"],
                 check=True,
