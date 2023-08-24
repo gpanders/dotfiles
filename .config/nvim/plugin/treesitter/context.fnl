@@ -33,6 +33,16 @@
                       (tree:root))
       _ nil)))
 
+(fn parents [start]
+  (values (fn [_ node] (when node (node:parent))) nil start))
+
+(fn rev [l]
+  (values (fn [s v]
+            (when (< 1 v)
+              (values (- v 1) (. s (- v 1)))))
+          l
+          (+ (length l) 1)))
+
 (fn context [bufnr]
   (let [ft (. vim.bo bufnr :filetype)
         lang (or (vim.treesitter.language.get_lang ft) ft)
@@ -41,12 +51,14 @@
       (let [[row col] (nvim.win_get_cursor 0)
             row (- row 1)
             captures (collect [k v (pairs query.captures)] (values v k))
-            scopes (icollect [id ctx (query:iter_captures (root bufnr) bufnr 0 row)]
-                     (when (and (= id captures.context)
-                                (vim.treesitter.is_in_node_range ctx row col))
-                       ctx))]
-        (if (< 0 (length scopes))
-            scopes)))))
+            curnode (vim.treesitter.get_node)
+            contexts []]
+        (each [parent (parents curnode)]
+          (each [_ match# (query:iter_matches parent bufnr 0 -1 {:max_start_depth 0})]
+            (match (. match# captures.context)
+              node (tset contexts (+ (length contexts) 1) node))))
+        (if (< 0 (length contexts))
+            (icollect [_ v (rev contexts)] v))))))
 
 (fn context-text [bufnr node ?query ?end-capture]
   (let [ft (. vim.bo bufnr :filetype)
@@ -56,7 +68,7 @@
         (start-row start-col) (node:start)
         (end-row end-col) (do
                             (var end-node nil)
-                            (each [_ mat (query:iter_matches node bufnr) &until end-node]
+                            (each [_ mat (query:iter_matches node bufnr 0 -1 {:max_start_depth 0}) &until end-node]
                               (match (. mat (. captures (or ?end-capture :text)))
                                 text (let [ctx (. mat captures.context)]
                                        (match (ctx:start)
@@ -75,14 +87,12 @@
         (->> (pick-values 1)))))
 
 (fn close []
-  (match state.winid
-    w (do
-        (when (nvim.win_is_valid w)
-          (nvim.win_close w true))
-        (set state.winid nil))))
+  (when (and state.winid (nvim.win_is_valid state.winid))
+    (nvim.win_close state.winid true))
+  (set state.winid nil))
 
 (fn stale? [contexts width topline]
-  (let [ctx (. contexts (length contexts) :id)]
+  (let [ctx (: (. contexts (length contexts)) :id)]
     (match state.last
       {: ctx : width : topline} false
       _ true)))
@@ -96,19 +106,23 @@
                    [{: width : textoff : topline}] (vim.fn.getwininfo win)
                    width (- width textoff)]
                (when (stale? contexts width topline)
-                 (set state.last {:ctx (. contexts (length contexts) :id) : width : topline})
-                 (var text [])
+                 (set state.last {:ctx (: (. contexts (length contexts)) :id) : width : topline})
+
+                 ; Array of [context, end] pairs. 'context' is the text to show
+                 ; for the given context in the floating window. 'end' is the
+                 ; end marker of the context (e.g. "}" for a function
+                 ; declaration in C). These are included in the buffer to make
+                 ; syntax highlighting work correctly.
+                 (local texts [])
                  (each [_ ctx (ipairs contexts)]
                    (let [start-row (ctx:start)]
-                     (if (< start-row (+ (- topline 1) (length text)))
-                         (let [t (context-text bufnr ctx)]
-                           (var end-node ctx)
-                           (while (and (end-node:named) (< 0 (end-node:child_count)))
-                             (set end-node (end-node:child (- (end-node:child_count) 1))))
-                           (let [end-text (end-node:type)]
-                             (table.insert text (+ (/ (length text) 2) 1) t)
-                             (table.insert text (+ (/ (length text) 2) 2) end-text))))))
-                 (local height (/ (length text) 2))
+                     (when (< start-row (+ (- topline 1) (length texts)))
+                       (var end-node ctx)
+                       (while (and (end-node:named) (< 0 (end-node:child_count)))
+                         (set end-node (end-node:child (- (end-node:child_count) 1))))
+                       (tset texts (+ (length texts) 1) [(context-text bufnr ctx) (end-node:type)]))))
+
+                 (local height (length texts))
                  (if (< 0 height)
                      (let [b (match (?. state bufnr :bufnr)
                                (where n (vim.api.nvim_buf_is_valid n)) n
@@ -143,7 +157,10 @@
                                    (set state.winid w)
                                    w))]
                        (nvim.win_set_buf w b)
-                       (nvim.buf_set_lines b 0 -1 true text))
+                       (let [context-lines (icollect [_ v (ipairs texts)] (. v 1))
+                             context-ends (icollect [_ v (rev texts)] (. v 2))]
+                         (nvim.buf_set_lines b 0 -1 true context-lines)
+                         (nvim.buf_set_lines b -1 -1 true context-ends)))
                      (close))))))
 
 (fn toc []
