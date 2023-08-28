@@ -1,6 +1,3 @@
-" Ensure filetype autocommands are created first
-filetype on
-
 colorscheme nord
 
 set breakindent
@@ -18,7 +15,6 @@ set list
 set pumheight=10
 set scrolloff=2
 set shada='100,<50,s10,:100,/100,h,r/tmp/,r/private/,rfugitive:,rzipfile:,rterm:
-set shell=/bin/sh
 set showbreak=↳\ 
 set sidescrolloff=5
 set smartcase
@@ -121,6 +117,9 @@ vnoremap P p
 " Use zS mapping from scriptease for :Inspect
 nnoremap zS <Cmd>Inspect<CR>
 
+nnoremap `<CR> <Cmd>botright term<CR>
+nnoremap <expr> `<Space> ':botright term '
+
 augroup init
   autocmd!
 
@@ -147,6 +146,8 @@ augroup init
 
   " For some filetypes, completion based on syntax is better than nothing
   autocmd FileType cmake setlocal omnifunc=syntaxcomplete#Complete
+
+  autocmd TermOpen term://* startinsert
 augroup END
 
 lua<<
