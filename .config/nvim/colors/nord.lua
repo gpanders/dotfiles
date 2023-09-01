@@ -565,15 +565,12 @@ local highlights = {
     gitcommitUntrackedFile = { fg = red },
     gitcommitSelectedFile = { fg = green },
 
-    -- termdebug
-    --  debugPC = { fg = cyan, bg = darkgray },
-    --  debugBreakpoint = { fg = red, bg = darkgray },
+    -- nvim-dap
+    DapStoppedLine = { bg = brightblack, underline = true },
+    DapStoppedSign = { fg = darkblack, bg = white },
+    DapBreakpoint = { bg = darkblack },
 
     TreesitterContext = { bg = darkblack },
-
-    Sneak = { bg = yellow, fg = black },
-
-    TelescopeMatching = { fg = yellow },
 }
 
 for group, opts in pairs(highlights) do
