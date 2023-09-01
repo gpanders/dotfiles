@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import re
+import os
 import subprocess
 import sys
 import tempfile
@@ -8,12 +8,9 @@ from pathlib import Path
 
 SSH_SERVER = "p.gpanders.com:scpaste"
 HTTP_SERVER = "https://p.gpanders.com"
-THEME = "edit-bbedit"
-FONT = "Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace"
-FONT_SIZE = "0.9rem"
 
 
-def main(name, extra):
+def scpaste(name: str, extra: list[str]) -> int:
     if name is None:
         for arg in extra:
             p = Path(arg)
@@ -24,40 +21,47 @@ def main(name, extra):
             name = input("Name: ")
             if name == "":
                 print("Name is required", file=sys.stderr)
-                sys.exit(1)
+                return 1
 
-    args = [
+    args = (
         "highlight",
         "--anchors",
         "--out-format=html",
-        "--include-style",
+        "--force",
         "--line-numbers",
-        f"--style={THEME}",
-        f"--font={FONT}",
+        "--encoding=utf-8",
         f"--doc-title={name}",
         *extra,
-    ]
+    )
 
     with tempfile.NamedTemporaryFile() as tmp:
-        try:
-            proc = subprocess.run(args, stdin=sys.stdin, capture_output=True)
-            if proc.returncode != 0:
-                sys.stderr.write(proc.stderr.decode())
-                sys.exit(1)
+        umask = os.umask(0o666)
+        os.umask(umask)
+        os.chmod(tmp.name, 0o666 & ~umask)
 
-            out = re.sub(r"\b(font-size):[^;]+;", rf"\1:{FONT_SIZE};", proc.stdout.decode())
-            tmp.write(out.encode())
+        try:
+            subprocess.run(
+                args + ("-o", tmp.name),
+                stdin=sys.stdin,
+                stderr=sys.stderr,
+                check=True,
+            )
 
             subprocess.run(
-                ["scp", tmp.name, f"{SSH_SERVER}/{name}.html"],
+                ("scp", tmp.name, f"{SSH_SERVER}/{name}.html"),
+                stdout=subprocess.DEVNULL,
+                stderr=sys.stderr,
                 check=True,
-                capture_output=True,
             )
 
             print(f"{HTTP_SERVER}/{name}.html")
+        except subprocess.CalledProcessError:
+            return 1
         except FileNotFoundError:
             print("highlight must be installed", file=sys.stderr)
-            sys.exit(1)
+            return 1
+
+    return 0
 
 
 if __name__ == "__main__":
@@ -71,4 +75,5 @@ if __name__ == "__main__":
         help="Name of the paste. Required if reading from stdin",
     )
     args, extra = parser.parse_known_args()
-    main(args.name, extra)
+
+    sys.exit(scpaste(args.name, extra))
