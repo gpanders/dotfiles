@@ -1,5 +1,6 @@
 (with-module [dap :dap]
   (keymap :n "<F5>" #(dap.continue))
+  (keymap :n "<F6>" #(dap.run_to_cursor))
   (keymap :n "<F10>" #(dap.step_over))
   (keymap :n "<F11>" #(dap.step_into))
   (keymap :n "<F12>" #(dap.step_out))
@@ -29,4 +30,12 @@
       (scopes.open)
       (vim.cmd.wincmd :p)
       (nvim.win_set_buf 0 scopes.buf)
-      (nvim.set_current_win win))))
+      (nvim.set_current_win win)))
+
+  (fn dap.listeners.after.event_stopped.me []
+    (keymap :n "<M-S-J>" #(dap.down))
+    (keymap :n "<M-S-K>" #(dap.up)))
+
+  (fn dap.listeners.after.event_continued.me []
+    (nvim.del_keymap :n "<M-S-J>")
+    (nvim.del_keymap :n "<M-S-K>")))
