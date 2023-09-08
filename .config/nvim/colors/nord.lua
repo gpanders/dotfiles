@@ -92,6 +92,7 @@ local highlights = {
     LspSignatureActiveParameter = { underline = true, bold = true, sp = foreground },
     LspCodeLens = { link = "Comment" },
     LspCodeLensSeparator = { link = "Comment" },
+    LspInlayHint = { fg = brighterblack },
 
     -- Gutter
     CursorColumn = { bg = darkblack },
