@@ -4,4 +4,5 @@
 
 (let [lsp (require :lsp)]
   (lsp.start {:cmd ["rust-analyzer"]
-              :root ["Cargo.toml"]}))
+              :root ["Cargo.toml"]
+              :settings {:rust-analyzer {:check {:command "clippy"}}}}))
