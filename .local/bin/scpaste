@@ -6,7 +6,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-SSH_SERVER = "p.gpanders.com:scpaste"
+SSH_SERVER = "scpaste@p.gpanders.com"
 HTTP_SERVER = "https://p.gpanders.com"
 
 
@@ -48,7 +48,7 @@ def scpaste(name: str, extra: list[str]) -> int:
             )
 
             subprocess.run(
-                ("scp", tmp.name, f"{SSH_SERVER}/{name}.html"),
+                ("scp", tmp.name, f"{SSH_SERVER}:{name}.html"),
                 stdout=subprocess.DEVNULL,
                 stderr=sys.stderr,
                 check=True,
