@@ -1,12 +1,15 @@
 (local disabled {})
-(local ft-lang-map {:terraform :hcl})
+(local ft-lang-map {})
 
 (autocmd treesitter#highlight :FileType
-  (fn [args]
-    (let [ft (. vim.bo args.buf :filetype)
-          lang (or (. ft-lang-map ft) ft)]
+  (fn [{: buf}]
+    (let [ft (. vim.bo buf :filetype)]
       (when (not (. disabled ft))
-        (match (pcall vim.treesitter.get_parser args.buf lang)
+        (case (. ft-lang-map ft)
+          lang (do
+                 (vim.treesitter.register lang ft)
+                 (tset ft-lang-map ft nil)))
+        (case (pcall vim.treesitter.get_parser buf)
           false (tset disabled ft true)
           (true parser) (do
                           (vim.treesitter.highlighter.new parser)
