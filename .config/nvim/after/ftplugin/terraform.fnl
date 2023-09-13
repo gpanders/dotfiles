@@ -1,2 +1,2 @@
 (let [lsp (require :lsp)]
-  (lsp.setup {:cmd ["tflint" "--langserver"]}))
+  (lsp.start {:cmd ["tflint" "--langserver"]}))
