@@ -299,8 +299,11 @@ local highlights = {
 
     helpBar = { fg = brightblack },
     helpHyperTextJump = { fg = cyan, underline = true },
-    ["@text.reference.help"] = { link = "helpHyperTextJump" },
-    ["@label.help"] = { link = "helpHyperTextEntry" },
+    ["@text.reference.vimdoc"] = { link = "helpHyperTextJump" },
+    ["@text.literal.vimdoc"] = { link = "Comment" },
+    ["@label.vimdoc"] = { link = "helpHyperTextEntry" },
+    ["@parameter.vimdoc"] = { link = "helpSpecial" },
+    ["@property.vimdoc"] = { link = "helpOption" },
 
     htmlArg = { fg = brightcyan },
     htmlLink = { fg = foreground },
