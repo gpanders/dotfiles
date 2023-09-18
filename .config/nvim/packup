@@ -105,7 +105,6 @@ plug github.com/gpanders/nvim-parinfer
 plug github.com/justinmk/vim-dirvish
 plug github.com/junegunn/vim-easy-align
 plug github.com/junegunn/vim-peekaboo
-plug github.com/ibhagwan/fzf-lua
 plug github.com/mfussenegger/nvim-lsp-compl
 plug github.com/mfussenegger/nvim-lint
 plug github.com/mfussenegger/nvim-dap
