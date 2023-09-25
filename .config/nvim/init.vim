@@ -72,8 +72,8 @@ nnoremap gq? <Cmd>set formatprg?<CR>
 " Unimpaired style mappings
 nnoremap <expr> [a '<Cmd>' . v:count1 . 'prev<CR>'
 nnoremap <expr> ]a '<Cmd>' . v:count1 . 'next<CR>'
-nnoremap <expr> [b '<Cmd>' . v:count1 . 'bprev<CR>'
-nnoremap <expr> ]b '<Cmd>' . v:count1 . 'bnext<CR>'
+nnoremap <expr> [b '<Cmd>' . v:count1 . 'bprev<CR>2<C-G>'
+nnoremap <expr> ]b '<Cmd>' . v:count1 . 'bnext<CR>2<C-G>'
 nnoremap <expr> [t '<Cmd>' . v:count1 . 'tprev<CR>'
 nnoremap <expr> ]t '<Cmd>' . v:count1 . 'tnext<CR>'
 nnoremap [A <Cmd>first<CR>
