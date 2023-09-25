@@ -2,8 +2,8 @@ local nvim_set_hl = vim.api.nvim_set_hl
 
 vim.o.background = "dark"
 
-local background    = "#2e3440"
-local foreground    = "#eceff4"
+local background = "#2e3440"
+local foreground = "#eceff4"
 
 -- (nord1) Used for elevated, more prominent or focused UI elements like, status bars
 -- and text editor gutters panels, modals and floating popups like
@@ -13,15 +13,15 @@ local foreground    = "#eceff4"
 -- different components.
 local black = "#3b4252"
 
--- (nord2) Used to colorize the currently active text editor line as well as selection-
--- and text highlighting color. It can also be used as an brighter variant for
--- the same target elements like nord1.
+-- (nord2) Used to colorize the currently active text editor line as well as
+-- selection and text highlighting color. It can also be used as an brighter
+-- variant for the same target elements like nord1.
 local lightblack = "#434c5e"
 
 -- (nord3) Used for UI elements like indent- and wrap guide marker.
 local brightblack = "#4c566a"
 
--- Higher contrast variant of nord3 for used for comments and
+-- Higher contrast variant of nord3 used for comments and
 -- invisible/non-printable characters.
 local brighterblack = "#616e88"
 
@@ -44,54 +44,54 @@ local brightwhite = "#eceff4"
 -- (nord7) Used for UI elements that should, next to the primary accent color nord8,
 -- stand out and get more visual attention. In the context of syntax
 -- highlighting it is used for classes, types and primitives.
-local brightcyan    = "#8fbcbb"
+local brightcyan = "#8fbcbb"
 
 -- (nord8) Used for primary UI elements with main usage purposes that require
 -- the most visual attention. In the context of syntax highlighting it is used
 -- for declarations, calls and execution statements of functions, methods and
 -- routines.
-local cyan          = "#88c0d0"
+local cyan = "#88c0d0"
 
 -- (nord9) Used for secondary UI elements that also require more visual attention than
 -- other elements. In the context of syntax highlighting it is used for
 -- language specific, syntactic and reserved keywords as well as support
 -- characters, operators, tags, units, and punctuation like (semi)colons,
 -- points and commas
-local blue          = "#81a1c1"
+local blue = "#81a1c1"
 
 -- (nord10) Used for tertiary UI elements that require more visual attention than
 -- default elements. In the context of syntax highlighting it is used for
 -- pragmas, comment keywords and pre-processor statements.
-local darkblue      = "#5e81ac"
+local darkblue = "#5e81ac"
 
 -- (nord11) Used for UI elements that are rendering error states like linter
 -- markers and the highlighting of Git diff deletions. In the context of syntax
 -- highlighting it is used to override the highlighting of syntax elements that
 -- are detected as errors.
-local red           = "#bf616a"
+local red = "#bf616a"
 
 -- (nord12) Rarely used for UI elements, but it may indicate a more advanced or
 -- dangerous functionality. In the context of syntax highlighting it is used
 -- for special syntax elements like annotations and decorators.
-local orange        = "#d08770"
+local orange = "#d08770"
 
 -- (nord13) Used for UI elements that are rendering warning states like linter
 -- markers and the highlighting of Git diff modifications. In the context of
 -- syntax highlighting it is used to override the highlighting of syntax
 -- elements that are detected as warnings as well as escape characters and
 -- within regular expressions.
-local yellow        = "#ebcb8b"
+local yellow = "#ebcb8b"
 
 -- (nord14) Used for UI elements that are rendering success states and
 -- visualizations and the highlighting of Git diff additions. In the context of
 -- syntax highlighting it is used as main color for strings of any type like
 -- double/single quoted or interpolated.
-local green         = "#a3be8c"
+local green = "#a3be8c"
 
 -- (nord15) Rarely used for UI elements, but it may indicate a more uncommon
 -- functionality. In the context of syntax highlighting it is used as main
 -- color for numbers of any type like integers and floating point numbers.
-local magenta       = "#b48ead"
+local magenta = "#b48ead"
 
 vim.g.terminal_color_0 = background
 vim.g.terminal_color_1 = red
@@ -111,7 +111,7 @@ vim.g.terminal_color_14 = cyan
 vim.g.terminal_color_15 = brightwhite
 
 local highlights = {
-    Normal = { fg = foreground, bg = background },
+    Normal = {},
 
     Bold = { bold = true },
     Italic = {},
@@ -119,25 +119,25 @@ local highlights = {
 
     -- Editor
     Attribute = { fg = darkwhite },
-    ColorColumn = { bg = lightblack },
+    ColorColumn = { bg = black },
     Cursor = { fg = background, bg = foreground },
-    CursorLine = { bg = lightblack },
+    CursorLine = { bg = black },
     Error = { fg = foreground, bg = red },
     FloatBorder = { link = "Normal" },
     iCursor = { fg = background, bg = foreground },
     LineNr = { fg = brightblack, bg = black },
     MatchParen = { fg = cyan, bg = brightblack },
     NonText = { fg = brightblack },
-    NormalFloat = { fg = foreground, bg = black },
-    Pmenu = { fg = foreground, bg = black },
-    PmenuSbar = { fg = foreground, bg = lightblack },
-    PmenuSel = { fg = cyan, bg = brightblack },
-    PmenuThumb = { fg = cyan, bg = brightblack },
+    NormalFloat = { link = "Normal" },
+    Pmenu = { fg = white, bg = black },
+    PmenuSbar = { link = "Pmenu" },
+    PmenuSel = { fg = cyan, bg = lightblack },
+    PmenuThumb = { bg = brightblack },
     SpecialKey = { fg = brightblack },
     SpellBad = { undercurl = true, sp = red },
     SpellCap = { undercurl = true, sp = yellow },
-    SpellLocal = { undercurl = true, sp = white },
-    SpellRare = { undercurl = true, sp = brightwhite },
+    SpellLocal = { undercurl = true, sp = yellow },
+    SpellRare = { undercurl = true, sp = yellow },
     Visual = { bg = lightblack },
     VisualNOS = { bg = lightblack },
 
@@ -184,18 +184,18 @@ local highlights = {
     MoreMsg = { fg = cyan },
     Question = { fg = foreground },
     StatusLine = { fg = foreground, bg = black },
-    StatusLineNC = { fg = brightblack, bg = black },
+    StatusLineNC = { fg = brighterblack, bg = black },
     StatusLineTerm = { fg = foreground, bg = lightblack },
-    StatusLineTermNC = { fg = brightblack, bg = black },
+    StatusLineTermNC = { fg = brighterblack, bg = black },
     WarningMsg = { fg = background, bg = yellow },
     WildMenu = { fg = cyan, bg = black },
     WinBar = { fg = brightblack, bg = background },
     WinBarNC = { fg = brightblack, bg = background },
 
     -- Search
-    IncSearch = { fg = brightwhite, bg = darkblue, underline = true },
-    CurSearch = { link = "IncSearch" },
-    Search = { fg = black, bg = cyan },
+    IncSearch = { fg = black, bg = cyan, underline = true },
+    CurSearch = { fg = black, bg = cyan },
+    Search = { fg = brightwhite, bg = darkblue },
 
     -- Tabs
     TabLine = { fg = brightblack, bg = black },
@@ -623,10 +623,11 @@ local highlights = {
     yamlDocumentStart = { link = "Keyword" },
     yamlKey = { fg = brightcyan },
 
-    ["@attribute.zig"] = { link = "Attribute" },
+    ["@attribute.zig"] = { link = "Keyword" },
     ["@include.zig"] = { link = "Function" },
     ["@type.qualifier.zig"] = { link = "Keyword" },
     ["@lsp.typemod.namespace.declaration.zig"] = { link = "Identifier" },
+    ["@lsp.type.keyword.zig"] = { link = "Keyword" },
 
     ------------------
     -- Plugin Support
