@@ -1,10 +1,11 @@
-# Shamelessly ripped off from Jorge Bucaran (@jorgebucaran)'s Hydro prompt:
-# https://github.com/jorgebucaran/hydro
+# Originally based off of Jorge Bucaran (@jorgebucaran)'s Hydro prompt: https://github.com/jorgebucaran/hydro
 # For OSC commands, see https://gitlab.freedesktop.org/Per_Bothner/specifications/blob/master/proposals/semantic-prompts.md
 
 status is-interactive; or exit
 
 set -q fish_prompt_delim; or set -g fish_prompt_delim '❯'
+
+set -g fish_handle_reflow 1
 
 for type in cwd venv jobs git cmd_duration prompt_delim host
     set -l color fish_color_$type
@@ -60,6 +61,9 @@ function __prompt_update_jobs
 end
 
 function __prompt_fish_preexec_handler --on-event fish_preexec
+    # Reset cursor shape
+    printf '\e[0 q'
+
     # End of input, start of output
     printf '\e]133;C\e\\'
 end
@@ -116,6 +120,9 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
     else
         set -g __prompt_cmd_duration
     end
+
+    # Change the cursor to a beam on prompt
+    printf '\e[5 q'
 
     if not set -q __prompt_git_head
         set -l gitdir
