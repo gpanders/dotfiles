@@ -2,41 +2,112 @@ local nvim_set_hl = vim.api.nvim_set_hl
 
 vim.o.background = "dark"
 
-local background    = "#2E3440"
-local darkblack     = "#373E4D"
-local black         = "#3B4252"
-local lightblack    = "#434C5E"
-local brightblack   = "#4C566A"
-local brighterblack = "#616E88"
-local foreground    = "#D8DEE9"
-local darkwhite     = "#AEB3BB"
-local white         = "#E5E9F0"
-local brightwhite   = "#ECEFF4"
-local brightcyan    = "#8FBCBB"
-local cyan          = "#88C0D0"
-local blue          = "#81A1C1"
-local darkblue      = "#5E81AC"
-local red           = "#BF616A"
-local orange        = "#D08770"
-local yellow        = "#EBCB8B"
-local green         = "#A3BE8C"
-local magenta       = "#B48EAD"
+local background    = "#2e3440"
+local foreground    = "#eceff4"
 
-vim.g.terminal_color_0 = black
+-- (nord1) Used for elevated, more prominent or focused UI elements like, status bars
+-- and text editor gutters panels, modals and floating popups like
+-- notifications or auto completion user interaction/form components like
+-- buttons, text/select fields or checkboxes It also works fine for more
+-- inconspicuous and passive elements like borders or as dropshadow between
+-- different components.
+local black = "#3b4252"
+
+-- (nord2) Used to colorize the currently active text editor line as well as selection-
+-- and text highlighting color. It can also be used as an brighter variant for
+-- the same target elements like nord1.
+local lightblack = "#434c5e"
+
+-- (nord3) Used for UI elements like indent- and wrap guide marker.
+local brightblack = "#4c566a"
+
+-- Higher contrast variant of nord3 for used for comments and
+-- invisible/non-printable characters.
+local brighterblack = "#616e88"
+
+-- (nord4) Used for UI elements like the text editor caret. In the context of syntax
+-- highlighting it is used as text color for variables, constants, attributes
+-- and fields.
+local darkwhite = "#d8dee9"
+
+-- (nord5) Used for more subtle/inconspicuous UI text elements that do not need so much
+-- visual attention. Other use cases are also state animations like a more
+-- brighter text color when a button is hovered, active or focused.
+local white = "#e5e9f0"
+
+-- (nord6) Used for elevated UI text elements that require more visual attention. In
+-- the context of syntax highlighting it is used as text color for plain text
+-- as well as reserved and structuring syntax characters like curly- and square
+-- brackets.
+local brightwhite = "#eceff4"
+
+-- (nord7) Used for UI elements that should, next to the primary accent color nord8,
+-- stand out and get more visual attention. In the context of syntax
+-- highlighting it is used for classes, types and primitives.
+local brightcyan    = "#8fbcbb"
+
+-- (nord8) Used for primary UI elements with main usage purposes that require
+-- the most visual attention. In the context of syntax highlighting it is used
+-- for declarations, calls and execution statements of functions, methods and
+-- routines.
+local cyan          = "#88c0d0"
+
+-- (nord9) Used for secondary UI elements that also require more visual attention than
+-- other elements. In the context of syntax highlighting it is used for
+-- language specific, syntactic and reserved keywords as well as support
+-- characters, operators, tags, units, and punctuation like (semi)colons,
+-- points and commas
+local blue          = "#81a1c1"
+
+-- (nord10) Used for tertiary UI elements that require more visual attention than
+-- default elements. In the context of syntax highlighting it is used for
+-- pragmas, comment keywords and pre-processor statements.
+local darkblue      = "#5e81ac"
+
+-- (nord11) Used for UI elements that are rendering error states like linter
+-- markers and the highlighting of Git diff deletions. In the context of syntax
+-- highlighting it is used to override the highlighting of syntax elements that
+-- are detected as errors.
+local red           = "#bf616a"
+
+-- (nord12) Rarely used for UI elements, but it may indicate a more advanced or
+-- dangerous functionality. In the context of syntax highlighting it is used
+-- for special syntax elements like annotations and decorators.
+local orange        = "#d08770"
+
+-- (nord13) Used for UI elements that are rendering warning states like linter
+-- markers and the highlighting of Git diff modifications. In the context of
+-- syntax highlighting it is used to override the highlighting of syntax
+-- elements that are detected as warnings as well as escape characters and
+-- within regular expressions.
+local yellow        = "#ebcb8b"
+
+-- (nord14) Used for UI elements that are rendering success states and
+-- visualizations and the highlighting of Git diff additions. In the context of
+-- syntax highlighting it is used as main color for strings of any type like
+-- double/single quoted or interpolated.
+local green         = "#a3be8c"
+
+-- (nord15) Rarely used for UI elements, but it may indicate a more uncommon
+-- functionality. In the context of syntax highlighting it is used as main
+-- color for numbers of any type like integers and floating point numbers.
+local magenta       = "#b48ead"
+
+vim.g.terminal_color_0 = background
 vim.g.terminal_color_1 = red
 vim.g.terminal_color_2 = green
 vim.g.terminal_color_3 = yellow
 vim.g.terminal_color_4 = blue
 vim.g.terminal_color_5 = magenta
 vim.g.terminal_color_6 = cyan
-vim.g.terminal_color_7 = white
-vim.g.terminal_color_8 = brightblack
+vim.g.terminal_color_7 = foreground
+vim.g.terminal_color_8 = black
 vim.g.terminal_color_9 = red
 vim.g.terminal_color_10 = green
 vim.g.terminal_color_11 = yellow
 vim.g.terminal_color_12 = blue
 vim.g.terminal_color_13 = magenta
-vim.g.terminal_color_14 = brightcyan
+vim.g.terminal_color_14 = cyan
 vim.g.terminal_color_15 = brightwhite
 
 local highlights = {
@@ -47,17 +118,18 @@ local highlights = {
     Underlined = { underline = true },
 
     -- Editor
-    ColorColumn = { bg = black },
+    Attribute = { fg = darkwhite },
+    ColorColumn = { bg = lightblack },
     Cursor = { fg = background, bg = foreground },
-    CursorLine = { bg = black },
+    CursorLine = { bg = lightblack },
     Error = { fg = foreground, bg = red },
     FloatBorder = { link = "Normal" },
     iCursor = { fg = background, bg = foreground },
-    LineNr = { fg = brighterblack, bg = darkblack },
+    LineNr = { fg = brightblack, bg = black },
     MatchParen = { fg = cyan, bg = brightblack },
     NonText = { fg = brightblack },
-    NormalFloat = { link = "Normal" },
-    Pmenu = { fg = foreground, bg = lightblack },
+    NormalFloat = { fg = foreground, bg = black },
+    Pmenu = { fg = foreground, bg = black },
     PmenuSbar = { fg = foreground, bg = lightblack },
     PmenuSel = { fg = cyan, bg = brightblack },
     PmenuThumb = { fg = cyan, bg = brightblack },
@@ -74,10 +146,10 @@ local highlights = {
     DiagnosticError = { fg = red },
     DiagnosticInfo = { fg = blue },
     DiagnosticHint = { fg = darkblue },
-    DiagnosticSignWarn = { fg = yellow, bg = darkblack },
-    DiagnosticSignError = { fg = red, bg = darkblack },
-    DiagnosticSignInfo = { fg = blue, bg = darkblack },
-    DiagnosticSignHint = { fg = darkblue, bg = darkblack },
+    DiagnosticSignWarn = { fg = yellow, bg = black },
+    DiagnosticSignError = { fg = red, bg = black },
+    DiagnosticSignInfo = { fg = blue, bg = black },
+    DiagnosticSignHint = { fg = darkblue, bg = black },
     DiagnosticUnderlineWarn = { sp = yellow, undercurl = true },
     DiagnosticUnderlineError = { sp = red, undercurl = true },
     DiagnosticUnderlineInfo = { sp = blue, undercurl = true },
@@ -92,14 +164,15 @@ local highlights = {
     LspSignatureActiveParameter = { underline = true, bold = true, sp = foreground },
     LspCodeLens = { link = "Comment" },
     LspCodeLensSeparator = { link = "Comment" },
-    LspInlayHint = { fg = brighterblack },
+    LspInlayHint = { fg = brightblack },
+    ["@lsp.type.namespace"] = { link = "Identifier" },
 
     -- Gutter
-    CursorColumn = { bg = darkblack },
-    CursorLineNr = { fg = foreground, bg = darkblack },
-    Folded = { fg = brightblack, bg = darkblack, bold = true },
-    FoldColumn = { fg = brightblack, bg = darkblack },
-    SignColumn = { fg = black, bg = darkblack },
+    CursorColumn = { bg = black },
+    CursorLineNr = { fg = foreground, bg = black },
+    Folded = { fg = brightblack, bg = black, bold = true },
+    FoldColumn = { fg = brightblack, bg = black },
+    SignColumn = { fg = black, bg = black },
 
     -- Navigation
     Directory = { fg = blue },
@@ -111,13 +184,13 @@ local highlights = {
     MoreMsg = { fg = cyan },
     Question = { fg = foreground },
     StatusLine = { fg = foreground, bg = black },
-    StatusLineNC = { fg = brighterblack, bg = darkblack },
+    StatusLineNC = { fg = brightblack, bg = black },
     StatusLineTerm = { fg = foreground, bg = lightblack },
-    StatusLineTermNC = { fg = brighterblack, bg = darkblack },
+    StatusLineTermNC = { fg = brightblack, bg = black },
     WarningMsg = { fg = background, bg = yellow },
     WildMenu = { fg = cyan, bg = black },
-    WinBar = { fg = brighterblack, bg = background },
-    WinBarNC = { fg = brighterblack, bg = background },
+    WinBar = { fg = brightblack, bg = background },
+    WinBarNC = { fg = brightblack, bg = background },
 
     -- Search
     IncSearch = { fg = brightwhite, bg = darkblue, underline = true },
@@ -125,14 +198,14 @@ local highlights = {
     Search = { fg = black, bg = cyan },
 
     -- Tabs
-    TabLine = { fg = brighterblack, bg = black },
-    TabLineFill = { fg = brighterblack, bg = darkblack },
+    TabLine = { fg = brightblack, bg = black },
+    TabLineFill = { fg = brightblack, bg = black },
     TabLineSel = { fg = foreground, bg = brightblack, bold = true },
 
     -- Window
     Title = { fg = blue },
 
-    WinSeparator = { fg = darkblack, bg = darkblack },
+    WinSeparator = { fg = black, bg = black },
 
     QuickFixLine = { link = "Visual" },
 
@@ -140,45 +213,44 @@ local highlights = {
     User2 = { fg = blue, bg = black, bold = true },
     User3 = { fg = foreground, bg = black, bold = true },
     User4 = { fg = black, bg = yellow },
-    User5 = { fg = white, bg = lightblack },
 
     User8 = { fg = foreground, bg = brightblack },
-    User9 = { fg = foreground, bg = darkblack },
+    User9 = { fg = foreground, bg = black },
 
     -----------------------
     -- Language Base Groups
     -----------------------
-    Boolean = { fg = blue },
+    Boolean = { link = "Keyword" },
     Character = { fg = green },
     Comment = { fg = brighterblack },
     Conceal = {},
-    Conditional = { fg = blue },
-    Constant = { fg = foreground },
+    Conditional = { link = "Keyword" },
+    Constant = { fg = darkwhite },
     Decorator = { fg = orange },
-    Define = { fg = blue },
+    Define = { link = "PreProc" },
     Delimiter = { fg = brightwhite },
     Exception = { fg = blue },
     Float = { fg = magenta },
     Function = { fg = cyan },
-    Identifier = { fg = foreground },
-    Include = { fg = blue },
+    Identifier = { fg = darkwhite },
+    Include = { link = "PreProc" },
     Keyword = { fg = blue },
     Label = { fg = blue },
     Number = { fg = magenta },
     Operator = {},
-    PreProc = { fg = blue },
-    Repeat = { fg = blue },
-    Special = { fg = cyan },
+    PreProc = { fg = darkblue },
+    Repeat = { link = "Keyword" },
+    Special = { fg = yellow },
     SpecialChar = { fg = yellow },
     SpecialComment = { fg = cyan },
     Statement = { fg = blue },
     StorageClass = { fg = blue },
     String = { fg = green },
-    Structure = { fg = blue },
-    Tag = { fg = foreground },
+    Structure = { link = "Type" },
+    Tag = { fg = blue },
     Todo = { fg = yellow },
-    Type = { fg = blue },
-    Typedef = { fg = blue },
+    Type = { fg = brightcyan },
+    Typedef = { fg = brightcyan },
     Annotation = { link = "Decorator" },
     Macro = { link = "Define" },
     PreCondit = { link = "PreProc" },
@@ -202,12 +274,12 @@ local highlights = {
     -------------
     -- Languages
     -------------
-    asciidocAttributeEntry = { fg = darkblue },
-    asciidocAttributeList = { fg = darkblue },
-    asciidocAttributeRef = { fg = darkblue },
+    asciidocAttributeEntry = { link = "Attribute" },
+    asciidocAttributeList = { link = "Attribute" },
+    asciidocAttributeRef = { link = "Attribute" },
     asciidocHLabel = { fg = blue },
     asciidocListingBlock = { fg = brightcyan },
-    asciidocMacroAttributes = { fg = cyan },
+    asciidocMacroAttributes = { link = "Attribute" },
     asciidocOneLineTitle = { fg = cyan },
     asciidocPassthroughBlock = { fg = blue },
     asciidocQuotedMonospaced = { fg = brightcyan },
@@ -250,13 +322,13 @@ local highlights = {
     csType = { link = "Type" },
     csXmlTag = { link = "SpecialComment" },
 
-    cssAttributeSelector = { fg = brightcyan },
+    cssAttributeSelector = { link = "Attribute" },
     cssDefinition = { fg = brightcyan },
     cssIdentifier = { fg = brightcyan, underline = true },
     cssStringQ = { fg = brightcyan },
     cssAttr = { link = "Keyword" },
     cssBraces = { link = "Delimiter" },
-    cssClassName = { link = "cssDefinition" },
+    cssClassName = { link = "Type", },
     cssColor = { link = "Number" },
     cssProp = { link = "cssDefinition" },
     cssPseudoClass = { link = "cssDefinition" },
@@ -338,9 +410,9 @@ local highlights = {
     jsonKeyword = { fg = brightcyan },
     jsonCommentError = { link = "Comment" },
 
-    lessClass = { fg = brightcyan },
+    lessClass = { link = "Type", },
     lessAmpersand = { link = "Keyword" },
-    lessCssAttribute = { link = "Delimiter" },
+    lessCssAttribute = { link = "Attribute" },
     lessFunction = { link = "Function" },
     cssSelectorOp = { link = "Keyword" },
 
@@ -401,7 +473,7 @@ local highlights = {
     ["@punctuation.delimiter.markdown_inline"] = { link = "markdownCodeDelimiter" },
 
     pandocDefinitionBlockTerm = { fg = brightcyan },
-    pandocTableDelims = { fg = brightblack },
+    pandocTableDelims = { fg = brighterblack },
     pandocAtxHeader = { link = "markdownH1" },
     pandocBlockQuote = { link = "markdownBlockquote" },
     pandocCiteAnchor = { link = "Operator" },
@@ -429,7 +501,7 @@ local highlights = {
     phpDocTags = { fg = brightcyan },
     phpDocCustomTags = { link = "phpDocTags" },
     phpMemberSelector = { link = "Keyword" },
-    phpClass = { fg = brightcyan },
+    phpClass = { link = "Type", },
     phpClassImplements = { fg = brightcyan, bold = true },
     phpClassExtends = { link = "phpClass" },
     phpFunction = { link = "Function" },
@@ -445,7 +517,7 @@ local highlights = {
 
     rubyConstant = { fg = brightcyan },
     rubySymbol = { fg = brightwhite, bold = true },
-    rubyAttribute = { link = "Identifier" },
+    rubyAttribute = { link = "Attribute" },
     rubyBlockParameterList = { link = "Operator" },
     rubyInterpolationDelimiter = { link = "Keyword" },
     rubyKeywordAsMethod = { link = "Function" },
@@ -453,7 +525,7 @@ local highlights = {
     rubyPseudoVariable = { link = "Keyword" },
     rubyRegexp = { link = "SpecialChar" },
 
-    rustAttribute = { fg = darkblue },
+    rustAttribute = { link = "Attribute" },
     rustEnum = { fg = brightcyan, bold = true },
     rustMacro = { fg = cyan, bold = true },
     rustModPath = { fg = brightcyan },
@@ -465,7 +537,7 @@ local highlights = {
     rustEscape = { link = "SpecialChar" },
     rustQuestionMark = { link = "Keyword" },
 
-    sassClass = { fg = brightcyan },
+    sassClass = { link = "Type", },
     sassId = { fg = brightcyan, underline = true },
     sassAmpersand = { link = "Keyword" },
     sassClassChar = { link = "Delimiter" },
@@ -495,7 +567,7 @@ local highlights = {
     tsxTagName = { link = "tsxIntrinsicTagName" },
 
     typescriptBOMWindowMethod = { fg = cyan },
-    typescriptClassName = { fg = brightcyan },
+    typescriptClassName = { link = "Type", },
     typescriptDecorator = { fg = orange },
     typescriptInterfaceName = { fg = brightcyan, bold = true },
     typescriptRegexpString = { fg = yellow },
@@ -551,17 +623,20 @@ local highlights = {
     yamlDocumentStart = { link = "Keyword" },
     yamlKey = { fg = brightcyan },
 
-    ["@attribute.zig"] = { link = "Keyword" },
+    ["@attribute.zig"] = { link = "Attribute" },
+    ["@include.zig"] = { link = "Function" },
+    ["@type.qualifier.zig"] = { link = "Keyword" },
+    ["@lsp.typemod.namespace.declaration.zig"] = { link = "Identifier" },
 
     ------------------
     -- Plugin Support
     ------------------
 
     -- gitsigns
-    GitSignsAdd = { fg = green, bg = darkblack },
-    GitSignsChange = { fg = yellow, bg = darkblack },
-    GitSignsChangeDelete = { fg = red, bg = darkblack },
-    GitSignsDelete = { fg = red, bg = darkblack },
+    GitSignsAdd = { fg = green, bg = black },
+    GitSignsChange = { fg = yellow, bg = black },
+    GitSignsChangeDelete = { fg = red, bg = black },
+    GitSignsDelete = { fg = red, bg = black },
     GitSignsCurrentLineBlame = { link = "Comment" },
 
     -- fugitive
@@ -570,11 +645,11 @@ local highlights = {
     gitcommitSelectedFile = { fg = green },
 
     -- nvim-dap
-    DapStoppedLine = { bg = brightblack, underline = true },
-    DapStoppedSign = { fg = darkblack, bg = white },
-    DapBreakpoint = { bg = darkblack },
+    DapStoppedLine = { bg = brighterblack, underline = true },
+    DapStoppedSign = { fg = black, bg = white },
+    DapBreakpoint = { bg = black },
 
-    TreesitterContext = { bg = darkblack },
+    TreesitterContext = { bg = black },
 }
 
 for group, opts in pairs(highlights) do
