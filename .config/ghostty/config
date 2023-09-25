@@ -33,3 +33,5 @@ command = /opt/homebrew/bin/fish
 macos-option-as-alt = true
 
 shell-integration = none
+
+unfocused-split-opacity = 0.95
