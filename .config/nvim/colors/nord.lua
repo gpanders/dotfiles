@@ -166,6 +166,7 @@ local highlights = {
     LspCodeLensSeparator = { link = "Comment" },
     LspInlayHint = { fg = brightblack },
     ["@lsp.type.namespace"] = { link = "Identifier" },
+    ["@lsp.type.operator"] = { link = "Operator" },
 
     -- Gutter
     CursorColumn = { bg = black },
@@ -237,7 +238,7 @@ local highlights = {
     Keyword = { fg = blue },
     Label = { fg = blue },
     Number = { fg = magenta },
-    Operator = {},
+    Operator = { fg = darkwhite },
     PreProc = { fg = darkblue },
     Repeat = { link = "Keyword" },
     Special = { fg = yellow },
@@ -270,6 +271,7 @@ local highlights = {
     ["@text.strong"] = { bold = true },
     ["@text.emphasis"] = { italic = true },
     ["@text.literal"] = {},
+    ["@type.qualifier"] = { link = "Keyword" },
 
     -------------
     -- Languages
@@ -311,10 +313,12 @@ local highlights = {
     awkSpecialPrintf = { link = "SpecialChar" },
     awkVariables = { link = "Identifier" },
 
-    cIncluded = { fg = brightcyan },
+    cIncluded = { link = "Include" },
     cOperator = { link = "Operator" },
     cPreCondit = { link = "PreCondit" },
-    cConstant = { link = "Type" },
+    cConstant = { link = "Constant" },
+    ["@lsp.type.macro.c"] = {},
+    ["@conditional.ternary.c"] = { link = "Operator" },
 
     cmakeGeneratorExpression = { fg = darkblue },
 
@@ -625,7 +629,6 @@ local highlights = {
 
     ["@attribute.zig"] = { link = "Keyword" },
     ["@include.zig"] = { link = "Function" },
-    ["@type.qualifier.zig"] = { link = "Keyword" },
     ["@lsp.typemod.namespace.declaration.zig"] = { link = "Identifier" },
     ["@lsp.type.keyword.zig"] = { link = "Keyword" },
 
