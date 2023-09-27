@@ -140,9 +140,12 @@ augroup init
   " Create missing parent directories automatically
   autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
 
+  " Disable listchars in prompt buffers
+  autocmd OptionSet buftype if &buftype ==# 'prompt' | setlocal nolist | endif
+
   " Don't show trailing spaces in insert mode
   autocmd InsertEnter * setlocal listchars-=trail:-
-  autocmd InsertLeave * setlocal listchars+=trail:-
+  autocmd InsertLeave * setlocal listchars<
 
   " For some filetypes, completion based on syntax is better than nothing
   autocmd FileType cmake setlocal omnifunc=syntaxcomplete#Complete
