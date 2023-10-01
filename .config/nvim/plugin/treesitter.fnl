@@ -13,5 +13,7 @@
           false (tset disabled ft true)
           (true parser) (do
                           (vim.treesitter.highlighter.new parser)
-                          (set vim.wo.foldmethod :expr)
-                          (set vim.wo.foldexpr "v:lua.vim.treesitter.foldexpr()")))))))
+                          (when (vim.treesitter.query.get ft :folds)
+                            (set vim.wo.foldmethod :expr)
+                            (set vim.wo.foldexpr "v:lua.vim.treesitter.foldexpr()")
+                            (set vim.wo.foldtext "v:lua.vim.treesitter.foldtext()"))))))))

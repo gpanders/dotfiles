@@ -8,7 +8,7 @@ local foreground = "#eceff4"
 -- (nord1) Used for elevated, more prominent or focused UI elements like, status bars
 -- and text editor gutters panels, modals and floating popups like
 -- notifications or auto completion user interaction/form components like
--- buttons, text/select fields or checkboxes It also works fine for more
+-- buttons, text/select fields or checkboxes. It also works fine for more
 -- inconspicuous and passive elements like borders or as dropshadow between
 -- different components.
 local black = "#3b4252"
@@ -171,7 +171,7 @@ local highlights = {
     -- Gutter
     CursorColumn = { bg = black },
     CursorLineNr = { fg = foreground, bg = black },
-    Folded = { fg = brightblack, bg = black, bold = true },
+    Folded = { fg = brightblack },
     FoldColumn = { fg = brightblack, bg = black },
     SignColumn = { fg = black, bg = black },
 
