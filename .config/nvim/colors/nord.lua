@@ -263,6 +263,7 @@ local highlights = {
     ---------------
     ["@constant.builtin"] = { link = "Constant" },
     ["@constructor"] = { link = "Function" },
+    ["@field"] = { fg = darkwhite },
     ["@function.builtin"] = { link = "Function" },
     ["@function.macro"] = { link = "Function" },
     ["@string.regex"] = { link = "SpecialChar" },
@@ -564,6 +565,12 @@ local highlights = {
 
     sqlKeyword = { link = "Keyword" },
     sqlSpecial = { link = "Keyword" },
+
+    swiftAttribute = { link = "Decorator" },
+    swiftDefinitionModifier = { link = "Keyword" },
+    swiftVarDefinition = { link = "Keyword" },
+    swiftFuncDefinition = { link = "Keyword" },
+    swiftTypeDefinition = { link = "Keyword" },
 
     tsxAttrib = { fg = brightcyan },
     tsxEqual = { link = "Operator" },
