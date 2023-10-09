@@ -21,7 +21,6 @@ set smartcase
 set smoothscroll
 set splitright
 set statusline=%{%v:lua.require'statusline'.statusline()%}
-set noswapfile
 set tabline=%!v:lua.require'statusline'.tabline()
 set tagcase=match
 set termguicolors
