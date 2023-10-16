@@ -111,6 +111,7 @@ plug github.com/mfussenegger/nvim-dap
 plug github.com/lewis6991/gitsigns.nvim
 plug github.com/nvim-treesitter/nvim-treesitter start main
 plug github.com/dcampos/nvim-snippy
+plug github.com/echasnovski/mini.pick
 
 wait
 
