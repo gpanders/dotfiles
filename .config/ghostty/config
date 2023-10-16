@@ -26,7 +26,7 @@ palette = 7=#eceff4
 palette = 15=#eceff4
 
 font-family = Iosevka Fixed SS05
-font-size = 15
+font-size = 16
 
 command = /opt/homebrew/bin/fish
 
