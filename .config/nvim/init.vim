@@ -116,8 +116,8 @@ vnoremap P p
 " Use zS mapping from scriptease for :Inspect
 nnoremap zS <Cmd>Inspect<CR>
 
-nnoremap `<CR> <Cmd>botright term<CR>
-nnoremap <expr> `<Space> ':botright term '
+nnoremap `<CR> <Cmd>bo te<CR>
+nnoremap <expr> `<Space> ':bo te '
 
 augroup init
   autocmd!
@@ -143,13 +143,18 @@ augroup init
   autocmd OptionSet buftype if &buftype ==# 'prompt' | setlocal nolist | endif
 
   " Don't show trailing spaces in insert mode
-  autocmd InsertEnter * setlocal listchars-=trail:-
-  autocmd InsertLeave * setlocal listchars<
+  autocmd InsertEnter,TermEnter * setlocal listchars-=trail:-
+  autocmd InsertLeave,TermLeave * setlocal listchars<
 
   " For some filetypes, completion based on syntax is better than nothing
   autocmd FileType cmake setlocal omnifunc=syntaxcomplete#Complete
 
   autocmd TermOpen term://* startinsert
+
+  " Set StatusLineTerm highlights
+  autocmd TermOpen,WinEnter * if &buftype == 'terminal'
+        \ | setlocal list winhighlight=StatusLine:StatusLineTerm,StatusLineNC:StatusLineTermNC
+        \ | endif
 augroup END
 
 lua<<

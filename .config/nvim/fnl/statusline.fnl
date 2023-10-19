@@ -39,7 +39,7 @@
       (0 w) (: "W: %d " :format w)
       (e w) (: "E: %d W: %d " :format e w))))
 
-(fn filename [buf curwin]
+(fn filename [buf fancy]
   (let [name (match (nvim.buf_get_name buf)
                "" "Untitled"
                n (n:gsub "%%" "%%%%"))
@@ -48,9 +48,9 @@
               tail (vim.fn.fnamemodify name ":t")
               (parent-hl tail-hl) (if vim.bo.modified
                                       (values "%1*" "%1*")
-                                      (not curwin)
-                                      (values "" "")
-                                      (values "%2*" "%3*"))]
+                                      fancy
+                                      (values "%2*" "%3*")
+                                      (values "" ""))]
     (: "%s %%<%s%s%s %%*" :format parent-hl (or parent "")
                                   tail-hl tail)))
 
@@ -69,9 +69,11 @@
 (fn statusline []
   (let [buf (nvim.get_current_buf)
         win (nvim.get_current_win)
+        term (= :terminal (. vim.bo buf :buftype))
         curwin (= (tonumber vim.g.actual_curwin) win)
+        fancy (and curwin (not term))
         items [(obsession)
-               (filename buf curwin)
+               (filename buf fancy)
                (if vim.bo.readonly
                    "%r "
                    "")
@@ -81,7 +83,7 @@
                "%="
                (lsp)
                (diagnostics)
-               (if curwin "%4*" "")
+               (if fancy "%4*" "")
                (if (and vim.bo.modifiable (not vim.bo.readonly))
                    (let [t []]
                      (match vim.bo.fileformat
@@ -95,13 +97,13 @@
                          (: " %s " :format (table.concat t " "))
                          ""))
                    "")
-               (if curwin "%8*" "")
+               (if fancy "%8*" "")
                (match vim.bo.filetype
                  "" ""
                  ft (match vim.b.lsp
                       name (: " %s/%s " :format ft name)
                       _ (: " %s " :format ft)))
-               (if curwin "%9*" "")
+               (if fancy "%9*" "")
                " %l:%c %P "]]
     (table.concat items)))
 
