@@ -31,6 +31,7 @@
           (let [{: expand_snippet} (require :snippy)]
             (set compl.expand_snippet expand_snippet))
           (keymap :i :<CR> #(if (compl.accept_pum) :<C-Y> :<CR>) {:expr true :buffer true})
+          (keymap :i :<C-Space> #(compl.trigger_completion) {:buffer true})
           (compl.attach client buf {})))))
   (autocmd :LspDetach
     (fn [{: buf :data {: client_id}}]
