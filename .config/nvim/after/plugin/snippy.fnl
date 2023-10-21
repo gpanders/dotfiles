@@ -19,6 +19,6 @@
 (keymap [:i :s] "<C-k>"
   #(let [snippy (require :snippy)]
      (if (snippy.can_jump -1)
-         "<Plug>(snippy-next)"
+         "<Plug>(snippy-previous)"
          "<C-k>"))
   {:expr true})
