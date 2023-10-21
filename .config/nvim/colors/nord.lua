@@ -261,6 +261,7 @@ local highlights = {
     ---------------
     -- Tree-sitter
     ---------------
+    ["@attribute"] = { link = "Attribute" },
     ["@constant.builtin"] = { link = "Constant" },
     ["@constructor"] = { link = "Function" },
     ["@field"] = { fg = darkwhite },
@@ -361,6 +362,9 @@ local highlights = {
     diffAdded = { link = "DiffAdd" },
     diffChanged = { link = "DiffChange" },
     diffRemoved = { link = "DiffDelete" },
+
+    -- Elixir
+    ["@attribute.elixir"] = { link = "Decorator" },
 
     gitconfigVariable = { fg = brightcyan },
     gitrebaseFixup = { fg = cyan },
