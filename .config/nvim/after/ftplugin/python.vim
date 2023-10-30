@@ -1,4 +1,6 @@
-if executable('black')
+if executable('ruff')
+    let &l:formatprg = 'ruff format --stdin-filename ' .. expand('%:p') .. ' -'
+elseif executable('black')
     let &l:formatprg = 'black -q - 2>/dev/null'
 endif
 
