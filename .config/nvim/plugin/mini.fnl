@@ -4,6 +4,7 @@
   (keymap :n "<Space>f" pick.builtin.files)
   (keymap :n "<Space>b" pick.builtin.buffers)
   (keymap :n "<Space>/" pick.builtin.grep_live)
+  (keymap :n "<M-S-/>" pick.builtin.help)
 
   (augroup mini#
     (autocmd [:VimEnter :BufRead :BufNewFile :DirChanged]
