@@ -30,9 +30,6 @@ end
 function __prompt_update_pwd --on-variable PWD
     set -g __prompt_pwd (string replace -r -- '^'$HOME \~ $PWD)
     set -e __prompt_git_head
-    if not status --is-command-substitution; and not set -q INSIDE_EMACS
-        printf '\e]7;file://%s%s\e\\' $hostname (string escape --style=url $PWD)
-    end
 end
 
 function __prompt_venv --on-variable VIRTUAL_ENV --on-variable IN_NIX_SHELL
@@ -58,14 +55,6 @@ function __prompt_update_jobs
     else
         set -g __prompt_jobs "[$njobs] "
     end
-end
-
-function __prompt_fish_preexec_handler --on-event fish_preexec
-    # Reset cursor shape
-    printf '\e[0 q'
-
-    # End of input, start of output
-    printf '\e]133;C\e\\'
 end
 
 function __prompt_fish_postexec_handler --on-event fish_postexec
@@ -100,9 +89,6 @@ function __prompt_exit_status --on-event fish_postexec
     end
     set __prompt_status_generation $status_generation
     set -g __prompt_status (__fish_print_pipestatus '[' '] ' '|' (set_color $fish_color_status) (set_color $bold_flag $fish_color_status) $last_pipestatus)
-
-    # End of current command (report status code)
-    printf '\e]133;D;%d\e\\' $__fish_last_status
 end
 
 function __prompt_fish_prompt_handler --on-event fish_prompt
@@ -120,9 +106,6 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
     else
         set -g __prompt_cmd_duration
     end
-
-    # Change the cursor to a beam on prompt
-    printf '\e[5 q'
 
     if not set -q __prompt_git_head
         set -l gitdir
