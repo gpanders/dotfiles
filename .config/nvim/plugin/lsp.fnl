@@ -10,7 +10,10 @@
       (when (client.supports_method :textDocument/inlayHint)
         (keymap :n "yoh" #(vim.lsp.inlay_hint buf) {:buffer buf :desc "Toggle inlay hints"}))
       (when (client.supports_method :textDocument/codeLens)
-        (autocmd lsp# :LspProgress :end vim.lsp.codelens.refresh)
+        (autocmd lsp# :LspProgress :end
+          (fn [args]
+            (when (= args.buf buf)
+              (vim.lsp.codelens.refresh))))
         (autocmd lsp# [:BufEnter :TextChanged :InsertLeave] {:buffer buf} vim.lsp.codelens.refresh)
         (vim.lsp.codelens.refresh))
       (keymap :n "gr" vim.lsp.buf.references {:buffer buf})
