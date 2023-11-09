@@ -13,12 +13,18 @@
   (match result.offsetEncoding
     enc (set client.offset_encoding enc)))
 
-(fn hover [_ result ctx]
-  ((. vim.lsp.handlers "textDocument/hover") _ result ctx {:border :rounded}))
+(fn hover [_ result ctx config]
+  (let [opts {:border :rounded}
+        config (collect [k v (pairs config) &into opts]
+                 (values k v))]
+    (vim.lsp.handlers.hover _ result ctx config)))
 
-(fn signature-help [_ result ctx]
-  (vim.lsp.handlers.signature_help _ result ctx {:focusable false
-                                                 :border :rounded}))
+(fn signature-help [_ result ctx config]
+  (let [opts {:focusable false
+              :border :rounded}
+        config (collect [k v (pairs config) &into opts]
+                 (values k v))]
+    (vim.lsp.handlers.signature_help _ result ctx config)))
 
 (local handlers {"textDocument/hover" hover
                  "textDocument/signatureHelp" signature-help})
