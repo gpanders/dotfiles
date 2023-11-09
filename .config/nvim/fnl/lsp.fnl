@@ -15,14 +15,14 @@
 
 (fn hover [_ result ctx config]
   (let [opts {:border :rounded}
-        config (collect [k v (pairs config) &into opts]
+        config (collect [k v (pairs (or config {})) &into opts]
                  (values k v))]
     (vim.lsp.handlers.hover _ result ctx config)))
 
 (fn signature-help [_ result ctx config]
   (let [opts {:focusable false
               :border :rounded}
-        config (collect [k v (pairs config) &into opts]
+        config (collect [k v (pairs (or config {})) &into opts]
                  (values k v))]
     (vim.lsp.handlers.signature_help _ result ctx config)))
 

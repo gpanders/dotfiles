@@ -29,7 +29,7 @@
             (client.request hover params handler buf)))
         (when (client.supports_method document-highlight {:bufnr buf})
           (let [handler (or (. client.handlers document-highlight)
-                            #(vim.lsp.util.buf_highlight_references buf $2 client.offset_encoding))
+                            #(vim.lsp.util.buf_highlight_references buf (or $2 []) client.offset_encoding))
                 handler #(do
                            (vim.lsp.util.buf_clear_references buf)
                            (handler $...)
