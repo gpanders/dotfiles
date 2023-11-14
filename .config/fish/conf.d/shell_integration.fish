@@ -1,3 +1,10 @@
+status is-interactive; or exit
+
+# Skip if using a terminal that provides its own shell integration
+if set -q GHOSTTY_FISH_XDG_DIR
+    exit
+end
+
 function __fish_shell_integration_update_pwd --on-variable PWD
     # Fish already does this automatically for some terminals, but it doesn't
     # hurt to do it again

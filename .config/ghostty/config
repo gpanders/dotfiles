@@ -30,8 +30,6 @@ font-size = 16
 
 command = /opt/homebrew/bin/fish
 
-macos-option-as-alt = true
-
-shell-integration = none
+macos-option-as-alt = left
 
 unfocused-split-opacity = 0.95
