@@ -8,7 +8,10 @@
           (autocmd [:CursorHold :InsertLeave] {:buffer buf} vim.lsp.buf.document_highlight)
           (autocmd [:CursorMoved :InsertEnter] {:buffer buf} vim.lsp.buf.clear_references)))
       (when (client.supports_method :textDocument/inlayHint)
-        (keymap :n "yoh" #(vim.lsp.inlay_hint buf) {:buffer buf :desc "Toggle inlay hints"}))
+        (keymap :n
+                "yoh"
+                #(vim.lsp.inlay_hint.enable buf (not (vim.lsp.inlay_hint.is_enabled)))
+                {:buffer buf :desc "Toggle inlay hints"}))
       (when (client.supports_method :textDocument/codeLens)
         (autocmd lsp# :LspProgress :end
           (fn [args]
