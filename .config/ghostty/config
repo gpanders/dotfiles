@@ -1,35 +1,6 @@
-background = 2e3440
-foreground = eceff4
-
-palette = 0=#3b4252
-palette = 8=#434c5e
-
-palette = 1=#bf616a
-palette = 9=#bf616a
-
-palette = 2=#a3be8c
-palette = 10=#a3be8c
-
-palette = 3=#ebcb8b
-palette = 11=#ebcb8b
-
-palette = 4=#87a0be
-palette = 12=#87a0be
-
-palette = 5=#b48ead
-palette = 13=#b48ead
-
-palette = 6=#88c0d0
-palette = 14=#88c0d0
-
-palette = 7=#eceff4
-palette = 15=#eceff4
-
+theme = nord
 font-family = Iosevka Fixed SS05
 font-size = 16
-
 command = /opt/homebrew/bin/fish
-
 macos-option-as-alt = left
-
 unfocused-split-opacity = 0.95
