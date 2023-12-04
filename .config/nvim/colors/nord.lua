@@ -1,7 +1,5 @@
 local nvim_set_hl = vim.api.nvim_set_hl
 
-vim.o.background = "dark"
-
 local background = "#2e3440"
 local foreground = "#eceff4"
 

@@ -12,7 +12,8 @@
         (case (pcall vim.treesitter.get_parser buf)
           false (tset disabled ft true)
           (true parser) (do
-                          (vim.treesitter.highlighter.new parser)
+                          (when (not (. vim.treesitter.highlighter.active buf))
+                            (vim.treesitter.highlighter.new parser))
                           (when (vim.treesitter.query.get ft :folds)
                             (set vim.wo.foldmethod :expr)
                             (set vim.wo.foldexpr "v:lua.vim.treesitter.foldexpr()")
