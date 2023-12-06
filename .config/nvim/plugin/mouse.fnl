@@ -1,4 +1,5 @@
 (local state {:timer (vim.uv.new_timer)
+              :focus true
               :highlight nil})
 
 (fn utf-index [line index encoding]
@@ -38,27 +39,33 @@
                 (client.request document-highlight params handler buf)))))))))
 
 (fn mouse-move [buf client]
-  ; Clear any existing hover window
-  (case (. vim.b buf :lsp_floating_preview)
-    w (do
-        (when (nvim.win_is_valid w)
-          (nvim.win_close w true))
-        (tset vim.b buf :lsp_floating_preview nil)))
+  (when state.focus
+    ; Clear any existing hover window
+    (case (. vim.b buf :lsp_floating_preview)
+      w (do
+          (when (nvim.win_is_valid w)
+            (nvim.win_close w true))
+          (tset vim.b buf :lsp_floating_preview nil)))
 
-  ; Clear any existing highlights
-  (case state.highlight
-    b (do
-        (vim.lsp.util.buf_clear_references b)
-        (set state.highlight nil)))
+    ; Clear any existing highlights
+    (case state.highlight
+      b (do
+          (vim.lsp.util.buf_clear_references b)
+          (set state.highlight nil)))
 
-  (state.timer:stop)
-  (state.timer:start 2000 0 #(vim.schedule #(mouse-hover buf client))))
+    (state.timer:stop)
+    (state.timer:start 2000 0 #(vim.schedule #(mouse-hover buf client)))))
 
-(autocmd :LspAttach "*"
-  (fn [{: buf :data {: client_id}}]
-    (let [client (vim.lsp.get_client_by_id client_id)]
-      (when (or (client.supports_method "textDocument/hover" {:bufnr buf})
-                (client.supports_method "textDocument/documentHighlight" {:bufnr buf}))
-        (keymap :n "<MouseMove>" #(mouse-move buf client) {:buffer buf})))))
+(augroup mouse#
+  (autocmd :FocusGained "*" #(set state.focus true))
+  (autocmd :FocusLost "*" (fn []
+                            (set state.focus false)
+                            (state.timer:stop)))
+  (autocmd :LspAttach "*"
+    (fn [{: buf :data {: client_id}}]
+      (let [client (vim.lsp.get_client_by_id client_id)]
+        (when (or (client.supports_method "textDocument/hover" {:bufnr buf})
+                  (client.supports_method "textDocument/documentHighlight" {:bufnr buf}))
+          (keymap :n "<MouseMove>" #(mouse-move buf client) {:buffer buf}))))))
 
 (set vim.o.mousemoveevent true)
