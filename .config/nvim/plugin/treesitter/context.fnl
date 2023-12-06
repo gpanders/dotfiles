@@ -105,7 +105,7 @@
     contexts (let [win (nvim.get_current_win)
                    [{: width : textoff : topline}] (vim.fn.getwininfo win)
                    width (- width textoff)]
-               (when (stale? contexts width topline)
+               (when (and (< 0 width) (stale? contexts width topline))
                  (set state.last {:ctx (: (. contexts (length contexts)) :id) : width : topline})
 
                  ; Array of [context, end] pairs. 'context' is the text to show
