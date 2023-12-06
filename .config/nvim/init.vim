@@ -1,4 +1,6 @@
-colorscheme nord
+if &termguicolors
+  colorscheme nord
+endif
 
 set breakindent
 set cinoptions=l1,:0,g0,E-s,N-s,t0,(s,J1,j1
@@ -24,7 +26,6 @@ set splitright
 set statusline=%{%v:lua.require'statusline'.statusline()%}
 set tabline=%!v:lua.require'statusline'.tabline()
 set tagcase=match
-set termguicolors
 set undofile
 set updatetime=250
 set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#,*.o
