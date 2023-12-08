@@ -1,6 +1,6 @@
 vim.filetype.add({
     extension = {
-        h = function()
+        h = function(path)
             -- Try to be a little intelligent when determining if a .h file is C++ or C
             if
                 vim.fn.search(
@@ -10,6 +10,15 @@ vim.filetype.add({
             then
                 return "cpp"
             end
+
+            local stem = vim.fn.fnamemodify(path, ":r")
+            if
+                vim.uv.fs_stat(string.format("%s.cc", stem))
+                or vim.uv.fs_stat(string.format("%s.cpp", stem))
+            then
+                return "cpp"
+            end
+
             return "c"
         end,
         csv = "csv",
