@@ -44,8 +44,8 @@
     (fn [{: buf}]
       (tset cache buf nil))))
 
-(keymap :n "]g" #(vim.diagnostic.goto_next {:float false}))
-(keymap :n "[g" #(vim.diagnostic.goto_prev {:float false}))
+(keymap :n "]g" #(vim.diagnostic.goto_next {:float false :severity {:min vim.diagnostic.severity.WARN}}))
+(keymap :n "[g" #(vim.diagnostic.goto_prev {:float false :severity {:min vim.diagnostic.severity.WARN}}))
 (keymap :n "go" #(vim.diagnostic.open_float {:border :rounded}))
 
 (var enabled true)
