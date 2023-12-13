@@ -94,24 +94,17 @@ showlog() {
 	done
 }
 
-plug tpope.io/vim/surround
-plug tpope.io/vim/commentary
-plug tpope.io/vim/repeat
 plug tpope.io/vim/abolish
 plug tpope.io/vim/fugitive
 plug tpope.io/vim/sleuth
-plug tpope.io/vim/obsession
 plug github.com/gpanders/nvim-parinfer
-plug github.com/justinmk/vim-dirvish
-plug github.com/junegunn/vim-easy-align
-plug github.com/junegunn/vim-peekaboo
 plug github.com/mfussenegger/nvim-lsp-compl
 plug github.com/mfussenegger/nvim-lint
 plug github.com/mfussenegger/nvim-dap
 plug github.com/lewis6991/gitsigns.nvim
 plug github.com/nvim-treesitter/nvim-treesitter start main
 plug github.com/dcampos/nvim-snippy
-plug github.com/echasnovski/mini.pick
+plug github.com/echasnovski/mini.nvim
 
 wait
 

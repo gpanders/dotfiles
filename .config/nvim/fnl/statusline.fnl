@@ -1,9 +1,3 @@
-(fn obsession []
-  (match (pcall vim.fn.ObsessionStatus :$ :S)
-    (true "") ""
-    (true s) (.. " " s)
-    _ ""))
-
 (fn lsp-progress [client]
   (var percentage nil)
   (let [messages (icollect [{: value} client.progress]
@@ -72,7 +66,9 @@
         term (= :terminal (. vim.bo buf :buftype))
         curwin (= (tonumber vim.g.actual_curwin) win)
         fancy (and curwin (not term))
-        items [(obsession)
+        items [(case vim.v.this_session
+                 "" ""
+                 _ " $")
                (filename buf fancy)
                (if vim.bo.readonly
                    "%r "
