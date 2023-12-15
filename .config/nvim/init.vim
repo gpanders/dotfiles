@@ -1,7 +1,3 @@
-if &termguicolors
-  colorscheme nord
-endif
-
 set breakindent
 set cinoptions=l1,:0,g0,E-s,N-s,t0,(s,J1,j1
 set colorcolumn=+1
@@ -151,7 +147,11 @@ augroup init
   " For some filetypes, completion based on syntax is better than nothing
   autocmd FileType cmake setlocal omnifunc=syntaxcomplete#Complete
 
+  " Automatically enter terminal mode when a :terminal opens
   autocmd TermOpen term://* startinsert
+
+  " Enable colorscheme when 'termguicolors' is set
+  autocmd OptionSet termguicolors ++once ++nested if v:option_new | colorscheme nord | endif
 
   " Set StatusLineTerm highlights
   autocmd TermOpen,WinEnter * if &buftype == 'terminal'
