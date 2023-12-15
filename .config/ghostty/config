@@ -3,4 +3,3 @@ font-family = Iosevka Fixed SS05
 font-size = 16
 command = /opt/homebrew/bin/fish
 macos-option-as-alt = left
-unfocused-split-opacity = 0.95
