@@ -1,5 +1,5 @@
 theme = nord
 font-family = Iosevka Fixed SS05
 font-size = 16
-command = /opt/homebrew/bin/fish
+command = fish
 macos-option-as-alt = left
