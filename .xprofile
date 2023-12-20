@@ -2,4 +2,9 @@
 setxkbmap -option caps:ctrl_modifier
 xset r rate 200 40
 
+# Force Plasma to respect Qt scaling settings. This
+# is not enabled by default because it causes some
+# issues with mixed-DPI setups.
+export PLASMA_USE_QT_SCALING=1
+
 # vim: ft=sh
