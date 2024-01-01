@@ -100,7 +100,6 @@ plug tpope.io/vim/sleuth
 plug github.com/gpanders/nvim-parinfer
 plug github.com/mfussenegger/nvim-lsp-compl
 plug github.com/mfussenegger/nvim-lint
-plug github.com/mfussenegger/nvim-dap
 plug github.com/lewis6991/gitsigns.nvim
 plug github.com/nvim-treesitter/nvim-treesitter start main
 plug github.com/dcampos/nvim-snippy
