@@ -7,20 +7,15 @@ set -q fish_prompt_delim; or set -g fish_prompt_delim '❯'
 
 set -g fish_handle_reflow 1
 
-for type in cwd venv jobs git cmd_duration prompt_delim host
-    set -l color fish_color_$type
-    set -g __prompt_color_$type (set_color $$color)
-end
-
 if set -q SSH_TTY
-    set -g __prompt_host "$hostname"(set_color normal)":"
+    set -g __prompt_host (set_color $fish_color_remote_host)"$hostname"(set_color normal)":"
 end
 
 function __prompt_update_git --on-variable __prompt_git_$fish_pid
     set v __prompt_git_$fish_pid
     if set -q $v
         if test "$__prompt_git" != "$$v"
-            set -g __prompt_git $$v
+            set -g __prompt_git (set_color $fish_color_git)$$v
             commandline -f repaint
         end
         set -e $v
@@ -28,15 +23,15 @@ function __prompt_update_git --on-variable __prompt_git_$fish_pid
 end
 
 function __prompt_update_pwd --on-variable PWD
-    set -g __prompt_pwd (string replace -r -- '^'$HOME \~ $PWD)
+    set -g __prompt_pwd (set_color $fish_color_cwd)(string replace -r -- '^'$HOME \~ $PWD)
     set -e __prompt_git_head
 end
 
 function __prompt_venv --on-variable VIRTUAL_ENV --on-variable IN_NIX_SHELL
     if set -q VIRTUAL_ENV
-        set -g __prompt_venv (basename $VIRTUAL_ENV)' '
+        set -g __prompt_venv (set_color $fish_color_venv)(basename $VIRTUAL_ENV)' '
     else if set -q IN_NIX_SHELL
-        set -g __prompt_venv 'nix-shell '
+        set -g __prompt_venv (set_color $fish_color_venv)'nix-shell '
     else
         set -g __prompt_venv
     end
@@ -53,7 +48,7 @@ function __prompt_update_jobs
     if test $njobs -eq 0
         set -g __prompt_jobs
     else
-        set -g __prompt_jobs "[$njobs] "
+        set -g __prompt_jobs (set_color $fish_color_jobs)"[$njobs] "
     end
 end
 
@@ -93,15 +88,15 @@ end
 
 function __prompt_fish_prompt_handler --on-event fish_prompt
     if test $status -ne 0
-        set __prompt_color_prompt_delim (set_color $fish_color_error)
+        set -g __prompt_delim (set_color $fish_color_error)$fish_prompt_delim
     else
-        set __prompt_color_prompt_delim (set_color $fish_color_prompt_delim)
+        set -g __prompt_delim (set_color $fish_color_prompt_delim)$fish_prompt_delim
     end
 
     set -q __prompt_pwd; or __prompt_update_pwd
 
     if set -q __prompt_cmd_duration_tmp
-        set -g __prompt_cmd_duration $__prompt_cmd_duration_tmp
+        set -g __prompt_cmd_duration (set_color $fish_color_cmd_duration)$__prompt_cmd_duration_tmp
         set -e __prompt_cmd_duration_tmp
     else
         set -g __prompt_cmd_duration
@@ -131,7 +126,7 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
         set -l branch (string match -r -g '^ref: refs/heads/(.*)|([0-9a-f]{8})[0-9a-f]+$' < $__prompt_git_head)
         if test "$branch" != "$__prompt_git_branch"
             set -g __prompt_git_branch $branch
-            set -g __prompt_git "$branch "
+            set -g __prompt_git (set_color $fish_color_git)"$branch "
         end
     end
 
