@@ -24,7 +24,6 @@ set splitright
 set statusline=%{%v:lua.require'statusline'.statusline()%}
 set tabline=%!v:lua.require'statusline'.tabline()
 set tagcase=match
-set termguicolors
 set undofile
 set updatetime=250
 set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#,*.o
