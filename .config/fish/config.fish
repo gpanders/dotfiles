@@ -1,3 +1,5 @@
+status is-interactive; or exit
+
 set -gx XDG_CONFIG_HOME $HOME/.config
 set -gx XDG_DATA_HOME $HOME/.local/share
 set -gx XDG_CACHE_HOME $HOME/.cache
@@ -8,3 +10,5 @@ if command -sq nvim
     set -qx VISUAL; or set -Ux VISUAL nvim
     set -qx MANPAGER; or set -Ux MANPAGER 'nvim +Man!'
 end
+
+set -gx LSCOLORS ExGxcxdxCxegDxabagacad
