@@ -1,25 +1,3 @@
-(fn lsp-progress [client]
-  (var percentage nil)
-  (let [messages (icollect [{: value} client.progress]
-                   (when (?. value :kind)
-                     (when value.percentage
-                       (set percentage (math.max (or percentage 0) value.percentage)))
-                     (if value.message
-                         (: "%s: %s" :format value.title value.message)
-                         value.title)))
-        message (table.concat messages ", ")]
-    (if percentage
-        (: "%s (%%%%%d)" :format message percentage)
-        message)))
-
-(fn lsp []
-  (case-try vim.b.lsp
-    name (vim.lsp.get_clients {:bufnr 0 : name})
-    [client] (lsp-progress client)
-    message (: " %s " :format message)
-    (catch
-      _ "")))
-
 (fn diagnostics []
   (let [diags (vim.diagnostic.get 0 {:severity {:min vim.diagnostic.severity.WARN}})
         num-errors (accumulate [sum 0 _ v (ipairs diags)]
@@ -77,7 +55,6 @@
                    "%w "
                    "")
                "%="
-               (lsp)
                (diagnostics)
                (if fancy "%4*" "")
                (if (and vim.bo.modifiable (not vim.bo.readonly))

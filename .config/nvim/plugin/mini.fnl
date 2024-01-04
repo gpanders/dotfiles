@@ -11,6 +11,10 @@
   (keymap :n "-" #(MiniFiles.open (nvim.buf_get_name 0))))
 (setup :mini.visits)
 (setup :mini.extra)
+(setup :mini.notify {:content {:format #(. $ :msg)}
+                     :window {:winblend 0
+                              :config #{:anchor "SE"
+                                        :row (- vim.o.lines vim.o.cmdheight (math.min 1 vim.o.laststatus))}}})
 
 (setup :mini.pick {:mappings {:toggle_info "<C-/>"}}
   (set MiniPick.config.source.show MiniPick.default_show)
