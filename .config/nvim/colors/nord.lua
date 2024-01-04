@@ -118,11 +118,9 @@ local highlights = {
     -- Editor
     Attribute = { fg = darkwhite },
     ColorColumn = { bg = black },
-    Cursor = { fg = background, bg = foreground },
     CursorLine = { bg = black },
     Error = { fg = foreground, bg = red },
     FloatBorder = { link = "Normal" },
-    iCursor = { fg = background, bg = foreground },
     LineNr = { fg = brightblack, bg = black },
     MatchParen = { fg = cyan, bg = brightblack },
     NonText = { fg = brightblack },
