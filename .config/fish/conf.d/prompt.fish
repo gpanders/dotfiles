@@ -8,7 +8,7 @@ set -q fish_prompt_delim; or set -g fish_prompt_delim '❯'
 set -g fish_handle_reflow 1
 
 if set -q SSH_TTY
-    set -g __prompt_host (set_color $fish_color_remote_host)"$hostname"(set_color normal)":"
+    set -g __prompt_host (set_color $fish_color_host_remote)"$hostname"(set_color normal)":"
 end
 
 function __prompt_update_git --on-variable __prompt_git_$fish_pid
