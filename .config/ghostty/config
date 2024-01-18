@@ -1,5 +1,10 @@
 theme = nord
-font-family = Iosevka Fixed SS05
-font-size = 16
+font-size = 14
+
+# Disable ligatures
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
 command = fish
 macos-option-as-alt = left
