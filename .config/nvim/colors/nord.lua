@@ -208,7 +208,7 @@ local highlights = {
     TabLineSel = { fg = foreground, bg = brightblack, bold = true },
 
     -- Window
-    Title = { fg = blue },
+    Title = { fg = cyan },
 
     WinSeparator = { fg = black, bg = black },
 
@@ -240,7 +240,7 @@ local highlights = {
     Identifier = { fg = darkwhite },
     Include = { link = "PreProc" },
     Keyword = { fg = blue },
-    Label = { fg = blue },
+    Label = { fg = darkblue },
     Number = { fg = magenta },
     Operator = { fg = darkwhite },
     PreProc = { fg = darkblue },
@@ -268,16 +268,12 @@ local highlights = {
     ["@attribute"] = { link = "Attribute" },
     ["@constant.builtin"] = { link = "Constant" },
     ["@constructor"] = { link = "Function" },
-    ["@field"] = { fg = darkwhite },
     ["@function.builtin"] = { link = "Function" },
-    ["@function.macro"] = { link = "Function" },
-    ["@string.regex"] = { link = "SpecialChar" },
     ["@variable.builtin"] = { link = "Keyword" },
-    ["@text.uri"] = { fg = blue, underline = true },
-    ["@text.strong"] = { bold = true },
-    ["@text.emphasis"] = { italic = true },
-    ["@text.literal"] = {},
-    ["@type.qualifier"] = { link = "Keyword" },
+    ["@markup.raw"] = { fg = orange },
+    ["@markup.link"] = { fg = blue, underline = true },
+    ["@punctuation.special"] = { fg = brightwhite },
+    ["@type.builtin"] = { link = "@type" },
 
     -------------
     -- Languages
@@ -324,7 +320,7 @@ local highlights = {
     cPreCondit = { link = "PreCondit" },
     cConstant = { link = "Constant" },
     ["@lsp.type.macro.c"] = {},
-    ["@conditional.ternary.c"] = { link = "Operator" },
+    ["@keyword.conditional.ternary.c"] = { link = "Operator" },
 
     cmakeGeneratorExpression = { fg = darkblue },
 
@@ -362,10 +358,9 @@ local highlights = {
     DiffDelete = { fg = red, bg = background },
     DiffText = { fg = blue, bg = background },
 
-    -- Legacy groups for official git.vim and diff.vim syntax
-    diffAdded = { link = "DiffAdd" },
-    diffChanged = { link = "DiffChange" },
-    diffRemoved = { link = "DiffDelete" },
+    Added = { link = "DiffAdd" },
+    Changed = { link = "DiffChange" },
+    Removed = { link = "DiffDelete" },
 
     -- Elixir
     ["@attribute.elixir"] = { link = "Decorator" },
@@ -381,12 +376,6 @@ local highlights = {
     haskellPreProc = { fg = darkblue },
     haskellType = { fg = brightcyan },
     haskellPragma = { link = "haskellPreProc" },
-
-    ["@text.reference.vimdoc"] = { fg = cyan, underline = true },
-    ["@text.literal.vimdoc"] = { link = "Comment" },
-    ["@label.vimdoc"] = { fg = cyan, underline = true },
-    ["@parameter.vimdoc"] = { fg = yellow },
-    ["@property.vimdoc"] = { fg = orange },
 
     htmlArg = { fg = brightcyan },
     htmlLink = { fg = foreground },
@@ -435,53 +424,8 @@ local highlights = {
 
     luaFunc = { link = "Function" },
 
-    markdownBlockquote = { fg = brightcyan },
-    markdownCode = { fg = brightcyan },
-    markdownCodeDelimiter = { fg = brightcyan },
-    markdownFootnote = { fg = brightcyan },
-    markdownId = { fg = brightcyan },
-    markdownIdDeclaration = { fg = brightcyan },
-    markdownLinkText = { fg = cyan },
-    markdownUrl = { fg = foreground },
-    markdownBold = { link = "Bold" },
-    markdownBoldDelimiter = { link = "Keyword" },
-    markdownFootnoteDefinition = { link = "markdownFootnote" },
-    markdownH1 = { fg = magenta },
-    markdownH2 = { link = "markdownH1" },
-    markdownH3 = { link = "markdownH1" },
-    markdownH4 = { link = "markdownH1" },
-    markdownH5 = { link = "markdownH1" },
-    markdownH6 = { link = "markdownH1" },
-    markdownH1Delimiter = { fg = magenta },
-    markdownH2Delimiter = { link = "markdownH1Delimiter" },
-    markdownH3Delimiter = { link = "markdownH1Delimiter" },
-    markdownH4Delimiter = { link = "markdownH1Delimiter" },
-    markdownH5Delimiter = { link = "markdownH1Delimiter" },
-    markdownH6Delimiter = { link = "markdownH1Delimiter" },
-    markdownIdDelimiter = { link = "Keyword" },
-    markdownItalic = { link = "Italic" },
-    markdownItalicDelimiter = { link = "Keyword" },
-    markdownLinkDelimiter = { link = "Keyword" },
-    markdownLinkTextDelimiter = { link = "Keyword" },
-    markdownListMarker = { link = "Keyword" },
-    markdownRule = { link = "Keyword" },
-    markdownHeadingDelimiter = { link = "Keyword" },
-    ["@text.title.1.marker.markdown"] = { link = "markdownH1Delimiter" },
-    ["@text.title.2.marker.markdown"] = { link = "markdownH2Delimiter" },
-    ["@text.title.3.marker.markdown"] = { link = "markdownH3Delimiter" },
-    ["@text.title.4.marker.markdown"] = { link = "markdownH4Delimiter" },
-    ["@text.title.5.marker.markdown"] = { link = "markdownH5Delimiter" },
-    ["@text.title.6.marker.markdown"] = { link = "markdownH6Delimiter" },
-    ["@text.title.1.markdown"] = { link = "markdownH1" },
-    ["@text.title.2.markdown"] = { link = "markdownH2" },
-    ["@text.title.3.markdown"] = { link = "markdownH3" },
-    ["@text.title.4.markdown"] = { link = "markdownH4" },
-    ["@text.title.5.markdown"] = { link = "markdownH5" },
-    ["@text.title.6.markdown"] = { link = "markdownH6" },
-    ["@text.reference.markdown_inline"] = { link = "markdownLinkText" },
-    ["@punctuation.bracket.markdown_inline"] = { link = "markdownLinkTextDelimiter" },
-    ["@punctuation.special.markdown"] = { link = "markdownListMarker" },
-    ["@punctuation.delimiter.markdown_inline"] = { link = "markdownCodeDelimiter" },
+    ["@markup.link.label.markdown_inline"] = { link = "@markup.link.label" },
+    ["@markup.link.markdown_inline"] = { link = "@markup.link" },
 
     pandocDefinitionBlockTerm = { fg = brightcyan },
     pandocTableDelims = { fg = brighterblack },
@@ -624,6 +568,8 @@ local highlights = {
     vimFunction = { link = "Function" },
     vimUserFunc = { link = "Function" },
 
+    ["@variable.parameter.vimdoc"] = { fg = cyan },
+
     xmlAttrib = { fg = brightcyan },
     xmlCdataStart = { fg = brighterblack, bold = true },
     xmlNamespace = { fg = brightcyan },
@@ -641,9 +587,6 @@ local highlights = {
     yamlKey = { fg = brightcyan },
 
     ["@attribute.zig"] = { link = "Keyword" },
-    ["@include.zig"] = { link = "Function" },
-    ["@lsp.typemod.namespace.declaration.zig"] = { link = "Identifier" },
-    ["@lsp.type.keyword.zig"] = { link = "Keyword" },
 
     ------------------
     -- Plugin Support
