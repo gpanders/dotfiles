@@ -9,6 +9,7 @@ set cpoptions-=_
 set cursorline
 set exrc
 set foldlevelstart=99
+set foldtext=
 set ignorecase
 set jumpoptions=view
 set linebreak
