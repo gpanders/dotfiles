@@ -1,6 +1,4 @@
-if not status is-interactive
-    exit
-end
+status is-interactive; or exit
 
 abbr --add g git
 abbr --add vi nvim
