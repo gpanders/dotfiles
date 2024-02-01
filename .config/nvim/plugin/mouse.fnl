@@ -1,6 +1,7 @@
 (local state {:timer (vim.uv.new_timer)
               :focus true
-              :highlight nil})
+              :highlight nil
+              :windows {}})
 
 (fn utf-index [line index encoding]
   "Convert the byte index in the given line into the corresponding UTF code unit index."
@@ -27,7 +28,10 @@
                 document-highlight "textDocument/documentHighlight"]
             (when (client.supports_method hover {:bufnr buf})
               (let [handler (or (. client.handlers hover) vim.lsp.handlers.hover)
-                    handler (vim.lsp.with handler {:relative :mouse :silent true})]
+                    handler (vim.lsp.with handler {:relative :mouse :silent true})
+                    handler #(do
+                               (handler $...)
+                               (tset state.windows buf (. vim.b buf :lsp_floating_preview)))]
                 (client.request hover params handler buf)))
             (when (client.supports_method document-highlight {:bufnr buf})
               (let [handler (or (. client.handlers document-highlight)
@@ -41,11 +45,11 @@
 (fn mouse-move [buf client]
   (when state.focus
     ; Clear any existing hover window
-    (case (. vim.b buf :lsp_floating_preview)
+    (case (. state.windows buf)
       w (do
           (when (nvim.win_is_valid w)
             (nvim.win_close w true))
-          (tset vim.b buf :lsp_floating_preview nil)))
+          (tset state.windows buf nil)))
 
     ; Clear any existing highlights
     (case state.highlight
