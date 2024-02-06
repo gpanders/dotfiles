@@ -1,2 +1,0 @@
-(fn
-  (parameters) @text) @context
