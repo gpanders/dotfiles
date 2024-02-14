@@ -22,6 +22,9 @@ clangd/
 .nvimrc
 .nvim.lua
 .*_history
+Brewfile.lock.json
+.envrc
+.nvim.lua
 
 # Outputs
 *.so
