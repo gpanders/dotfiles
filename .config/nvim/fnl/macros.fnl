@@ -82,6 +82,9 @@ Examples:
                                                                :buffer ,opts.buffer
                                                                :once ,opts.once
                                                                :nested ,opts.nested})))
+    ; Do not return anything from the autocmd macro
+    (table.insert form `nil)
+
     form))
 
 (fn M.autocmd [...]
