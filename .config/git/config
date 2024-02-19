@@ -36,6 +36,7 @@
 [rebase]
 	autoSquash = true
 	autoStash = true
+	updateRefs = true
 [grep]
 	lineNumber = true
 	column = true
@@ -60,11 +61,20 @@
 	cmd = nvim -c \"Gvdiffsplit!\" \"$MERGED\"
 [merge]
 	tool = fugitive
+	conflictstyle = zdiff3
 [diff]
 	tool = difftastic
+	algorithm = histogram
 [difftool]
 	prompt = false
 [difftool "difftastic"]
 	cmd = difft "$LOCAL" "$REMOTE"
 [pager]
 	difftool = true
+[rerere]
+	enabled = true
+[url "git@github.com:"]
+	insteadOf = "gh:"
+[fetch]
+	prune = true
+	prunetags = true
