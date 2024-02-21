@@ -50,7 +50,7 @@
 
 (fn enable []
   (set vim.g.lsp.autostart true)
-  (vim.cmd "doautoall <nomodeline> FileType"))
+  (exec "doautoall <nomodeline> FileType"))
 
 (fn disable []
   (set vim.g.lsp.autostart false)

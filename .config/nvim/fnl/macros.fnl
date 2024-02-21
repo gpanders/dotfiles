@@ -147,4 +147,7 @@ The example above is equivalent to
      ,...
      (tset _G :print p#)))
 
+(fn M.exec [cmd]
+  `(let [_# (vim.api.nvim_exec2 ,cmd {})] nil))
+
 M

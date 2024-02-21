@@ -7,4 +7,4 @@
   (fn [{: buf}]
     (let [ft (. vim.bo buf :filetype)]
       (when (not (. ignored ft))
-        (vim.cmd "silent! normal! g`\"")))))
+        (exec "silent! normal! g`\"")))))

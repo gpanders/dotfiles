@@ -19,7 +19,7 @@
 
 (autocmd grep# :QuickFixCmdPost :grep {:nested true}
   #(let [list (vim.fn.getqflist)]
-     (vim.cmd (.. "cclose|botright " (math.min 10 (length list)) "cwindow"))))
+     (exec (.. "cclose|botright " (math.min 10 (length list)) "cwindow"))))
 
 (keymap :ca "gr" #(if (and (= ":" (vim.fn.getcmdtype)) (= "gr" (vim.fn.getcmdline))) :Grep :gr) {:expr true :silent false})
 (keymap :ca "grep" #(if (and (= ":" (vim.fn.getcmdtype)) (= "grep" (vim.fn.getcmdline))) :Grep :grep) {:expr true :silent false})

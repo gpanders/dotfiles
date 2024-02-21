@@ -16,7 +16,7 @@
         (vim.schedule #(let [lines (vim.split data "\n" {:trimempty true})]
                          (when (not state.qf)
                            (vim.fn.setqflist [] " " {:title makeprg :nr "$"})
-                           (vim.cmd "botright copen|wincmd p")
+                           (exec "botright copen|wincmd p")
                            (let [{: id : qfbufnr} (vim.fn.getqflist {:id 0 :qfbufnr true})]
                              (set state.qf id)
                              (keymap :n "<C-C>" #(let [result (state.handle:wait 0)]
@@ -24,7 +24,7 @@
                                                      (let [title (: "%s (Interrupted)" :format makeprg)]
                                                        (vim.fn.setqflist [] :a {: title}))) {}) {:buffer qfbufnr})))
                          (vim.fn.setqflist [] :a {:id state.qf : lines})
-                         (vim.cmd.cbottom)))))
+                         (exec :cbottom)))))
     (nvim.exec_autocmds :QuickFixCmdPre {:pattern "make" :modeline false})
     (set state.handle (vim.system (vim.split makeprg " ") {:stdout on-data :stderr on-data} on-exit))))
 
@@ -39,7 +39,7 @@
          (set found? true)
          (nvim.win_set_cursor winid [i 0])))
      (when (and (= 0 code) (not found?))
-       (vim.cmd.cclose))))
+       (exec :cclose))))
 
 (keymap :n "m?" #(print vim.o.makeprg))
 (keymap :n "m<Space>" ":<C-U>Make " {:silent false})

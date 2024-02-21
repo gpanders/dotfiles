@@ -34,12 +34,10 @@
       (autocmd :InsertEnter {:buffer buf} #(vim.diagnostic.hide ns buf))
       (autocmd :CursorMoved {:buffer buf}
         (fn [{: buf}]
-          (let [[lnum] (nvim.win_get_cursor 0)
-                lnum (- lnum 1)]
-            (let [diag (cursor-diagnostic buf)]
-              (when diag
-                (set diag.message ((vim.gsplit diag.message "\n"))))
-              (vim.diagnostic.show ns buf [diag] {:virtual_text {:source :if_many}})))))))
+          (let [diag (cursor-diagnostic buf)]
+            (when diag
+              (set diag.message ((vim.gsplit diag.message "\n"))))
+            (vim.diagnostic.show ns buf [diag] {:virtual_text {:source :if_many}}))))))
   (autocmd :DiagnosticChanged
     (fn [{: buf}]
       (tset cache buf nil))))

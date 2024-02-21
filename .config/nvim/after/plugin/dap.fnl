@@ -28,7 +28,7 @@
       ; Holy crap this is hacky. There has to be a better way
       (nvim.set_current_win frames.win)
       (scopes.open)
-      (vim.cmd.wincmd :p)
+      (exec "wincmd p")
       (nvim.win_set_buf 0 scopes.buf)
       (nvim.set_current_win win)))
 

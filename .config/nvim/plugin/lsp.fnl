@@ -33,7 +33,7 @@
         (with-module [compl :lsp_compl]
           (match client.name
             :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
-          (vim.cmd "set completeopt+=noinsert")
+          (exec "set completeopt+=noinsert")
           (let [{: expand_snippet} (require :snippy)]
             (set compl.expand_snippet expand_snippet))
           (keymap :i :<CR> #(if (compl.accept_pum) :<C-Y> :<CR>) {:expr true :buffer true})
