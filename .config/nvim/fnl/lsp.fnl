@@ -43,7 +43,8 @@
     (let [root-dir (if config.root
                        (let [[root-marker] (vim.fs.find config.root {:upward true})]
                          (vim.fs.dirname root-marker)))]
-      (vim.lsp.start (vim.tbl_extend :keep config {:root_dir (or root-dir (vim.uv.cwd))
+      (vim.lsp.start (vim.tbl_extend :keep config {:name (. config.cmd 1)
+                                                   :root_dir (or root-dir (vim.uv.cwd))
                                                    :on_init on-init
                                                    : capabilities
                                                    : handlers})))))
