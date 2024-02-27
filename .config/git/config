@@ -77,4 +77,4 @@
 	insteadOf = "gh:"
 [fetch]
 	prune = true
-	prunetags = true
+	pruneTags = true
