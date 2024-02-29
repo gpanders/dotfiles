@@ -1,6 +1,5 @@
 let g:loaded_netrwPlugin = 1
 let g:loaded_tutor_mode_plugin = 1
-let g:loaded_2html_plugin = 1
 
 " Disable unused remote plugin providers
 let g:loaded_python_provider = 0
