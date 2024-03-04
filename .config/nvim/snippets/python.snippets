@@ -12,3 +12,10 @@ snippet bp
 	breakpoint()
 snippet print
 	print(f"$0")
+snippet argparse
+	import argparse
+
+	parser = argparse.ArgumentParser()
+	parser.add_argument($0)
+
+	args = parser.parse_args()
