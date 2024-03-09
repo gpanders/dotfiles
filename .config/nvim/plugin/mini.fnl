@@ -11,6 +11,7 @@
   (keymap :n "-" #(MiniFiles.open (nvim.buf_get_name 0))))
 (setup :mini.visits)
 (setup :mini.extra)
+(setup :mini.indentscope)
 
 (autocmd mini# :LspAttach {:once true}
   #(setup :mini.notify {:content {:format #(. $ :msg)}

@@ -605,11 +605,15 @@ local highlights = {
     gitcommitUntrackedFile = { fg = red },
     gitcommitSelectedFile = { fg = green },
 
+    -- mini.nvim
+    MiniIndentscopeSymbol = { fg = brightblack },
+
     -- nvim-dap
     DapStoppedLine = { bg = brighterblack, underline = true },
     DapStoppedSign = { fg = black, bg = white },
     DapBreakpoint = { bg = black },
 
+    -- nvim-treesitter-context
     TreesitterContext = { bg = black },
 }
 
