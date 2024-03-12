@@ -25,6 +25,7 @@ clangd/
 Brewfile.lock.json
 .envrc
 .nvim.lua
+CMakeUserPresets.json
 
 # Outputs
 *.so
