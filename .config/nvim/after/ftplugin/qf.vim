@@ -1,4 +1,4 @@
-setlocal nowrap
+setlocal nowrap winfixbuf
 
 nnoremap <silent> <buffer> q :q<CR>
 
@@ -15,4 +15,4 @@ if !exists('loaded_cfilter')
   let loaded_cfilter = get(g:, 'loaded_cfilter')
 endif
 
-let b:undo_ftplugin .= '|setl wrap<|nun <buffer> q|au! qf * <buffer>'
+let b:undo_ftplugin .= '|setl wrap< wfb<|nun <buffer> q|au! qf * <buffer>'
