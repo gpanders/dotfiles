@@ -75,6 +75,8 @@
 	enabled = true
 [url "git@github.com:"]
 	insteadOf = gh:
+[url "git@git.sr.ht:"]
+	insteadof = srht:
 [fetch]
 	prune = true
 	pruneTags = true
