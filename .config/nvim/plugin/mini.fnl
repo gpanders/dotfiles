@@ -11,6 +11,9 @@
   (keymap :n "-" #(MiniFiles.open (nvim.buf_get_name 0))))
 (setup :mini.visits)
 (setup :mini.extra)
+(setup :mini.diff {:view {:signs {:add :┃ :change :┃ :delete :▁}}
+                   :delay {:text_change 50}}
+  (keymap :n "yoD" MiniDiff.toggle_overlay))
 
 (autocmd mini# :LspAttach {:once true}
   #(setup :mini.notify {:content {:format #(. $ :msg)}
@@ -21,8 +24,8 @@
 (setup :mini.pick {:mappings {:toggle_info "<C-/>"}}
   (set MiniPick.config.source.show MiniPick.default_show)
   (keymap :n "<Space>f" MiniPick.builtin.files)
-  (keymap :n "<Space>b" MiniPick.builtin.buffers)
   (keymap :n "<Space>/" MiniPick.builtin.grep_live)
+  (keymap :n "<Space>b" MiniPick.builtin.buffers)
   (keymap :n "<M-S-/>" MiniPick.builtin.help)
 
   (when MiniExtra

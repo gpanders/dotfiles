@@ -593,13 +593,6 @@ local highlights = {
     -- Plugin Support
     ------------------
 
-    -- gitsigns
-    GitSignsAdd = { fg = green, bg = black },
-    GitSignsChange = { fg = yellow, bg = black },
-    GitSignsChangeDelete = { fg = red, bg = black },
-    GitSignsDelete = { fg = red, bg = black },
-    GitSignsCurrentLineBlame = { link = "Comment" },
-
     -- fugitive
     gitcommitDiscardedFile = { fg = red },
     gitcommitUntrackedFile = { fg = red },
@@ -607,6 +600,11 @@ local highlights = {
 
     -- mini.nvim
     MiniIndentscopeSymbol = { fg = brightblack },
+
+    -- mini.diff
+    MiniDiffSignAdd = { fg = green, bg = black },
+    MiniDiffSignChange = { fg = yellow, bg = black },
+    MiniDiffSignDelete = { fg = red, bg = black },
 
     -- nvim-dap
     DapStoppedLine = { bg = brighterblack, underline = true },

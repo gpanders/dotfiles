@@ -44,8 +44,9 @@ else
   endif
 endif
 
-" Enable indent-heuristic to make vimdiff more closely match git diff
-set diffopt+=indent-heuristic,linematch:60
+" Use the histogram algorithm for diffs
+set diffopt-=internal
+set diffopt+=algorithm:histogram,linematch:60
 
 inoremap <C-Space> <C-X><C-O>
 
