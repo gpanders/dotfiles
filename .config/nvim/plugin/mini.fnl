@@ -5,7 +5,6 @@
 
 (setup :mini.sessions)
 (setup :mini.surround)
-(setup :mini.comment)
 (setup :mini.align {:mappings {:start "gl" :start_with_preview "gL"}})
 (setup :mini.files {:content {:prefix #nil} :mappings {:go_in_plus :<CR>}}
   (keymap :n "-" #(MiniFiles.open (nvim.buf_get_name 0))))
