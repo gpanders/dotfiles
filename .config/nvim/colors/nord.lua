@@ -271,8 +271,8 @@ local highlights = {
     ["@constant.macro"] = { link = "Macro" },
     ["@function.builtin"] = { link = "Function" },
     ["@variable.builtin"] = { link = "Keyword" },
-    ["@markup.raw"] = { fg = orange },
     ["@markup.link"] = { fg = blue, underline = true },
+    ["@module"] = { link = "Identifier" },
     ["@punctuation.special"] = { fg = brightwhite },
     ["@type.builtin"] = { link = "@type" },
 
@@ -427,6 +427,7 @@ local highlights = {
 
     ["@markup.link.label.markdown_inline"] = { link = "@markup.link.label" },
     ["@markup.link.markdown_inline"] = { link = "@markup.link" },
+    ["@markup.raw.markdown_inline"] = { bg = black },
 
     pandocDefinitionBlockTerm = { fg = brightcyan },
     pandocTableDelims = { fg = brighterblack },
@@ -492,6 +493,7 @@ local highlights = {
     rustEnumVariant = { link = "rustEnum" },
     rustEscape = { link = "SpecialChar" },
     rustQuestionMark = { link = "Keyword" },
+    ["@module.rust"] = { link = "Identifier" },
 
     sassClass = { link = "Type", },
     sassId = { fg = brightcyan, underline = true },
