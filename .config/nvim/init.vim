@@ -135,7 +135,8 @@ augroup init
   autocmd InsertEnter * setlocal nocursorline
   autocmd InsertLeave * setlocal cursorline
   autocmd WinLeave,FocusLost * if !&diff && !&cursorbind | setlocal nocursorline | endif
-  autocmd InsertLeave,WinEnter,FocusGained * let &l:cursorline = mode() !=# 'i'
+  autocmd InsertLeave,WinEnter,FocusGained *
+        \ let &l:cursorline = (mode() !=# 'i') && (nvim_win_get_config(0).relative ==# '')
 
   " Create missing parent directories automatically
   autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
