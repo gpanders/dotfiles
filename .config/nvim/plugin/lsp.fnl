@@ -16,9 +16,9 @@
         (autocmd lsp# :LspProgress :end
           (fn [args]
             (when (= args.buf buf)
-              (vim.lsp.codelens.refresh))))
-        (autocmd lsp# [:BufEnter :TextChanged :InsertLeave] {:buffer buf} vim.lsp.codelens.refresh)
-        (vim.lsp.codelens.refresh))
+              (vim.lsp.codelens.refresh {:bufnr buf}))))
+        (autocmd lsp# [:BufEnter :TextChanged :InsertLeave] {:buffer buf} #(vim.lsp.codelens.refresh {:bufnr buf}))
+        (vim.lsp.codelens.refresh {:bufnr buf}))
       (keymap :n "gr" vim.lsp.buf.references {:buffer buf})
       (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer buf})
       (keymap :n "crr" vim.lsp.buf.rename {:buffer buf})
