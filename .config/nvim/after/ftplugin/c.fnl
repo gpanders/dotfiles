@@ -23,10 +23,3 @@
             bufnr))))
 
     (keymap :n "gh" switch-source-header {:buffer true})))
-
-(let [lsp (require :lsp)]
-  (lsp.start {:cmd ["clangd" "--background-index"]
-              :root [".clangd" ".clang-format" "compile_commands.json" "compile_flags.txt"]
-              :flags {:debounce_text_changes 20}
-              :capabilities {:textDocument {:completion {:editsNearCursor true}}
-                             :offsetEncoding [:utf-8 :utf-16]}}))

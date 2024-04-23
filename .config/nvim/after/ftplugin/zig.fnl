@@ -7,7 +7,3 @@
 (match vim.g.zig_tags_file
   tags (when (= 1 (vim.fn.filereadable tags))
          (set vim.bo.tags (.. vim.o.tags "," tags))))
-
-(let [lsp (require :lsp)]
-  (lsp.start {:cmd ["zls"]
-              :root ["build.zig"]}))

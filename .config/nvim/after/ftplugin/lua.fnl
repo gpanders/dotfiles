@@ -5,8 +5,3 @@
   (when f
     (set vim.bo.formatprg (: "stylua -f %s -" :format f))))
 (exec "setlocal comments^=:---")
-
-(let [lsp (require :lsp)]
-  (lsp.start {:cmd ["lua-language-server"]
-              :root [".luarc.json"]
-              :settings {:Lua {:telemetry {:enable false}}}}))
