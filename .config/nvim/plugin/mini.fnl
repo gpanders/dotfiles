@@ -4,7 +4,22 @@
      ,...))
 
 (setup :mini.sessions)
-(setup :mini.surround)
+
+; Use vim-surround mappings, :h MiniSurround-vim-surround-config
+(setup :mini.surround {:mappings {:add "ys"
+                                  :delete "ds"
+                                  :find ""
+                                  :find_left ""
+                                  :highlight ""
+                                  :replace "cs"
+                                  :update_n_lines ""
+                                  :suffix_last ""
+                                  :suffix_next ""
+                                  :search_method "cover_or_next"}}
+  (vim.keymap.del :x "ys")
+  (keymap :x "S" ":<C-U>lua MiniSurround.add('visual')<CR>")
+  (keymap :n "yss" "ys_" {:noremap false}))
+
 (setup :mini.align {:mappings {:start "gl" :start_with_preview "gL"}})
 (setup :mini.files {:content {:prefix #nil} :mappings {:go_in_plus :<CR>}}
   (keymap :n "-" #(MiniFiles.open (nvim.buf_get_name 0))))
