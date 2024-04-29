@@ -117,8 +117,10 @@ vnoremap P p
 " Use zS mapping from scriptease for :Inspect
 nnoremap zS <Cmd>Inspect<CR>
 
-nnoremap `<CR> <Cmd>bo te<CR>
-nnoremap <expr> `<Space> ':bo te '
+" Don't use fish for 'shell', but if it exists use it as the default shell in
+" terminal buffers
+nnoremap <expr> <C-`> '<Cmd>tab term' .. (executable('fish') ? ' fish' : '') .. '<CR>'
+nnoremap <expr> `<Space> ':tab te '
 
 augroup init
   autocmd!
