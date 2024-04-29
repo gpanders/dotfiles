@@ -44,10 +44,6 @@
               (vim.lsp.codelens.refresh {:bufnr buf}))))
         (autocmd lsp# [:BufEnter :TextChanged :InsertLeave] {:buffer buf} #(vim.lsp.codelens.refresh {:bufnr buf}))
         (vim.lsp.codelens.refresh {:bufnr buf}))
-      (keymap :n "gr" vim.lsp.buf.references {:buffer buf})
-      (keymap :i "<C-S>" vim.lsp.buf.signature_help {:buffer buf})
-      (keymap :n "crn" vim.lsp.buf.rename {:buffer buf})
-      (keymap :n "cra" vim.lsp.buf.code_action {:buffer buf})
 
       (when (client.supports_method :textDocument/formatting)
         (autocmd lsp# :BufWritePre {:buffer buf}

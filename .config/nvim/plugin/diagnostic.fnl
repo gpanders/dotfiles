@@ -42,9 +42,5 @@
     (fn [{: buf}]
       (tset cache buf nil))))
 
-(keymap :n "]g" #(vim.diagnostic.goto_next {:float false}))
-(keymap :n "[g" #(vim.diagnostic.goto_prev {:float false}))
-(keymap :n "go" #(vim.diagnostic.open_float {:border :rounded}))
-
 (keymap :n "yog" #(vim.diagnostic.enable 0 (not (vim.diagnostic.is_enabled)))
                  {:desc "Toggle diagnostics"})
