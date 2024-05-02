@@ -32,15 +32,6 @@ set wildmode=longest:full,full
 
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case
-  set grepformat=%f:%l:%c:%m
-else
-  set grepprg=grep\ --line-number\ --recursive\ -I\ $*
-  set grepformat=%f:%l:%m
-  if has('mac')
-    " BSD grep that ships with macOS reads from stdin when no arguments are
-    " provided, so append /dev/null to prevent it from blocking
-    set grepprg+=\ /dev/null
-  endif
 endif
 
 " Use the histogram algorithm for diffs
