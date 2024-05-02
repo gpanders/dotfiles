@@ -1,14 +1,13 @@
 if executable('ruff')
-    let &l:formatprg = 'ruff format --stdin-filename ' .. expand('%:p') .. ' -'
+    let &l:formatprg = printf('ruff check -s --select I --fix-only --stdin-filename %1$s - | ruff format --stdin-filename %1$s -', expand('%:p'))
 elseif executable('black')
     let &l:formatprg = 'black -q - 2>/dev/null'
-endif
-
-if executable('isort')
-    if empty(&l:formatprg)
-        let &l:formatprg = 'isort -q -'
-    else
-        let &l:formatprg .= ' | isort -q - '
+    if executable('isort')
+        if empty(&l:formatprg)
+            let &l:formatprg = 'isort -q -'
+        else
+            let &l:formatprg .= ' | isort -q - '
+        endif
     endif
 endif
 
