@@ -1,8 +1,3 @@
-(local state {:timer (vim.uv.new_timer)
-              :focus true
-              :highlight nil
-              :windows {}})
-
 (fn utf-index [line index encoding]
   "Convert the byte index in the given line into the corresponding UTF code unit index."
   (if (= :utf-8 encoding)
@@ -28,48 +23,20 @@
                 document-highlight "textDocument/documentHighlight"]
             (when (client.supports_method hover {:bufnr buf})
               (let [handler (or (. client.handlers hover) vim.lsp.handlers.hover)
-                    handler (vim.lsp.with handler {:relative :mouse :silent true})
-                    handler #(do
-                               (handler $...)
-                               (tset state.windows buf (. vim.b buf :lsp_floating_preview)))]
+                    handler (vim.lsp.with handler {:relative :mouse :silent true})]
                 (client.request hover params handler buf)))
             (when (client.supports_method document-highlight {:bufnr buf})
               (let [handler (or (. client.handlers document-highlight)
                                 #(vim.lsp.util.buf_highlight_references buf (or $2 []) client.offset_encoding))
                     handler #(do
                                (vim.lsp.util.buf_clear_references buf)
-                               (handler $...)
-                               (set state.highlight buf))]
+                               (handler $...))]
                 (client.request document-highlight params handler buf)))))))))
 
-(fn mouse-move [buf client]
-  (when state.focus
-    ; Clear any existing hover window
-    (case (. state.windows buf)
-      w (do
-          (when (nvim.win_is_valid w)
-            (nvim.win_close w true))
-          (tset state.windows buf nil)))
-
-    ; Clear any existing highlights
-    (case state.highlight
-      b (do
-          (vim.lsp.util.buf_clear_references b)
-          (set state.highlight nil)))
-
-    (state.timer:stop)
-    (state.timer:start 2000 0 #(vim.schedule #(mouse-hover buf client)))))
-
 (augroup mouse#
-  (autocmd :FocusGained "*" #(set state.focus true))
-  (autocmd :FocusLost "*" (fn []
-                            (set state.focus false)
-                            (state.timer:stop)))
   (autocmd :LspAttach "*"
     (fn [{: buf :data {: client_id}}]
       (let [client (vim.lsp.get_client_by_id client_id)]
         (when (or (client.supports_method "textDocument/hover" {:bufnr buf})
                   (client.supports_method "textDocument/documentHighlight" {:bufnr buf}))
-          (keymap :n "<MouseMove>" #(mouse-move buf client) {:buffer buf}))))))
-
-(set vim.o.mousemoveevent true)
+          (keymap :n "<2-LeftMouse>" #(mouse-hover buf client) {:buffer buf}))))))
