@@ -109,10 +109,10 @@ vim.g.terminal_color_14 = cyan
 vim.g.terminal_color_15 = brightwhite
 
 local highlights = {
-    Normal = {},
+    Normal = { bg = background, fg = foreground },
 
     Bold = { bold = true },
-    Italic = {},
+    Italic = { italic = true },
     Underlined = { underline = true },
 
     -- Editor
