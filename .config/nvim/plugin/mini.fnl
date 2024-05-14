@@ -33,8 +33,8 @@
 
 (autocmd mini# :LspAttach {:once true}
   #(setup :mini.notify {:content {:format #(. $ :msg)}
-                        :window {:winblend 0
-                                 :config #{:anchor "SE"
+                        :window {:config #{:anchor "SE"
+                                           :border :rounded
                                            :row (- vim.o.lines vim.o.cmdheight (math.min 1 vim.o.laststatus))}}}))
 
 (setup :mini.pick {:mappings {:toggle_info "<C-/>"}}
