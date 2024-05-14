@@ -27,6 +27,7 @@
 	re = restore
 	ctags = !.git/ctags
 	dt = difftool
+	g = grep
 [commit]
 	verbose = true
 [sendemail]
