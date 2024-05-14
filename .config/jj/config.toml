@@ -12,3 +12,4 @@ format = "git"
 [aliases]
 l = ["log"]
 d = ["diff"]
+rb = ["rebase"]
