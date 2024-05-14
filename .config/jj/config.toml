@@ -1,0 +1,14 @@
+[user]
+name = "Gregory Anders"
+email = "greg@gpanders.com"
+
+[ui]
+diff-editor = ":builtin"
+default-command = "status"
+
+[ui.diff]
+format = "git"
+
+[aliases]
+l = ["log"]
+d = ["diff"]
