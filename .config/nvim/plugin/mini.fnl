@@ -27,7 +27,9 @@
 (setup :mini.extra)
 (setup :mini.diff {:view {:signs {:add :┃ :change :┃ :delete :▁}}
                    :delay {:text_change 50}}
-  (keymap :n "yoD" MiniDiff.toggle_overlay))
+  (keymap :n "yoD" MiniDiff.toggle_overlay)
+  (keymap :n "[c" #(if vim.wo.diff "[c" (do (vim.schedule #(MiniDiff.goto_hunk :prev)) "<Ignore>")) {:expr true})
+  (keymap :n "]c" #(if vim.wo.diff "]c" (do (vim.schedule #(MiniDiff.goto_hunk :next)) "<Ignore>")) {:expr true}))
 
 (autocmd mini# :LspAttach {:once true}
   #(setup :mini.notify {:content {:format #(. $ :msg)}
