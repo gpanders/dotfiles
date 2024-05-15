@@ -72,12 +72,6 @@ local function config(server, opts)
         clear = false,
     })
 
-    local capabilities = vim.tbl_deep_extend(
-        "force",
-        vim.lsp.protocol.make_client_capabilities(),
-        opts.capabilities or {}
-    )
-
     local id = vim.api.nvim_create_autocmd("FileType", {
         pattern = ft,
         group = group,
@@ -85,6 +79,12 @@ local function config(server, opts)
             if vim.F.if_nil(cfg.autostart, opts.autostart, true) == false then
                 return
             end
+
+            local capabilities = vim.tbl_deep_extend(
+                "force",
+                vim.lsp.protocol.make_client_capabilities(),
+                opts.capabilities or {}
+            )
 
             vim.lsp.start(
                 vim.tbl_deep_extend("keep", cfg, {
