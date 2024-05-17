@@ -6,5 +6,5 @@
 
 (keymap :n "[d" vim.diagnostic.goto_prev)
 (keymap :n "]d" vim.diagnostic.goto_next)
-(keymap :n "yog" #(vim.diagnostic.enable 0 (not (vim.diagnostic.is_enabled)))
+(keymap :n "yog" #(vim.diagnostic.enable (not (vim.diagnostic.is_enabled)))
                  {:desc "Toggle diagnostics"})

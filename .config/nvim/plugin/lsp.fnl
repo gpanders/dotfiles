@@ -35,7 +35,7 @@
       (when (client.supports_method :textDocument/inlayHint)
         (keymap :n
                 "yoh"
-                #(vim.lsp.inlay_hint.enable (not (vim.lsp.inlay_hint.is_enabled)) {:bufnr buf})
+                #(vim.lsp.inlay_hint.enable (not (vim.lsp.inlay_hint.is_enabled {:bufnr buf})) {:bufnr buf})
                 {:buffer buf :desc "Toggle inlay hints"}))
       (when (client.supports_method :textDocument/codeLens)
         (autocmd lsp# :LspProgress :end
