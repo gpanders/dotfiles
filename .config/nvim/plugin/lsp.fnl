@@ -82,6 +82,11 @@
 (command :LspStart {} enable)
 (command :LspStop {} disable)
 
+(keymap :n :grn #(vim.lsp.buf.rename))
+(keymap :n :grr #(vim.lsp.buf.references))
+(keymap :n :gra #(vim.lsp.buf.code_action))
+(keymap :i :<C-S> #(vim.lsp.buf.signature_help))
+
 (let [lsp (require :lsp)]
   (lsp.config [:clangd :gopls :lua-language-server :rust-analyzer :zls :pyright]
               {:autostart (?. vim.g.lsp :autostart)
