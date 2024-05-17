@@ -1,4 +1,4 @@
-(vim.diagnostic.config {:virtual_text false
+(vim.diagnostic.config {:virtual_text {:severity {:min vim.diagnostic.severity.ERROR}}
                         :underline true
                         :float {:border :rounded}
                         :signs {:severity {:min vim.diagnostic.severity.INFO}}
