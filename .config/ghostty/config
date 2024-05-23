@@ -8,5 +8,5 @@ font-feature = -dlig
 
 command = fish
 macos-option-as-alt = left
-gtk-adwaita = false
-gtk-titlebar = false
+
+keybind = ctrl+alt+super+f5=reset
