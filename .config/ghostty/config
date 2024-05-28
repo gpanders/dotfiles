@@ -9,4 +9,6 @@ font-feature = -dlig
 command = fish
 macos-option-as-alt = left
 
+window-theme = dark
+
 keybind = ctrl+alt+super+f5=reset
