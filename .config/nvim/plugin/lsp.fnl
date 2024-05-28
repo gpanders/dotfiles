@@ -50,15 +50,16 @@
           #(when (vim.F.if_nil (?. vim.b.lsp :autoformat) (?. vim.g.lsp :autoformat) false)
              (vim.lsp.buf.format {:bufnr buf :id client_id}))))
 
-      (when (and compl (client.supports_method :textDocument/completion))
+      (when (client.supports_method :textDocument/completion)
         (match client.name
           :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
-        (exec "set completeopt+=noinsert")
-        (let [{: expand_snippet} (require :snippy)]
-          (set compl.expand_snippet expand_snippet))
-        (keymap :i :<CR> #(if (compl.accept_pum) :<C-Y> :<CR>) {:expr true :buffer true})
-        (keymap :i :<C-Space> #(compl.trigger_completion) {:buffer true})
-        (compl.attach client buf {}))))
+        (exec "set completeopt+=noinsert,noselect")
+        (with-module [compl :lsp_compl]
+          (let [{: expand_snippet} (require :snippy)]
+            (set compl.expand_snippet expand_snippet))
+          (keymap :i :<CR> #(if (compl.accept_pum) :<C-Y> :<CR>) {:expr true :buffer true})
+          (keymap :i :<C-Space> #(compl.trigger_completion) {:buffer true})
+          (compl.attach client buf {})))))
   (autocmd :LspDetach
     (fn [{: buf :data {: client_id}}]
       (tset vim.b buf :lsp nil)
@@ -81,11 +82,6 @@
 
 (command :LspStart {} enable)
 (command :LspStop {} disable)
-
-(keymap :n :grn #(vim.lsp.buf.rename))
-(keymap :n :grr #(vim.lsp.buf.references))
-(keymap :n :gra #(vim.lsp.buf.code_action))
-(keymap :i :<C-S> #(vim.lsp.buf.signature_help))
 
 (let [lsp (require :lsp)]
   (lsp.config [:clangd :gopls :lua-language-server :rust-analyzer :zls :pyright]
