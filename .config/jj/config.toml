@@ -11,5 +11,6 @@ format = "git"
 
 [aliases]
 l = ["log"]
+ll = ["log", "--no-graph", "-T", "builtin_log_detailed", "-r", ".."]
 d = ["diff"]
 rb = ["rebase"]
