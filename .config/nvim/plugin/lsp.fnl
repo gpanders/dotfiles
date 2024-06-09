@@ -47,7 +47,7 @@
 
       (when (client.supports_method :textDocument/formatting)
         (autocmd lsp# :BufWritePre {:buffer buf}
-          #(when (vim.F.if_nil (?. vim.b.lsp :autoformat) (?. vim.g.lsp :autoformat) false)
+          #(when (vim.F.if_nil (?. vim.b.lsp :autoformat) (?. vim.g.lsp :autoformat) true)
              (vim.lsp.buf.format {:bufnr buf :id client_id}))))
 
       (when (client.supports_method :textDocument/completion)
