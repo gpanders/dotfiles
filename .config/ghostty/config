@@ -8,7 +8,6 @@ font-feature = -dlig
 
 command = fish
 macos-option-as-alt = left
-
-window-theme = dark
+macos-titlebar-style = native
 
 keybind = ctrl+alt+super+f5=reset
