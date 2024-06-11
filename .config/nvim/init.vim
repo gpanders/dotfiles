@@ -113,6 +113,9 @@ nnoremap zS <Cmd>Inspect<CR>
 nnoremap <expr> <C-`> '<Cmd>tab term' .. (executable('fish') ? ' fish' : '') .. '<CR>'
 nnoremap <expr> `<Space> ':tab te '
 
+" Use <Esc> to exit Terminal mode in terminal buffers
+tnoremap <Esc> <C-\><C-N>
+
 augroup init
   autocmd!
 
