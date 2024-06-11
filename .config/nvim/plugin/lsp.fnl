@@ -1,18 +1,11 @@
 (fn before-init [params config]
   ; Add utf-8 to positionEncodings capability. Put it in the first position so
   ; that it has highest priority
-  (table.insert params.capabilities.general.positionEncodings 1 :utf-8)
-
-  ; Add lsp-compl capabilities if it's installed
-  (with-module [compl :lsp_compl]
-    (set params.capabilities (vim.tbl_deep_extend :force params.capabilities (compl.capabilities)))))
+  (table.insert params.capabilities.general.positionEncodings 1 :utf-8))
 
 (fn on-init [client result]
-  ; Configure lsp-compl
-  (with-module [compl :lsp_compl]
-    (set vim.lsp.text_document_completion_list_to_complete_items compl.text_document_completion_list_to_complete_items)
-    (when (client.supports_method :textDocument/signatureHelp)
-      (set client.server_capabilities.signatureHelpProvider.triggerCharacters [])))
+  (when (client.supports_method :textDocument/signatureHelp)
+    (set client.server_capabilities.signatureHelpProvider.triggerCharacters []))
 
   ; Handle off-spec "offsetEncoding" server capability
   (match result.offsetEncoding
@@ -53,18 +46,18 @@
       (when (client.supports_method :textDocument/completion)
         (match client.name
           :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
-        (exec "set completeopt+=noinsert,noselect")
-        (with-module [compl :lsp_compl]
-          (let [{: expand_snippet} (require :snippy)]
-            (set compl.expand_snippet expand_snippet))
-          (keymap :i :<CR> #(if (compl.accept_pum) :<C-Y> :<CR>) {:expr true :buffer true})
-          (keymap :i :<C-Space> #(compl.trigger_completion) {:buffer true})
-          (compl.attach client buf {})))))
+        (vim.lsp.completion.enable true client_id buf {:autotrigger true})
+        (keymap :i :<C-Space> vim.lsp.completion.trigger)
+        (keymap :i :<CR> #(if (not= (vim.fn.pumvisible) 0) :<C-Y> :<CR>) {:expr true :buffer buf}))
+
+      (vim.cmd "anoremenu Lsp.Show\\ Documentation <Cmd>lua vim.lsp.buf.hover()<CR>")
+      (vim.cmd "anoremenu Lsp.Goto\\ Definition <Cmd>lua vim.lsp.buf.definition()<CR>")
+      (vim.cmd "anoremenu Lsp.Find\\ References <Cmd>lua vim.lsp.buf.references()<CR>")
+      (vim.cmd "anoremenu Lsp.Rename <Cmd>lua vim.lsp.buf.rename()<CR>")
+      (keymap :n "<M-RightMouse>" "<Cmd>popup! Lsp<CR>")))
   (autocmd :LspDetach
     (fn [{: buf :data {: client_id}}]
       (tset vim.b buf :lsp nil)
-      (when compl
-        (compl.detach client_id buf))
       (autocmd! lsp# "*" {:buffer buf})))
   (autocmd :LspProgress "*" "redrawstatus"))
 

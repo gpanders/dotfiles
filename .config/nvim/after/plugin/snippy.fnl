@@ -1,7 +1,3 @@
-(autocmd snippy# :CompleteDone
-  #(let [snippy (require :snippy)]
-     (snippy.complete_done)))
-
 (keymap :i "<C-]>"
   #(let [snippy (require :snippy)]
      (if (snippy.can_expand)
