@@ -152,11 +152,6 @@ augroup init
 
   " Set 'winfixbuf' in terminal buffers
   autocmd TermOpen term://* setlocal winfixbuf
-
-  " Set StatusLineTerm highlights
-  autocmd TermOpen,WinEnter * if &buftype == 'terminal'
-        \ | setlocal winhighlight=StatusLine:StatusLineTerm,StatusLineNC:StatusLineTermNC
-        \ | endif
 augroup END
 
 lua<<
