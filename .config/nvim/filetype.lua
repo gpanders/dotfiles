@@ -2,15 +2,9 @@ vim.filetype.add({
     extension = {
         h = function(path)
             -- Try to be a little intelligent when determining if a .h file is C++ or C
-            if
-                vim.fn.search(
-                    "\\C\\%(^#include <[^>.]\\+>$\\|\\<constexpr\\>\\|^class\\> [A-Z]\\|^using\\>\\|\\<std::\\)",
-                    "nw"
-                ) ~= 0
-            then
-                return "cpp"
-            end
 
+            -- If a .cc or .cpp file with the same basename exists next to this
+            -- header file, assume the header is C++
             local stem = vim.fn.fnamemodify(path, ":r")
             if
                 vim.uv.fs_stat(string.format("%s.cc", stem))
@@ -19,9 +13,31 @@ vim.filetype.add({
                 return "cpp"
             end
 
+            -- If the header file contains C++ specific keywords, assume it is
+            -- C++
+            if
+                vim.fn.search(
+                    string.format(
+                        [[\C\%%(%s\)]],
+                        table.concat({
+                            [[^#include <[^>.]\+>$]],
+                            [[\<constexpr\>]],
+                            [[\<consteval\>]],
+                            [[\<extern "C"\>]],
+                            [[^class\> [A-Z]],
+                            [[^\s*using\>]],
+                            [[\<template\>\s*<]],
+                            [[\<std::]],
+                        }, "\\|")
+                    ),
+                    "nw"
+                ) ~= 0
+            then
+                return "cpp"
+            end
+
             return "c"
         end,
-        csv = "csv",
         cl = "opencl",
         env = "env",
         plist = "xml",
