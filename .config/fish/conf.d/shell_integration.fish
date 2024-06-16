@@ -1,7 +1,7 @@
 status is-interactive; or exit
 
 # Skip if using a terminal that provides its own shell integration
-if set -q GHOSTTY_FISH_XDG_DIR
+if set -q GHOSTTY_SHELL_INTEGRATION_XDG_DIR
     exit
 end
 
