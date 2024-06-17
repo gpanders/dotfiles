@@ -58,7 +58,7 @@ nnoremap gK K
 
 " Format whole buffer with formatprg without changing cursor position
 nnoremap gq<CR> mzgggqG`z
-nnoremap gq? <Cmd>set formatprg?<CR>
+nnoremap gq? <Cmd>set formatprg? formatexpr?<CR>
 
 " Unimpaired style mappings
 nnoremap <expr> [a '<Cmd>' . v:count1 . 'prev<CR>'
