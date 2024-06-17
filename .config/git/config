@@ -87,3 +87,5 @@
 	sort = version:refname
 [include]
 	path = local.inc
+[format]
+	notes = true
