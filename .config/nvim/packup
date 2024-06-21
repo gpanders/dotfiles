@@ -42,7 +42,14 @@ prompt() {
 		read -r ans
 		case "$ans" in
 		[yY])
-			git -C "$path" merge --ff-only '@{u}'
+			if ! git -C "$path" merge --ff-only '@{u}'; then
+				printf 'Upstream branch diverged. Force update? [y/N] '
+				read -r ans
+				case "$ans" in
+				[yY]) git -C "$path" reset --hard '@{u}' ;;
+				*) ;;
+				esac
+			fi
 			break
 			;;
 		[lL])
@@ -53,7 +60,11 @@ prompt() {
 			break
 			;;
 		[sS])
-			(cd "$path"; printf 'Opening subshell in %s. Press Ctrl-D to exit.\n' "$path"; $SHELL) || true
+			(
+				cd "$path"
+				printf 'Opening subshell in %s. Press Ctrl-D to exit.\n' "$path"
+				$SHELL
+			) || true
 			;;
 		*)
 			break
