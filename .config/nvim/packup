@@ -75,7 +75,9 @@ prompt() {
 	return "$quit"
 }
 
-showlog() {
+packup() {
+	wait
+
 	tmp=$(mktemp)
 	trap 'rm -f $tmp' EXIT
 	printf '%s\n' "$plugins" >"$tmp"
@@ -103,6 +105,10 @@ showlog() {
 			fi
 		fi
 	done
+
+	if command -v nvim >/dev/null 2>&1; then
+		nvim --headless +'helptags ALL' +q
+	fi
 }
 
 plug tpope.io/vim/abolish
@@ -110,12 +116,8 @@ plug tpope.io/vim/fugitive
 plug tpope.io/vim/sleuth
 plug github.com/gpanders/nvim-parinfer
 plug github.com/mfussenegger/nvim-lint
-plug github.com/nvim-treesitter/nvim-treesitter start main
+plug github.com/nvim-treesitter/nvim-treesitter opt main
 plug github.com/dcampos/nvim-snippy
 plug github.com/echasnovski/mini.nvim
 
-wait
-
-showlog
-
-nvim --headless +'helptags ALL' +q
+packup
