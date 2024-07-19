@@ -1,4 +1,4 @@
---- @class LspConfig
+--- @class LspConfig : vim.lsp.ClientConfig
 --- @field filetype string|[string] Filetypes to enable this server for
 --- @field autostart boolean? If true, automatically start the server
 --- @field cmd [string] Command to start the server
@@ -41,6 +41,10 @@ local function config(server, opts)
     local cfg = M.load(server)
     if not cfg then
         return false, string.format("No LSP configuration found for %s", server)
+    end
+
+    if cfg.enabled == false then
+        return true, nil
     end
 
     local ft = cfg.filetype
@@ -114,7 +118,7 @@ end
 function M.config(servers, opts)
     for _, server in ipairs(servers) do
         local ok, err = config(server, opts)
-        if not ok then
+        if not ok and err then
             vim.notify(err, vim.log.levels.WARN)
         end
     end
