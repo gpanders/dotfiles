@@ -38,14 +38,6 @@ vim.filetype.add({
 
             return "c"
         end,
-        cl = "opencl",
-        env = "env",
         plist = "xml",
-    },
-    filename = {
-        [".envrc"] = "sh",
-    },
-    pattern = {
-        ["~/%.config/mutt/.*"] = "muttrc",
     },
 })
