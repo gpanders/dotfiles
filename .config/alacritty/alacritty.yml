@@ -1,5 +1,0 @@
-import:
-    - ~/.config/alacritty/colors/nord.yml
-    - ~/.config/alacritty/keys.yml
-    - ~/.config/alacritty/defaults.yml
-    - ~/.config/alacritty/local.yml
