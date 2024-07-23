@@ -2,9 +2,9 @@ local ignored = {
     ["fnl/macros.fnl"] = true,
 }
 
-local fennel_version = "1.3.0"
+local fennel_version = "1.5.0"
 local fennel_path = vim.fn.stdpath("data") .. "/site/lua/fennel.lua"
-local fennel_url = string.format("https://fennel-lang.org/downloads/fennel-%s.tar.gz", fennel_version)
+local fennel_url = string.format("https://fennel-lang.org/downloads/fennel-%s.lua", fennel_version)
 
 local function compile(path)
     local base = path:gsub(vim.fn.stdpath("config") .. "/", "")
@@ -14,27 +14,11 @@ local function compile(path)
 
     local ok, fennel = pcall(require, "fennel")
     if not ok or fennel.version ~= fennel_version then
-        local tmpdir = vim.fn.fnamemodify(vim.fn.tempname(), ":h")
-        vim.fn.mkdir(tmpdir, "p")
         print(string.format("Downloading Fennel %s...", fennel_version, tmpdir))
-
-        do
-            local job = vim.system({ "curl", "-sS", "-o", string.format("%s/fennel.tar.gz", tmpdir), fennel_url }):wait(10000)
-            assert(job.code == 0, job.stderr)
-        end
-
-        do
-            local job = vim.system({ "tar", "-C", tmpdir, "-xf", string.format("%s/fennel.tar.gz", tmpdir) }):wait()
-            assert(job.code == 0, job.stderr)
-        end
 
         vim.fn.mkdir(vim.fn.fnamemodify(fennel_path, ":h"), "p")
         do
-            local job = vim.system({
-                "mv",
-                string.format("%s/fennel-%s/fennel.lua", tmpdir, fennel_version),
-                fennel_path,
-            }):wait()
+            local job = vim.system({ "curl", "-sS", "-o", fennel_path, fennel_url }):wait(10000)
             assert(job.code == 0, job.stderr)
         end
 
