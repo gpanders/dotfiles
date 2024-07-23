@@ -1,3 +1,8 @@
+(var focused true)
+
+(fn notify [title msg]
+  (io.stdout:write (: "\027]777;notify;%s;%s\027\\" :format title msg)))
+
 (fn make [{: args}]
   (let [makeprg (case (vim.o.makeprg:gsub "%$%*" args)
                   (s 0) (.. s " " args)
@@ -8,8 +13,15 @@
       (vim.schedule (fn []
                       (vim.fn.setqflist [] :a {:id state.qf :context {: code}})
                       (nvim.exec_autocmds :QuickFixCmdPost {:pattern "make" :modeline false})
-                      (when (not= code 0)
-                        (print (: "Command %s exited with error code %d" :format makeprg code))))))
+                      (let [now (vim.uv.hrtime)
+                            elapsed (/ (- now state.start) 1e9)
+                            message (if (not= code 0)
+                                        (: "Command %s exited after %.2f seconds with error code %d" :format makeprg elapsed code)
+                                        (: "Command %s finished successfully after %.2f seconds" :format makeprg elapsed))]
+                        (if (not focused)
+                            (notify "Neovim" message)
+                            (not= code 0)
+                            (print message))))))
     (fn on-data [err data]
       (assert (not err) err)
       (when data
@@ -26,20 +38,25 @@
                          (vim.fn.setqflist [] :a {:id state.qf : lines})
                          (exec :cbottom)))))
     (nvim.exec_autocmds :QuickFixCmdPre {:pattern "make" :modeline false})
-    (set state.handle (vim.system (vim.split makeprg " ") {:stdout on-data :stderr on-data} on-exit))))
+    (set state.handle (vim.system (vim.split makeprg " ") {:stdout on-data :stderr on-data} on-exit))
+    (set state.start (vim.uv.hrtime))))
 
 (command :Make {:nargs :*} make)
 
-(autocmd make# :QuickFixCmdPost :make {:nested true}
-  "Focus the quickfix window on the first error (if any)"
-  #(let [{: items : winid :context {: code}} (vim.fn.getqflist {:items true :winid true :context true})]
-     (var found? false)
-     (each [i item (ipairs items) &until found?]
-       (when (= 1 item.valid)
-         (set found? true)
-         (nvim.win_set_cursor winid [i 0])))
-     (when (and (= 0 code) (not found?))
-       (exec :cclose))))
+(augroup make#
+  (autocmd :QuickFixCmdPost :make {:nested true}
+    "Focus the quickfix window on the first error (if any)"
+    #(let [{: items : winid :context {: code}} (vim.fn.getqflist {:items true :winid true :context true})]
+       (var found? false)
+       (each [i item (ipairs items) &until found?]
+         (when (= 1 item.valid)
+           (set found? true)
+           (nvim.win_set_cursor winid [i 0])))
+       (when (and (= 0 code) (not found?))
+         (exec :cclose))))
+
+  (autocmd :FocusGained "*" #(set focused true))
+  (autocmd :FocusLost "*" #(set focused false)))
 
 (keymap :n "m?" #(print vim.o.makeprg))
 (keymap :n "m<Space>" ":<C-U>Make " {:silent false})
