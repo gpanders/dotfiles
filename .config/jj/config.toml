@@ -3,15 +3,11 @@ name = "Gregory Anders"
 email = "greg@gpanders.com"
 
 [ui]
-diff-editor = ":builtin"
 default-command = "status"
-
-[ui.diff]
-format = "git"
 
 [aliases]
 l = ["log"]
-ll = ["log", "--no-graph", "-T", "builtin_log_detailed", "-r", ".."]
+ll = ["log", "-T", "builtin_log_detailed", "-r", "..@"]
 d = ["diff"]
 rb = ["rebase"]
 b = ["branch"]
