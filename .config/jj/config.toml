@@ -12,3 +12,16 @@ d = ["diff"]
 rb = ["rebase"]
 b = ["branch"]
 g = ["git"]
+
+[templates]
+draft_commit_description = '''
+concat(
+  description,
+  surround(
+    "\nJJ: This commit contains the following changes:\n", "",
+    indent("JJ:     ", diff.summary()),
+  ),
+  "\nJJ: ------------------------ >8 ----------------------\n",
+  diff.git(),
+)
+'''

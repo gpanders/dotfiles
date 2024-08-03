@@ -4,7 +4,7 @@
 
 (set vim.bo.commentstring "//%s")
 
-(autocmd ft/c :LspAttach "<buffer>"
+(autocmd ft/c :LspAttach {:buffer 0}
   #(do
     (fn switch-source-header []
       (let [bufnr (nvim.get_current_buf)
