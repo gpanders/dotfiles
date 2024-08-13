@@ -6,10 +6,6 @@ font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
 
-window-vsync = false
-
 command = fish
 macos-option-as-alt = left
 macos-titlebar-style = native
-
-keybind = ctrl+alt+super+f5=reset
