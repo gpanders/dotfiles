@@ -3,6 +3,7 @@ name = "Gregory Anders"
 email = "greg@gpanders.com"
 
 [ui]
+diff-editor = ":builtin"
 default-command = "status"
 
 [aliases]
