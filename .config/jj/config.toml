@@ -26,3 +26,15 @@ concat(
   diff.git(),
 )
 '''
+
+[fix.tools.gofmt]
+command = ["gofmt"]
+patterns = ["glob:'**/*.go'"]
+
+[fix.tools.rustfmt]
+command = ["rustfmt", "--emit", "stdout"]
+patterns = ["glob:'**/*.rs'"]
+
+[fix.tools.zigfmt]
+command = ["zig", "fmt", "--stdin"]
+patterns = ["glob:'**/*.zig'"]
