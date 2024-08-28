@@ -6,8 +6,6 @@ font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
 
-window-padding-color = background
-
 command = fish
 macos-option-as-alt = left
 macos-titlebar-style = native
