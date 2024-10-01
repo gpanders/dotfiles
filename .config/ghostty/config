@@ -1,5 +1,4 @@
 theme = nord
-font-size = 14
 
 # Disable ligatures
 font-feature = -calt
@@ -12,3 +11,5 @@ window-padding-color = background
 
 macos-option-as-alt = left
 macos-titlebar-style = native
+
+config-file = config.local
