@@ -7,10 +7,9 @@
       (when (not (. disabled ft))
         (case (. ft-lang-map ft)
           lang (do
-                 (vim.treesitter.register lang ft)
+                 (vim.treesitter.language.register lang ft)
                  (tset ft-lang-map ft nil)))
-        ; TODO: Replace _get_parser with get_parser in 0.12
-        (case (vim.treesitter._get_parser buf)
+        (case (vim.treesitter.get_parser buf nil {:error false})
           nil (tset disabled ft true)
           parser (do
                    (when (not (. vim.treesitter.highlighter.active buf))
