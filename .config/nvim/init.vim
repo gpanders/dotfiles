@@ -62,18 +62,6 @@ nnoremap gq<CR> mzgggqG`z
 nnoremap gq? <Cmd>set formatprg? formatexpr?<CR>
 
 " Unimpaired style mappings
-nnoremap <expr> [a '<Cmd>' . v:count1 . 'prev<CR>'
-nnoremap <expr> ]a '<Cmd>' . v:count1 . 'next<CR>'
-nnoremap <expr> [b '<Cmd>' . v:count1 . 'bprev<CR>2<C-G>'
-nnoremap <expr> ]b '<Cmd>' . v:count1 . 'bnext<CR>2<C-G>'
-nnoremap <expr> [t '<Cmd>' . v:count1 . 'tprev<CR>'
-nnoremap <expr> ]t '<Cmd>' . v:count1 . 'tnext<CR>'
-nnoremap [A <Cmd>first<CR>
-nnoremap ]A <Cmd>last<CR>
-nnoremap [B <Cmd>bfirst<CR>
-nnoremap ]B <Cmd>blast<CR>
-nnoremap [T <Cmd>tfirst<CR>
-nnoremap ]T <Cmd>tlast<CR>
 nnoremap <expr> [e '<Cmd>.move --' . v:count1 . '<CR>'
 nnoremap <expr> ]e '<Cmd>.move +' . v:count1 . '<CR>'
 xnoremap <expr> [e ':move --' . v:count1 . '<CR>gv'
