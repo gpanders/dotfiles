@@ -12,4 +12,4 @@ window-padding-color = background
 macos-option-as-alt = left
 macos-titlebar-style = native
 
-config-file = config.local
+config-file = ?config.local
