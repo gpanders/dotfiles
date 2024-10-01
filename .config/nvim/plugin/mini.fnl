@@ -35,7 +35,8 @@
   #(setup :mini.notify {:content {:format #(. $ :msg)}
                         :window {:config #{:anchor "SE"
                                            :border :rounded
-                                           :row (- vim.o.lines vim.o.cmdheight (math.min 1 vim.o.laststatus))}}}))
+                                           :row (- vim.o.lines vim.o.cmdheight (math.min 1 vim.o.laststatus))}
+                                          :winblend 0}}))
 
 (setup :mini.pick {:mappings {:toggle_info "<C-/>"}}
   (set MiniPick.config.source.show MiniPick.default_show)
