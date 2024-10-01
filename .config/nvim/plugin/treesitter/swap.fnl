@@ -46,9 +46,10 @@
         lang (or (vim.treesitter.language.get_lang ft) ft)
         query (vim.treesitter.query.get lang :swap)]
     (if query
-        (case (pcall vim.treesitter.get_parser bufnr lang)
-          (true parser) (*swap buf parser query forward vim.v.count1)
-          _ (nvim.err_writeln (: "No parser found for language %s" :format lang)))
+        ; TODO: Replace _get_parser with get_parser in 0.12
+        (case (vim.treesitter._get_parser bufnr lang)
+          parser (*swap buf parser query forward vim.v.count1)
+          nil (nvim.err_writeln (: "No parser found for language %s" :format lang)))
         (nvim.err_writeln (: "No 'swap' query found for language %s" :format lang))))
   (pcall vim.fn.repeat#set (if forward ">a" "<a") vim.v.count))
 
