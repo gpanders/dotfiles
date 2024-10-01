@@ -77,7 +77,7 @@
 (command :LspStop {} disable)
 
 (let [lsp (require :lsp)]
-  (lsp.config [:clangd :gopls :lua-language-server :rust-analyzer :zls :pyright]
+  (lsp.config [:clangd :gopls :lua-language-server :rust-analyzer :zls :pyright :tsls]
               {:autostart (?. vim.g.lsp :autostart)
                :before_init before-init
                :on_init on-init}))
