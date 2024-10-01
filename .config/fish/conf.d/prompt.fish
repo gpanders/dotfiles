@@ -11,20 +11,22 @@ if set -q SSH_TTY
     set -g __prompt_host (set_color $fish_color_host_remote)"$hostname"(set_color normal)":"
 end
 
-function __prompt_update_git --on-variable __prompt_git_$fish_pid
-    set v __prompt_git_$fish_pid
-    if set -q $v
-        if test "$__prompt_git" != "$$v"
-            set -g __prompt_git (set_color $fish_color_git)$$v
-            commandline -f repaint
-        end
-        set -e $v
-    end
+function __prompt_update_git --on-variable __prompt_git_branch --on-variable __prompt_git_action --on-variable __prompt_git_dirty --on-variable __prompt_git_upstream
+    set -g __prompt_git (set_color $fish_color_git)"$__prompt_git_branch$__prompt_git_dirty $__prompt_git_action$__prompt_git_upstream"
+    commandline -f repaint
 end
 
 function __prompt_update_pwd --on-variable PWD
     set -g __prompt_pwd (set_color $fish_color_cwd)(string replace -r -- '^'$HOME \~ $PWD)
-    set -e __prompt_git_head
+
+    # Reset the location of the Git directory so that it can be rediscovered
+    set -e __prompt_git_dir
+
+    # ...but if current directory contains a .jj directory then skip Git
+    # discovery by setting the variable to an empty string
+    if test -d $PWD/.jj
+        set -g __prompt_git_dir
+    end
 end
 
 function __prompt_venv --on-variable VIRTUAL_ENV --on-variable IN_NIX_SHELL
@@ -102,61 +104,79 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
         set -g __prompt_cmd_duration
     end
 
-    if not test -d .jj; and not set -q __prompt_git_head
-        set -l gitdir
+    if not set -q __prompt_git_dir
         if test -n "$GIT_DIR"
-            set gitdir "$GIT_DIR"
+            set -g __prompt_git_dir "$GIT_DIR"
         else if test -d .git
-            set gitdir .git
+            set -g __prompt_git_dir $PWD/.git
         else if test -f .git
-            set gitdir (string match -r -g '^gitdir: (.*)$' < .git)
-        end
-
-        if test -n "$gitdir" && test -f $gitdir/HEAD
-            set -g __prompt_git_head $gitdir/HEAD
+            set -g __prompt_git_dir (string match -r -g '^gitdir: (.*)$' < .git)
         else
-            set -g __prompt_git_head (command git rev-parse --git-path HEAD 2>/dev/null)
+            set -g __prompt_git_dir (command git rev-parse --show-toplevel 2>/dev/null)
         end
     end
 
-    if test -z "$__prompt_git_head"
-        set -g __prompt_git_branch
+    if test -z "$__prompt_git_dir"; or test -d $__prompt_git_dir/.jj
         set -g __prompt_git
     else
-        set -l branch (string match -r -g '^ref: refs/heads/(.*)|([0-9a-f]{8})[0-9a-f]+$' < $__prompt_git_head)
-        if test "$branch" != "$__prompt_git_branch"
-            set -g __prompt_git_branch $branch
-            set -g __prompt_git (set_color $fish_color_git)"$branch "
+        set -l HEAD
+        if test -f $__prompt_git_dir/HEAD
+            set HEAD $__prompt_git_dir/HEAD
+        else
+            set HEAD (command git rev-parse --git-path HEAD 2>/dev/null)
         end
-    end
 
-    if test -n "$__prompt_git_branch"
-        fish -P -c "
-            set -l action (fish_print_git_action)
-            if test -n \"\$action\"
-                set action \"(\$action) \"
+        set -g __prompt_git_branch (string match -r -g '^ref: refs/heads/(.*)|([0-9a-f]{8})[0-9a-f]+$' < $HEAD)
+        set -l action (fish_print_git_action "$__prompt_git_dir")
+        if test -n "$action"
+            set -g __prompt_git_action "($action)"
+        end
+
+        begin
+            block -l
+            fish -P -c "command git diff-index --no-ext-diff --quiet HEAD 2>/dev/null" &
+            function __prompt_git_dirty_$last_pid --on-process-exit $last_pid --inherit-variable $last_pid
+                functions -e __prompt_git_dirty_$last_pid
+                set -l ret $argv[3]
+                switch $ret
+                    case 0
+                        set -g __prompt_git_dirty ''
+                    case '*'
+                        set -g __prompt_git_dirty '*'
+                end
             end
+        end
 
-            set -l dirty
-            if not command git diff-index --no-ext-diff --quiet HEAD 2>/dev/null
-                set dirty '*'
+        begin
+            block -l
+            fish -P -c "
+                # Upstream status
+                set count (git rev-list --count --left-right @{u}...HEAD 2>/dev/null)
+                switch \"\$count\"
+                    case ''
+                    case '0'\t'0'
+                    case '0'\t'*'
+                        return 1
+                    case '*'\t'0'
+                        return 2
+                    case '*'
+                        return 3
+                end
+            " &
+            function __prompt_git_upstream_$last_pid --on-process-exit $last_pid --inherit-variable $last_pid
+                functions -e __prompt_git_upstream_$last_pid
+                set -l ret $argv[3]
+                switch $ret
+                    case 0
+                        set -g __prompt_git_upstream ''
+                    case 1
+                        set -g __prompt_git_upstream (set_color cyan)'⇡ '
+                    case 2
+                        set -g __prompt_git_upstream (set_color cyan)'⇣ '
+                    case 3
+                        set -g __prompt_git_upstream (set_color cyan)'⇡⇣ '
+                end
             end
-
-            # Upstream status
-            set count (git rev-list --count --left-right @{u}...HEAD 2>/dev/null)
-            set upstream
-            switch \"\$count\"
-                case ''
-                case '0'\t'0'
-                case '0'\t'*'
-                    set upstream (set_color cyan)'⇡ '
-                case '*'\t'0'
-                    set upstream (set_color cyan)'⇣ '
-                case '*'
-                    set upstream (set_color cyan)'⇡⇣ '
-            end
-
-            set -U __prompt_git_$fish_pid \"$__prompt_git_branch\$dirty \$action\$upstream\"
-        " &
+        end
     end
 end
