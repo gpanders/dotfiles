@@ -102,7 +102,7 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
         set -g __prompt_cmd_duration
     end
 
-    if not set -q __prompt_git_head
+    if not test -d .jj; and not set -q __prompt_git_head
         set -l gitdir
         if test -n "$GIT_DIR"
             set gitdir "$GIT_DIR"
