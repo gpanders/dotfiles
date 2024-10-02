@@ -4,9 +4,10 @@ email = "greg@gpanders.com"
 
 [ui]
 diff-editor = ":builtin"
-default-command = "status"
+default-command = "log"
 
 [aliases]
+s = ["status"]
 l = ["log"]
 ll = ["log", "-T", "builtin_log_detailed", "-r", "..@"]
 d = ["diff"]
