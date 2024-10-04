@@ -39,3 +39,6 @@ patterns = ["glob:'**/*.rs'"]
 [fix.tools.zigfmt]
 command = ["zig", "fmt", "--stdin"]
 patterns = ["glob:'**/*.zig'"]
+
+[merge-tools.difft]
+diff-args = ["--color=always", "$left", "$right"]
