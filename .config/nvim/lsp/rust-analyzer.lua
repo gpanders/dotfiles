@@ -1,8 +1,9 @@
 return {
     filetype = "rust",
     cmd = { "rust-analyzer" },
-    root = { "Cargo.toml" },
+    root_dir = vim.fs.root(0, { "Cargo.toml" }),
     settings = {
+        autoformat = true,
         ["rust-analyzer"] = {
             check = {
                 command = "clippy",

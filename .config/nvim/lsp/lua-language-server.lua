@@ -1,7 +1,7 @@
 return {
     filetype = "lua",
     cmd = { "lua-language-server" },
-    root = { ".luarc.json" },
+    root_dir = vim.fs.root(0, { ".luarc.json" }),
     settings = {
         Lua = {
             telemetry = {

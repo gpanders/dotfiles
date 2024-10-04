@@ -22,13 +22,18 @@ local autocmds = {} ---@type table<string, integer>
 --- @param name string Name of the configuration to load
 --- @return LspConfig? LSP configuration table
 function M.load(name)
-    local paths = vim.api.nvim_get_runtime_file(string.format("lsp/%s.lua", name), false)
-    if #paths ~= 1 then
+    local paths = vim.api.nvim_get_runtime_file(string.format('lsp/%s.lua', name), true)
+    if #paths == 0 then
         return nil
     end
 
-    local path = paths[1]
-    return loadfile(path)()
+    local config = {}
+
+    for _, path in ipairs(paths) do
+        config = vim.tbl_extend('force', config, loadfile(path)())
+    end
+
+    return config
 end
 
 --- Configure a single LSP server
@@ -40,7 +45,7 @@ local function config(server, opts)
 
     local cfg = M.load(server)
     if not cfg then
-        return false, string.format("No LSP configuration found for %s", server)
+        return false, string.format('No LSP configuration found for %s', server)
     end
 
     if cfg.enabled == false then
@@ -51,19 +56,19 @@ local function config(server, opts)
     if not ft then
         return false,
             string.format(
-                "Invalid LSP configuration for %s: missing required field 'filetype'",
+                'Invalid LSP configuration for %s: missing required field "filetype"',
                 server
             )
     end
 
-    if type(ft) == "string" then
+    if type(ft) == 'string' then
         ft = { ft }
     end
 
-    if type(ft) ~= "table" then
+    if type(ft) ~= 'table' then
         return false,
             string.format(
-                "Invalid LSP configuration for %s: field 'filetype' must be a string or table",
+                'Invalid LSP configuration for %s: field "filetype" must be a string or table',
                 server
             )
     end
@@ -72,11 +77,11 @@ local function config(server, opts)
         vim.api.nvim_del_autocmd(autocmds[server])
     end
 
-    local group = vim.api.nvim_create_augroup("nvim_lsp", {
+    local group = vim.api.nvim_create_augroup('nvim_lsp', {
         clear = false,
     })
 
-    local id = vim.api.nvim_create_autocmd("FileType", {
+    local id = vim.api.nvim_create_autocmd('FileType', {
         pattern = ft,
         group = group,
         callback = function()
@@ -85,15 +90,15 @@ local function config(server, opts)
             end
 
             local capabilities = vim.tbl_deep_extend(
-                "force",
+                'force',
                 vim.lsp.protocol.make_client_capabilities(),
                 opts.capabilities or {}
             )
 
             vim.lsp.start(
-                vim.tbl_deep_extend("keep", cfg, {
+                vim.tbl_deep_extend('keep', cfg, {
                     name = server,
-                    root_dir = cfg.root and vim.fs.root(0, cfg.root) or vim.uv.cwd(),
+                    root_dir = vim.uv.cwd(),
                     before_init = opts.before_init,
                     on_init = opts.on_init,
                     capabilities = capabilities,
