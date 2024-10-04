@@ -12,7 +12,7 @@ l = ["log"]
 ll = ["log", "-T", "builtin_log_detailed", "-r", "..@"]
 d = ["diff"]
 rb = ["rebase"]
-b = ["branch"]
+b = ["bookmark"]
 g = ["git"]
 
 [templates]
