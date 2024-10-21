@@ -31,7 +31,7 @@ function M.load(name)
 
     for _, path in ipairs(paths) do
         local f = assert(loadfile(path))
-        config = vim.tbl_extend('force', config, f())
+        config = vim.tbl_deep_extend('force', config, f())
     end
 
     return config
