@@ -99,8 +99,8 @@ nnoremap zS <Cmd>Inspect<CR>
 
 " Don't use fish for 'shell', but if it exists use it as the default shell in
 " terminal buffers
-nnoremap <expr> `<CR> '<Cmd>tab term' .. (executable('fish') ? ' fish' : '') .. '<CR>'
-nnoremap <expr> `<Space> ':tab te '
+nnoremap <expr> `<CR> '<Cmd>bo term' .. (executable('fish') ? ' fish' : '') .. '<CR>'
+nnoremap <expr> `<Space> ':bo te '
 
 " Use <Esc> to exit Terminal mode in terminal buffers
 tnoremap <Esc> <C-\><C-N>
