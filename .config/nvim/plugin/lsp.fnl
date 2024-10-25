@@ -76,8 +76,10 @@
 (command :LspStart {} enable)
 (command :LspStop {} disable)
 
-(let [lsp (require :lsp)]
-  (lsp.config [:clangd :gopls :lua-language-server :rust-analyzer :zls :pyright :tsls]
+(let [lsp (require :lsp)
+      configs (collect [_ c (ipairs (vim.api.nvim_get_runtime_file "lsp/*.lua" true))]
+               (values (vim.fn.fnamemodify c ":t:r") true))]
+  (lsp.config (icollect [c (pairs configs)] c)
               {:autostart (?. vim.g.lsp :autostart)
                :before_init before-init
                :on_init on-init}))
