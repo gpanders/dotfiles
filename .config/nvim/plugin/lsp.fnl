@@ -12,7 +12,6 @@
     enc (set client.offset_encoding enc))
 
   ; Modify default handlers
-  (tset client.handlers :textDocument/hover (vim.lsp.with vim.lsp.handlers.hover {:border :rounded}))
   (tset client.handlers :textDocument/signatureHelp (vim.lsp.with vim.lsp.handlers.signature_help {:border :rounded
                                                                                                    :focusable false})))
 
@@ -38,6 +37,9 @@
         (autocmd lsp# [:BufEnter :TextChanged :InsertLeave] {:buffer buf} #(vim.lsp.codelens.refresh {:bufnr buf}))
         (vim.lsp.codelens.refresh {:bufnr buf}))
 
+      (when (client.supports_method :textDocument/hover)
+        (keymap :n :K #(vim.lsp.buf.hover {:border :rounded}) {:buffer buf}))
+
       (when (client.supports_method :textDocument/formatting)
         (autocmd lsp# :BufWritePre {:buffer buf}
           #(when (vim.F.if_nil client.settings.autoformat (?. vim.b.lsp :autoformat) (?. vim.g.lsp :autoformat) false)
@@ -48,13 +50,7 @@
           :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
         (vim.lsp.completion.enable true client_id buf {:autotrigger true})
         (keymap :i :<C-Space> vim.lsp.completion.trigger)
-        (keymap :i :<CR> #(if (not= (vim.fn.pumvisible) 0) :<C-Y> :<CR>) {:expr true :buffer buf}))
-
-      (vim.cmd "anoremenu Lsp.Show\\ Documentation <Cmd>lua vim.lsp.buf.hover()<CR>")
-      (vim.cmd "anoremenu Lsp.Goto\\ Definition <Cmd>lua vim.lsp.buf.definition()<CR>")
-      (vim.cmd "anoremenu Lsp.Find\\ References <Cmd>lua vim.lsp.buf.references()<CR>")
-      (vim.cmd "anoremenu Lsp.Rename <Cmd>lua vim.lsp.buf.rename()<CR>")
-      (keymap :n "<M-RightMouse>" "<Cmd>popup! Lsp<CR>")))
+        (keymap :i :<CR> #(if (not= (vim.fn.pumvisible) 0) :<C-Y> :<CR>) {:expr true :buffer buf}))))
   (autocmd :LspDetach
     (fn [{: buf :data {: client_id}}]
       (tset vim.b buf :lsp nil)
