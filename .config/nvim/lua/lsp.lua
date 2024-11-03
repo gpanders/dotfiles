@@ -1,4 +1,5 @@
 --- @class LspConfig : vim.lsp.ClientConfig
+--- @field enabled boolean? If false, this LSP server is disabled.
 --- @field filetype string|[string] Filetypes to enable this server for
 --- @field autostart boolean? If true, automatically start the server
 --- @field cmd [string] Command to start the server
@@ -20,7 +21,7 @@ local autocmds = {} ---@type table<string, integer>
 --- Load an LSP configuration from the runtimepath
 ---
 --- @param name string Name of the configuration to load
---- @return LspConfig? LSP configuration table
+--- @return LspConfig? # LSP configuration table
 function M.load(name)
     local paths = vim.api.nvim_get_runtime_file(string.format('lsp/%s.lua', name), true)
     if #paths == 0 then
@@ -41,6 +42,8 @@ end
 ---
 --- @param server string Server name
 --- @param opts LspOptions? Additional options
+--- @return boolean # False if an error occurred
+--- @return string? # Error message, if any
 local function config(server, opts)
     opts = opts or {}
 
