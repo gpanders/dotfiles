@@ -50,13 +50,5 @@
     (keymap :n "<Space>g" #(MiniExtra.pickers.diagnostic {:get_opts {:severity {:min vim.diagnostic.severity.WARN}}}))
     (augroup mini#
       (autocmd :LspAttach "*" #(keymap :n "<Space>s" #(MiniExtra.pickers.lsp {:scope :workspace_symbol}) {:buffer (. $1 :buf)}))
-      (autocmd :LspDetach "*" #(vim.keymap.del :n "<Space>s" {:buffer (. $1 :buf)}))))
-
-  (augroup mini#
-    (autocmd [:VimEnter :BufRead :BufNewFile :DirChanged]
-      #(case (pcall vim.fn.FugitiveGitDir)
-         (true "") nil
-         (true _) (do
-                    (keymap :n "<Space>f" #(MiniPick.builtin.files {:tool :git}) {:buffer true})
-                    (keymap :n "<Space>F" MiniPick.builtin.files {:buffer true}))))))
+      (autocmd :LspDetach "*" #(vim.keymap.del :n "<Space>s" {:buffer (. $1 :buf)})))))
 
