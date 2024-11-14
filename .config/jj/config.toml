@@ -9,7 +9,7 @@ default-command = "log"
 [aliases]
 s = ["status"]
 l = ["log"]
-ll = ["log", "-T", "builtin_log_detailed", "-r", "..@"]
+ll = ["log", "-T", "builtin_log_compact_full_description"]
 d = ["diff"]
 rb = ["rebase"]
 b = ["bookmark"]
