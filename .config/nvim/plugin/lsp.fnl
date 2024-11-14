@@ -1,8 +1,3 @@
-(fn before-init [params config]
-  ; Add utf-8 to positionEncodings capability. Put it in the first position so
-  ; that it has highest priority
-  (table.insert params.capabilities.general.positionEncodings 1 :utf-8))
-
 (fn on-init [client result]
   (when (client.supports_method :textDocument/signatureHelp)
     (set client.server_capabilities.signatureHelpProvider.triggerCharacters []))
@@ -77,5 +72,4 @@
                (values (vim.fn.fnamemodify c ":t:r") true))]
   (lsp.config (icollect [c (pairs configs)] c)
               {:autostart (?. vim.g.lsp :autostart)
-               :before_init before-init
                :on_init on-init}))
