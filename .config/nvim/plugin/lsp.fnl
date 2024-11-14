@@ -4,11 +4,7 @@
 
   ; Handle off-spec "offsetEncoding" server capability
   (match result.offsetEncoding
-    enc (set client.offset_encoding enc))
-
-  ; Modify default handlers
-  (tset client.handlers :textDocument/signatureHelp (vim.lsp.with vim.lsp.handlers.signature_help {:border :rounded
-                                                                                                   :focusable false})))
+    enc (set client.offset_encoding enc)))
 
 (augroup lsp#
   (autocmd :LspAttach
@@ -32,8 +28,11 @@
         (autocmd lsp# [:BufEnter :TextChanged :InsertLeave] {:buffer buf} #(vim.lsp.codelens.refresh {:bufnr buf}))
         (vim.lsp.codelens.refresh {:bufnr buf}))
 
+      ; Remove these and use defaults when there's a better way to set the border
       (when (client.supports_method :textDocument/hover)
         (keymap :n :K #(vim.lsp.buf.hover {:border :rounded}) {:buffer buf}))
+      (when (client.supports_method :textDocument/signatureHelp)
+        (keymap :i :<C-S> #(vim.lsp.buf.signature_help {:border :rounded :focusable false})))
 
       (when (client.supports_method :textDocument/formatting)
         (autocmd lsp# :BufWritePre {:buffer buf}
