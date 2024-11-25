@@ -66,8 +66,6 @@ nnoremap <expr> [e '<Cmd>.move --' . v:count1 . '<CR>'
 nnoremap <expr> ]e '<Cmd>.move +' . v:count1 . '<CR>'
 xnoremap <expr> [e ':move --' . v:count1 . '<CR>gv'
 xnoremap <expr> ]e ':move +' . (v:count1 + line('''>') - line('''<')) . '<CR>gv'
-nnoremap [<Space> <Cmd>put! =repeat(nr2char(10), v:count1)<CR><CR>:']+1<CR>
-nnoremap ]<Space> <Cmd>put =repeat(nr2char(10), v:count1)<CR><CR>:'[-1<CR>
 
 function! Sort(type, ...) abort
     '[,']sort
