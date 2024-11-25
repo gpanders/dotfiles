@@ -153,10 +153,10 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
             block -l
             fish -P -c "
                 # Upstream status
-                set count (git rev-list --count --left-right @{u}...HEAD 2>/dev/null)
+                set count (git rev-list --count --left-right @{u}...HEAD 2>/dev/null; or true)
                 switch \"\$count\"
-                    case ''
-                    case '0'\t'0'
+                    case '' '0'\t'0'
+                        return 0
                     case '0'\t'*'
                         return 1
                     case '*'\t'0'
