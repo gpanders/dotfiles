@@ -130,6 +130,8 @@ function __prompt_fish_prompt_handler --on-event fish_prompt
         set -l action (fish_print_git_action "$__prompt_git_dir")
         if test -n "$action"
             set -g __prompt_git_action "($action)"
+        else
+            set -e __prompt_git_action
         end
 
         begin
