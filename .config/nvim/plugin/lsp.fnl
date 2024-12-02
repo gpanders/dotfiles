@@ -1,5 +1,5 @@
 (fn on-init [client result]
-  (when (client.supports_method :textDocument/signatureHelp)
+  (when (client:supports_method :textDocument/signatureHelp)
     (set client.server_capabilities.signatureHelpProvider.triggerCharacters []))
 
   ; Handle off-spec "offsetEncoding" server capability
@@ -11,16 +11,16 @@
     (fn [{: buf :data {: client_id}}]
       (local client (vim.lsp.get_client_by_id client_id))
       (tset vim.b buf :lsp client.name)
-      (when (client.supports_method :textDocument/documentHighlight)
+      (when (client:supports_method :textDocument/documentHighlight)
         (augroup lsp#
           (autocmd [:CursorHold :InsertLeave] {:buffer buf} vim.lsp.buf.document_highlight)
           (autocmd [:CursorMoved :InsertEnter] {:buffer buf} vim.lsp.buf.clear_references)))
-      (when (client.supports_method :textDocument/inlayHint)
+      (when (client:supports_method :textDocument/inlayHint)
         (keymap :n
                 "yoh"
                 #(vim.lsp.inlay_hint.enable (not (vim.lsp.inlay_hint.is_enabled {:bufnr buf})) {:bufnr buf})
                 {:buffer buf :desc "Toggle inlay hints"}))
-      (when (client.supports_method :textDocument/codeLens)
+      (when (client:supports_method :textDocument/codeLens)
         (autocmd lsp# :LspProgress :end
           (fn [args]
             (when (= args.buf buf)
@@ -29,17 +29,17 @@
         (vim.lsp.codelens.refresh {:bufnr buf}))
 
       ; Remove these and use defaults when there's a better way to set the border
-      (when (client.supports_method :textDocument/hover)
+      (when (client:supports_method :textDocument/hover)
         (keymap :n :K #(vim.lsp.buf.hover {:border :rounded}) {:buffer buf}))
-      (when (client.supports_method :textDocument/signatureHelp)
+      (when (client:supports_method :textDocument/signatureHelp)
         (keymap :i :<C-S> #(vim.lsp.buf.signature_help {:border :rounded :focusable false})))
 
-      (when (client.supports_method :textDocument/formatting)
+      (when (client:supports_method :textDocument/formatting)
         (autocmd lsp# :BufWritePre {:buffer buf}
           #(when (vim.F.if_nil client.settings.autoformat (?. vim.b.lsp :autoformat) (?. vim.g.lsp :autoformat) false)
              (vim.lsp.buf.format {:bufnr buf :id client_id}))))
 
-      (when (client.supports_method :textDocument/completion)
+      (when (client:supports_method :textDocument/completion)
         (match client.name
           :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
         (vim.lsp.completion.enable true client_id buf {:autotrigger true})
