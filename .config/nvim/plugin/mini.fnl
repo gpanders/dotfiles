@@ -25,7 +25,7 @@
   (keymap :n "-" #(MiniFiles.open (nvim.buf_get_name 0))))
 (setup :mini.visits)
 (setup :mini.extra)
-(setup :mini.diff {:view {:signs {:add :┃ :change :┃ :delete :▁}}
+(setup :mini.diff {:view {:style :sign :signs {:add :┃ :change :┃ :delete :▁}}
                    :delay {:text_change 50}}
   (keymap :n "yoD" MiniDiff.toggle_overlay)
   (keymap :n "[c" #(if vim.wo.diff "[c" (do (vim.schedule #(MiniDiff.goto_hunk :prev)) "<Ignore>")) {:expr true})

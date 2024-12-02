@@ -121,12 +121,12 @@ local highlights = {
     CursorLine = { bg = black },
     Error = { fg = foreground, bg = red },
     FloatBorder = { link = "Normal" },
-    LineNr = { fg = brightblack, bg = black },
-    MatchParen = { fg = cyan, bg = brightblack },
+    LineNr = { fg = brightblack, bg = background },
+    MatchParen = { bg = brightblack, bold = true },
     NonText = { fg = brightblack },
     NormalFloat = { link = "Normal" },
-    FloatShadow = { link = "NormalFloat" },
-    FloatShadowThrough = { link = "FloatShadow" },
+    FloatShadow = { bg = black, blend = 80 },
+    FloatShadowThrough = { bg = black, blend = 100 },
     Pmenu = { fg = white, bg = black },
     PmenuSbar = { link = "Pmenu" },
     PmenuSel = { fg = cyan, bg = lightblack },
@@ -144,22 +144,12 @@ local highlights = {
     DiagnosticError = { fg = red },
     DiagnosticInfo = { fg = blue },
     DiagnosticHint = { fg = darkblue },
-    DiagnosticSignWarn = { fg = yellow, bg = black },
-    DiagnosticSignError = { fg = red, bg = black },
-    DiagnosticSignInfo = { fg = blue, bg = black },
-    DiagnosticSignHint = { fg = darkblue, bg = black },
     DiagnosticUnderlineOk = { sp = green, undercurl = true },
     DiagnosticUnderlineWarn = { sp = yellow, undercurl = true },
     DiagnosticUnderlineError = { sp = red, undercurl = true },
     DiagnosticUnderlineInfo = { sp = blue, undercurl = true },
     DiagnosticUnderlineHint = { sp = darkblue, undercurl = true },
-    DiagnosticFloatingOk = { fg = green },
-    DiagnosticFloatingError = { fg = red },
-    DiagnosticFloatingWarn = { fg = yellow },
-    DiagnosticFloatingInfo = { fg = blue },
-    DiagnosticFloatingHint = { fg = darkblue },
-    DiagnosticUnnecessary = { link = "Comment" },
-    DiagnosticDeprecated = { link = "Comment" },
+    DiagnosticDeprecated = { sp = red, strikethrough = true },
 
     -- LSP
     LspReferenceText = { bg = brightblack },
@@ -174,10 +164,10 @@ local highlights = {
 
     -- Gutter
     CursorColumn = { bg = black },
-    CursorLineNr = { fg = foreground, bg = black },
+    CursorLineNr = { fg = foreground, bg = background },
     Folded = { fg = brightblack },
-    FoldColumn = { fg = brightblack, bg = black },
-    SignColumn = { fg = black, bg = black },
+    FoldColumn = { fg = brightblack, bg = background },
+    SignColumn = { fg = black, bg = background },
 
     -- Navigation
     Directory = { fg = blue },
@@ -210,7 +200,7 @@ local highlights = {
     -- Window
     Title = { fg = cyan },
 
-    WinSeparator = { fg = black, bg = black },
+    WinSeparator = { fg = black },
 
     QuickFixLine = { link = "Visual" },
 
@@ -602,11 +592,6 @@ local highlights = {
 
     -- mini.nvim
     MiniIndentscopeSymbol = { fg = brightblack },
-
-    -- mini.diff
-    MiniDiffSignAdd = { fg = green, bg = black },
-    MiniDiffSignChange = { fg = yellow, bg = black },
-    MiniDiffSignDelete = { fg = red, bg = black },
 
     -- nvim-dap
     DapStoppedLine = { bg = brighterblack, underline = true },

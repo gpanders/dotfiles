@@ -8,12 +8,14 @@ set confirm
 set cpoptions-=_
 set cursorline
 set exrc
+set cursorlineopt=number
 set foldlevelstart=99
 set foldtext=
 set ignorecase
 set jumpoptions=view
 set linebreak
 set list
+set number
 set pumheight=10
 set scrolloff=2
 set shada='100,<50,s10,:100,/100,h,r/tmp/,r/private/,rfugitive:,rzipfile:,rterm:
@@ -21,6 +23,7 @@ set sidescrolloff=5
 set smartcase
 set smoothscroll
 set splitright
+set statuscolumn=%s%=%l%{%&nu\|\|&rnu?'%#WinSeparator#│':''%}
 set statusline=%{%v:lua.require'statusline'.statusline()%}
 set tabline=%!v:lua.require'statusline'.tabline()
 set tagcase=match
