@@ -34,6 +34,10 @@
       (when (client:supports_method :textDocument/signatureHelp)
         (keymap :i :<C-S> #(vim.lsp.buf.signature_help {:border :rounded :focusable false})))
 
+      (when (client:supports_method :textDocument/foldingRange)
+        (tset vim.wo 0 0 :foldmethod :expr)
+        (tset vim.wo 0 0 :foldexpr "v:lua.vim.lsp.foldexpr()"))
+
       (when (client:supports_method :textDocument/formatting)
         (autocmd lsp# :BufWritePre {:buffer buf}
           #(when (vim.F.if_nil client.settings.autoformat (?. vim.b.lsp :autoformat) (?. vim.g.lsp :autoformat) false)
