@@ -17,7 +17,7 @@ vim.api.nvim_create_autocmd("SourceCmd", {
 local marker = vim.fn.stdpath("state") .. "/moonwalk"
 
 local function moonwalk()
-    vim.loader.disable()
+    vim.loader.enable(false)
 
     local walk = require("moonwalk").walk
 
