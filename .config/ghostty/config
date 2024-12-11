@@ -7,7 +7,6 @@ font-feature = -dlig
 
 command = fish
 
-macos-option-as-alt = left
 macos-titlebar-style = native
 
 config-file = ?config.local
