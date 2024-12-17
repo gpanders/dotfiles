@@ -148,6 +148,6 @@ lua<<
 vim.loader.enable()
 
 _G.nvim = vim.defaulttable(function(k)
-    return assert(vim.api[("nvim_%s"):format(k)])
+    return vim.api[("nvim_%s"):format(k)]
 end)
 .
