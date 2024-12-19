@@ -114,7 +114,7 @@ augroup init
   autocmd CmdWinEnter * nnoremap <buffer> q <C-W>q
 
   " Highlight yanked text
-  autocmd TextYankPost * lua vim.highlight.on_yank {higroup="Visual", timeout=150, on_visual=true}
+  autocmd TextYankPost * lua vim.hl.on_yank {higroup="Visual", timeout=150, on_visual=true}
 
   " Hide cursorline in insert mode and when the current window doesn't have
   " focus
