@@ -1,9 +1,9 @@
 --- @class LspConfig : vim.lsp.ClientConfig
 --- @field enabled boolean? If false, this LSP server is disabled.
---- @field filetype string|[string] Filetypes to enable this server for
+--- @field filetype string|string[] Filetypes to enable this server for
 --- @field autostart boolean? If true, automatically start the server
---- @field cmd [string] Command to start the server
---- @field root [string] List of root markers
+--- @field cmd string[] Command to start the server
+--- @field root_dir (string|fun():string)? List of root markers
 --- @field settings table? Optional settings forwarded to the server
 
 --- @class LspOptions
@@ -99,10 +99,20 @@ local function config(server, opts)
                 opts.capabilities or {}
             )
 
+            local root_dir = cfg.root_dir
+            if type(root_dir) == 'function' then
+                root_dir = root_dir()
+            end
+
+            if not root_dir then
+                root_dir = vim.uv.cwd()
+            end
+
             vim.lsp.start(
-                vim.tbl_deep_extend('keep', cfg, {
+                vim.tbl_deep_extend('keep', {
+                    root_dir = root_dir,
+                }, cfg, {
                     name = server,
-                    root_dir = vim.uv.cwd(),
                     before_init = opts.before_init,
                     on_init = opts.on_init,
                     capabilities = capabilities,
