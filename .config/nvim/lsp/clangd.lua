@@ -1,7 +1,7 @@
 return {
-    filetype = { "c", "cpp" },
+    filetypes = { "c", "cpp" },
     cmd = { "clangd", "--background-index" },
-    root_dir = vim.fs.root(0, { ".clangd", ".clang-format", "compile_commands.json", "compile_flags.txt" }),
+    root_markers = { ".clangd", ".clang-format", "compile_commands.json", "compile_flags.txt" },
     flags = {
         debounce_text_changes = 20,
     },

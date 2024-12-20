@@ -1,5 +1,5 @@
 return {
-    filetype = "zig",
+    filetypes = { "zig" },
     cmd = { "zls" },
-    root_dir = vim.fs.root(0, { "build.zig" }),
+    root_markers = { "build.zig" },
 }

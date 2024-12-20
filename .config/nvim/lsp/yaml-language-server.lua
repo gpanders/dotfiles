@@ -1,4 +1,4 @@
 return {
-    filetype = "yaml",
+    filetypes = { "yaml" },
     cmd = { "yaml-language-server", "--stdio" },
 }

@@ -1,5 +1,5 @@
 return {
-    filetype = { "go", "gomod", "gowork", "gosum" },
+    filetypes = { "go", "gomod", "gowork", "gosum" },
     cmd = { "gopls" },
     root_dir = function()
         local root = vim.fs.root(0, { "go.mod" })

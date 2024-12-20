@@ -70,9 +70,7 @@
 (command :LspStart {} enable)
 (command :LspStop {} disable)
 
-(let [lsp (require :lsp)
-      configs (collect [_ c (ipairs (vim.api.nvim_get_runtime_file "lsp/*.lua" true))]
-               (values (vim.fn.fnamemodify c ":t:r") true))]
-  (lsp.config (icollect [c (pairs configs)] c)
-              {:autostart (?. vim.g.lsp :autostart)
-               :on_init on-init}))
+(vim.lsp.config "*" {:on_init on-init})
+(let [configs (collect [_ c (ipairs (vim.api.nvim_get_runtime_file "lsp/*.lua" true))]
+                (values (vim.fn.fnamemodify c ":t:r") true))]
+  (vim.lsp.enable (icollect [c (pairs configs)] c) (or (?. vim.g.lsp :autostart) true)))

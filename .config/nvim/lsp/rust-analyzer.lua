@@ -1,5 +1,5 @@
 return {
-    filetype = "rust",
+    filetypes = { "rust" },
     cmd = { "rust-analyzer" },
     root_dir = function()
         local root = vim.fs.root(0, { "Cargo.toml" })
