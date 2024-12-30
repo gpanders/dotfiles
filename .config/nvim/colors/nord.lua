@@ -605,3 +605,5 @@ local highlights = {
 for group, opts in pairs(highlights) do
     nvim_set_hl(0, group, opts)
 end
+
+vim.g.colors_name = 'nord'
