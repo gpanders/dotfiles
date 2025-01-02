@@ -1,12 +1,5 @@
 theme = nord
-
-# Disable ligatures
-font-feature = -calt
-font-feature = -liga
-font-feature = -dlig
-
+font-feature = -calt, -liga, -dlig
 command = fish
-
 macos-titlebar-style = native
-
 config-file = ?config.local
