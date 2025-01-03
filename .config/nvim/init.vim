@@ -57,6 +57,9 @@ nnoremap <Space>Y "+y$
 nnoremap <Space>y "+y
 xnoremap <Space>y "+y
 
+" Search in visual selection with //
+cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-C>\<Esc>/\\%V" : '/'
+
 " Use gK for keywordprg, since K gets mapped to 'hover' in LSP buffers
 nnoremap gK K
 
