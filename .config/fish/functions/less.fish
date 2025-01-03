@@ -1,4 +1,4 @@
 function less
-    command less -i -M -R -S -X -F $argv
+    command less -i -M -R -S -X -F --mouse $argv
 end
 
