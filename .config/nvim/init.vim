@@ -142,9 +142,6 @@ augroup init
 
   " Automatically enter terminal mode when a :terminal opens
   autocmd TermOpen term://* startinsert
-
-  " Set 'winfixbuf' in terminal buffers
-  autocmd TermOpen term://* setlocal winfixbuf
 augroup END
 
 lua<<
