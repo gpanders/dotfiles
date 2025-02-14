@@ -7,8 +7,8 @@ set completeopt=menu,menuone,popup,noinsert,noselect
 set confirm
 set cpoptions-=_
 set cursorline
-set exrc
 set cursorlineopt=number
+set exrc
 set foldlevelstart=99
 set foldtext=
 set ignorecase
@@ -37,10 +37,6 @@ set wildmode=longest:full,full
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case
 endif
-
-" Use the histogram algorithm for diffs
-set diffopt-=internal
-set diffopt+=algorithm:histogram,linematch:60
 
 inoremap <C-Space> <C-X><C-O>
 
@@ -98,9 +94,6 @@ cnoremap <C-X><C-F> <C-F>
 vnoremap p P
 vnoremap P p
 
-" Use zS mapping from scriptease for :Inspect
-nnoremap zS <Cmd>Inspect<CR>
-
 " Don't use fish for 'shell', but if it exists use it as the default shell in
 " terminal buffers
 nnoremap <expr> `<CR> '<Cmd>bo term' .. (executable('fish') ? ' fish' : '') .. '<CR>'
@@ -119,13 +112,9 @@ augroup init
   " Highlight yanked text
   autocmd TextYankPost * lua vim.hl.on_yank {higroup="Visual", timeout=150, on_visual=true}
 
-  " Hide cursorline in insert mode and when the current window doesn't have
-  " focus
-  autocmd InsertEnter * setlocal nocursorline
-  autocmd InsertLeave * setlocal cursorline
+  " Hide cursorline when the current window doesn't have focus
   autocmd WinLeave,FocusLost * if !&diff && !&cursorbind | setlocal nocursorline | endif
-  autocmd InsertLeave,WinEnter,FocusGained *
-        \ let &l:cursorline = (mode() !=# 'i') && (nvim_win_get_config(0).relative ==# '')
+  autocmd WinEnter,FocusGained * setlocal cursorline
 
   " Create missing parent directories automatically
   autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
