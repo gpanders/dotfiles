@@ -15,9 +15,6 @@ rb = ["rebase"]
 b = ["bookmark"]
 g = ["git"]
 
-[git]
-subprocess = true
-
 [templates]
 draft_commit_description = '''
 concat(
