@@ -1,7 +1,7 @@
 {:filetypes ["rust"]
  :cmd ["rust-analyzer"]
- :root_dir (fn [cb]
-            (case (vim.fs.root 0 ["Cargo.toml"])
+ :root_dir (fn [buf cb]
+            (case (vim.fs.root buf ["Cargo.toml"])
               root (vim.system ["cargo" "metadata" "--no-deps" "--format-version" "1"]
                                {:cwd root}
                                (fn [out]
