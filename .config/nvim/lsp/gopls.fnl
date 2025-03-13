@@ -9,4 +9,7 @@
  :settings {:autoformat true
             :gopls {:analyses {:unusedparams true
                                :unusedwrite true
-                               :nilness true}}}}
+                               :nilness true}
+                    :gofumpt true
+                    :semanticTokens true
+                    :staticcheck true}}}
