@@ -3,7 +3,7 @@ colorscheme nord
 set breakindent
 set cinoptions=l1,:0,g0,E-s,N-s,t0,(s,J1,j1
 set colorcolumn=+1
-set completeopt=menu,menuone,popup,noinsert,noselect
+set completeopt=menu,menuone,popup,noselect
 set confirm
 set cpoptions-=_
 set cursorline
@@ -80,6 +80,8 @@ cnoremap <expr> <C-P> wildmenumode() ? '<C-P>' : '<Up>'
 cnoremap <expr> <C-N> wildmenumode() ? '<C-N>' : '<Down>'
 cnoremap <expr> <C-J> pumvisible() ? '<Down><Tab>' : '<C-J>'
 cnoremap <expr> <C-K> pumvisible() ? '<Up><Tab>' : '<C-K>'
+inoremap <expr> <C-C> pumvisible() ? '<C-E>' : '<C-C>'
+inoremap <expr> <CR> pumvisible() ? '<C-Y>' : '<CR>'
 
 " Readline-style bindings in command and insert modes
 inoremap <C-B> <Left>
@@ -89,10 +91,6 @@ cnoremap <C-B> <Left>
 cnoremap <expr> <C-F> getcmdpos() == (len(getcmdline()) + 1) ? '<C-F>' : '<Right>'
 cnoremap <C-X><C-A> <C-A>
 cnoremap <C-X><C-F> <C-F>
-
-" Swap p and P in visual mode
-vnoremap p P
-vnoremap P p
 
 " Don't use fish for 'shell', but if it exists use it as the default shell in
 " terminal buffers

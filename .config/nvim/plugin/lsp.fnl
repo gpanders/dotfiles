@@ -46,9 +46,7 @@
       (when (client:supports_method :textDocument/completion)
         (match client.name
           :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
-        (vim.lsp.completion.enable true client_id buf {:autotrigger true})
-        (keymap :i :<C-Space> vim.lsp.completion.trigger)
-        (keymap :i :<CR> #(if (not= (vim.fn.pumvisible) 0) :<C-Y> :<CR>) {:expr true :buffer buf}))))
+        (vim.lsp.completion.enable true client_id buf {:autotrigger true}))))
   (autocmd :LspDetach
     (fn [{: buf :data {: client_id}}]
       (tset vim.b buf :lsp nil)
