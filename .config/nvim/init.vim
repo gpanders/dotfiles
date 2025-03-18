@@ -33,6 +33,7 @@ set updatetime=250
 set wildignore+=*.pyc,__pycache__,.DS_Store,*~,#*#,*.o
 set wildignorecase
 set wildmode=longest:full,full
+set winborder=rounded
 
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case

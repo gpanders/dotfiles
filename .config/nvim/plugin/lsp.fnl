@@ -28,12 +28,6 @@
         (autocmd lsp# [:BufEnter :TextChanged :InsertLeave] {:buffer buf} #(vim.lsp.codelens.refresh {:bufnr buf}))
         (vim.lsp.codelens.refresh {:bufnr buf}))
 
-      ; Remove these and use defaults when there's a better way to set the border
-      (when (client:supports_method :textDocument/hover)
-        (keymap :n :K #(vim.lsp.buf.hover {:border :rounded}) {:buffer buf}))
-      (when (client:supports_method :textDocument/signatureHelp)
-        (keymap :i :<C-S> #(vim.lsp.buf.signature_help {:border :rounded :focusable false})))
-
       (when (client:supports_method :textDocument/foldingRange)
         (tset vim.wo 0 0 :foldmethod :expr)
         (tset vim.wo 0 0 :foldexpr "v:lua.vim.lsp.foldexpr()"))
