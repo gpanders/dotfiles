@@ -62,7 +62,7 @@
 (command :LspStart {} enable)
 (command :LspStop {} disable)
 
-(vim.lsp.config "*" {:on_init on-init})
+(vim.lsp.config "*" {:on_init on-init :workspace_required true})
 (let [configs (collect [_ c (ipairs (vim.api.nvim_get_runtime_file "lsp/*.lua" true))]
                 (values (vim.fn.fnamemodify c ":t:r") true))]
   (vim.lsp.enable (icollect [c (pairs configs)] c) (or (?. vim.g.lsp :autostart) true)))
