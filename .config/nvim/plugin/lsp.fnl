@@ -32,7 +32,8 @@
         (tset vim.wo 0 0 :foldmethod :expr)
         (tset vim.wo 0 0 :foldexpr "v:lua.vim.lsp.foldexpr()"))
 
-      (when (client:supports_method :textDocument/formatting)
+      (when (and (not (client:supports_method :textDocument/willSaveWaitUntil))
+                 (client:supports_method :textDocument/formatting))
         (autocmd lsp# :BufWritePre {:buffer buf}
           #(when (vim.F.if_nil client.settings.autoformat (?. vim.b.lsp :autoformat) (?. vim.g.lsp :autoformat) false)
              (vim.lsp.buf.format {:bufnr buf :id client_id}))))
