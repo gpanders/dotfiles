@@ -41,7 +41,10 @@
       (when (client:supports_method :textDocument/completion)
         (match client.name
           :lua-language-server (set client.server_capabilities.completionProvider.triggerCharacters ["." ":"]))
-        (vim.lsp.completion.enable true client_id buf {:autotrigger true}))))
+        (vim.lsp.completion.enable true client_id buf {:autotrigger true}))
+
+      (when (client:supports_method :textDocument/documentColor)
+        (vim.lsp.document_color.enable true buf {:style :virtual}))))
   (autocmd :LspDetach
     (fn [{: buf :data {: client_id}}]
       (tset vim.b buf :lsp nil)
