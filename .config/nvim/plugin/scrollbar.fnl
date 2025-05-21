@@ -12,9 +12,9 @@
                   span (math.floor (+ 0.5 (* (- botline topline) cells-per-line)))
                   start (math.floor (+ topline (* topline cells-per-line)))
                   end (math.min lines (+ start span 1))]
-              (tset state winid {: start : end}))))
-      (vim.api.nvim__redraw {:win winid :valid false})
-      (not= nil (. state winid))))
+              (tset state winid {: start : end})))
+        (vim.api.nvim__redraw {:win winid :valid false})
+        (not= nil (. state winid)))))
 
 (fn on-line [_ winid bufnr row]
   (case (. state winid)
