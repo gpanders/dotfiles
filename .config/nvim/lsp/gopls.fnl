@@ -19,4 +19,5 @@
                                :nilness true}
                     :gofumpt true
                     :semanticTokens true
-                    :staticcheck true}}}
+                    :staticcheck true
+                    :directoryFilters ["-bazel-bin" "-bazel-out"]}}}
