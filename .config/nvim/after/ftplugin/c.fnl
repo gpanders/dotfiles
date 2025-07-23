@@ -11,7 +11,7 @@
             uri (vim.uri_from_bufnr bufnr)
             [client] (vim.lsp.get_clients {: bufnr :name :clangd})]
         (when client
-          (client.request
+          (client:request
             :textDocument/switchSourceHeader
             {: uri}
             (fn [err res]
