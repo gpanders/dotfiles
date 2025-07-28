@@ -10,7 +10,7 @@
   (autocmd :LspAttach
     (fn [{: buf :data {: client_id}}]
       (local client (vim.lsp.get_client_by_id client_id))
-      (tset vim.b buf :lsp client.name)
+      (tset vim.b buf :lsp_client client.name)
       (when (client:supports_method :textDocument/documentHighlight)
         (augroup lsp#
           (autocmd [:CursorHold :InsertLeave] {:buffer buf} vim.lsp.buf.document_highlight)
@@ -35,7 +35,7 @@
       (when (and (not (client:supports_method :textDocument/willSaveWaitUntil))
                  (client:supports_method :textDocument/formatting))
         (autocmd lsp# :BufWritePre {:buffer buf}
-          #(when (vim.F.if_nil client.settings.autoformat (?. vim.b.lsp :autoformat) (?. vim.g.lsp :autoformat) false)
+          #(when (vim.F.if_nil client.settings.autoformat vim.b.lsp_autoformat vim.g.lsp_autoformat false)
              (vim.lsp.buf.format {:bufnr buf :id client_id}))))
 
       (when (client:supports_method :textDocument/completion)
@@ -52,15 +52,11 @@
   (autocmd :LspProgress "*" "redrawstatus"))
 
 (fn enable []
-  (when (not vim.g.lsp)
-    (set vim.g.lsp {}))
-  (set vim.g.lsp.autostart true)
+  (set vim.g.lsp_autostart true)
   (exec "doautoall <nomodeline> FileType"))
 
 (fn disable []
-  (when (not vim.g.lsp)
-    (set vim.g.lsp {}))
-  (set vim.g.lsp.autostart false)
+  (set vim.g.lsp_autostart false)
   (vim.lsp.stop_client (vim.lsp.get_clients)))
 
 (command :LspStart {} enable)
@@ -69,4 +65,4 @@
 (vim.lsp.config "*" {:on_init on-init :workspace_required true})
 (let [configs (collect [_ c (ipairs (vim.api.nvim_get_runtime_file "lsp/*.lua" true))]
                 (values (vim.fn.fnamemodify c ":t:r") true))]
-  (vim.lsp.enable (icollect [c (pairs configs)] c) (or (?. vim.g.lsp :autostart) true)))
+  (vim.lsp.enable (icollect [c (pairs configs)] c) (or vim.g.lsp_autostart true)))

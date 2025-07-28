@@ -73,7 +73,7 @@
                (if fancy "%8*" "")
                (match vim.bo.filetype
                  "" ""
-                 ft (match vim.b.lsp
+                 ft (match vim.b.lsp_client
                       name (: " %s/%s " :format ft name)
                       _ (: " %s " :format ft)))
                (if fancy "%9*" "")
