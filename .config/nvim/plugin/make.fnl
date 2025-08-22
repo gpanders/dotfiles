@@ -1,7 +1,7 @@
 (var focused true)
 
 (fn notify [title msg]
-  (io.stdout:write (: "\027]777;notify;%s;%s\027\\" :format title msg)))
+  (vim.api.nvim_ui_send (: "\027]777;notify;%s;%s\027\\" :format title msg)))
 
 (fn make [{: args}]
   (let [makeprg (case (vim.o.makeprg:gsub "%$%*" args)

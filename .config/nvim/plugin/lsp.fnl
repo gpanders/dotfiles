@@ -52,10 +52,10 @@
   (autocmd :LspProgress
     (fn [{: buf :data {: client_id :params {: value}}}]
       (case value.kind
-        :begin (io.stdout:write "\027]9;4;1;0\027\\")
-        :end (io.stdout:write "\027]9;4;0;0\027\\")
+        :begin (vim.api.nvim_ui_send "\027]9;4;1;0\027\\")
+        :end (vim.api.nvim_ui_send "\027]9;4;0;0\027\\")
         :report (when (and value.percentage (<= 0 value.percentage 100))
-                  (io.stdout:write (: "\027]9;4;1;%d\027\\" :format value.percentage))))
+                  (vim.api.nvim_ui_send (: "\027]9;4;1;%d\027\\" :format value.percentage))))
       nil)))
 
 (fn enable []
