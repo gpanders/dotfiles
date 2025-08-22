@@ -15,6 +15,7 @@ set ignorecase
 set jumpoptions=view
 set linebreak
 set list
+set listchars+=precedes:<,extends:>
 set number
 set pumheight=10
 set scrolloff=2
