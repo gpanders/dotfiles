@@ -141,13 +141,7 @@ The example above is equivalent to
 (fn M.printf [s ...]
   `(print (: ,s :format ,...)))
 
-(fn M.silent [...]
-  `(let [p# _G.print]
-     (tset _G :print #nil)
-     ,...
-     (tset _G :print p#)))
-
-(fn M.exec [cmd]
-  `(let [_# (vim.api.nvim_exec2 ,cmd {})] nil))
+(fn M.exec [cmd ?opts]
+  `(let [_# (vim.api.nvim_exec2 ,cmd ,(or ?opts {}))] nil))
 
 M
