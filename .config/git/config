@@ -80,7 +80,6 @@
 	insteadof = srht:
 [fetch]
 	prune = true
-	pruneTags = true
 [branch]
 	sort = -committerdate
 [tag]
