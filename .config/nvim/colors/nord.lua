@@ -109,7 +109,7 @@ vim.g.terminal_color_14 = cyan
 vim.g.terminal_color_15 = brightwhite
 
 local highlights = {
-    Normal = {},
+    Normal = { fg = foreground, bg = background },
 
     Bold = { bold = true },
     Italic = { italic = true },
@@ -127,10 +127,10 @@ local highlights = {
     NormalFloat = { link = "Normal" },
     FloatShadow = { bg = black, blend = 80 },
     FloatShadowThrough = { bg = black, blend = 100 },
-    Pmenu = { fg = white, bg = black },
+    Pmenu = { link = "Normal" },
     PmenuSbar = { link = "Pmenu" },
     PmenuSel = { fg = cyan, bg = lightblack },
-    PmenuThumb = { bg = brightblack },
+    PmenuThumb = { bg = black },
     SpecialKey = { fg = brightblack },
     SpellBad = { undercurl = true, sp = red },
     SpellCap = { undercurl = true, sp = yellow },

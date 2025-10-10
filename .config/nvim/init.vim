@@ -3,7 +3,7 @@ colorscheme nord
 set breakindent
 set cinoptions=l1,:0,g0,E-s,N-s,t0,(s,J1,j1
 set colorcolumn=+1
-set completeopt=menu,menuone,popup,noselect
+set completeopt=menu,menuone,popup,noinsert,fuzzy
 set confirm
 set cpoptions-=_
 set cursorline
@@ -17,6 +17,7 @@ set linebreak
 set list
 set listchars+=precedes:<,extends:>
 set number
+set pumborder=rounded
 set pumheight=10
 set scrolloff=2
 set shada='100,<50,s10,:100,/100,h,r/tmp/,r/private/,rfugitive:,rzipfile:,rterm:
