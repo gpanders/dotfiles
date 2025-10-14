@@ -2,7 +2,7 @@ local ignored = {
     ["fnl/macros.fnl"] = true,
 }
 
-local fennel_version = "1.5.0"
+local fennel_version = "1.6.0"
 local fennel_path = vim.fn.stdpath("data") .. "/site/lua/fennel.lua"
 local fennel_url = string.format("https://fennel-lang.org/downloads/fennel-%s.lua", fennel_version)
 
