@@ -1,6 +1,6 @@
 theme = nord
 font-feature = -calt, -liga, -dlig
 command = fish
-macos-titlebar-style = native
+macos-titlebar-style = tabs
 link-previews = osc8
 config-file = ?config.local
