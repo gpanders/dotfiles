@@ -134,6 +134,8 @@ augroup init
   autocmd TermOpen term://* startinsert
 augroup END
 
+packadd! nvim.undotree
+
 lua<<
 vim.loader.enable()
 
