@@ -58,17 +58,6 @@
                   (vim.api.nvim_ui_send (: "\027]9;4;1;%d\027\\" :format value.percentage))))
       nil)))
 
-(fn enable []
-  (set vim.g.lsp_autostart true)
-  (exec "doautoall <nomodeline> FileType"))
-
-(fn disable []
-  (set vim.g.lsp_autostart false)
-  (vim.lsp.stop_client (vim.lsp.get_clients)))
-
-(command :LspStart {} enable)
-(command :LspStop {} disable)
-
 (vim.lsp.config "*" {:on_init on-init :workspace_required true})
 (let [configs (collect [_ c (ipairs (vim.api.nvim_get_runtime_file "lsp/*.lua" true))]
                 (values (vim.fn.fnamemodify c ":t:r") true))]
