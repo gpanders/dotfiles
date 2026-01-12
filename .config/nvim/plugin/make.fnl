@@ -12,7 +12,7 @@
     (fn on-exit [{: code}]
       (vim.schedule (fn []
                       (vim.fn.setqflist [] :a {:id state.qf :context {: code}})
-                      (nvim.exec_autocmds :QuickFixCmdPost {:pattern "make" :modeline false})
+                      (vim.api.nvim_exec_autocmds :QuickFixCmdPost {:pattern "make" :modeline false})
                       (let [now (vim.uv.hrtime)
                             elapsed (/ (- now state.start) 1e9)
                             message (if (not= code 0)
@@ -37,7 +37,7 @@
                                                        (vim.fn.setqflist [] :a {: title}))) {}) {:buffer qfbufnr})))
                          (vim.fn.setqflist [] :a {:id state.qf : lines})
                          (exec :cbottom)))))
-    (nvim.exec_autocmds :QuickFixCmdPre {:pattern "make" :modeline false})
+    (vim.api.nvim_exec_autocmds :QuickFixCmdPre {:pattern "make" :modeline false})
     (set state.handle (vim.system (vim.split makeprg " ") {:stdout on-data :stderr on-data} on-exit))
     (set state.start (vim.uv.hrtime))))
 
@@ -51,7 +51,7 @@
        (each [i item (ipairs items) &until found?]
          (when (= 1 item.valid)
            (set found? true)
-           (nvim.win_set_cursor winid [i 0])))
+           (vim.api.nvim_win_set_cursor winid [i 0])))
        (when (and (= 0 code) (not found?))
          (exec :cclose))))
 

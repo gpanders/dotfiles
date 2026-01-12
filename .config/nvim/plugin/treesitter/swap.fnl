@@ -3,19 +3,19 @@
   The 'left' node should precede the 'right' node in the buffer (i.e. in a previous line or column)"
   (let [(left-start-row left-start-col left-end-row left-end-col) (left:range)
         (right-start-row right-start-col right-end-row right-end-col) (right:range)
-        left-text (nvim.buf_get_text buf left-start-row left-start-col left-end-row left-end-col {})
-        right-text (nvim.buf_get_text buf right-start-row right-start-col right-end-row right-end-col {})]
-    (nvim.buf_set_text buf right-start-row right-start-col right-end-row right-end-col left-text)
-    (nvim.buf_set_text buf left-start-row left-start-col left-end-row left-end-col right-text)
+        left-text (vim.api.nvim_buf_get_text buf left-start-row left-start-col left-end-row left-end-col {})
+        right-text (vim.api.nvim_buf_get_text buf right-start-row right-start-col right-end-row right-end-col {})]
+    (vim.api.nvim_buf_set_text buf right-start-row right-start-col right-end-row right-end-col left-text)
+    (vim.api.nvim_buf_set_text buf left-start-row left-start-col left-end-row left-end-col right-text)
     (let [(row col) (if forward
                         (values right-start-row (- right-end-col (- left-end-col left-start-col)))
                         (values left-start-row left-start-col))]
-      (nvim.win_set_cursor 0 [(+ row 1) col]))))
+      (vim.api.nvim_win_set_cursor 0 [(+ row 1) col]))))
 
 (fn *swap [buf parser query forward count]
   (let [capture-map (collect [k v (pairs query.captures)] (values v k))
         [tree] (parser:parse)
-        [row col] (nvim.win_get_cursor 0)
+        [row col] (vim.api.nvim_win_get_cursor 0)
         row (- row 1)]
     (var parent nil)
     (each [_ matches (query:iter_matches (tree:root) buf) &until parent]
@@ -41,15 +41,15 @@
             nil (set done? true)))))))
 
 (fn swap [forward]
-  (let [buf (nvim.get_current_buf)
+  (let [buf (vim.api.nvim_get_current_buf)
         ft (. vim.bo buf :filetype)
         lang (or (vim.treesitter.language.get_lang ft) ft)
         query (vim.treesitter.query.get lang :swap)]
     (if query
         (case (vim.treesitter.get_parser bufnr lang {:error false})
           parser (*swap buf parser query forward vim.v.count1)
-          nil (nvim.err_writeln (: "No parser found for language %s" :format lang)))
-        (nvim.err_writeln (: "No 'swap' query found for language %s" :format lang))))
+          nil (vim.api.nvim_err_writeln (: "No parser found for language %s" :format lang)))
+        (vim.api.nvim_err_writeln (: "No 'swap' query found for language %s" :format lang))))
   (pcall vim.fn.repeat#set (if forward ">a" "<a") vim.v.count))
 
 (keymap :n ">a" #(swap true))

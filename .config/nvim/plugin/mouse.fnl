@@ -1,8 +1,8 @@
 (fn mouse-hover [buf client]
   (let [{:line row :column col : winid} (vim.fn.getmousepos)]
-    (when (= buf (nvim.win_get_buf winid))
+    (when (= buf (vim.api.nvim_win_get_buf winid))
       (let [row (- row 1)
-            [line] (nvim.buf_get_lines buf row (+ row 1) true)]
+            [line] (vim.api.nvim_buf_get_lines buf row (+ row 1) true)]
         (when (and line (<= col (length line)))
           (let [uri (vim.uri_from_bufnr buf)
                 character (vim.str_utfindex line client.offset_encoding col)

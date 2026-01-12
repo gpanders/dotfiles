@@ -1,4 +1,4 @@
-(let [path (vim.fs.dirname (nvim.buf_get_name 0))
+(let [path (vim.fs.dirname (vim.api.nvim_buf_get_name 0))
       [f] (vim.fs.find ["stylua.toml" ".stylua.toml"] {:upward true
                                                        :stop (vim.uv.os_homedir)
                                                        : path})]

@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd("SourceCmd", {
     pattern = "*.fnl",
     group = "moonwalk",
     callback = function(args)
-        vim.api.nvim_command("source " .. require("moonwalk").compile(args.file))
+        vim.api.nvim_cmd({ cmd = "source", args = { require("moonwalk").compile(args.file) } }, {})
     end,
 })
 

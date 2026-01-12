@@ -2,7 +2,7 @@
   (let [grepcmd (case (vim.o.grepprg:gsub "%$%*" args)
                   (s 0) (.. s " " args)
                   (s n) s)]
-    (nvim.exec_autocmds :QuickFixCmdPre {:pattern "grep" :modeline false})
+    (vim.api.nvim_exec_autocmds :QuickFixCmdPre {:pattern "grep" :modeline false})
     (fn callback [{: code : stdout : stderr}]
       (let [src (if (= 0 code) stdout stderr)
             lines (vim.split src "\n" {:trimempty true})]
@@ -11,7 +11,7 @@
                                                    : lines
                                                    :efm vim.o.grepformat
                                                    :nr "$"})
-                         (nvim.exec_autocmds :QuickFixCmdPost {:pattern "grep" :modeline false})))))
+                         (vim.api.nvim_exec_autocmds :QuickFixCmdPost {:pattern "grep" :modeline false})))))
     (vim.system [vim.o.shell "-c" grepcmd] callback)
     (print grepcmd)))
 

@@ -12,7 +12,7 @@
       (e w) (: "E: %d W: %d " :format e w))))
 
 (fn filename [buf fancy]
-  (let [name (match (nvim.buf_get_name buf)
+  (let [name (match (vim.api.nvim_buf_get_name buf)
                "" "Untitled"
                n (n:gsub "%%" "%%%%"))
         fname (vim.fn.fnamemodify name ":~:.")
@@ -39,8 +39,8 @@
     (table.concat items)))
 
 (fn statusline []
-  (let [buf (nvim.get_current_buf)
-        win (nvim.get_current_win)
+  (let [buf (vim.api.nvim_get_current_buf)
+        win (vim.api.nvim_get_current_win)
         term (= :terminal (. vim.bo buf :buftype))
         curwin (= (tonumber vim.g.actual_curwin) win)
         fancy (and curwin (not term))

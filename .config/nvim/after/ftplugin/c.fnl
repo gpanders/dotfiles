@@ -1,10 +1,10 @@
 (local {: set-path} (require "ft/c"))
 
-(set-path (nvim.get_current_buf))
+(set-path (vim.api.nvim_get_current_buf))
 
 (autocmd ft/c :LspAttach {:buffer 0}
   #(do
-    (let [bufnr (nvim.get_current_buf)
+    (let [bufnr (vim.api.nvim_get_current_buf)
           uri (vim.uri_from_bufnr bufnr)
           [client] (vim.lsp.get_clients {: bufnr :name :clangd})]
       (when client
@@ -16,7 +16,7 @@
               (when err
                 (error err))
               (if res
-                  (nvim.command (.. "edit " (vim.uri_to_fname res)))
+                  (exec (.. "edit " (vim.uri_to_fname res)))
                   (echo "Alternate file not found")))
             bufnr))
 

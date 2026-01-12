@@ -135,11 +135,3 @@ augroup init
 augroup END
 
 packadd! nvim.undotree
-
-lua<<
-vim.loader.enable()
-
-_G.nvim = vim.defaulttable(function(k)
-    return vim.api[("nvim_%s"):format(k)]
-end)
-.

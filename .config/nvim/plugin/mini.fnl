@@ -22,7 +22,7 @@
 
 (setup :mini.align {:mappings {:start "gl" :start_with_preview "gL"}})
 (setup :mini.files {:content {:prefix #nil} :mappings {:go_in_plus :<CR>}}
-  (keymap :n "-" #(MiniFiles.open (nvim.buf_get_name 0))))
+  (keymap :n "-" #(MiniFiles.open (vim.api.nvim_buf_get_name 0))))
 (setup :mini.visits)
 (setup :mini.extra)
 (setup :mini.diff {:view {:style :sign :signs {:add :┃ :change :┃ :delete :▁}}
