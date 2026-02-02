@@ -14,6 +14,7 @@ d = ["diff"]
 rb = ["rebase"]
 b = ["bookmark"]
 g = ["git"]
+sync = ["util", "exec", "--", "sh", "-c", "jj git fetch && jj new 'trunk()'"]
 
 [templates]
 draft_commit_description = '''
@@ -27,6 +28,9 @@ concat(
   diff.git(),
 )
 '''
+
+[git]
+private-commits = "description('private:*')"
 
 [fix.tools.gofmt]
 command = ["gofmt"]
