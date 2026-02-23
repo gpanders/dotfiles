@@ -21,12 +21,7 @@
                 #(vim.lsp.inlay_hint.enable (not (vim.lsp.inlay_hint.is_enabled {:bufnr buf})) {:bufnr buf})
                 {:buffer buf :desc "Toggle inlay hints"}))
       (when (client:supports_method :textDocument/codeLens)
-        (autocmd lsp# :LspProgress :end
-          (fn [args]
-            (when (= args.buf buf)
-              (vim.lsp.codelens.refresh {:bufnr buf}))))
-        (autocmd lsp# [:BufEnter :TextChanged :InsertLeave] {:buffer buf} #(vim.lsp.codelens.refresh {:bufnr buf}))
-        (vim.lsp.codelens.refresh {:bufnr buf}))
+        (vim.lsp.codelens.enable true {: client_id}))
 
       (when (client:supports_method :textDocument/foldingRange)
         (tset vim.wo 0 0 :foldmethod :expr)
@@ -52,10 +47,10 @@
   (autocmd :LspProgress
     (fn [{: buf :data {: client_id :params {: value}}}]
       (case value.kind
-        :begin (vim.api.nvim_ui_send "\027]9;4;1;0\027\\")
-        :end (vim.api.nvim_ui_send "\027]9;4;0;0\027\\")
+        :end (vim.api.nvim_exec_autocmds :Progress {:data {:status :success}})
         :report (when (and value.percentage (<= 0 value.percentage 100))
-                  (vim.api.nvim_ui_send (: "\027]9;4;1;%d\027\\" :format value.percentage))))
+                  (vim.api.nvim_exec_autocmds :Progress {:data {:status :running
+                                                                :percent value.percentage}})))
       nil)))
 
 (vim.lsp.config "*" {:on_init on-init :workspace_required true})
