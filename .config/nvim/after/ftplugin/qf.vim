@@ -15,4 +15,4 @@ if !exists('loaded_cfilter')
   let loaded_cfilter = get(g:, 'loaded_cfilter')
 endif
 
-let b:undo_ftplugin .= '|setl wrap< wfb< culopt<|nun <buffer> q|au! qf * <buffer>'
+let b:undo_ftplugin .= '|setl wrap< wfb< culopt<|nun <buffer> q|exe "au! qf * <buffer>"'
