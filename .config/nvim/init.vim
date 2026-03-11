@@ -21,6 +21,7 @@ set pumborder=rounded
 set pumheight=10
 set scrolloff=2
 set shada='100,<50,s10,:100,/100,h,r/tmp/,r/private/
+set showcmdloc=statusline
 set sidescrolloff=5
 set smartcase
 set smoothscroll
@@ -132,6 +133,12 @@ augroup init
 
   " Automatically enter terminal mode when a :terminal opens
   autocmd TermOpen term://* startinsert
+  autocmd TermClose term://* stopinsert
+
+  " Set the 'busy' indicator in the statusline when quickfix commands are
+  " running
+  autocmd QuickFixCmdPre * set busy+=1
+  autocmd QuickFixCmdPost * set busy-=1
 augroup END
 
 packadd! nvim.undotree

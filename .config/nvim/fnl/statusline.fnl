@@ -12,11 +12,12 @@
       (e w) (: "E: %d W: %d " :format e w))))
 
 (fn filename [buf fancy]
-  (let [name (match (vim.api.nvim_buf_get_name buf)
+  (let [help (= :help (. vim.bo buf :buftype))
+        name (match (vim.api.nvim_buf_get_name buf)
                "" "Untitled"
                n (n:gsub "%%" "%%%%"))
         fname (vim.fn.fnamemodify name ":~:.")
-              parent (fname:match "^(.*/)")
+              parent (if help "" (fname:match "^(.*/)"))
               tail (vim.fn.fnamemodify name ":t")
               (parent-hl tail-hl) (if vim.bo.modified
                                       (values "%1*" "%1*")
@@ -48,13 +49,13 @@
                  "" ""
                  _ " $")
                (filename buf fancy)
-               (if vim.bo.readonly
-                   "%r "
-                   "")
-               (if vim.wo.previewwindow
-                   "%w "
+               "%h%w%m%r "
+               (if term
+                   ((. (require "vim._core.util") :term_exitcode))
                    "")
                "%="
+               "%-10.S"
+               (if (< 0 vim.o.busy) "◐ " "")
                (diagnostics)
                (if fancy "%4*" "")
                (if (and vim.bo.modifiable (not vim.bo.readonly))
