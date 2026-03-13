@@ -3,4 +3,5 @@ font-feature = -calt, -liga, -dlig
 command = fish
 macos-titlebar-style = tabs
 link-previews = osc8
+notify-on-command-finish = unfocused
 config-file = ?config.local
