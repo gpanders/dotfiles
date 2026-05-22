@@ -29,8 +29,8 @@ function __prompt_update_pwd --on-variable PWD
     end
 end
 
-function __prompt_venv --on-variable VIRTUAL_ENV --on-variable IN_NIX_SHELL
-    if set -q VIRTUAL_ENV
+function __prompt_venv --on-variable VIRTUAL_ENV --on-variable VIRTUAL_ENV_DISABLE_PROMPT --on-variable IN_NIX_SHELL
+    if set -q VIRTUAL_ENV; and test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
         set -g __prompt_venv (set_color $fish_color_venv)(basename $VIRTUAL_ENV)' '
     else if set -q IN_NIX_SHELL
         set -g __prompt_venv (set_color $fish_color_venv)'nix-shell '
