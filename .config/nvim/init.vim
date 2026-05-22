@@ -112,7 +112,8 @@ augroup init
   autocmd CmdWinEnter * nnoremap <buffer> q <C-W>q
 
   " Highlight yanked text
-  autocmd TextYankPost * lua vim.hl.on_yank {higroup="Visual", timeout=150, on_visual=true}
+  autocmd TextYankPost * silent! lua vim.hl.hl_op({ higroup="Visual" })
+  autocmd TextPutPost * silent! lua vim.hl.hl_op({ higroup="Visual" })
 
   " Hide cursorline when the current window doesn't have focus
   autocmd WinLeave,FocusLost * if !&diff && !&cursorbind | setlocal nocursorline | endif
