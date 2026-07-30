@@ -25,11 +25,14 @@
   (keymap :n "-" #(MiniFiles.open (vim.api.nvim_buf_get_name 0))))
 (setup :mini.visits)
 (setup :mini.extra)
-(setup :mini.diff {:view {:style :sign :signs {:add :┃ :change :┃ :delete :▁}}
-                   :delay {:text_change 50}}
-  (keymap :n "yoD" MiniDiff.toggle_overlay)
-  (keymap :n "[c" #(if vim.wo.diff "[c" (do (vim.schedule #(MiniDiff.goto_hunk :prev)) "<Ignore>")) {:expr true})
-  (keymap :n "]c" #(if vim.wo.diff "]c" (do (vim.schedule #(MiniDiff.goto_hunk :next)) "<Ignore>")) {:expr true}))
+(with-module [diff :mini.diff]
+  (with-module [jj :mini.jj]
+    (diff.setup {:source [(jj.gen_source) (diff.gen_source.git)]
+                 :view {:style :sign :signs {:add :┃ :change :┃ :delete :▁}}
+                 :delay {:text_change 50}})
+    (keymap :n "yoD" MiniDiff.toggle_overlay)
+    (keymap :n "[c" #(if vim.wo.diff "[c" (do (vim.schedule #(MiniDiff.goto_hunk :prev)) "<Ignore>")) {:expr true})
+    (keymap :n "]c" #(if vim.wo.diff "]c" (do (vim.schedule #(MiniDiff.goto_hunk :next)) "<Ignore>")) {:expr true})))
 
 (autocmd mini# :LspAttach {:once true}
   #(setup :mini.notify {:content {:format #(. $ :msg)}
@@ -51,4 +54,3 @@
     (augroup mini#
       (autocmd :LspAttach "*" #(keymap :n "<Space>s" #(MiniExtra.pickers.lsp {:scope :workspace_symbol}) {:buffer (. $1 :buf)}))
       (autocmd :LspDetach "*" #(vim.keymap.del :n "<Space>s" {:buffer (. $1 :buf)})))))
-
