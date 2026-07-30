@@ -1,3 +1,3 @@
 {:filetypes ["typescript" "typescriptreact"]
- :cmd ["typescript-language-server" "--stdio"]
+ :cmd ["tsc" "--lsp" "-stdio"]
  :root_markers ["tsconfig.json"]}
