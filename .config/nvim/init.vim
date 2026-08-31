@@ -122,8 +122,11 @@ augroup init
   " Create missing parent directories automatically
   autocmd BufNewFile * autocmd BufWritePre <buffer> ++once call mkdir(expand('%:h'), 'p')
 
-  " Disable listchars in prompt buffers
-  autocmd OptionSet buftype if &buftype ==# 'prompt' | setlocal nolist | endif
+  " Disable listchars and fix <C-W> in prompt buffers
+  autocmd OptionSet buftype if &buftype ==# 'prompt' |
+        \   setlocal nolist |
+        \   inoremap <C-W> <S-C-W> |
+        \ endif
 
   " Don't show trailing spaces in insert mode
   autocmd InsertEnter * setlocal listchars-=trail:-
