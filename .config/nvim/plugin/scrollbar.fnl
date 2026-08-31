@@ -8,10 +8,14 @@
             height (vim.api.nvim_win_get_height winid)]
         (if (<= lines height)
             (tset state winid nil)
-            (let [cells-per-line (/ height lines)
-                  span (math.floor (+ 0.5 (* (- botline topline) cells-per-line)))
-                  start (math.floor (+ topline (* topline cells-per-line)))
-                  end (math.min lines (+ start span 1))]
+            (let [visible (+ (- botline topline) 1)
+                  span (math.max 1 (math.floor (+ 0.5 (* (/ visible lines) height))))
+                  offset (math.floor (+ 0.5 (* (/ topline (math.max 1 (- lines visible)))
+                                               (- height span))))
+                  start (math.max topline
+                                  (math.min (- (+ botline 1) span)
+                                            (+ topline offset)))
+                  end (+ start span)]
               (tset state winid {: start : end})))
         (vim.api.nvim__redraw {:win winid :valid false})
         (not= nil (. state winid)))))
