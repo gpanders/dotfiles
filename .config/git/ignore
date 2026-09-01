@@ -27,6 +27,7 @@ Brewfile.lock.json
 .nvim.lua
 CMakeUserPresets.json
 .jj/
+.pi/extensions/memory
 
 # Outputs
 *.so
