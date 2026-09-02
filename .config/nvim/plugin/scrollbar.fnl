@@ -2,7 +2,8 @@
 (local state {})
 
 (fn on-win [_ winid bufnr topline botline]
-  (if (not= "" (. (vim.api.nvim_win_get_config winid) :relative))
+  (if (or (not= "" (. (vim.api.nvim_win_get_config winid) :relative))
+          (not= "" (. vim.bo bufnr :buftype)))
       false
       (let [lines (vim.api.nvim_buf_line_count bufnr)
             height (vim.api.nvim_win_get_height winid)]
