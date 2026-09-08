@@ -120,7 +120,7 @@ local highlights = {
     ColorColumn = { bg = black },
     CursorLine = { bg = black },
     Error = { fg = foreground, bg = red },
-    FloatBorder = { link = "Normal" },
+    FloatBorder = { fg = darkwhite },
     LineNr = { fg = brightblack, bg = background },
     MatchParen = { bg = brightblack, bold = true },
     NonText = { fg = brightblack },
