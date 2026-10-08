@@ -20,6 +20,7 @@ sync = ["util", "exec", "--", "sh", "-c", "jj git fetch && jj new 'trunk()'"]
 draft_commit_description = 'builtin_draft_commit_description_with_diff'
 
 [git]
+colocate = true
 private-commits = "description('private:*')"
 
 [fix.tools.gofmt]
