@@ -2,7 +2,7 @@ local M = {}
 local H = {}
 
 M.gen_source = function(opts)
-  opts = vim.tbl_extend('force', { debounce = 50 }, opts or {})
+  opts = vim.tbl_extend('force', { debounce = 50, poll_interval = 250 }, opts or {})
 
   local attach = function(buf_id)
     if H.cache[buf_id] ~= nil then return false end
@@ -18,12 +18,18 @@ M.gen_source = function(opts)
     local repo = H.get_repo_path(root)
     if not H.is_dir(repo) or not H.is_dir(vim.fs.joinpath(root, '.jj', 'working_copy')) then return false end
 
-    local timer = vim.uv.new_timer()
-    if timer == nil then return false end
+    local workspace = H.workspaces[root]
+    if workspace == nil then
+      local timer = vim.uv.new_timer()
+      if timer == nil then return false end
+      workspace = { root = root, timer = timer, polls = {}, buffers = {} }
+      H.workspaces[root] = workspace
+      H.start_polling(workspace, repo, opts)
+    end
 
-    H.cache[buf_id] = { root = root, repo = repo, timer = timer, fs_events = {} }
-    H.start_watchers(buf_id, opts)
-    H.schedule_refresh(buf_id, 0)
+    H.cache[buf_id] = { root = root, workspace = workspace }
+    workspace.buffers[buf_id] = true
+    H.set_ref_text(buf_id)
   end
 
   local detach = function(buf_id) H.clear_cache(buf_id) end
@@ -32,6 +38,7 @@ M.gen_source = function(opts)
 end
 
 H.cache = {}
+H.workspaces = {}
 
 H.get_buf_realpath = function(buf_id)
   local path = vim.api.nvim_buf_get_name(buf_id)
@@ -61,35 +68,34 @@ H.get_repo_path = function(root)
   return vim.fs.normalize(vim.fs.joinpath(jj_path, target), normalize_opts)
 end
 
-H.start_watchers = function(buf_id, opts)
-  local cache = H.cache[buf_id]
-  if cache == nil then return end
-
-  H.watch_dir(buf_id, vim.fs.joinpath(cache.repo, 'op_heads', 'heads'), nil, opts)
-  H.watch_dir(buf_id, vim.fs.joinpath(cache.root, '.jj', 'working_copy'), { checkout = true, tree_state = true }, opts)
+H.start_polling = function(workspace, repo, opts)
+  H.poll_path(workspace, vim.fs.joinpath(repo, 'op_heads', 'heads'), opts)
+  H.poll_path(workspace, vim.fs.joinpath(workspace.root, '.jj', 'working_copy', 'checkout'), opts)
 end
 
-H.watch_dir = function(buf_id, path, filenames, opts)
-  local fs_event = vim.uv.new_fs_event()
-  if fs_event == nil then return end
+H.poll_path = function(workspace, path, opts)
+  -- Polling avoids synchronous FSEvents shutdown on macOS.
+  local poll = vim.uv.new_fs_poll()
+  if poll == nil then return end
 
-  local on_event = function(_, filename)
-    if filenames ~= nil and filename ~= nil and not filenames[filename] then return end
-    H.schedule_refresh(buf_id, opts.debounce)
+  local on_change = function()
+    H.schedule_refresh(workspace, opts.debounce)
   end
-  if not fs_event:start(path, { recursive = false }, on_event) then
-    fs_event:close()
+  if not poll:start(path, opts.poll_interval, on_change) then
+    poll:close()
     return
   end
-  table.insert(H.cache[buf_id].fs_events, fs_event)
+  table.insert(workspace.polls, poll)
 end
 
-H.schedule_refresh = function(buf_id, delay)
-  local cache = H.cache[buf_id]
-  if cache == nil then return end
+H.schedule_refresh = function(workspace, delay)
+  if H.workspaces[workspace.root] ~= workspace then return end
 
-  cache.timer:stop()
-  cache.timer:start(delay or 0, 0, vim.schedule_wrap(function() H.set_ref_text(buf_id) end))
+  workspace.timer:stop()
+  workspace.timer:start(delay, 0, vim.schedule_wrap(function()
+    if H.workspaces[workspace.root] ~= workspace then return end
+    for buf_id in pairs(workspace.buffers) do H.set_ref_text(buf_id) end
+  end))
 end
 
 H.stop_job = function(cache)
@@ -209,12 +215,24 @@ H.clear_cache = function(buf_id)
   if cache == nil then return end
 
   H.stop_job(cache)
-  for _, fs_event in ipairs(cache.fs_events) do
-    pcall(fs_event.stop, fs_event)
-    pcall(fs_event.close, fs_event)
+  local workspace = cache.workspace
+  workspace.buffers[buf_id] = nil
+  if next(workspace.buffers) ~= nil then return end
+
+  H.workspaces[workspace.root] = nil
+  for _, poll in ipairs(workspace.polls) do
+    pcall(poll.stop, poll)
+    pcall(poll.close, poll)
   end
-  pcall(cache.timer.stop, cache.timer)
-  pcall(cache.timer.close, cache.timer)
+  pcall(workspace.timer.stop, workspace.timer)
+  pcall(workspace.timer.close, workspace.timer)
 end
+
+vim.api.nvim_create_autocmd('VimLeavePre', {
+  group = vim.api.nvim_create_augroup('MiniDiffSourceJj', { clear = true }),
+  callback = function()
+    for buf_id in pairs(H.cache) do H.clear_cache(buf_id) end
+  end,
+})
 
 return M
