@@ -111,12 +111,10 @@ packup() {
 	fi
 }
 
-plug tpope.io/vim/abolish
 plug tpope.io/vim/fugitive
 plug tpope.io/vim/sleuth
 plug github.com/gpanders/nvim-parinfer
 plug github.com/mfussenegger/nvim-lint
-plug github.com/dcampos/nvim-snippy
 plug github.com/echasnovski/mini.nvim
 
 packup
