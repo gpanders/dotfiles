@@ -88,6 +88,14 @@ function __prompt_exit_status --on-event fish_postexec
     set -g __prompt_status (__fish_print_pipestatus '[' '] ' '|' (set_color $fish_color_status) (set_color $bold_flag $fish_color_status) $last_pipestatus)
 end
 
+function __prompt_set_cursor --on-event fish_prompt
+    printf '\e[5 q'
+end
+
+function __prompt_reset_cursor --on-event fish_preexec
+    printf '\e[0 q'
+end
+
 function __prompt_fish_prompt_handler --on-event fish_prompt
     if test $status -ne 0
         set -g __prompt_delim (set_color $fish_color_error)$fish_prompt_delim
